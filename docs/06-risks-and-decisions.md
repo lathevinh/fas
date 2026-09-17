@@ -6,18 +6,20 @@ settled fact.
 ## Decision 1: Preserve branch independence
 
 **Chosen:** DINO and VLM predictors train independently. Their outputs are compared
-post hoc through disagreement and a source-only risk calibrator.
+post hoc through disagreement and a source-only failure-risk calibrator.
 
 **Alternative:** project DINO patches directly into the VLM text space and compute
 patch-text cosine similarity.
 
 **Reason:** native spaces are not aligned, learned patch-text alignment is close to
-existing work, and forcing decision agreement destroys the proposed unknown signal.
+existing work, and forcing decision agreement destroys the proposed cross-branch
+failure signal.
 
 **Counterargument:** plain cross-model disagreement is standard ensemble machinery.
 
 **Required test:** demonstrate source-only generalization beyond MSP, entropy, energy,
-fixed averaging, and learned score fusion.
+representation-space confidence, fixed averaging, capacity-matched risk baselines,
+and learned score fusion.
 
 ## Decision 2: Structured VLM, not free-form MLLM
 
@@ -39,7 +41,7 @@ to evaluate. MLLM captions may still generate offline annotation candidates.
 **Alternative:** confidence-weighted consistency on known source attacks.
 
 **Reason:** forced agreement can propagate VLM errors, collapse branch diversity,
-and directly weaken the signal used for failure and unknown detection.
+and directly weaken the signal used for failure detection under shift.
 
 **Counterargument:** unconstrained branches may disagree for irrelevant calibration
 or scale reasons.
@@ -141,7 +143,7 @@ closest methods.
 
 - Which exact OpenCLIP/SigLIP checkpoint gives the best accuracy/compute tradeoff?
 - Does the VLM consume the context crop, face crop, or both?
-- Which source-fold construction best approximates unknown domain and attack shifts?
+- Which source-fold construction best approximates unseen domain and attack shifts?
 - Which low-capacity calibrator avoids overfitting the out-of-fold records?
 - What pre-registered minimum oracle/fusion gain justifies continuing?
 - Is abstention evaluated per image or per authentication transaction?

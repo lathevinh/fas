@@ -32,16 +32,26 @@ MICO target first, selected before observing results, then construct the joint
 correctness table and report $P_{cc},P_{cw},P_{wc},P_{ww}$, double-fault, oracle gain,
 error correlation, and attack/domain subgroups.
 
+Before opening any MICO target labels, use domain-OOF source pseudo-shifts to lock
+numeric continuation thresholds for recoverable error fraction
+$REF=P(D\text{ wrong},V\text{ correct})/P(D\text{ wrong})$ and false-accept rescue
+rate $FARR=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
+preregistration with the run configuration. Target results may test these criteria but
+may not redefine them.
+
 Define oracle gain on thresholded decisions using balanced accuracy/error and at
 source-selected biometric operating points. Do not report an `oracle AUC` unless a
 label-independent score construction is specified; choosing the correct branch per
 sample uses ground-truth labels and does not define a deployable ROC score.
+Report class-conditional oracle APCER, BPCER, and ACER; bootstrap by video or subject,
+not by frame.
 
 Exit criteria:
 
-- both branches are competent and neither simply dominates every subgroup;
-- oracle gain over the better branch is non-negligible;
-- both $P_{cw}$ and $P_{wc}$ are non-trivial;
+- both branches are competent enough for meaningful comparison;
+- class-conditional oracle gain passes the preregistered criterion;
+- REF and security-critical FARR pass their preregistered criteria, even if recovery
+  is asymmetric;
 - no target data influenced model selection.
 
 Stop the dual-foundation direction if these conditions fail. DINOv2 without registers,
@@ -72,10 +82,14 @@ Then generate out-of-fold source records in two variants.
 
 Compare raw and calibrated JS disagreement and the calibrator against MSP, entropy,
 energy, raw averaging, calibrated averaging, and learned fusion on calibrated scores.
+Add capacity-matched LogReg/MLP probability baselines, versions with JS and image
+quality, and DINO embedding Mahalanobis confidence. Mahalanobis is a strong simple
+representation-space baseline, not a substitute for reproducing a published
+confidence-aware FAS method when its implementation and protocol are available.
 
 Exit criteria:
 
-- target error/downstream-unseen AUROC and AUPR improve consistently over single-model uncertainty;
+- target prediction-error AUROC and AUPR improve consistently over single-model uncertainty;
 - selective risk improves at matched coverage;
 - no target sample or statistic enters calibration.
 
@@ -96,7 +110,9 @@ Exit criteria:
 - calibrated disagreement beats learned fusion and entropy/MSP/energy;
 - conditional inference approaches always-on security/selective performance at fixed
   APCER, fixed BPCER, and matched coverage;
-- VLM invocation rate or latency decreases materially at matched operating points;
+- VLM invocation rate or GPU-ms/request decreases materially at matched operating points;
+- mean/P50/P95 latency exposes the sequential hard-case penalty against parallel
+  always-on inference;
 - downstream-unseen and open-vocabulary zero-shot results are reported separately;
 - shared wrong predictions are explicitly analyzed.
 

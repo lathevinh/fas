@@ -15,22 +15,25 @@ untouched target:
 | wrong | correct | $P_{wc}$ |
 | wrong | wrong | $P_{ww}$ |
 
-**H1:** Both $P_{cw}$ and $P_{wc}$ are non-trivial, the double-fault rate $P_{ww}$
-permits an oracle accuracy $1-P_{ww}$ above the better branch, and complementarity
-persists across multiple domains or attack families.
+**H1:** The VLM recovers a useful fraction of DINO errors, especially false accepts,
+and class-conditional double-fault rates permit lower oracle APCER/BPCER than the
+better branch across multiple domains or attack families. Complementarity may be
+asymmetric; equal recovery in both directions is not required.
 
-**Falsification:** one branch dominates, errors are nearly identical, or oracle gain
-over the better branch is negligible. A large $P_{cw}+P_{wc}$ alone is insufficient
-when both predictors are weak.
+**Falsification:** VLM recovery of DINO errors and false accepts falls below the
+source-preregistered continuation criteria, errors are nearly identical, or
+class-conditional oracle gain is negligible. A large $P_{cw}+P_{wc}$ alone is
+insufficient when both predictors are weak.
 
 Required analyses include error correlation, double-fault, oracle gain, attack/domain
 stratification, and feasible fusion gain. Conditional mutual information is optional
 and must not replace the directly interpretable joint table.
 
-## RQ2: Source-only failure and unknown detection
+## RQ2: Source-only failure detection under shift
 
-Can natural cross-foundation disagreement estimate errors and downstream-unseen attacks better
-than conventional single-model uncertainty without target-domain calibration?
+Can natural cross-foundation disagreement estimate prediction failures under unseen
+domain and attack shifts better than conventional single-model uncertainty without
+target-domain calibration?
 
 The raw baseline is:
 
@@ -41,9 +44,9 @@ holds out a source domain or attack family as a pseudo-shift, trains the predict
 on the remainder, and records correctness, uncertainty, and disagreement on the
 held-out fold. Target data never train or select the calibrator.
 
-**H2:** Raw or source-calibrated disagreement improves error/downstream-unseen AUROC and AUPR,
-and selective risk at matched coverage, over maximum softmax probability, entropy,
-energy, and the better branch's uncertainty.
+**H2:** Raw or source-calibrated disagreement improves error AUROC/AUPR and selective
+risk at matched coverage over maximum softmax probability, entropy, energy,
+representation-space confidence, and the better branch's uncertainty.
 
 **Falsification:** disagreement does not consistently beat these baselines, fails on
 shared errors, or requires target-domain labels or tuning.
@@ -58,10 +61,11 @@ fusion, disagreement-aware selection, DINO-first conditional VLM, and an optiona
 distilled semantic head.
 
 **H3:** Conditional VLM inference approaches always-on selective performance while
-reducing median latency or VLM invocation rate at matched APCER/BPCER and coverage.
+reducing VLM invocation rate or GPU-ms/request at matched APCER/BPCER and coverage.
 
 **Falsification:** always-on VLM gives no gain over DINO, conditional invocation loses
-the gain, or the desired operating point offers no useful security-latency trade-off.
+the gain, or the desired operating point offers no useful security-coverage-compute
+trade-off.
 
 ## Secondary ablations, not research questions
 

@@ -50,6 +50,13 @@ Do not pool these into one unknown score because they test different abilities.
 Neither setting proves that the attack was absent from generic foundation-model
 pretraining; foundation-model pretraining exposure at web scale is uncontrolled.
 
+Define exclusions at the declared semantic level
+`family -> instrument -> subtype`. Holding out an entire family removes all prompts in
+that family; holding out only a subtype may retain a generic family prompt. Keep the
+primary PAD prompt bank and its normalization fixed. Any allowed attack-specific
+open-vocabulary prompt produces a separate auxiliary similarity score rather than
+changing the primary PAD softmax denominator.
+
 ## Unified metadata manifest
 
 Each sample should have a non-sensitive metadata row:
@@ -84,6 +91,12 @@ Unknown values remain `unknown`; they must not be guessed from coarse labels.
 6. Perform image-level inference; aggregate scores only for separately reported
    protocol-compatible video metrics.
 7. Hash manifests and save the preprocessing version with every run.
+
+Report two evaluation tracks. The benchmark-compatible track follows each dataset's
+official frame/video aggregation. The strict single-image track uses one deterministic
+frame per video as its primary result; multi-frame sensitivity analyses cluster all
+confidence intervals and tests by video or subject. Never treat correlated frames as
+independent statistical units.
 
 ## Face crops
 
@@ -150,6 +163,12 @@ not require cue-level pseudo-labels.
 For OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD, train on three and test on
 the fourth. Hyperparameters and thresholds use source-domain validation only.
 
+For deployment tables, apply the frozen source threshold to the target and report
+target APCER/BPCER at that threshold. Report target-derived ROC points such as BPCER at
+target APCER=1% in a separate post-hoc diagnostic block. Compare thresholds selected
+from pooled sources with thresholds satisfying the APCER constraint on every source
+domain.
+
 Within each three-source training set, create out-of-fold reliability records by
 holding out one source dataset at a time. Predictions on a held-out source must come
 from branches that did not train on that source. Fit the final reliability calibrator
@@ -177,7 +196,8 @@ frames from depth/IR and never use unavailable modalities.
 - HTER, EER, ROC-AUC;
 - BPCER at fixed APCER where protocol permits;
 - ECE and NLL;
-- error/OOD AUROC and AUPR;
+- prediction-error AUROC and AUPR;
+- optional shift/OOD AUROC and AUPR under a separately defined shift target;
 - selective risk versus coverage;
 - selective risk at fixed APCER and fixed BPCER;
 - secure recall and VLM invocation rate at those fixed operating points;

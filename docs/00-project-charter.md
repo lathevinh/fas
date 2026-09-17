@@ -20,7 +20,8 @@ choice of two pretrained backbones or disagreement by itself:
 
 1. intentionally independent DINOv2-Reg and VLM predictors;
 2. cross-fitted disagreement calibration without target-domain labels;
-3. selective and conditional inference evaluated as a security-coverage-latency trade-off.
+3. selective and conditional inference evaluated as a security-coverage-compute trade-off,
+   with latency distributions reported explicitly.
 
 Named forensic cue maps and ontology learning are optional follow-up work, not part
 of the minimum viable paper.
@@ -37,11 +38,12 @@ of the minimum viable paper.
 
 The approach is worth a model-centric paper only if it:
 
-- demonstrates non-trivial two-sided complementarity and oracle gain;
+- demonstrates source-preregistered DINO-error and false-accept rescue plus class-conditional oracle gain;
 - beats DINOv2-Reg, VLM uncertainty, and learned score fusion on multiple unseen domains;
-- improves unknown-attack/error detection over MSP, entropy, and energy baselines;
+- improves prediction-failure detection under unseen shifts over MSP, entropy, energy,
+  representation-space confidence, and capacity-matched risk baselines;
 - retains the improvement across at least three random seeds;
-- offers conditional VLM inference with a measured security-coverage-latency benefit.
+- offers conditional VLM inference with a measured security-coverage-compute benefit.
 
 An improvement on one in-domain split is insufficient.
 

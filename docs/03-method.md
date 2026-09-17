@@ -101,8 +101,18 @@ where $H$ denotes entropy, $E$ optional energy scores, and $q(x)$ image-quality
 features. A small regularized calibrator estimates failure risk $r(x)$. Target-domain
 samples never train, select, or calibrate this model.
 
+Correctness labels are defined under one preregistered source-selected reference
+policy, not at EER. The main calibrator estimates
+$r_{err}(x)=P(\hat y\neq y\mid z(x),\tau_{ref})$. Transfer to other APCER policies is
+an ablation; policy-specific calibrators are optional and must be trained source-only.
+Failure risk is not interpreted as a generic OOD or unknownness score.
+
 Raw and independently calibrated JS disagreement remain mandatory baselines. The learned calibrator is useful
 only if it generalizes beyond MSP, entropy, energy, and ordinary learned score fusion.
+Because JS and entropy are deterministic transforms of branch probabilities, compare
+capacity-matched logistic and MLP baselines using probabilities alone, probabilities
+plus JS, and the same image-quality features. Also compare DINO embedding Mahalanobis
+confidence as a representation-space baseline.
 
 ## Decision and conditional inference
 
@@ -121,6 +131,9 @@ The primary deployment objective is maximum coverage subject to a source-selecte
 security constraint such as $APCER\leq\alpha$, with
 $\alpha\in\{0.5\%,1\%,5\%\}$. Report achieved target APCER rather than implying that
 an unseen target is guaranteed to satisfy the source constraint.
+Compare pooled-source and worst-source constrained threshold selection. Target ROC
+operating points are reported only as post-hoc diagnostics and are never described as
+deployable source-only policies.
 
 ## Optional evidence extension
 
