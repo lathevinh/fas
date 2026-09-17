@@ -15,14 +15,19 @@ Tasks:
   `configs/vlm_checkpoint_v1.yaml` artifacts before confirmatory evaluation. Record
   exact strings, classes, weights, text preprocessing, checkpoint/weights, tokenizer,
   resolution, interpolation, and normalization.
+- freeze core prompts before pilot labels. Among committed checkpoint/preprocessing
+  candidates under the pre-label latency ceiling, choose the one with lowest pilot
+  ACER for calibrated-average fusion at the source-selected operating threshold.
+  Candidates within 0.1 percentage point tie by lower median batch-1 latency, then
+  lexical configuration ID. Do not choose among metrics after pilot inspection.
 
 Exit criteria:
 
 - no subject/video leakage;
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
-- prompt/checkpoint artifacts are frozen after pilot selection and before the three
-  confirmatory MICO targets.
+- core prompts are frozen before pilot labels; the selected checkpoint/preprocessing
+  artifact is frozen after pilot selection and before confirmatory MICO targets.
 
 ## Stage 1: Complementarity kill experiment, weeks 3-5
 
@@ -50,6 +55,9 @@ source-supervised adaptation on one VLM encoder; it does not alone prove that te
 semantics causally produced any gain.
 Match source labels, subject/video splits, head capacity, augmentation budget, crop
 geometry, and calibration protocol across DINO and CLIP visual-head controls.
+The DINOv2-Reg + plain-DINOv2 strong control and heterogeneous pair use identical
+one-stage affine branch calibration, calibrated-average fusion, operating-point
+selection, denominators, and bootstrap units.
 
 Cache each branch independently so they never need to share GPU memory. Designate one
 MICO target in advance as the pilot/development target for pipeline debugging. It is
@@ -80,6 +88,10 @@ cross-foundation claim even when the broader selective ensemble remains useful.
 Report complementarity lift relative to each second branch's standalone correctness
 as a strength-adjusted diagnostic. Do not use it as a kill criterion: the subtraction
 can penalize a uniformly strong branch and does not identify a causal source of diversity.
+Also report normalized double fault
+$NDF=P(E_D=1,E_B=1)/(P(E_D=1)P(E_B=1))$ overall and attack-conditionally. It is a
+descriptive strength-normalized diagnostic, not a kill criterion, and must include
+uncertainty because it is unstable when either marginal error rate is small.
 
 Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
 bound requirement $LCB_{95\%}(FARR_g)>\gamma$, both chosen from source pseudo-shifts.
@@ -114,7 +126,7 @@ Then generate out-of-fold source records in two variants.
 
 ### Sample-OOF ablation
 
-1. split within each source domain using subject/video-safe partitions after removing $G$;
+1. split within each source domain using subject/video-safe partitions after removing $G_{domain}$;
 2. train/select both predictors using only the remainder;
 3. calibrate each branch independently and predict held-out samples;
 4. select fold-safe $\tau_{ref}^{(k)}$ on the allowed remainder and record correctness,
@@ -122,7 +134,7 @@ Then generate out-of-fold source records in two variants.
 
 ### Domain-OOF primary MICO protocol
 
-1. hold out one complete source capture domain after removing $G$;
+1. hold out one complete source capture domain after removing $G_{domain}$;
 2. train/select both predictors using only the remainder;
 3. fit one-stage monotone affine branch calibration on a disjoint, domain-balanced
   validation partition within the remainder;
@@ -131,11 +143,14 @@ Then generate out-of-fold source records in two variants.
 5. repeat all folds and concatenate records;
 6. train the preregistered fixed-regularization logistic failure-risk calibrator for
   calibrated-average $g_{ref}$;
-7. generate out-of-sample predictions on the permanent gate-calibration partition $G$,
+7. generate out-of-sample predictions on permanent gate-calibration $G_{domain}$,
    which was excluded from every prior fit and selection step;
-8. select the accept threshold on $G$ and do not refit any component afterward.
+8. select the accept threshold on $G_{domain}$ and do not refit any component afterward.
 
-Stratify $G$ by source domain, class, and attack family where possible; report its
+Use $G_{domain}$ in MICO and a separate known-attack-only $G_{attack}$ in SiW-M.
+Neither holdout selects routing thresholds or unrelated ablation policies.
+
+Stratify $G_{domain}$ by source domain, class, and attack family where possible; report its
 total, attack, error, and false-accept counts before claiming threshold stability.
 
 Run attack-OOF separately for SiW-M using held-out attack families. A domain-OOF-only
@@ -167,10 +182,16 @@ Report $\Delta_{dis}$ between capacity-matched models with and without the prima
 absolute-difference feature. If it adds no repeatable gain to a nonlinear model already
 receiving both probabilities and quality, reframe the method as cross-foundation
 selective failure prediction and remove algorithmic emphasis on disagreement.
-Also report quality-only $R_q$, single-branch $R_D/R_V$, dual-probability $R_{DV}$,
-and disagreement-augmented $R_{DVd}$. Define
+Freeze $R_q=[q]$, $R_D=[\widehat p_D,q]$, $R_V=[\widehat p_V,q]$,
+$R_{DV}=[\widehat p_D,\widehat p_V,q]$,
+$R_{DVd}=[\widehat p_D,\widehat p_V,d_{abs},q]$, and
+$R_{DVdm}=[\widehat p_D,\widehat p_V,d_{abs},m_F,q]$. Define
 $\Delta_{CF}^{AUPR}=AUPR(R_{DV})-\max(AUPR(R_D),AUPR(R_V))$ and
-$\Delta_{dis}^{AUPR}=AUPR(R_{DVd})-AUPR(R_{DV})$ as primary claim quantities.
+$\Delta_{dis}^{AUPR}=AUPR(R_{DVd})-AUPR(R_{DV})$ as scientific claim quantities,
+and $\Delta_{margin}^{AUPR}=AUPR(R_{DVdm})-AUPR(R_{DVd})$ as an operational gain.
+All use the same fixed-regularization logistic family and source lineage. Primary risk
+fitting uses equal pseudo-domain weighting with unweighted BCE inside each domain;
+class-weighted/focal ranking losses are labeled non-probabilistic ablations.
 
 Exit criteria:
 
@@ -188,7 +209,9 @@ Implement in this order:
 
 1. always-on DINO + VLM reference under fixed $g_{ref}$;
 2. fixed post-VLM fusion $g_{ref}$ followed by accept/abstain risk gating;
-3. spoof-only early-exit routing using a source-selected DINO operational margin;
+3. spoof-only early-exit routing using a DINO operational margin selected on separate
+  branch validation to minimize VLM invocation subject to preregistered source BPCER
+  or $BFNR_{end2end}$ increase $\le\beta$;
 4. symmetric and direct-live routing only as security-bounded ablations;
 5. optional semantic distillation after the upper bound is established.
 
@@ -222,6 +245,14 @@ Exit criteria:
 - run external mask transfer when licensing permits;
 - stratify results by sensor, illumination, attack instrument, and image quality;
 - inspect worst false accepts and false rejects.
+
+For each target and seed, train and score independently; never pool seed predictions
+unless deploying an ensemble. Report mean/standard deviation of seed-level metrics and
+subject/video bootstrap within each seed, with no $t$-test at $n=3$ and no best-seed
+selection. A confirmatory delta passes only when its three-target macro mean is
+positive, at least two of three target point estimates are positive, no target exceeds
+a preregistered harm tolerance, and at least two of three seeds have positive
+three-target macro deltas. Claims are limited to the evaluated confirmatory domains.
 
 ## Stage 5: Secondary representation ablations, weeks 15-16
 

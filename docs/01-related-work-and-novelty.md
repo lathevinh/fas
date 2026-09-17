@@ -53,8 +53,10 @@ The remaining defensible hypothesis is narrower:
   security, coverage, compute, and latency trade-offs.
 
 Cross-model disagreement is standard ensemble machinery and is not novel by itself.
-The candidate contribution is its source-only calibration and operational validation
-under simultaneous PAD domain and attack shift.
+The candidate contribution is source-only cross-fitted failure-risk calibration from
+independently trained heterogeneous foundation predictors, with operational validation
+under simultaneous PAD domain and attack shift. Explicit disagreement belongs in the
+title/contribution only if its preregistered incremental test passes.
 
 ## Claims that require evidence
 

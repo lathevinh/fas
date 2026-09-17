@@ -107,10 +107,14 @@ holds out one attack family and is primary for SiW-M downstream-unseen evaluatio
 A mixed domain/attack gate is secondary. Predictor fitting and branch calibration use
 only the allowed remainder with subject/video-safe disjoint partitions.
 
-The held-out fold provides features and error labels for the reliability model:
+The held-out fold provides separate scientific-attribution and operational features:
 
 $$
-z_{primary}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),m_F(x),q(x)],
+z_{science}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),q(x)],
+$$
+
+$$
+z_{oper}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),m_F(x),q(x)].
 $$
 
 where $d_{abs}(x)=|\widehat p_D-\widehat p_V|$ is fixed before experiments and
@@ -140,9 +144,12 @@ $$
 
 At target inference use source-only $\tau_{ref}^{final}$ and
 $m_F^{target}=p_F-\tau_{ref}^{final}$. This exposes policy-relative confidence despite
-fold-specific thresholds. The final post-VLM rule is not selected at EER.
+fold-specific thresholds. Because $m_F$ algebraically reveals the fold threshold when
+paired with both probabilities, it is excluded from scientific $\Delta_{CF}$ and
+$\Delta_{dis}$ models and contributes only to operational $\Delta_{margin}$. The final
+post-VLM rule is not selected at EER.
 Learned fusion remains an ablation. The main calibrator estimates
-$r_{err}(x)=P(g_{ref}(x)\neq y\mid z_{primary}(x),\tau_{ref})$. Transfer to other APCER
+$r_{err}(x)=P(g_{ref}(x)\neq y\mid z_{oper}(x),\tau_{ref})$. Transfer to other APCER
 policies is an ablation; policy-specific calibrators are optional and must be trained
 source-only.
 Failure risk is not interpreted as a generic OOD or unknownness score.
@@ -150,12 +157,13 @@ Failure risk is not interpreted as a generic OOD or unknownness score.
 Every risk estimator is evaluated against the same labels
 $e(x)=\mathbf{1}[g_{ref}(x)\neq y]$. Complete DINO-only and dual-foundation selective
 systems are compared in a separate table because they change both prediction and risk.
-Reserve a subject/video-disjoint source-only gate-calibration partition $G$ before any
-fitting. Exclude $G$ from branch/head fitting, branch calibration, fusion selection,
-risk fitting, and preregistration statistics. Frozen base predictors produce genuinely
-out-of-sample features on $G$; select the gate threshold there and never refit either
-base models or risk gate with $G$. All compared methods use the same reduced source
-data. Fully cross-fitted thresholding is a future data-efficiency alternative.
+Reserve a subject/video-disjoint source-only gate-calibration partition $G_{domain}$
+before any fitting. Exclude it from branch/head fitting, branch calibration, fusion
+selection, risk fitting, and preregistration statistics. Frozen base predictors produce
+genuinely out-of-sample features there; select only the post-VLM gate threshold on it
+and never refit either base models or risk gate. All compared methods use the same
+reduced source data. Fully cross-fitted thresholding is a future data-efficiency
+alternative; attack-OOF uses its separate known-attack-only $G_{attack}$.
 
 Raw and independently calibrated disagreement remain mandatory baselines. Absolute
 probability difference is primary; JS, hard decision disagreement, and log-odds
@@ -169,6 +177,15 @@ The fixed quality vector is $q(x)=$ [blur, mean luminance, contrast, face-area r
 detector confidence]. Report risk with and without $q$. Compare sample-OOF and
 domain-OOF gates on identical final target predictions, and quantify OOF-to-full-source
 feature drift using mean/standard-deviation shifts and KS distance.
+
+All primary risk models use fixed-regularization logistic regression. The exact
+feature sets are $R_q=[q]$, $R_D=[\widehat p_D,q]$,
+$R_V=[\widehat p_V,q]$, $R_{DV}=[\widehat p_D,\widehat p_V,q]$,
+$R_{DVd}=[\widehat p_D,\widehat p_V,d_{abs},q]$, and
+$R_{DVdm}=[\widehat p_D,\widehat p_V,d_{abs},m_F,q]$.
+Risk fitting averages unweighted BCE equally across pseudo-domains while retaining
+natural error prevalence within each domain. Class-weighted/focal variants are ranking
+ablations called risk scores, not calibrated failure probabilities.
 
 ## Decision and conditional inference
 

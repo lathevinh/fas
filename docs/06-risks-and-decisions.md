@@ -91,9 +91,19 @@ A gate trained on in-sample branch predictions can learn unrealistically clean e
 patterns, while a gate tuned on the target invalidates domain-generalization claims.
 
 Mitigation: generate risk-model training records only through held-out source-domain
-or held-out attack-family folds. Permanently exclude gate-calibration partition $G$
-from every base/risk fit and selection step, select the final threshold on genuinely
-out-of-sample predictions from $G$, and never refit with $G$.
+or held-out attack-family folds. Permanently exclude $G_{domain}$ or $G_{attack}$ from
+every base/risk fit, select only the corresponding final gate threshold on genuinely
+out-of-sample predictions, and never refit with either holdout. Select spoof-only
+routing on a separate validation partition.
+
+### Fold-threshold reconstruction
+
+The tuple $(\widehat p_D,\widehat p_V,m_F)$ algebraically reveals each OOF fold's
+$\tau_{ref}^{(k)}$ and may act as a fold/domain identifier.
+
+Mitigation: exclude $m_F$ from scientific $\Delta_{CF}$ and $\Delta_{dis}$ models;
+measure it only as the separate operational $\Delta_{margin}$ contribution and retain
+the OOF domain-identifiability audit.
 
 ### Apparent diversity from a weak branch
 

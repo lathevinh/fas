@@ -45,8 +45,8 @@ Domain-OOF and attack-OOF are separate protocols. Target data never train, selec
 calibrate either model.
 
 **H2:** On the preregistered primary metric, prediction-error AUPR,
-cross-foundation probabilities plus fixed quality and policy-margin features
-outperform quality-only and either single-branch learned-risk baseline
+cross-foundation probabilities plus fixed quality features outperform quality-only
+and either single-branch learned-risk baseline
 ($\Delta_{CF}^{AUPR}>0$), while explicit absolute-difference disagreement adds
 capacity-matched incremental value ($\Delta_{dis}^{AUPR}>0$).
 
@@ -58,6 +58,8 @@ framing.
 Explicit-disagreement wording requires positive $\Delta_{dis}$ from the fixed
 absolute-difference feature over capacity-matched models receiving both branch
 probabilities and the same quality features.
+The signed policy margin is excluded from both scientific claim quantities; its
+deployment contribution is measured separately as $\Delta_{margin}^{AUPR}$.
 
 ## RQ3: Selective deployment
 

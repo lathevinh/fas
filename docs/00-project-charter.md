@@ -25,7 +25,7 @@ committed pilot domain may influence global candidate selection but is excluded 
 confirmatory claims:
 
 1. intentionally independent DINOv2-Reg and VLM predictors;
-2. cross-fitted disagreement calibration without target-domain labels;
+2. source-only cross-fitted failure-risk calibration from heterogeneous predictors;
 3. selective and conditional inference evaluated as a security-coverage-compute trade-off,
    with latency distributions reported explicitly.
 

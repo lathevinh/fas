@@ -57,9 +57,10 @@ auxiliary family prompt. The immutable core PAD bank and its normalization never
 change. Any allowed attack-specific open-vocabulary prompt produces a separate
 auxiliary similarity score rather than changing the core PAD probability.
 
-Compare a preregistered fixed semantic prompt bank with source-tuned template/weight
-selection. The fixed bank is primary for unseen-attack transfer; source tuning is
-reported separately to expose any known-source accuracy versus unseen-transfer trade-off.
+Freeze the exact core prompt bank before pilot labels. The pilot may select only VLM
+checkpoint, resolution, and preprocessing from a committed finite set. Source-tuned
+template/weight selection is a labeled ablation and cannot replace the primary fixed
+bank in confirmatory claims.
 
 ## Unified metadata manifest
 
@@ -172,8 +173,8 @@ not require cue-level pseudo-labels.
 
 ### Source data lineage
 
-Assign every source subject/video to one role before feature extraction. The permanent
-gate-calibration partition $G$ is excluded from every fitted component and is never
+Assign every source subject/video to one role before feature extraction. Permanent
+gate-calibration partitions are excluded from every fitted component and are never
 returned to final training.
 
 | Partition | Branch/head fit | Branch calibration | OOF risk records | Risk fit | Gate threshold | Preregistration |
@@ -181,17 +182,23 @@ returned to final training.
 | Source train | Yes | No | Fold-dependent | No | No | No |
 | Branch calibration | No | Yes, domain-balanced | Fold-dependent | No | No | No |
 | OOF pseudo-shift | No for held-out fold | Fold-specific only | Yes | Yes | No | Yes |
-| Gate calibration $G$ | No | No | No | No | Yes | No |
+| Gate calibration $G_{domain}$ | No | No | No | No | Post-VLM gate only | No |
+| Attack gate calibration $G_{attack}$ | No | No | No | No | Attack gate only | No |
+| Routing validation | No | No | No | No | Spoof-only routing only | No |
 | Target | No | No | No | No | No | Evaluation only |
 
-Prompt/checkpoint selection and fusion selection use designated source-only validation
-inside the allowed training remainder; they never use $G$, OOF held-out samples for
+Checkpoint/preprocessing and fusion selection use designated source-only validation
+inside the allowed training remainder; they never use a gate holdout, OOF samples for
 that fold, or target data. All system controls use the same reduced source lineage.
 
-Stratify $G$ by source domain, class, and attack family where possible. Publish
+Stratify $G_{domain}$ by source domain, class, and attack family where possible. Publish
 $N_G$, attack count, prediction-error count, and false-accept count. If these counts
 cannot support the desired gate operating point, label it unstable rather than
 reporting a precise selective threshold.
+
+Use $G_{domain}$ only for the primary post-VLM accept/abstain threshold. Select the
+spoof-only routing threshold on a separate branch-validation partition using a fully
+preregistered rule. No holdout is reused to compare alternative threshold policies.
 
 | Dataset role | Checkpoint/config selection | Threshold/calibration | Confirmatory macro |
 |---|---|---|---:|
@@ -204,6 +211,10 @@ and analysis code. After pilot but before confirmatory labels, commit the select
 checkpoint, exact prompts/preprocessing, continuation thresholds, primary operating
 point and metrics, and confirmatory target list. The commit SHA is the preregistration
 reference.
+
+The pilot is excluded as a confirmatory target but remains an allowed labeled source
+domain when another dataset is the confirmatory MICO target. This is standard MICO
+training, not leakage into that confirmatory target.
 
 ### MICO cross-domain
 
@@ -254,6 +265,11 @@ pseudo-held-out families inside the known set $\{A_1,\ldots,A_K\}$. The final
 $A^\star$ never fits branches, calibration, prompts, risk, or thresholds. Do not claim
 attack-shift calibration from a gate trained only on domain-OOF records. Mixed
 domain-plus-attack OOF is a secondary experiment.
+
+Carve subject/video-safe $G_{attack}$ from known attacks before pseudo-attack OOF.
+Exclude it from every branch, calibration, OOF, and risk fit; use it only to select the
+attack-OOF gate threshold before evaluating $A^\star$. $G_{domain}$ and $G_{attack}$
+are separate constructions.
 
 ### External mask transfer
 
