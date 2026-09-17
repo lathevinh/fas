@@ -43,15 +43,26 @@ supervised backbones, LoRA, and larger VLMs are later ablations, not prerequisit
 
 ## Stage 2: Source-only risk calibration, weeks 6-8
 
-Generate out-of-fold source records:
+Calibrate each branch independently on source validation data before computing JS.
+Then generate out-of-fold source records in two variants.
 
-1. hold out one source domain or attack family;
+### Sample-OOF ablation
+
+1. split within each source domain using subject/video-safe partitions;
 2. train/select both predictors using only the remainder;
-3. predict the held-out fold and record correctness, probabilities, entropy, energy,
+3. calibrate each branch independently and predict held-out samples;
+4. record correctness, probabilities, entropy, energy,
    image quality, and cross-model divergence;
-4. repeat all folds and concatenate records;
-5. train a small regularized failure-risk calibrator;
-6. freeze it before target evaluation.
+
+### Domain-OOF primary protocol
+
+1. hold out one complete source domain or attack family;
+2. train/select both predictors using only the remainder;
+3. calibrate each branch independently on validation data within the remainder;
+4. predict the held-out source fold and record the same features;
+5. repeat all folds and concatenate records;
+6. train a small regularized failure-risk calibrator;
+7. freeze it before target evaluation.
 
 Compare raw JS disagreement and the calibrator against MSP, entropy, energy, branch
 ensembles, and ordinary learned fusion.
@@ -77,8 +88,10 @@ Do not add the next component unless the current comparison is understood.
 Exit criteria:
 
 - calibrated disagreement beats learned fusion and entropy/MSP/energy;
-- conditional inference approaches always-on security/selective performance;
+- conditional inference approaches always-on security/selective performance at fixed
+  APCER, fixed BPCER, and matched coverage;
 - VLM invocation rate or latency decreases materially at matched operating points;
+- true-unknown and open-vocabulary-unknown results are reported separately;
 - shared wrong predictions are explicitly analyzed.
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
@@ -123,9 +136,10 @@ separate go/no-go decision and are not assumed in the first paper.
 | C | Yes | Yes | Fixed average | No | No |
 | D | Yes | Yes | Learned score fusion | No | No |
 | E | Yes | Yes | Raw JS disagreement | No | Yes |
-| F | Yes | Yes | Source-only risk calibrator | No | Yes |
-| G | Yes | On demand | Source-only risk calibrator | Yes | Yes |
-| H | Yes | Distilled | Source-only risk calibrator | No | Yes |
+| F | Yes | Yes | Calibrated JS, sample-OOF | No | Yes |
+| G | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
+| H | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
+| I | Yes | Distilled | Domain-OOF calibrator | No | Yes |
 
 ## Initial compute plan
 

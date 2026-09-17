@@ -39,6 +39,14 @@ were equal.
 Use the official SiW-M split/protocol. The held-out attack family cannot participate
 in branch tuning, prompt selection, reliability calibration, or threshold selection.
 
+Report two distinct unknown settings:
+
+- **true unknown PAI:** an attack instrument or family absent from training;
+- **open-vocabulary unknown:** an attack whose semantic description is absent from the
+  prompt bank, even if a related family was seen during training.
+
+Do not pool these into one unknown score because they test different abilities.
+
 ## Unified metadata manifest
 
 Each sample should have a non-sensitive metadata row:
@@ -144,6 +152,9 @@ holding out one source dataset at a time. Predictions on a held-out source must 
 from branches that did not train on that source. Fit the final reliability calibrator
 only after concatenating these out-of-fold records.
 
+Compare this domain-OOF construction with sample-OOF records made inside each source
+domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the main claim.
+
 ### Leave-one-attack-out
 
 Use SiW-M official zero-shot protocols where obtainable. Exclude one attack type
@@ -162,5 +173,7 @@ frames from depth/IR and never use unavailable modalities.
 - ECE and NLL;
 - error/OOD AUROC and AUPR;
 - selective risk versus coverage;
+- selective risk at fixed APCER and fixed BPCER;
+- secure recall and VLM invocation rate at those fixed operating points;
 - bootstrap confidence intervals by subject/video;
 - mean and standard deviation over at least three seeds.
