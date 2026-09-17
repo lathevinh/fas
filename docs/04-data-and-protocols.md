@@ -188,6 +188,23 @@ Prompt/checkpoint selection and fusion selection use designated source-only vali
 inside the allowed training remainder; they never use $G$, OOF held-out samples for
 that fold, or target data. All system controls use the same reduced source lineage.
 
+Stratify $G$ by source domain, class, and attack family where possible. Publish
+$N_G$, attack count, prediction-error count, and false-accept count. If these counts
+cannot support the desired gate operating point, label it unstable rather than
+reporting a precise selective threshold.
+
+| Dataset role | Checkpoint/config selection | Threshold/calibration | Confirmatory macro |
+|---|---|---|---:|
+| Source domains | Source-only rules | Yes, assigned partitions only | N/A |
+| Preregistered pilot target | Within committed candidate set | No final threshold fitting | No |
+| Three confirmatory targets | Never | Never | Yes |
+
+Before pilot labels, commit candidate models, allowed preprocessing, pilot identity,
+and analysis code. After pilot but before confirmatory labels, commit the selected
+checkpoint, exact prompts/preprocessing, continuation thresholds, primary operating
+point and metrics, and confirmatory target list. The commit SHA is the preregistration
+reference.
+
 ### MICO cross-domain
 
 For OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD, train on three and test on
@@ -218,6 +235,11 @@ probability calibration disjoint from the held-out OOF evaluation domain.
 Compare this domain-OOF construction with sample-OOF records made inside each source
 domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the MICO claim.
 
+The strict selective-method track trains every internal baseline on the same reduced
+$Source\setminus G$ data. A separate literature-compatible branch-only track may use
+the conventional full source training set, but it cannot be used to attribute
+differences to architecture or risk estimation.
+
 Leave calibrated probabilities and absolute disagreement unstandardized. Normalize
 only quality features using source-fitting statistics that are frozen and reused at
 target time. Audit fold/domain identifiability and report feature-removal sensitivity
@@ -227,9 +249,11 @@ if domain prediction remains strong.
 
 Use SiW-M official zero-shot protocols where obtainable. Exclude one attack type
 from training and evaluate it as unknown.
-Construct attack-OOF risk records by holding out attack families according to the
-official known/held-out split. Do not claim attack-shift calibration from a gate trained
-only on domain-OOF records. Mixed domain-plus-attack OOF is a secondary experiment.
+For final unseen attack $A^\star$, construct attack-OOF records only by rotating
+pseudo-held-out families inside the known set $\{A_1,\ldots,A_K\}$. The final
+$A^\star$ never fits branches, calibration, prompts, risk, or thresholds. Do not claim
+attack-shift calibration from a gate trained only on domain-OOF records. Mixed
+domain-plus-attack OOF is a secondary experiment.
 
 ### External mask transfer
 

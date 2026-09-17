@@ -18,9 +18,11 @@ d_{abs}(x)=|\widehat p_D-\widehat p_V|.
 $$
 
 Monotone affine logistic calibration is the one and only $\operatorname{Cal}_D$ and
-$\operatorname{Cal}_V$; temperature-only scaling and JS disagreement are ablations. Calibration uses
-equal domain weight in its source loss so a large source cannot dominate. No second
-calibrator is stacked afterward, and all parameters freeze before target evaluation.
+$\operatorname{Cal}_V$; temperature-only scaling and JS disagreement are ablations.
+Calibration loss is class-balanced within each source domain and then averaged equally
+across domains. The output is a standardized source-calibrated PAD score, not a
+real-world deployment posterior. No second calibrator is stacked afterward, and all
+parameters freeze before target evaluation.
 
 ## DINO visual predictor
 
@@ -108,11 +110,13 @@ only the allowed remainder with subject/video-safe disjoint partitions.
 The held-out fold provides features and error labels for the reliability model:
 
 $$
-z_{primary}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),q(x)],
+z_{primary}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),m_F(x),q(x)],
 $$
 
 where $d_{abs}(x)=|\widehat p_D-\widehat p_V|$ is fixed before experiments and
-$q(x)$ is a fixed image-quality vector. Entropy, branch
+$m_F(x)=p_F(x)-\tau_{ref}$ is the signed operational margin for
+$p_F=(\widehat p_D+\widehat p_V)/2$. The vector $q(x)$ contains fixed image-quality
+features. Entropy, branch
 energy, hard/log-odds disagreement, and Mahalanobis are ablations or baselines rather
 than primary features. Version 1 preregisters logistic regression with fixed regularization as the
 primary failure-risk calibrator; nested pseudo-domain selection is a secondary
@@ -126,8 +130,17 @@ classifier audits whether risk features encode OOF fold identity. High domain
 predictability triggers feature-removal and normalization ablations, but is not alone
 proof of leakage because genuine shift signals may also predict domain.
 
-Correctness labels are defined for the deterministic post-VLM rule
-$g_{ref}(x)=\mathbf{1}[(\widehat p_D+\widehat p_V)/2\ge\tau_{ref}]$, not at EER.
+For OOF fold $k$, select $\tau_{ref}^{(k)}$ using only that fold's allowed remainder
+and define policy-relative labels and margins:
+
+$$
+g_{ref}^{(k)}(x)=\mathbf{1}[p_F^{(k)}(x)\ge\tau_{ref}^{(k)}],\qquad
+m_F^{(k)}(x)=p_F^{(k)}(x)-\tau_{ref}^{(k)}.
+$$
+
+At target inference use source-only $\tau_{ref}^{final}$ and
+$m_F^{target}=p_F-\tau_{ref}^{final}$. This exposes policy-relative confidence despite
+fold-specific thresholds. The final post-VLM rule is not selected at EER.
 Learned fusion remains an ablation. The main calibrator estimates
 $r_{err}(x)=P(g_{ref}(x)\neq y\mid z_{primary}(x),\tau_{ref})$. Transfer to other APCER
 policies is an ablation; policy-specific calibrators are optional and must be trained
@@ -161,14 +174,17 @@ feature drift using mean/standard-deviation shifts and KS distance.
 
 There are two separate gates:
 
-1. **Routing gate:** DINO confidence and image quality decide whether to accept a
-   high-confidence DINO result or invoke the VLM.
+1. **Routing gate:** DINO confidence decides whether to emit a confident spoof as
+   terminal non-accept or invoke the VLM for every other detector-successful sample.
 2. **Selective gate:** after VLM invocation, the fixed $g_{ref}$ produces the PAD
    decision and calibrated risk chooses only `accept` or `abstain`.
 
-The scalar risk score does not choose among DINO, VLM, and fusion. Security-asymmetric
-routing, where confident spoof predictions can exit earlier and live predictions use
-a stricter threshold, is compared with symmetric confidence routing.
+The scalar risk score does not choose among DINO, VLM, and fusion. The primary routing
+policy is spoof-only early exit: DINO samples beyond a source-selected confident-spoof
+margin become terminal non-accepts; every other detector-successful sample invokes the
+VLM. Select the routing threshold on source-only validation under the same finite-sample
+error accounting. Direct-live exit and symmetric routing are ablations and cannot use
+confirmatory data.
 
 This distinction avoids claiming that disagreement can route a request before the VLM
 has run. Always-on dual inference is the compute-unconstrained reference under fixed

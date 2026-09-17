@@ -58,13 +58,17 @@ configuration before evaluating the remaining three confirmatory targets, then r
 the joint correctness table, double-fault, oracle gain, error correlation, and
 attack/domain subgroups separately for pilot and confirmatory results.
 
-Before opening any MICO target labels, use domain-OOF source pseudo-shifts to lock
+Before opening any confirmatory MICO target labels, use domain-OOF source pseudo-shifts to lock
 numeric continuation thresholds for recoverable error fraction
 $REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and potential false-accept rescue
 $FARR_{VLM}=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Also report
 realized $REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$ and
 $FARR_g=P(g_{ref}\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
 preregistration with the run configuration; target results cannot redefine it.
+
+Interpret `target labels` here as confirmatory-target labels after the pilot is
+preregistered. The pilot may select only within the previously committed candidate set
+and is permanently excluded from confirmatory statistics.
 
 Also preregister the heterogeneity advantage
 $\Delta_{hetero}=N_{FA}^{-1}\sum_i(r_i^V-r_i^H)$ on the same DINO false accepts,
@@ -73,8 +77,12 @@ small. Report both potential-branch and realized-fusion paired versions. If the 
 DINOv2 same-family comparison is not positive on confirmatory targets, weaken the
 cross-foundation claim even when the broader selective ensemble remains useful.
 
+Report complementarity lift relative to each second branch's standalone correctness
+as a strength-adjusted diagnostic. Do not use it as a kill criterion: the subtraction
+can penalize a uniformly strong branch and does not identify a causal source of diversity.
+
 Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
-bound requirement $LCB_{95\%}(FARR)>\gamma$, both chosen from source pseudo-shifts.
+bound requirement $LCB_{95\%}(FARR_g)>\gamma$, both chosen from source pseudo-shifts.
 If low-APCER pseudo-shifts yield too few false accepts, estimate complementarity at a
 preregistered higher diagnostic APCER while retaining low-APCER points for deployment.
 
@@ -109,8 +117,8 @@ Then generate out-of-fold source records in two variants.
 1. split within each source domain using subject/video-safe partitions after removing $G$;
 2. train/select both predictors using only the remainder;
 3. calibrate each branch independently and predict held-out samples;
-4. record correctness, probabilities, entropy, energy,
-   image quality, and cross-model divergence;
+4. select fold-safe $\tau_{ref}^{(k)}$ on the allowed remainder and record correctness,
+   probabilities, operational margin $m_F^{(k)}$, image quality, and disagreement;
 
 ### Domain-OOF primary MICO protocol
 
@@ -118,13 +126,17 @@ Then generate out-of-fold source records in two variants.
 2. train/select both predictors using only the remainder;
 3. fit one-stage monotone affine branch calibration on a disjoint, domain-balanced
   validation partition within the remainder;
-4. predict the held-out source fold and record the same features;
+4. select $\tau_{ref}^{(k)}$ only on the allowed remainder, then predict the held-out
+  fold with margin $m_F^{(k)}=p_F^{(k)}-\tau_{ref}^{(k)}$;
 5. repeat all folds and concatenate records;
 6. train the preregistered fixed-regularization logistic failure-risk calibrator for
   calibrated-average $g_{ref}$;
 7. generate out-of-sample predictions on the permanent gate-calibration partition $G$,
    which was excluded from every prior fit and selection step;
 8. select the accept threshold on $G$ and do not refit any component afterward.
+
+Stratify $G$ by source domain, class, and attack family where possible; report its
+total, attack, error, and false-accept counts before claiming threshold stability.
 
 Run attack-OOF separately for SiW-M using held-out attack families. A domain-OOF-only
 gate cannot support an attack-shift calibration claim; mixed OOF is secondary.
@@ -136,6 +148,8 @@ three source domains provide a weak meta-validation sample.
 
 Compare raw/calibrated JS, absolute difference, hard disagreement, and log-odds
 difference against fused MSP/entropy and learned risk on fixed $g_{ref}$ predictions.
+Include $-|p_F-\tau_{ref}|$ as the primary simple operational-margin risk baseline;
+branch-specific operational margins are secondary.
 Add capacity-matched LogReg/MLP probability baselines with and without each explicit
 disagreement feature and the same fixed image-quality vector. DINO embedding
 Mahalanobis confidence is a strong simple
@@ -155,8 +169,8 @@ receiving both probabilities and quality, reframe the method as cross-foundation
 selective failure prediction and remove algorithmic emphasis on disagreement.
 Also report quality-only $R_q$, single-branch $R_D/R_V$, dual-probability $R_{DV}$,
 and disagreement-augmented $R_{DVd}$. Define
-$\Delta_{CF}=Perf(R_{DV})-\max(Perf(R_D),Perf(R_V))$ and
-$\Delta_{dis}=Perf(R_{DVd})-Perf(R_{DV})$.
+$\Delta_{CF}^{AUPR}=AUPR(R_{DV})-\max(AUPR(R_D),AUPR(R_V))$ and
+$\Delta_{dis}^{AUPR}=AUPR(R_{DVd})-AUPR(R_{DV})$ as primary claim quantities.
 
 Exit criteria:
 
@@ -174,8 +188,8 @@ Implement in this order:
 
 1. always-on DINO + VLM reference under fixed $g_{ref}$;
 2. fixed post-VLM fusion $g_{ref}$ followed by accept/abstain risk gating;
-3. symmetric DINO-confidence routing;
-4. security-asymmetric routing with a stricter direct-live threshold;
+3. spoof-only early-exit routing using a source-selected DINO operational margin;
+4. symmetric and direct-live routing only as security-bounded ablations;
 5. optional semantic distillation after the upper bound is established.
 
 Do not add the next component unless the current comparison is understood.
@@ -194,11 +208,16 @@ Exit criteria:
 - downstream-unseen and open-vocabulary zero-shot results are reported separately;
 - attack/bona-fide coverage, covered errors, and end-to-end false acceptance use
   explicit denominators under the $K=1$ transaction policy;
+- direct-DINO and VLM-invoked routes separately report transaction count, false
+  accepts, bona-fide non-accepts, detector failures, and abstentions before end-to-end
+  totals over the original denominator;
 - shared wrong predictions are explicitly analyzed.
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
 
-- complete four-target MICO;
+- compute the primary confirmatory macro over the three untouched MICO targets;
+- report all four MICO folds descriptively with the pilot labeled development-only and
+  excluded from confirmatory inference;
 - run SiW-M leave-one-attack-out;
 - run external mask transfer when licensing permits;
 - stratify results by sensor, illumination, attack instrument, and image quality;

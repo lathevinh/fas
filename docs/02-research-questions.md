@@ -25,8 +25,9 @@ source-preregistered continuation criteria, errors are nearly identical, or
 class-conditional oracle gain is negligible. A large $P_{cw}+P_{wc}$ alone is
 insufficient when both predictors are weak.
 
-The cross-foundation-specific claim additionally requires positive heterogeneity
-advantage over the shared-encoder head-diversity control on confirmatory targets.
+The cross-foundation-specific claim additionally requires positive paired
+heterogeneity advantage over frozen DINOv2-Reg plus plain DINOv2 on confirmatory
+targets. Shared-encoder head diversity is only a sanity control.
 
 Required analyses include error correlation, double-fault, oracle gain, attack/domain
 stratification, feasible fusion gain, a shared-encoder DINO head-diversity control,
@@ -43,10 +44,11 @@ probabilities?
 Domain-OOF and attack-OOF are separate protocols. Target data never train, select, or
 calibrate either model.
 
-**H2:** Cross-foundation probabilities plus fixed quality features outperform
-quality-only and either single-branch learned-risk baseline ($\Delta_{CF}>0$), while
-the explicit absolute-difference feature adds capacity-matched incremental value
-($\Delta_{dis}>0$).
+**H2:** On the preregistered primary metric, prediction-error AUPR,
+cross-foundation probabilities plus fixed quality and policy-margin features
+outperform quality-only and either single-branch learned-risk baseline
+($\Delta_{CF}^{AUPR}>0$), while explicit absolute-difference disagreement adds
+capacity-matched incremental value ($\Delta_{dis}^{AUPR}>0$).
 
 **Falsification:** $\Delta_{CF}$ is not repeatably positive, the risk model requires
 target-domain tuning, or failure detection collapses on shared errors. If only

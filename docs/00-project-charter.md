@@ -19,8 +19,10 @@ This title is conditional. If explicit disagreement adds no capacity-matched gai
 use `Cross-Foundation Selective Failure Prediction`; if heterogeneous rescue does not
 beat same-family diversity, reframe as a selective-ensemble PAD study.
 
-The contribution must be the tested source-only reliability mechanism, not the
-choice of two pretrained backbones or disagreement by itself:
+The contribution must be the tested confirmatory-target-source-only reliability
+mechanism, not the choice of two pretrained backbones or disagreement by itself. One
+committed pilot domain may influence global candidate selection but is excluded from
+confirmatory claims:
 
 1. intentionally independent DINOv2-Reg and VLM predictors;
 2. cross-fitted disagreement calibration without target-domain labels;
@@ -43,7 +45,8 @@ of the minimum viable paper.
 The approach is worth a model-centric paper only if it:
 
 - demonstrates source-preregistered DINO-error and false-accept rescue plus class-conditional oracle gain;
-- exceeds a shared-encoder DINO head-diversity control in security-useful rescue;
+- exceeds the strong frozen DINOv2-Reg plus plain-DINOv2 same-family control in
+    paired security-useful rescue;
 - demonstrates incremental value from explicit disagreement over capacity-matched
     probability-only risk models, or weakens the title as preregistered;
 - beats DINOv2-Reg, VLM uncertainty, and learned score fusion on multiple unseen domains;
@@ -58,7 +61,9 @@ An improvement on one in-domain split is insufficient.
 
 - Input at inference is exactly one RGB image.
 - Video datasets may supply independent frames, but no temporal feature is used.
-- Target-domain labels cannot select checkpoints, prompts, thresholds, or hyperparameters.
+- Confirmatory-target labels cannot select checkpoints, prompts, thresholds, or
+    hyperparameters. One preregistered pilot/development domain may select within a
+    committed candidate set and is permanently excluded from confirmatory inference.
 - Dataset licenses and biometric-data restrictions take precedence over convenience.
 - Q3 publication is a target, not a guarantee; venue quartiles change by year/category.
 
