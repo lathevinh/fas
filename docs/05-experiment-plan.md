@@ -22,15 +22,18 @@ Exit criteria:
 Train under identical sampling:
 
 1. DINOv2-Reg with a frozen backbone and trained PAD head;
-2. frozen CLIP/SigLIP with source-selected prompt ensemble and temperature;
+2. frozen CLIP/SigLIP with a preregistered fixed prompt bank; source-tuned prompts are
+  a transfer-sensitivity ablation;
 3. raw score average as a diagnostic;
 4. calibrated score average as the principal simple-fusion baseline;
 5. regularized learned score fusion using calibrated source scores.
 
-Cache each branch independently so they never need to share GPU memory. Run one
-MICO target first, selected before observing results, then construct the joint
-correctness table and report $P_{cc},P_{cw},P_{wc},P_{ww}$, double-fault, oracle gain,
-error correlation, and attack/domain subgroups.
+Cache each branch independently so they never need to share GPU memory. Designate one
+MICO target in advance as the pilot/development target for pipeline debugging. It is
+not confirmatory evidence after inspection-driven changes. Freeze the Stage 1
+configuration before evaluating the remaining three confirmatory targets, then report
+the joint correctness table, double-fault, oracle gain, error correlation, and
+attack/domain subgroups separately for pilot and confirmatory results.
 
 Before opening any MICO target labels, use domain-OOF source pseudo-shifts to lock
 numeric continuation thresholds for recoverable error fraction
@@ -38,6 +41,11 @@ $REF=P(D\text{ wrong},V\text{ correct})/P(D\text{ wrong})$ and false-accept resc
 rate $FARR=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
 preregistration with the run configuration. Target results may test these criteria but
 may not redefine them.
+
+Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
+bound requirement $LCB_{95\%}(FARR)>\gamma$, both chosen from source pseudo-shifts.
+If low-APCER pseudo-shifts yield too few false accepts, estimate complementarity at a
+preregistered higher diagnostic APCER while retaining low-APCER points for deployment.
 
 Define oracle gain on thresholded decisions using balanced accuracy/error and at
 source-selected biometric operating points. Do not report an `oracle AUC` unless a
@@ -77,8 +85,13 @@ Then generate out-of-fold source records in two variants.
 3. calibrate each branch independently on a disjoint validation partition within the remainder;
 4. predict the held-out source fold and record the same features;
 5. repeat all folds and concatenate records;
-6. train a small regularized failure-risk calibrator;
+6. train the preregistered fixed-regularization logistic failure-risk calibrator for
+  the fixed source-selected fusion rule $g_{ref}$;
 7. freeze it before target evaluation.
+
+Normalize fold features with source-side statistics and audit OOF domain
+identifiability. Nested pseudo-domain hyperparameter selection is secondary because
+three source domains provide a weak meta-validation sample.
 
 Compare raw and calibrated JS disagreement and the calibrator against MSP, entropy,
 energy, raw averaging, calibrated averaging, and learned fusion on calibrated scores.
@@ -89,8 +102,9 @@ confidence-aware FAS method when its implementation and protocol are available.
 
 Exit criteria:
 
-- target prediction-error AUROC and AUPR improve consistently over single-model uncertainty;
-- selective risk improves at matched coverage;
+- prediction-error AUPR, the primary failure-detection endpoint, improves consistently
+  over single-model uncertainty;
+- excess-AURC, the primary selective endpoint, improves at matched class coverage;
 - no target sample or statistic enters calibration.
 
 ## Stage 3: Selective and conditional inference, weeks 9-11
@@ -98,9 +112,9 @@ Exit criteria:
 Implement in this order:
 
 1. always-on DINO + VLM upper bound;
-2. disagreement-aware accept/retry policy;
-3. DINO-confidence routing that calls the VLM only for uncertain samples;
-4. post-VLM selective fusion or retry;
+2. fixed post-VLM fusion $g_{ref}$ followed by accept/abstain risk gating;
+3. symmetric DINO-confidence routing;
+4. security-asymmetric routing with a stricter direct-live threshold;
 5. optional semantic distillation after the upper bound is established.
 
 Do not add the next component unless the current comparison is understood.
@@ -114,6 +128,8 @@ Exit criteria:
 - mean/P50/P95 latency exposes the sequential hard-case penalty against parallel
   always-on inference;
 - downstream-unseen and open-vocabulary zero-shot results are reported separately;
+- attack/bona-fide coverage, covered errors, and end-to-end false acceptance use
+  explicit denominators under the $K=1$ transaction policy;
 - shared wrong predictions are explicitly analyzed.
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
@@ -151,7 +167,7 @@ separate go/no-go decision and are not assumed in the first paper.
 
 ## Core ablation matrix
 
-| ID | DINO | VLM | Fusion/risk method | Conditional VLM | Retry |
+| ID | DINO | VLM | Fusion/risk method | Conditional VLM | Abstain |
 |---|---:|---:|---|---:|---:|
 | A | Yes | No | DINO uncertainty | No | Optional |
 | B | No | Yes | VLM uncertainty | No | Optional |

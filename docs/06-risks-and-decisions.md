@@ -82,7 +82,8 @@ ablations, sensor stratification, and shared-error analysis.
 Both branches may confidently accept the same attack, yielding low disagreement.
 
 Mitigation: report double-fault rate and shared-failure subgroups; compare disagreement
-with image quality and single-branch uncertainty. Do not claim complete unknown detection.
+with image quality and single-branch uncertainty. Do not interpret failure risk as a
+generic unknownness detector.
 
 ### Reliability-calibrator leakage
 
@@ -97,8 +98,26 @@ or held-out attack-family folds and freeze all thresholds before target inferenc
 Large $P_{cw}+P_{wc}$ may arise because both predictors are weak rather than usefully
 complementary.
 
-Mitigation: require standalone competence, two-sided recovery, low double-fault,
-oracle gain over the better branch, and achievable fusion gain.
+Mitigation: require standalone competence, source-preregistered DINO-error recovery
+and false-accept rescue with confidence bounds, low class-conditional double-fault,
+and achievable fusion gain. Symmetric recovery is descriptive, not mandatory.
+
+### Meta-selection leakage
+
+Risk-model flexibility can overfit concatenated OOF records even when branch
+predictions are honestly held out.
+
+Mitigation: preregister fixed-regularization logistic regression as primary. Treat
+nested pseudo-domain model selection as sensitivity analysis, normalize using
+source-side statistics, and audit OOF domain identifiability.
+
+### Selective-metric denominator gaming
+
+Covered-sample APCER can improve trivially when the gate abstains on most attacks.
+
+Mitigation: always report attack and bona-fide coverage, covered-sample error rates,
+and end-to-end false acceptance with explicit denominators under a fixed transaction
+retry policy.
 
 ### Semantic evidence is too coarse
 

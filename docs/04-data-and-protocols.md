@@ -57,6 +57,10 @@ primary PAD prompt bank and its normalization fixed. Any allowed attack-specific
 open-vocabulary prompt produces a separate auxiliary similarity score rather than
 changing the primary PAD softmax denominator.
 
+Compare a preregistered fixed semantic prompt bank with source-tuned template/weight
+selection. The fixed bank is primary for unseen-attack transfer; source tuning is
+reported separately to expose any known-source accuracy versus unseen-transfer trade-off.
+
 ## Unified metadata manifest
 
 Each sample should have a non-sensitive metadata row:
@@ -180,6 +184,10 @@ probability calibration disjoint from the held-out OOF evaluation domain.
 Compare this domain-OOF construction with sample-OOF records made inside each source
 domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the main claim.
 
+Normalize each OOF risk feature using statistics from its source-side fitting and
+calibration partition. Audit fold/domain identifiability from the normalized features;
+report feature-removal sensitivity if domain prediction remains strong.
+
 ### Leave-one-attack-out
 
 Use SiW-M official zero-shot protocols where obtainable. Exclude one attack type
@@ -198,8 +206,23 @@ frames from depth/IR and never use unavailable modalities.
 - ECE and NLL;
 - prediction-error AUROC and AUPR;
 - optional shift/OOD AUROC and AUPR under a separately defined shift target;
-- selective risk versus coverage;
-- selective risk at fixed APCER and fixed BPCER;
+- prediction-error AUPR as the primary failure-detection endpoint;
+- excess-AURC as the primary selective-classification endpoint, with AURC and
+  risk-coverage curves secondary;
+- attack coverage $Coverage_A=N_{attack,decided}/N_{attack,total}$ and bona-fide
+  coverage $Coverage_B=N_{bona,decided}/N_{bona,total}$;
+- covered-sample $APCER_{covered}=N_{attack,accepted\ live}/N_{attack,decided}$ and
+  the analogous $BPCER_{covered}$, always labeled with their changed denominators;
+- end-to-end false acceptance
+  $FA_{end2end}=N_{attack,accepted\ live}/N_{attack,total}$;
 - secure recall and VLM invocation rate at those fixed operating points;
 - bootstrap confidence intervals by subject/video;
-- mean and standard deviation over at least three seeds.
+- per-target results and macro aggregation across target domains;
+- mean and standard deviation over at least three seeds as optimization variance,
+  never as independent scientific replicates.
+
+The primary experimental retry policy permits one image attempt per authentication
+transaction ($K=1$), so `abstain` is recorded as a terminal non-accept outcome. Any
+multi-attempt analysis must specify rate limiting, maximum attempts, dependence across
+attempts, and transaction-level attack success; it is secondary to the single-image
+claim.

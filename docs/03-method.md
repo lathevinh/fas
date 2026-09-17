@@ -74,8 +74,9 @@ $P_{cc},P_{cw},P_{wc},P_{ww}$. Report:
 
 - each branch's standalone performance;
 - double-fault rate $P_{ww}$;
-- oracle accuracy $1-P_{ww}$ and oracle gain over the better branch;
-- two-sided recovery rates $P_{cw}$ and $P_{wc}$;
+- class-conditional oracle APCER, BPCER, and ACER;
+- DINO-error recoverable fraction and DINO false-accept rescue rate;
+- both directional recovery rates as descriptive diagnostics;
 - error correlation by domain and attack family.
 
 This analysis is a gate before any learned reliability component. High disagreement
@@ -98,13 +99,22 @@ z(x)=[\widehat p_D,\widehat p_V,d(x),H(\widehat p_D),H(\widehat p_V),E_D,E_V,q(x
 $$
 
 where $H$ denotes entropy, $E$ optional energy scores, and $q(x)$ image-quality
-features. A small regularized calibrator estimates failure risk $r(x)$. Target-domain
-samples never train, select, or calibrate this model.
+features. Version 1 preregisters logistic regression with fixed regularization as the
+primary failure-risk calibrator; nested pseudo-domain selection is a secondary
+sensitivity analysis. Target-domain samples never train, select, or calibrate this
+model.
 
-Correctness labels are defined under one preregistered source-selected reference
-policy, not at EER. The main calibrator estimates
-$r_{err}(x)=P(\hat y\neq y\mid z(x),\tau_{ref})$. Transfer to other APCER policies is
-an ablation; policy-specific calibrators are optional and must be trained source-only.
+Continuous OOF features are normalized using statistics from the corresponding
+source-side fitting/calibration partition before held-out prediction. A domain-ID
+classifier audits whether risk features encode OOF fold identity. High domain
+predictability triggers feature-removal and normalization ablations, but is not alone
+proof of leakage because genuine shift signals may also predict domain.
+
+Correctness labels are defined for one fixed, source-selected post-VLM decision rule
+$g_{ref}$ under one preregistered reference policy, not at EER. The main calibrator
+estimates $r_{err}(x)=P(g_{ref}(x)\neq y\mid z(x),\tau_{ref})$. Transfer to other
+APCER policies is an ablation; policy-specific calibrators are optional and must be
+trained source-only.
 Failure risk is not interpreted as a generic OOD or unknownness score.
 
 Raw and independently calibrated JS disagreement remain mandatory baselines. The learned calibrator is useful
@@ -120,8 +130,12 @@ There are two separate gates:
 
 1. **Routing gate:** DINO confidence and image quality decide whether to accept a
    high-confidence DINO result or invoke the VLM.
-2. **Selective gate:** after VLM invocation, cross-model disagreement and calibrated
-   risk decide whether to fuse, accept one branch, or return `retry/abstain`.
+2. **Selective gate:** after VLM invocation, the fixed $g_{ref}$ produces the PAD
+   decision and calibrated risk chooses only `accept` or `abstain`.
+
+The scalar risk score does not choose among DINO, VLM, and fusion. Security-asymmetric
+routing, where confident spoof predictions can exit earlier and live predictions use
+a stricter threshold, is compared with symmetric confidence routing.
 
 This distinction avoids claiming that disagreement can route a request before the VLM
 has run. Always-on dual inference is the accuracy upper bound; conditional inference
