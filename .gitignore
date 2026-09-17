@@ -1,0 +1,32 @@
+# Restricted datasets and generated manifests
+data/
+datasets/
+manifests/private/
+
+# Model weights and experiment outputs
+checkpoints/
+outputs/
+runs/
+wandb/
+*.ckpt
+*.onnx
+*.pth
+*.pt
+*.safetensors
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Python and editor artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.vscode/
+
+# Operating system artifacts
+.DS_Store
+Thumbs.db
