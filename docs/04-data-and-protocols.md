@@ -91,8 +91,9 @@ Unknown values remain `unknown`; they must not be guessed from coarse labels.
 2. Verify that subject and video identifiers do not cross splits.
 3. Extract frames after split assignment.
 4. During training, sample at most 1-3 random frames per video per epoch.
-5. For the strict single-image primary result, use the middle valid frame by a
-  label-independent temporal rule; evaluate fixed 25%, 50%, and 75% positions as
+5. For the strict single-image primary result, select the middle frame that decodes
+  and lies in the official interval, before face detection. Do not search for a
+  detector-successful replacement. Evaluate fixed 25%, 50%, and 75% positions as
   sensitivity analysis.
 6. Perform image-level inference; aggregate scores only for separately reported
    protocol-compatible video metrics.
@@ -117,6 +118,9 @@ independent statistical units.
 
 Each backbone receives its own resize and normalization. Geometry is shared, pixel
 normalization is not.
+Record exact crop geometry, input resolution, interpolation, and normalization for
+each branch. Include a feasible resolution-sensitivity ablation and do not attribute
+diversity purely to pretraining objective when resolution/context differ.
 
 ## Sampling
 
@@ -181,6 +185,9 @@ Report empirical APCER with binomial confidence intervals. A statistically
 constrained source policy requires $UCB_{95\%}(APCER_d)\leq\alpha$ for every source
 domain. If attack counts cannot support that bound, label the operating point a
 nominal empirical target rather than a certified security level.
+Count independent attack videos/transactions, not frames, before fixing $\alpha$.
+Use the lowest operating point supported by those counts as primary (5% if necessary),
+while 1% and 0.5% remain nominal diagnostics when underpowered.
 
 Within each three-source training set, create out-of-fold reliability records by
 holding out one source dataset at a time. Predictions on a held-out source must come
@@ -221,6 +228,9 @@ frames from depth/IR and never use unavailable modalities.
   paired within-target AUPR differences and macro-average target deltas;
 - excess-AURC as the primary selective-classification endpoint, with AURC and
   risk-coverage curves secondary;
+- attack-conditional false-accept $AUPR_{FA}$ and bona-fide-conditional false-reject
+  $AUPR_{FR}$;
+- attack-only and bona-fide-only risk-coverage curves plus class-averaged AURC;
 - Brier score, failure-risk NLL, and reliability diagrams when interpreting
   $r_{err}$ as a probability;
 - attack coverage $Coverage_A=N_{attack,decided}/N_{attack,total}$ and bona-fide

@@ -50,7 +50,7 @@ The remaining defensible hypothesis is narrower:
 - A reliability model is trained only from cross-fitted source-domain predictions,
   including held-out source domains or attack families as pseudo-shifts.
 - The output is selective prediction or conditional VLM invocation, with explicit
-  security, coverage, and latency trade-offs.
+  security, coverage, compute, and latency trade-offs.
 
 Cross-model disagreement is standard ensemble machinery and is not novel by itself.
 The candidate contribution is its source-only calibration and operational validation
@@ -60,21 +60,24 @@ under simultaneous PAD domain and attack shift.
 
 | Candidate claim | Minimum supporting evidence |
 |---|---|
-| Branches are complementary | Two-sided error table, double-fault rate, oracle gain, and subgroup analysis |
-| Disagreement generalizes | Source-only cross-fitting and untouched target evaluation |
-| Disagreement detects unknowns | AUROC/AUPR and risk-coverage on held-out attacks/domains |
-| Method beats ensemble heuristics | MSP, entropy, energy, average, and learned-fusion comparisons |
+| Branches are complementary | Joint-error table, class-conditional oracle gain, REF/FARR, and subgroup analysis |
+| Cross-foundation diversity matters | Positive heterogeneity advantage over shared-encoder and stronger same-family controls |
+| Explicit disagreement matters | Capacity-matched with/without-disagreement risk models on fixed prediction errors |
+| Failure risk generalizes | Source-only cross-fitting, held-out gate threshold selection, and confirmatory targets |
+| Method beats uncertainty heuristics | Fused MSP/entropy, simple disagreement, Mahalanobis, and capacity-matched risk comparisons |
 | Method is deployable | Conditional-call latency, memory, throughput, and coverage comparison |
 
 ## Novelty kill conditions
 
 Reframe or stop the model-centric paper if any holds:
 
-- one branch dominates and two-sided complementarity is negligible;
-- oracle gain over the better branch is negligible;
-- simple averaging or ordinary uncertainty performs as well as calibrated disagreement;
+- VLM rescue or class-conditional oracle gain is negligible;
+- cross-foundation rescue does not exceed same-family diversity, requiring a broader
+  selective-ensemble framing;
+- explicit disagreement adds no capacity-matched gain, requiring selective failure
+  prediction rather than disagreement-centered framing;
 - agreement is high when both branches are wrong;
 - gains disappear under source-only hyperparameter selection;
 - the method only improves CelebA-Spoof in-domain performance;
-- conditional VLM inference provides no useful security-latency trade-off;
+- conditional VLM inference provides no useful security-coverage-compute trade-off;
 - a newer paper implements the same source-only cross-foundation risk calibration.

@@ -30,13 +30,17 @@ Train under identical sampling:
 
 Add two diagnostic controls without changing the proposed architecture:
 
-6. a homogeneous DINO ensemble with independently trained PAD heads and sampling;
+6. a shared-encoder DINO head-diversity control using independent video bootstraps,
+   augmentation streams, initialization, and small nonlinear heads;
 7. a source-supervised linear PAD head on the same frozen CLIP/SigLIP image encoder.
 
 The first is a minimum homogeneous-diversity control but may underestimate ensembles
-with independently tuned backbones. The second isolates prompt-driven versus
+with independently tuned backbones; frozen DINOv2-Reg plus plain DINOv2 is the stronger
+same-family follow-up when compute permits. The second isolates prompt-driven versus
 source-supervised adaptation on one VLM encoder; it does not alone prove that text
 semantics causally produced any gain.
+Match source labels, subject/video splits, head capacity, augmentation budget, crop
+geometry, and calibration protocol across DINO and CLIP visual-head controls.
 
 Cache each branch independently so they never need to share GPU memory. Designate one
 MICO target in advance as the pilot/development target for pipeline debugging. It is
@@ -51,6 +55,11 @@ $REF=P(D\text{ wrong},V\text{ correct})/P(D\text{ wrong})$ and false-accept resc
 rate $FARR=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
 preregistration with the run configuration. Target results may test these criteria but
 may not redefine them.
+
+Also preregister the heterogeneity advantage
+$\Delta_{hetero}=FARR(DINO,VLM)-FARR(DINO,DINO_2)$ with video/subject-clustered
+uncertainty. If it is not positive on confirmatory targets, weaken the cross-foundation
+claim even when the broader selective ensemble remains useful.
 
 Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
 bound requirement $LCB_{95\%}(FARR)>\gamma$, both chosen from source pseudo-shifts.
@@ -97,27 +106,33 @@ Then generate out-of-fold source records in two variants.
 5. repeat all folds and concatenate records;
 6. train the preregistered fixed-regularization logistic failure-risk calibrator for
   calibrated-average $g_{ref}$;
-7. generate meta-OOF risk predictions by fitting on two OOF domains and predicting
-  the third, then select the accept threshold from concatenated meta-OOF predictions;
-8. refit on all OOF source records and freeze it before target evaluation.
+7. reserve a subject/video-disjoint gate-calibration partition before final gate fit;
+8. fit once on the remaining OOF records, select the accept threshold on the untouched
+  partition, and do not refit before target evaluation.
 
 Normalize fold features with source-side statistics and audit OOF domain
 identifiability. Nested pseudo-domain hyperparameter selection is secondary because
 three source domains provide a weak meta-validation sample.
 
-Compare raw and calibrated JS disagreement and the calibrator against MSP, entropy,
-energy, raw averaging, calibrated averaging, and learned fusion on calibrated scores.
-Add capacity-matched LogReg/MLP probability baselines, versions with JS and image
-quality, and DINO embedding Mahalanobis confidence. Mahalanobis is a strong simple
+Compare raw/calibrated JS, absolute difference, hard disagreement, and log-odds
+difference against fused MSP/entropy and learned risk on fixed $g_{ref}$ predictions.
+Add capacity-matched LogReg/MLP probability baselines with and without each explicit
+disagreement feature and the same fixed image-quality vector. DINO embedding
+Mahalanobis confidence is a strong simple
 representation-space baseline, not a substitute for reproducing a published
 confidence-aware FAS method when its implementation and protocol are available.
 
 Use two distinct result tables. The risk-estimator table holds $g_{ref}$ and its error
 labels fixed for fused MSP/entropy, JS, Mahalanobis, and learned risk scores. Report
 error prevalence and paired within-target deltas. The end-to-end system table may
-compare DINO-only, homogeneous DINO, DINO plus CLIP visual head, semantic VLM, and
+compare DINO-only, shared-encoder DINO head diversity, DINO plus CLIP visual head, semantic VLM, and
 conditional dual systems because it explicitly measures combined classifier and risk
 changes.
+
+Report $\Delta_{dis}$ between capacity-matched models with and without the primary
+absolute-difference feature. If it adds no repeatable gain to a nonlinear model already
+receiving both probabilities and quality, reframe the method as cross-foundation
+selective failure prediction and remove algorithmic emphasis on disagreement.
 
 Exit criteria:
 
@@ -132,7 +147,7 @@ Exit criteria:
 
 Implement in this order:
 
-1. always-on DINO + VLM upper bound;
+1. always-on DINO + VLM reference under fixed $g_{ref}$;
 2. fixed post-VLM fusion $g_{ref}$ followed by accept/abstain risk gating;
 3. symmetric DINO-confidence routing;
 4. security-asymmetric routing with a stricter direct-live threshold;
@@ -142,7 +157,10 @@ Do not add the next component unless the current comparison is understood.
 
 Exit criteria:
 
-- calibrated disagreement beats learned fusion and entropy/MSP/energy;
+- classifier comparisons (DINO, VLM, calibrated average, learned fusion) and
+  fixed-$g_{ref}$ risk-score comparisons are reported separately;
+- explicit disagreement beats capacity-matched no-disagreement risk baselines or the
+  framing is weakened as preregistered;
 - conditional inference approaches always-on security/selective performance at fixed
   APCER, fixed BPCER, and matched coverage;
 - VLM invocation rate or GPU-ms/request decreases materially at matched operating points;
@@ -200,7 +218,7 @@ separate go/no-go decision and are not assumed in the first paper.
 | H | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
 | I | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
 | J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
-| K | Two heads | No | Homogeneous calibrated average | No | No |
+| K | Two heads | No | Shared-encoder head-diversity control | No | No |
 | L | Yes | CLIP visual head | Calibrated average | No | No |
 
 ## Initial compute plan

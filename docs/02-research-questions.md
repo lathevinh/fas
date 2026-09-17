@@ -25,9 +25,12 @@ source-preregistered continuation criteria, errors are nearly identical, or
 class-conditional oracle gain is negligible. A large $P_{cw}+P_{wc}$ alone is
 insufficient when both predictors are weak.
 
+The cross-foundation-specific claim additionally requires positive heterogeneity
+advantage over the shared-encoder head-diversity control on confirmatory targets.
+
 Required analyses include error correlation, double-fault, oracle gain, attack/domain
-stratification, feasible fusion gain, a homogeneous DINO ensemble, and a supervised
-visual head on the frozen VLM image encoder. Conditional mutual information is
+stratification, feasible fusion gain, a shared-encoder DINO head-diversity control,
+and a supervised visual head on the frozen VLM image encoder. Conditional mutual information is
 optional and must not replace the directly interpretable joint table.
 
 ## RQ2: Source-only failure detection under shift
@@ -51,6 +54,10 @@ representation-space confidence, and the better branch's uncertainty.
 
 **Falsification:** disagreement does not consistently beat these baselines, fails on
 shared errors, or requires target-domain labels or tuning.
+
+Explicit-disagreement wording additionally requires positive $\Delta_{dis}$ from the
+fixed absolute-difference feature over capacity-matched models receiving both branch
+probabilities and the same quality features.
 
 ## RQ3: Selective deployment
 

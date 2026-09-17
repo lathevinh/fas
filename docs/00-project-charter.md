@@ -15,6 +15,10 @@ Working title:
 
 > Source-Only Calibrated Cross-Foundation Disagreement for Selective Single-Image Face PAD
 
+This title is conditional. If explicit disagreement adds no capacity-matched gain,
+use `Cross-Foundation Selective Failure Prediction`; if heterogeneous rescue does not
+beat same-family diversity, reframe as a selective-ensemble PAD study.
+
 The contribution must be the tested source-only reliability mechanism, not the
 choice of two pretrained backbones or disagreement by itself:
 
@@ -39,7 +43,9 @@ of the minimum viable paper.
 The approach is worth a model-centric paper only if it:
 
 - demonstrates source-preregistered DINO-error and false-accept rescue plus class-conditional oracle gain;
-- exceeds a homogeneous DINO ensemble control in security-useful rescue;
+- exceeds a shared-encoder DINO head-diversity control in security-useful rescue;
+- demonstrates incremental value from explicit disagreement over capacity-matched
+    probability-only risk models, or weakens the title as preregistered;
 - beats DINOv2-Reg, VLM uncertainty, and learned score fusion on multiple unseen domains;
 - improves prediction-failure detection under unseen shifts over MSP, entropy, energy,
   representation-space confidence, and capacity-matched risk baselines;

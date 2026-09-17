@@ -163,9 +163,10 @@ closest methods.
 Cross-foundation rescue may be no stronger than diversity from ordinary independently
 trained predictors.
 
-Mitigation: run the same calibration, REF, FARR, and risk evaluation for a homogeneous
-DINO control. Treat independent heads on one frozen encoder as a minimum control, not
-as proof against all independently tuned homogeneous ensembles.
+Mitigation: run the same calibration, REF, FARR, and risk evaluation for a
+shared-encoder DINO head-diversity control. Treat it as a minimum control, not as
+proof against all independently tuned same-family ensembles; add frozen DINOv2 without
+Registers when compute permits.
 
 ## Open decisions
 

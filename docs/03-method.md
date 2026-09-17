@@ -8,17 +8,19 @@ $$p_D=f_D(x), \qquad p_V=f_V(x).$$
 
 The method does not align their features and does not minimize
 $D_{JS}(p_D,p_V)$. Their different pretraining objectives and natural error diversity
-are the signal under study. Each branch is calibrated independently on source
+are the signal under study. Each branch raw logit is calibrated exactly once on source
 validation data before disagreement is computed:
 
 $$
-\widehat p_D=\operatorname{Cal}_D(p_D),\qquad
-\widehat p_V=\operatorname{Cal}_V(p_V),\qquad
+\widehat p_D=\sigma(\ell_D/T_D),\qquad
+\widehat p_V=\sigma(\ell_V/T_V),\qquad
 d(x)=D_{JS}(\widehat p_D\|\widehat p_V).
 $$
 
-Uncalibrated JS remains a mandatory ablation. Calibration parameters are fit without
-target data and frozen before target evaluation.
+Temperature scaling is the primary $\operatorname{Cal}_D$ and
+$\operatorname{Cal}_V$; no second calibrator is stacked afterward. Uncalibrated JS
+remains a mandatory ablation. Calibration parameters are fit without target data and
+frozen before target evaluation.
 
 ## DINO visual predictor
 
@@ -51,10 +53,11 @@ wording. For each class $c$:
 
 $$
 s_c(x)=\frac{1}{|T_c|}\sum_{t\in T_c}\cos(v(x),e_t),\qquad
-p_V(\mathrm{spoof}\mid x)=\sigma\left(\frac{s_{spoof}(x)-s_{live}(x)}{T}\right).
+\ell_V(x)=s_{spoof}(x)-s_{live}(x),\qquad
+\widehat p_V(x)=\sigma(\ell_V(x)/T_V).
 $$
 
-Temperature $T$ is fitted on source calibration data. Mean cosine is the primary
+Temperature $T_V$ is fitted on source calibration data. Mean cosine is the primary
 aggregation; max and log-sum-exp are ablations. A separate auxiliary attack bank
 $T_{aux}$ scores coarse concepts such as:
 
@@ -69,9 +72,9 @@ implementation.
 
 Training order:
 
-1. freeze image and text encoders;
-2. select prompt templates and temperature using source validation only;
-3. compare fixed prompts with a small learned calibration/head;
+1. preregister and freeze $T_{core}$, then freeze image and text encoders;
+2. fit only temperature $T_V$ on source calibration data;
+3. compare source-tuned templates/weights and a small learned head only as ablations;
 4. consider image-encoder LoRA only if a frozen branch is competent but underfits;
 5. keep the text encoder frozen to preserve its semantic space.
 
@@ -106,11 +109,13 @@ stressful ablation.
 The held-out fold provides features and error labels for the reliability model:
 
 $$
-z(x)=[\widehat p_D,\widehat p_V,d(x),H(\widehat p_D),H(\widehat p_V),E_D,E_V,q(x)],
+z_{primary}(x)=[\widehat p_D,\widehat p_V,d_{abs}(x),q(x)],
 $$
 
-where $H$ denotes entropy, $E$ optional energy scores, and $q(x)$ image-quality
-features. Version 1 preregisters logistic regression with fixed regularization as the
+where $d_{abs}(x)=|\widehat p_D-\widehat p_V|$ is fixed before experiments and
+$q(x)$ is a fixed image-quality vector. Entropy, branch
+energy, hard/log-odds disagreement, and Mahalanobis are ablations or baselines rather
+than primary features. Version 1 preregisters logistic regression with fixed regularization as the
 primary failure-risk calibrator; nested pseudo-domain selection is a secondary
 sensitivity analysis. Target-domain samples never train, select, or calibrate this
 model.
@@ -132,11 +137,14 @@ Failure risk is not interpreted as a generic OOD or unknownness score.
 Every risk estimator is evaluated against the same labels
 $e(x)=\mathbf{1}[g_{ref}(x)\neq y]$. Complete DINO-only and dual-foundation selective
 systems are compared in a separate table because they change both prediction and risk.
-After fitting the risk model, choose its accept threshold from meta-OOF predictions:
-fit the fixed logistic gate on two OOF source domains, predict the third, rotate, and
-concatenate. Refit on all OOF records only after the accept threshold is frozen.
+Reserve a subject/video-disjoint source-only gate-calibration partition before fitting
+the final gate. Fit the fixed logistic gate once on the remaining OOF records, select
+its accept threshold on the untouched partition, and do not refit afterward. Meta-OOF
+thresholding is a sensitivity analysis because a subsequent refit can change score scale.
 
-Raw and independently calibrated JS disagreement remain mandatory baselines. The learned calibrator is useful
+Raw and independently calibrated disagreement remain mandatory baselines. Absolute
+probability difference is primary; JS, hard decision disagreement, and log-odds
+difference are ablations. The learned calibrator is useful
 only if it generalizes beyond MSP, entropy, energy, and ordinary learned score fusion.
 Because JS and entropy are deterministic transforms of branch probabilities, compare
 capacity-matched logistic and MLP baselines using probabilities alone, probabilities
@@ -161,8 +169,9 @@ routing, where confident spoof predictions can exit earlier and live predictions
 a stricter threshold, is compared with symmetric confidence routing.
 
 This distinction avoids claiming that disagreement can route a request before the VLM
-has run. Always-on dual inference is the accuracy upper bound; conditional inference
-is evaluated against it at fixed APCER, fixed BPCER, and matched coverage.
+has run. Always-on dual inference is the compute-unconstrained reference under fixed
+$g_{ref}$, not an accuracy upper bound; conditional inference is evaluated against it
+at fixed APCER, fixed BPCER, and matched coverage.
 
 The primary deployment objective is maximum coverage subject to a source-selected
 security constraint such as $APCER\leq\alpha$, with

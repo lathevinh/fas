@@ -59,3 +59,13 @@ Repeat at least monthly:
 - `open-world face anti-spoofing uncertainty`
 - `face anti-spoofing counterfactual evidence`
 - `presentation attack detection concept bottleneck`
+
+## Verification queue
+
+Do not cite these as verified prior work until title, authors, venue, year, and DOI or
+stable publisher record are confirmed independently:
+
+- AIM-FAS, reportedly Pattern Recognition 2026;
+- DGPDL, reportedly IEEE TPAMI 2026;
+- CLIP-SA, reportedly IEEE Transactions on Multimedia 2026;
+- class-aware AURC/risk-coverage methods for selective classification.
