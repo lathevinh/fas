@@ -23,13 +23,19 @@ Train under identical sampling:
 
 1. DINOv2-Reg with a frozen backbone and trained PAD head;
 2. frozen CLIP/SigLIP with source-selected prompt ensemble and temperature;
-3. fixed score average;
-4. regularized learned score fusion.
+3. raw score average as a diagnostic;
+4. calibrated score average as the principal simple-fusion baseline;
+5. regularized learned score fusion using calibrated source scores.
 
 Cache each branch independently so they never need to share GPU memory. Run one
 MICO target first, selected before observing results, then construct the joint
 correctness table and report $P_{cc},P_{cw},P_{wc},P_{ww}$, double-fault, oracle gain,
 error correlation, and attack/domain subgroups.
+
+Define oracle gain on thresholded decisions using balanced accuracy/error and at
+source-selected biometric operating points. Do not report an `oracle AUC` unless a
+label-independent score construction is specified; choosing the correct branch per
+sample uses ground-truth labels and does not define a deployable ROC score.
 
 Exit criteria:
 
@@ -58,18 +64,18 @@ Then generate out-of-fold source records in two variants.
 
 1. hold out one complete source domain or attack family;
 2. train/select both predictors using only the remainder;
-3. calibrate each branch independently on validation data within the remainder;
+3. calibrate each branch independently on a disjoint validation partition within the remainder;
 4. predict the held-out source fold and record the same features;
 5. repeat all folds and concatenate records;
 6. train a small regularized failure-risk calibrator;
 7. freeze it before target evaluation.
 
-Compare raw JS disagreement and the calibrator against MSP, entropy, energy, branch
-ensembles, and ordinary learned fusion.
+Compare raw and calibrated JS disagreement and the calibrator against MSP, entropy,
+energy, raw averaging, calibrated averaging, and learned fusion on calibrated scores.
 
 Exit criteria:
 
-- target error/unknown AUROC and AUPR improve consistently over single-model uncertainty;
+- target error/downstream-unseen AUROC and AUPR improve consistently over single-model uncertainty;
 - selective risk improves at matched coverage;
 - no target sample or statistic enters calibration.
 
@@ -91,7 +97,7 @@ Exit criteria:
 - conditional inference approaches always-on security/selective performance at fixed
   APCER, fixed BPCER, and matched coverage;
 - VLM invocation rate or latency decreases materially at matched operating points;
-- true-unknown and open-vocabulary-unknown results are reported separately;
+- downstream-unseen and open-vocabulary zero-shot results are reported separately;
 - shared wrong predictions are explicitly analyzed.
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
@@ -133,13 +139,14 @@ separate go/no-go decision and are not assumed in the first paper.
 |---|---:|---:|---|---:|---:|
 | A | Yes | No | DINO uncertainty | No | Optional |
 | B | No | Yes | VLM uncertainty | No | Optional |
-| C | Yes | Yes | Fixed average | No | No |
-| D | Yes | Yes | Learned score fusion | No | No |
-| E | Yes | Yes | Raw JS disagreement | No | Yes |
-| F | Yes | Yes | Calibrated JS, sample-OOF | No | Yes |
-| G | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
-| H | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
-| I | Yes | Distilled | Domain-OOF calibrator | No | Yes |
+| C | Yes | Yes | Raw average | No | No |
+| D | Yes | Yes | Calibrated average | No | No |
+| E | Yes | Yes | Learned fusion of calibrated scores | No | No |
+| F | Yes | Yes | Raw JS disagreement | No | Yes |
+| G | Yes | Yes | Calibrated JS, sample-OOF | No | Yes |
+| H | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
+| I | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
+| J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
 
 ## Initial compute plan
 

@@ -39,13 +39,16 @@ were equal.
 Use the official SiW-M split/protocol. The held-out attack family cannot participate
 in branch tuning, prompt selection, reliability calibration, or threshold selection.
 
-Report two distinct unknown settings:
+Report two distinct downstream-unseen settings:
 
-- **true unknown PAI:** an attack instrument or family absent from training;
-- **open-vocabulary unknown:** an attack whose semantic description is absent from the
-  prompt bank, even if a related family was seen during training.
+- **downstream-unseen PAI:** the attack instrument/family is absent from downstream FAS
+  image supervision and its attack-specific text description is excluded;
+- **open-vocabulary zero-shot PAI:** the attack is absent from downstream FAS image
+  supervision, but its attack-specific text description is allowed in the prompt bank.
 
 Do not pool these into one unknown score because they test different abilities.
+Neither setting proves that the attack was absent from generic foundation-model
+pretraining; foundation-model pretraining exposure at web scale is uncontrolled.
 
 ## Unified metadata manifest
 
@@ -151,6 +154,9 @@ Within each three-source training set, create out-of-fold reliability records by
 holding out one source dataset at a time. Predictions on a held-out source must come
 from branches that did not train on that source. Fit the final reliability calibrator
 only after concatenating these out-of-fold records.
+
+Inside each remaining-source fold, keep model fitting, prompt selection, and branch
+probability calibration disjoint from the held-out OOF evaluation domain.
 
 Compare this domain-OOF construction with sample-OOF records made inside each source
 domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the main claim.

@@ -6,7 +6,7 @@ Research dossier for a practical and publishable face presentation attack detect
 - a self-supervised visual predictor based on DINOv2 with Registers;
 - an independently pretrained vision-language semantic predictor;
 - source-only disagreement calibration for failure detection, abstention, and
-	conditional VLM inference.
+  conditional VLM inference.
 
 This repository is documentation-first. Its immediate purpose is to make the
 research proposal auditable and easy to challenge before implementation.
@@ -43,7 +43,9 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 10. [Response to ChatGPT review](docs/09-review-response.md)
 11. [ChatGPT review round 2](docs/10-chatgpt-review-round2.md)
 12. [Response to ChatGPT review round 2](docs/11-review-response-round2.md)
-13. [Reading list](references/reading-list.md)
+13. [ChatGPT review round 3](docs/12-chatgpt-review-round3.md)
+14. [Response to ChatGPT review round 3](docs/13-review-response-round3.md)
+15. [Reading list](references/reading-list.md)
 
 ## Current status
 

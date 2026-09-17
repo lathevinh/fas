@@ -31,7 +31,7 @@ remaining evidence requirements for a publishable claim.
    selection, and gate training will use only source-domain validation splits.
 7. DINO and VLM probabilities are calibrated independently before JS disagreement.
 8. Sample-OOF and domain-OOF calibration are compared, with domain-OOF as primary.
-9. True unknown PAIs and open-vocabulary unknowns are reported separately.
+9. Downstream-unseen PAIs and open-vocabulary zero-shot PAIs are reported separately.
 10. Selective risk is reported at fixed APCER and fixed BPCER, not only at matched
    average coverage.
 
@@ -60,7 +60,7 @@ The paper will proceed only if the following are demonstrated on untouched targe
 - coverage and biometric security remain acceptable under the selective inference rule;
 - the method does not collapse when source and target domains differ substantially.
 - domain-OOF calibration is justified relative to sample-OOF;
-- true unknown PAI and open-vocabulary unknown results are not conflated;
+- downstream-unseen PAI and open-vocabulary zero-shot PAI results are not conflated;
 - selective risk is reported at fixed APCER and fixed BPCER.
 
 ## Non-claims retained

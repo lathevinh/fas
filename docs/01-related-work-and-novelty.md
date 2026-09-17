@@ -48,9 +48,9 @@ The remaining defensible hypothesis is narrower:
 - DINOv2-Reg and the VLM remain independently trained to preserve error diversity.
 - Disagreement is observed, not minimized as a training objective.
 - A reliability model is trained only from cross-fitted source-domain predictions,
-	including held-out source domains or attack families as pseudo-shifts.
+  including held-out source domains or attack families as pseudo-shifts.
 - The output is selective prediction or conditional VLM invocation, with explicit
-	security, coverage, and latency trade-offs.
+  security, coverage, and latency trade-offs.
 
 Cross-model disagreement is standard ensemble machinery and is not novel by itself.
 The candidate contribution is its source-only calibration and operational validation

@@ -29,7 +29,7 @@ and must not replace the directly interpretable joint table.
 
 ## RQ2: Source-only failure and unknown detection
 
-Can natural cross-foundation disagreement estimate errors and unknown attacks better
+Can natural cross-foundation disagreement estimate errors and downstream-unseen attacks better
 than conventional single-model uncertainty without target-domain calibration?
 
 The raw baseline is:
@@ -41,7 +41,7 @@ holds out a source domain or attack family as a pseudo-shift, trains the predict
 on the remainder, and records correctness, uncertainty, and disagreement on the
 held-out fold. Target data never train or select the calibrator.
 
-**H2:** Raw or source-calibrated disagreement improves error/unknown AUROC and AUPR,
+**H2:** Raw or source-calibrated disagreement improves error/downstream-unseen AUROC and AUPR,
 and selective risk at matched coverage, over maximum softmax probability, entropy,
 energy, and the better branch's uncertainty.
 

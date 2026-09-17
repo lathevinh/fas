@@ -12,9 +12,9 @@ are the signal under study. Each branch is calibrated independently on source
 validation data before disagreement is computed:
 
 $$
-	ilde p_D=\operatorname{Cal}_D(p_D),\qquad
-	ilde p_V=\operatorname{Cal}_V(p_V),\qquad
-d(x)=D_{JS}(\tilde p_D\|\tilde p_V).
+\widehat p_D=\operatorname{Cal}_D(p_D),\qquad
+\widehat p_V=\operatorname{Cal}_V(p_V),\qquad
+d(x)=D_{JS}(\widehat p_D\|\widehat p_V).
 $$
 
 Uncalibrated JS remains a mandatory ablation. Calibration parameters are fit without
@@ -86,13 +86,15 @@ between two weak predictors is not useful complementarity.
 Create out-of-fold source records in two variants. Sample-OOF splits within each
 source domain using subject/video-safe partitions. Domain-OOF holds out one complete
 source domain or attack family as a pseudo-shift. Predictor training, prompt selection,
-and score calibration for a fold use only the remaining source data. Domain-OOF is the
-primary protocol; sample-OOF is a less stressful ablation.
+and score calibration for a fold use only the remaining source data. Within that
+remainder, branch fitting, prompt selection, and probability calibration use disjoint
+train/validation partitions. Domain-OOF is the primary protocol; sample-OOF is a less
+stressful ablation.
 
 The held-out fold provides features and error labels for the reliability model:
 
 $$
-z(x)=[p_D,p_V,d(x),H(p_D),H(p_V),E_D,E_V,q(x)],
+z(x)=[\widehat p_D,\widehat p_V,d(x),H(\widehat p_D),H(\widehat p_V),E_D,E_V,q(x)],
 $$
 
 where $H$ denotes entropy, $E$ optional energy scores, and $q(x)$ image-quality
@@ -114,6 +116,11 @@ There are two separate gates:
 This distinction avoids claiming that disagreement can route a request before the VLM
 has run. Always-on dual inference is the accuracy upper bound; conditional inference
 is evaluated against it at fixed APCER, fixed BPCER, and matched coverage.
+
+The primary deployment objective is maximum coverage subject to a source-selected
+security constraint such as $APCER\leq\alpha$, with
+$\alpha\in\{0.5\%,1\%,5\%\}$. Report achieved target APCER rather than implying that
+an unseen target is guaranteed to satisfy the source constraint.
 
 ## Optional evidence extension
 
