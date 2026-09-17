@@ -54,8 +54,8 @@ The remaining defensible hypothesis is narrower:
 
 Cross-model disagreement is standard ensemble machinery and is not novel by itself.
 The candidate contribution is source-only cross-fitted failure-risk calibration from
-independently trained heterogeneous foundation predictors, with operational validation
-under simultaneous PAD domain and attack shift. Explicit disagreement belongs in the
+independently trained heterogeneous foundation predictors, with separate operational
+validation under PAD domain shifts and attack-family shifts. Explicit disagreement belongs in the
 title/contribution only if its preregistered incremental test passes.
 
 ## Claims that require evidence

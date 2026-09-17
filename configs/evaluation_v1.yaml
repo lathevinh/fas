@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "risk_population": "face_detector_success_only",
+  "end_to_end_population": "all_original_transactions",
+  "detector_failure_rates": ["attack", "bona_fide"],
+  "bootstrap_unit": {
+    "OULU-NPU": "subject",
+    "CASIA-FASD": "subject",
+    "Replay-Attack": "subject",
+    "MSU-MFSD": "subject",
+    "SiW-M": "subject"
+  },
+  "claim_sequence": ["realized_rescue", "heterogeneity", "cross_foundation_risk", "explicit_disagreement"],
+  "effect_freeze_policy": "Numerical minimum effects and harm tolerance must be derived from source pseudo-shifts and frozen before confirmatory labels; zero-only thresholds are prohibited.",
+  "minimum_effects": {
+    "status": "pending_source_pseudoshift_estimation",
+    "delta_hetero": null,
+    "delta_cf_aupr": null,
+    "delta_dis_aupr": null,
+    "target_harm_tolerance": null
+  },
+  "oof_to_final_validity": {
+    "partition": "G_domain",
+    "report": ["prediction_error_aupr", "auroc", "brier", "risk_coverage_curve"],
+    "sanity_threshold_status": "pending_source_pseudoshift_estimation",
+    "tuning_allowed": false
+  },
+  "anchor_prediction_policy": "Cache one fitted DINOv2-Reg prediction file per target, seed, and configuration; reuse it for heterogeneous and same-family paired rescue."
+}

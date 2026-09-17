@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "pilot_domain": "MSU-MFSD",
+  "confirmatory_domains": ["OULU-NPU", "CASIA-FASD", "Replay-Attack"],
+  "pilot_label_access_status": "owner_attestation_pending",
+  "selection_dino": {
+    "model": "dinov2_vitb14_reg4",
+    "seed": 20260917,
+    "checkpoint_policy": "one fixed source-trained selection checkpoint per MICO fold"
+  },
+  "candidate_threshold_policy": "recompute independently per candidate from allowed source validation",
+  "metric": "pilot_acer_calibrated_average_at_candidate_source_threshold",
+  "optimization": "minimize",
+  "latency_ceiling_ms": 100.0,
+  "tie_tolerance_acer_percentage_points": 0.1,
+  "tie_breakers": ["lower_median_latency_ms", "lexical_candidate_id"]
+}

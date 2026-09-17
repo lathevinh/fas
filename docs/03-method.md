@@ -124,8 +124,9 @@ features. Entropy, branch
 energy, hard/log-odds disagreement, and Mahalanobis are ablations or baselines rather
 than primary features. Version 1 preregisters logistic regression with fixed regularization as the
 primary failure-risk calibrator; nested pseudo-domain selection is a secondary
-sensitivity analysis. Target-domain samples never train, select, or calibrate this
-model.
+sensitivity analysis. Confirmatory-target samples never train, select, or calibrate
+this model. The development-only pilot may select the global VLM candidate but never
+fits risk calibration or a confirmatory operating threshold.
 
 Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. Only
 quality features are standardized with statistics from the final allowed source
@@ -165,6 +166,12 @@ and never refit either base models or risk gate. All compared methods use the sa
 reduced source data. Fully cross-fitted thresholding is a future data-efficiency
 alternative; attack-OOF uses its separate known-attack-only $G_{attack}$.
 
+Before target evaluation, report prediction-error AUPR, AUROC, Brier score, and the
+risk-coverage curve of the frozen OOF-trained gate on final-model predictions from
+$G_{domain}$. This validity check cannot tune gate parameters. Its nonzero sanity
+threshold is derived from source pseudo-shifts and frozen before confirmatory labels;
+failure blocks OOF-risk transfer claims even if a threshold can still be selected.
+
 Raw and independently calibrated disagreement remain mandatory baselines. Absolute
 probability difference is primary; JS, hard decision disagreement, and log-odds
 difference are ablations. The learned calibrator is useful
@@ -186,6 +193,11 @@ $R_{DVdm}=[\widehat p_D,\widehat p_V,d_{abs},m_F,q]$.
 Risk fitting averages unweighted BCE equally across pseudo-domains while retaining
 natural error prevalence within each domain. Class-weighted/focal variants are ranking
 ablations called risk scores, not calibrated failure probabilities.
+
+Stage-2 risk metrics use only
+$\mathcal D_{risk}=\{x:\text{face detector succeeds}\}$ because branch features do
+not exist after detector failure. End-to-end security and coverage use all original
+transactions. Report detector-failure rates separately for attacks and bona fide.
 
 ## Decision and conditional inference
 

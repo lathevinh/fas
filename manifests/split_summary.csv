@@ -1,0 +1,6 @@
+dataset,audit_status,train_subjects,branch_calibration_subjects,g_domain_subjects,routing_validation_subjects,g_attack_subjects,train_attack_videos,branch_calibration_attack_videos,g_domain_attack_videos,routing_validation_attack_videos,g_attack_attack_videos,role_manifest_sha256
+OULU-NPU,not_audited,,,,,,,,,,,
+CASIA-FASD,not_audited,,,,,,,,,,,
+Replay-Attack,not_audited,,,,,,,,,,,
+MSU-MFSD,not_audited,,,,,,,,,,,
+SiW-M,not_audited,,,,,,,,,,,

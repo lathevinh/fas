@@ -1,0 +1,6 @@
+dataset,audit_status,subjects,bona_videos,attack_videos,attack_families,metadata_source,manifest_sha256
+OULU-NPU,not_audited,,,,,,
+CASIA-FASD,not_audited,,,,,,
+Replay-Attack,not_audited,,,,,,
+MSU-MFSD,not_audited,,,,,,
+SiW-M,not_audited,,,,,,

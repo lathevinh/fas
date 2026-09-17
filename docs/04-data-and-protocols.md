@@ -100,6 +100,13 @@ Unknown values remain `unknown`; they must not be guessed from coarse labels.
    protocol-compatible video metrics.
 7. Hash manifests and save the preprocessing version with every run.
 
+Assign one immutable subject/video role manifest per dataset before running any MICO
+fold. A dataset reuses the same train, branch-calibration, gate-candidate, and routing
+validation roles whenever it is a source; its official protocol applies when it is the
+target. Publish every role-manifest SHA-256. Compute subject/video and independent
+attack-event counts before freezing holdouts; if counts cannot support calibration or
+low-APCER estimation, simplify the split before opening pilot labels.
+
 Report two evaluation tracks. The benchmark-compatible track follows each dataset's
 official frame/video aggregation. The strict single-image track uses one deterministic
 frame per video as its primary result; multi-frame sensitivity analyses cluster all

@@ -8,8 +8,9 @@ Research dossier for a practical and publishable face presentation attack detect
 - source-only cross-fitted failure-risk calibration for failure detection, abstention,
   and conditional VLM inference; explicit disagreement remains a conditional claim.
 
-This repository is documentation-first. Its immediate purpose is to make the
-research proposal auditable and easy to challenge before implementation.
+This repository contains the research dossier and the first executable
+preregistration checks. Pilot inspection remains blocked until strict data-readiness
+validation passes.
 
 ## Scope
 
@@ -59,13 +60,26 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 26. [Response to ChatGPT review round 9](docs/25-review-response-round9.md)
 27. [ChatGPT review round 10](docs/26-chatgpt-review-round10.md)
 28. [Response to ChatGPT review round 10](docs/27-review-response-round10.md)
-29. [Reading list](references/reading-list.md)
+29. [ChatGPT review round 11](docs/28-chatgpt-review-round11.md)
+30. [Response to ChatGPT review round 11](docs/29-review-response-round11.md)
+31. [Reading list](references/reading-list.md)
+
+## Readiness checks
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/validate_preregistration.py --allow-incomplete-counts
+python scripts/validate_preregistration.py
+```
+
+The strict command is expected to fail while manifests are marked `not_audited`,
+effect thresholds are pending, or pilot-history attestation is absent.
 
 ## Current status
 
-- Status: proposal and literature-audit stage
+- Status: executable preregistration freeze; dataset audit pending
 - Last reviewed: 2026-09-17
-- Code: not implemented
+- Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 
 ## Non-claims

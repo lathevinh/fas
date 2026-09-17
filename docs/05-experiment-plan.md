@@ -28,6 +28,8 @@ Exit criteria:
 - APCER/BPCER/ACER tests pass on synthetic examples.
 - core prompts are frozen before pilot labels; the selected checkpoint/preprocessing
   artifact is frozen after pilot selection and before confirmatory MICO targets.
+- `python scripts/validate_preregistration.py` reports `PREREGISTRATION READY`; a
+  schema-only pass with unaudited manifest counts does not permit pilot inspection.
 
 ## Stage 1: Complementarity kill experiment, weeks 3-5
 
@@ -59,8 +61,9 @@ The DINOv2-Reg + plain-DINOv2 strong control and heterogeneous pair use identica
 one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
-Cache each branch independently so they never need to share GPU memory. Designate one
-MICO target in advance as the pilot/development target for pipeline debugging. It is
+Cache each branch independently so they never need to share GPU memory. Version 1
+freezes MSU-MFSD as the pilot/development target and OULU-NPU, CASIA-FASD, and
+Replay-Attack as confirmatory targets. The pilot is
 not confirmatory evidence after inspection-driven changes. Freeze the Stage 1
 configuration before evaluating the remaining three confirmatory targets, then report
 the joint correctness table, double-fault, oracle gain, error correlation, and
@@ -84,6 +87,9 @@ with paired subject/video bootstrap and McNemar-style analysis when event counts
 small. Report both potential-branch and realized-fusion paired versions. If the strong
 DINOv2 same-family comparison is not positive on confirmatory targets, weaken the
 cross-foundation claim even when the broader selective ensemble remains useful.
+Use literally the same fitted DINOv2-Reg anchor predictions for heterogeneous and
+same-family rescue at each target, seed, and configuration; cache them once and never
+retrain the anchor by pair.
 
 Report complementarity lift relative to each second branch's standalone correctness
 as a strength-adjusted diagnostic. Do not use it as a kill criterion: the subtraction
@@ -114,6 +120,13 @@ Exit criteria:
   stronger DINOv2-Reg plus DINOv2 control;
 - no target data influenced model selection.
 
+Apply the claims hierarchically: Level 1 realized rescue, Level 2 heterogeneity,
+cross-foundation risk gain, then explicit-disagreement gain. A failed level blocks its
+downstream title claim rather than allowing another correlated endpoint to rescue it.
+Before confirmatory labels, source pseudo-shifts must freeze nonzero minimum meaningful
+effects or positive paired lower-confidence-bound criteria for $\Delta_{hetero}$,
+$\Delta_{CF}^{AUPR}$, and $\Delta_{dis}^{AUPR}$; $\Delta>0$ alone is insufficient.
+
 Stop the dual-foundation direction if Level 1 fails. DINOv2 without Registers is
 required only to retain the cross-foundation title; supervised backbones, LoRA, and
 larger VLMs remain later ablations.
@@ -123,6 +136,10 @@ larger VLMs remain later ablations.
 Calibrate each branch independently on source validation data before computing the
 primary absolute-difference disagreement and its JS ablation.
 Then generate out-of-fold source records in two variants.
+
+For every VLM candidate, independently fit allowed source calibration and select its
+own source-only $\tau_j$ before computing pilot ACER. Reusing a threshold selected for
+another candidate is prohibited.
 
 ### Sample-OOF ablation
 

@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "seeds": [20260917, 20260923, 20261001],
+  "selection_seed": 20260917,
+  "replacement_policy": "Never replace a failed primary run silently; document the failure and rerun the same seed after fixing infrastructure-only causes.",
+  "shared_across_primary_controls": true
+}

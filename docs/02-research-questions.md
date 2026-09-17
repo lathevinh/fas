@@ -41,8 +41,9 @@ cross-foundation predictions improve failure detection under domain and attack s
 and does explicit absolute-difference disagreement add value beyond the two branch
 probabilities?
 
-Domain-OOF and attack-OOF are separate protocols. Target data never train, select, or
-calibrate either model.
+Domain-OOF and attack-OOF are separate protocols. Confirmatory-target data never train,
+select, or calibrate any model, threshold, prompt, or risk gate. The preregistered
+pilot domain is development-only and excluded from confirmatory inference.
 
 **H2:** On the preregistered primary metric, prediction-error AUPR,
 cross-foundation probabilities plus fixed quality features outperform quality-only

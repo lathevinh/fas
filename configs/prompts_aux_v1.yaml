@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "affects_core_probability": false,
+  "concepts": {
+    "bona_fide": ["a bona fide natural face"],
+    "print": ["a printed face or paper face presentation"],
+    "replay": ["a face replayed on a phone, tablet, or display"],
+    "mask": ["a mask or artificial three-dimensional face"]
+  },
+  "unknown_attack_policy": "Remove prompts matching the held-out family for downstream-unseen PAI; retain them only in the separately reported open-vocabulary setting."
+}

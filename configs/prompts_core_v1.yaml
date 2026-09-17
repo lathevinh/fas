@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "frozen_before_pilot": true,
+  "aggregation": "mean_cosine",
+  "classes": {
+    "live": [
+      "a bona fide live human face",
+      "a real person presenting their face to a camera",
+      "a natural three-dimensional human face",
+      "a genuine face captured directly by a camera"
+    ],
+    "spoof": [
+      "a face presentation attack",
+      "an artificial representation of a face presented to a camera",
+      "a spoofed face rather than a live person",
+      "a printed, displayed, or masked face presentation"
+    ]
+  },
+  "class_weights": {"live": 1.0, "spoof": 1.0},
+  "text_preprocessing": "candidate_native_tokenizer",
+  "notes": "Core prompts never change by attack family and auxiliary prompts never alter the binary denominator."
+}
