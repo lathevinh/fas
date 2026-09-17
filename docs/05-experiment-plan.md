@@ -10,12 +10,19 @@ Tasks:
 - compare the exact settings of TIFS 2024 Evidential Semantic Consistency,
   Confidence Aware Learning, RPSR-FAS, DINO-VPT, and primitive-driven prompting;
 - freeze the literature table and search for newer overlapping work.
+- preregister the finite VLM candidate set and create versioned
+  `configs/prompts_core_v1.yaml`, `configs/prompts_aux_v1.yaml`, and
+  `configs/vlm_checkpoint_v1.yaml` artifacts before confirmatory evaluation. Record
+  exact strings, classes, weights, text preprocessing, checkpoint/weights, tokenizer,
+  resolution, interpolation, and normalization.
 
 Exit criteria:
 
 - no subject/video leakage;
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
+- prompt/checkpoint artifacts are frozen after pilot selection and before the three
+  confirmatory MICO targets.
 
 ## Stage 1: Complementarity kill experiment, weeks 3-5
 
@@ -33,10 +40,12 @@ Add two diagnostic controls without changing the proposed architecture:
 6. a shared-encoder DINO head-diversity control using independent video bootstraps,
    augmentation streams, initialization, and small nonlinear heads;
 7. a source-supervised linear PAD head on the same frozen CLIP/SigLIP image encoder.
+8. frozen DINOv2 without Registers paired with DINOv2-Reg as the required stronger
+  same-family control when retaining a cross-foundation title.
 
 The first is a minimum homogeneous-diversity control but may underestimate ensembles
-with independently tuned backbones; frozen DINOv2-Reg plus plain DINOv2 is the stronger
-same-family follow-up when compute permits. The second isolates prompt-driven versus
+with independent representations. The third is therefore required for the
+cross-foundation-specific confirmatory claim, while the CLIP visual control isolates prompt-driven versus
 source-supervised adaptation on one VLM encoder; it does not alone prove that text
 semantics causally produced any gain.
 Match source labels, subject/video splits, head capacity, augmentation budget, crop
@@ -51,15 +60,18 @@ attack/domain subgroups separately for pilot and confirmatory results.
 
 Before opening any MICO target labels, use domain-OOF source pseudo-shifts to lock
 numeric continuation thresholds for recoverable error fraction
-$REF=P(D\text{ wrong},V\text{ correct})/P(D\text{ wrong})$ and false-accept rescue
-rate $FARR=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
-preregistration with the run configuration. Target results may test these criteria but
-may not redefine them.
+$REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and potential false-accept rescue
+$FARR_{VLM}=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Also report
+realized $REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$ and
+$FARR_g=P(g_{ref}\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
+preregistration with the run configuration; target results cannot redefine it.
 
 Also preregister the heterogeneity advantage
-$\Delta_{hetero}=FARR(DINO,VLM)-FARR(DINO,DINO_2)$ with video/subject-clustered
-uncertainty. If it is not positive on confirmatory targets, weaken the cross-foundation
-claim even when the broader selective ensemble remains useful.
+$\Delta_{hetero}=N_{FA}^{-1}\sum_i(r_i^V-r_i^H)$ on the same DINO false accepts,
+with paired subject/video bootstrap and McNemar-style analysis when event counts are
+small. Report both potential-branch and realized-fusion paired versions. If the strong
+DINOv2 same-family comparison is not positive on confirmatory targets, weaken the
+cross-foundation claim even when the broader selective ensemble remains useful.
 
 Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
 bound requirement $LCB_{95\%}(FARR)>\gamma$, both chosen from source pseudo-shifts.
@@ -76,41 +88,49 @@ not by frame.
 Exit criteria:
 
 - both branches are competent enough for meaningful comparison;
-- class-conditional oracle gain passes the preregistered criterion;
-- REF and security-critical FARR pass their preregistered criteria, even if recovery
-  is asymmetric;
+- **Level 1, continue dual branch:** competent branches and realized $REF_g/FARR_g$
+  pass preregistered confidence-bound criteria;
+- **Level 2, retain cross-foundation claim:** paired $\Delta_{hetero}>0$ against the
+  stronger DINOv2-Reg plus DINOv2 control;
 - no target data influenced model selection.
 
-Stop the dual-foundation direction if these conditions fail. DINOv2 without registers,
-supervised backbones, LoRA, and larger VLMs are later ablations, not prerequisites.
+Stop the dual-foundation direction if Level 1 fails. DINOv2 without Registers is
+required only to retain the cross-foundation title; supervised backbones, LoRA, and
+larger VLMs remain later ablations.
 
 ## Stage 2: Source-only risk calibration, weeks 6-8
 
-Calibrate each branch independently on source validation data before computing JS.
+Calibrate each branch independently on source validation data before computing the
+primary absolute-difference disagreement and its JS ablation.
 Then generate out-of-fold source records in two variants.
 
 ### Sample-OOF ablation
 
-1. split within each source domain using subject/video-safe partitions;
+1. split within each source domain using subject/video-safe partitions after removing $G$;
 2. train/select both predictors using only the remainder;
 3. calibrate each branch independently and predict held-out samples;
 4. record correctness, probabilities, entropy, energy,
    image quality, and cross-model divergence;
 
-### Domain-OOF primary protocol
+### Domain-OOF primary MICO protocol
 
-1. hold out one complete source domain or attack family;
+1. hold out one complete source capture domain after removing $G$;
 2. train/select both predictors using only the remainder;
-3. calibrate each branch independently on a disjoint validation partition within the remainder;
+3. fit one-stage monotone affine branch calibration on a disjoint, domain-balanced
+  validation partition within the remainder;
 4. predict the held-out source fold and record the same features;
 5. repeat all folds and concatenate records;
 6. train the preregistered fixed-regularization logistic failure-risk calibrator for
   calibrated-average $g_{ref}$;
-7. reserve a subject/video-disjoint gate-calibration partition before final gate fit;
-8. fit once on the remaining OOF records, select the accept threshold on the untouched
-  partition, and do not refit before target evaluation.
+7. generate out-of-sample predictions on the permanent gate-calibration partition $G$,
+   which was excluded from every prior fit and selection step;
+8. select the accept threshold on $G$ and do not refit any component afterward.
 
-Normalize fold features with source-side statistics and audit OOF domain
+Run attack-OOF separately for SiW-M using held-out attack families. A domain-OOF-only
+gate cannot support an attack-shift calibration claim; mixed OOF is secondary.
+
+Leave probabilities/disagreement unstandardized; normalize only fixed quality features
+with final allowed source-fitting statistics reused at target time. Audit OOF domain
 identifiability. Nested pseudo-domain hyperparameter selection is secondary because
 three source domains provide a weak meta-validation sample.
 
@@ -133,12 +153,17 @@ Report $\Delta_{dis}$ between capacity-matched models with and without the prima
 absolute-difference feature. If it adds no repeatable gain to a nonlinear model already
 receiving both probabilities and quality, reframe the method as cross-foundation
 selective failure prediction and remove algorithmic emphasis on disagreement.
+Also report quality-only $R_q$, single-branch $R_D/R_V$, dual-probability $R_{DV}$,
+and disagreement-augmented $R_{DVd}$. Define
+$\Delta_{CF}=Perf(R_{DV})-\max(Perf(R_D),Perf(R_V))$ and
+$\Delta_{dis}=Perf(R_{DVd})-Perf(R_{DV})$.
 
 Exit criteria:
 
 - prediction-error AUPR, the primary failure-detection endpoint, improves consistently
   over single-model uncertainty;
 - excess-AURC, the primary selective endpoint, improves at matched class coverage;
+- **Level 3, retain disagreement claim:** preregistered $\Delta_{dis}>0$;
 - no target sample or statistic enters calibration.
 - Brier/NLL and reliability diagrams support any probabilistic `calibrated risk`
   wording; otherwise describe the output only as a failure-risk score.
@@ -220,6 +245,7 @@ separate go/no-go decision and are not assumed in the first paper.
 | J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
 | K | Two heads | No | Shared-encoder head-diversity control | No | No |
 | L | Yes | CLIP visual head | Calibrated average | No | No |
+| M | Reg + plain DINOv2 | No | Strong same-family calibrated average | No | No |
 
 ## Initial compute plan
 

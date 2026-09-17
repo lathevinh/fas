@@ -4,23 +4,23 @@
 
 For image $x$, two predictors are trained independently:
 
-$$p_D=f_D(x), \qquad p_V=f_V(x).$$
+$$\ell_D=f_D(x), \qquad \ell_V=f_V(x).$$
 
 The method does not align their features and does not minimize
-$D_{JS}(p_D,p_V)$. Their different pretraining objectives and natural error diversity
+$D_{JS}(\widehat p_D,\widehat p_V)$. Their different pretraining objectives and natural error diversity
 are the signal under study. Each branch raw logit is calibrated exactly once on source
 validation data before disagreement is computed:
 
 $$
-\widehat p_D=\sigma(\ell_D/T_D),\qquad
-\widehat p_V=\sigma(\ell_V/T_V),\qquad
-d(x)=D_{JS}(\widehat p_D\|\widehat p_V).
+\widehat p_D=\sigma(a_D\ell_D+b_D),\qquad
+\widehat p_V=\sigma(a_V\ell_V+b_V),\qquad a_D,a_V>0,
+d_{abs}(x)=|\widehat p_D-\widehat p_V|.
 $$
 
-Temperature scaling is the primary $\operatorname{Cal}_D$ and
-$\operatorname{Cal}_V$; no second calibrator is stacked afterward. Uncalibrated JS
-remains a mandatory ablation. Calibration parameters are fit without target data and
-frozen before target evaluation.
+Monotone affine logistic calibration is the one and only $\operatorname{Cal}_D$ and
+$\operatorname{Cal}_V$; temperature-only scaling and JS disagreement are ablations. Calibration uses
+equal domain weight in its source loss so a large source cannot dominate. No second
+calibrator is stacked afterward, and all parameters freeze before target evaluation.
 
 ## DINO visual predictor
 
@@ -54,10 +54,11 @@ wording. For each class $c$:
 $$
 s_c(x)=\frac{1}{|T_c|}\sum_{t\in T_c}\cos(v(x),e_t),\qquad
 \ell_V(x)=s_{spoof}(x)-s_{live}(x),\qquad
-\widehat p_V(x)=\sigma(\ell_V(x)/T_V).
+\widehat p_V(x)=\sigma(a_V\ell_V(x)+b_V),\qquad a_V>0.
 $$
 
-Temperature $T_V$ is fitted on source calibration data. Mean cosine is the primary
+The affine parameters are fitted once on domain-balanced source calibration data.
+Mean cosine is the primary
 aggregation; max and log-sum-exp are ablations. A separate auxiliary attack bank
 $T_{aux}$ scores coarse concepts such as:
 
@@ -73,7 +74,7 @@ implementation.
 Training order:
 
 1. preregister and freeze $T_{core}$, then freeze image and text encoders;
-2. fit only temperature $T_V$ on source calibration data;
+2. fit only monotone affine calibration $(a_V,b_V)$ on source calibration data;
 3. compare source-tuned templates/weights and a small learned head only as ablations;
 4. consider image-encoder LoRA only if a frozen branch is competent but underfits;
 5. keep the text encoder frozen to preserve its semantic space.
@@ -98,13 +99,11 @@ between two weak predictors is not useful complementarity.
 
 ## Source-only risk calibration
 
-Create out-of-fold source records in two variants. Sample-OOF splits within each
-source domain using subject/video-safe partitions. Domain-OOF holds out one complete
-source domain or attack family as a pseudo-shift. Predictor training, prompt selection,
-and score calibration for a fold use only the remaining source data. Within that
-remainder, branch fitting, prompt selection, and probability calibration use disjoint
-train/validation partitions. Domain-OOF is the primary protocol; sample-OOF is a less
-stressful ablation.
+Create source records in three distinct protocols. Sample-OOF splits within domains;
+domain-OOF holds out one complete capture domain and is primary for MICO; attack-OOF
+holds out one attack family and is primary for SiW-M downstream-unseen evaluation.
+A mixed domain/attack gate is secondary. Predictor fitting and branch calibration use
+only the allowed remainder with subject/video-safe disjoint partitions.
 
 The held-out fold provides features and error labels for the reliability model:
 
@@ -120,8 +119,9 @@ primary failure-risk calibrator; nested pseudo-domain selection is a secondary
 sensitivity analysis. Target-domain samples never train, select, or calibrate this
 model.
 
-Continuous OOF features are normalized using statistics from the corresponding
-source-side fitting/calibration partition before held-out prediction. A domain-ID
+Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. Only
+quality features are standardized with statistics from the final allowed source
+fitting partition; those same frozen statistics transform target quality features. A domain-ID
 classifier audits whether risk features encode OOF fold identity. High domain
 predictability triggers feature-removal and normalization ablations, but is not alone
 proof of leakage because genuine shift signals may also predict domain.
@@ -129,7 +129,7 @@ proof of leakage because genuine shift signals may also predict domain.
 Correctness labels are defined for the deterministic post-VLM rule
 $g_{ref}(x)=\mathbf{1}[(\widehat p_D+\widehat p_V)/2\ge\tau_{ref}]$, not at EER.
 Learned fusion remains an ablation. The main calibrator estimates
-$r_{err}(x)=P(g_{ref}(x)\neq y\mid z(x),\tau_{ref})$. Transfer to other APCER
+$r_{err}(x)=P(g_{ref}(x)\neq y\mid z_{primary}(x),\tau_{ref})$. Transfer to other APCER
 policies is an ablation; policy-specific calibrators are optional and must be trained
 source-only.
 Failure risk is not interpreted as a generic OOD or unknownness score.
@@ -137,10 +137,12 @@ Failure risk is not interpreted as a generic OOD or unknownness score.
 Every risk estimator is evaluated against the same labels
 $e(x)=\mathbf{1}[g_{ref}(x)\neq y]$. Complete DINO-only and dual-foundation selective
 systems are compared in a separate table because they change both prediction and risk.
-Reserve a subject/video-disjoint source-only gate-calibration partition before fitting
-the final gate. Fit the fixed logistic gate once on the remaining OOF records, select
-its accept threshold on the untouched partition, and do not refit afterward. Meta-OOF
-thresholding is a sensitivity analysis because a subsequent refit can change score scale.
+Reserve a subject/video-disjoint source-only gate-calibration partition $G$ before any
+fitting. Exclude $G$ from branch/head fitting, branch calibration, fusion selection,
+risk fitting, and preregistration statistics. Frozen base predictors produce genuinely
+out-of-sample features on $G$; select the gate threshold there and never refit either
+base models or risk gate with $G$. All compared methods use the same reduced source
+data. Fully cross-fitted thresholding is a future data-efficiency alternative.
 
 Raw and independently calibrated disagreement remain mandatory baselines. Absolute
 probability difference is primary; JS, hard decision disagreement, and log-odds

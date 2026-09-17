@@ -24,8 +24,8 @@ and repository during this planning pass.
 For each target among OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD:
 
 - DINO uses generic pretrained weights plus labels from the other three source datasets;
-- the VLM uses its generic pretrained weights, source images/labels for prompt and
-  temperature selection, and no target samples;
+- the VLM uses its generic pretrained weights, immutable core prompts, source
+  images/labels for one-stage domain-balanced affine calibration, and no target samples;
 - the reliability calibrator uses only out-of-fold predictions generated within the
   three source datasets;
 - CelebA-Spoof and SiW-M are not additional labeled training data.
@@ -170,6 +170,24 @@ not require cue-level pseudo-labels.
 
 ## Evaluation protocols
 
+### Source data lineage
+
+Assign every source subject/video to one role before feature extraction. The permanent
+gate-calibration partition $G$ is excluded from every fitted component and is never
+returned to final training.
+
+| Partition | Branch/head fit | Branch calibration | OOF risk records | Risk fit | Gate threshold | Preregistration |
+|---|---:|---:|---:|---:|---:|---:|
+| Source train | Yes | No | Fold-dependent | No | No | No |
+| Branch calibration | No | Yes, domain-balanced | Fold-dependent | No | No | No |
+| OOF pseudo-shift | No for held-out fold | Fold-specific only | Yes | Yes | No | Yes |
+| Gate calibration $G$ | No | No | No | No | Yes | No |
+| Target | No | No | No | No | No | Evaluation only |
+
+Prompt/checkpoint selection and fusion selection use designated source-only validation
+inside the allowed training remainder; they never use $G$, OOF held-out samples for
+that fold, or target data. All system controls use the same reduced source lineage.
+
 ### MICO cross-domain
 
 For OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD, train on three and test on
@@ -189,7 +207,7 @@ Count independent attack videos/transactions, not frames, before fixing $\alpha$
 Use the lowest operating point supported by those counts as primary (5% if necessary),
 while 1% and 0.5% remain nominal diagnostics when underpowered.
 
-Within each three-source training set, create out-of-fold reliability records by
+Within each three-source training set, create domain-OOF reliability records by
 holding out one source dataset at a time. Predictions on a held-out source must come
 from branches that did not train on that source. Fit the final reliability calibrator
 only after concatenating these out-of-fold records.
@@ -198,16 +216,20 @@ Inside each remaining-source fold, keep model fitting, prompt selection, and bra
 probability calibration disjoint from the held-out OOF evaluation domain.
 
 Compare this domain-OOF construction with sample-OOF records made inside each source
-domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the main claim.
+domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the MICO claim.
 
-Normalize each OOF risk feature using statistics from its source-side fitting and
-calibration partition. Audit fold/domain identifiability from the normalized features;
-report feature-removal sensitivity if domain prediction remains strong.
+Leave calibrated probabilities and absolute disagreement unstandardized. Normalize
+only quality features using source-fitting statistics that are frozen and reused at
+target time. Audit fold/domain identifiability and report feature-removal sensitivity
+if domain prediction remains strong.
 
 ### Leave-one-attack-out
 
 Use SiW-M official zero-shot protocols where obtainable. Exclude one attack type
 from training and evaluate it as unknown.
+Construct attack-OOF risk records by holding out attack families according to the
+official known/held-out split. Do not claim attack-shift calibration from a gate trained
+only on domain-OOF records. Mixed domain-plus-attack OOF is a secondary experiment.
 
 ### External mask transfer
 
@@ -239,6 +261,9 @@ frames from depth/IR and never use unavailable modalities.
   the analogous $BPCER_{covered}$, always labeled with their changed denominators;
 - end-to-end false acceptance
   $FA_{end2end}=N_{attack,accepted\ live}/N_{attack,total}$;
+- end-to-end bona-fide non-accept
+  $BFNR_{end2end}=N_{bona,not\ accepted}/N_{bona,total}$, including spoof decisions,
+  detector failures, and abstentions under $K=1$;
 - secure recall and VLM invocation rate at those fixed operating points;
 - bootstrap confidence intervals by subject/video;
 - per-target results and macro aggregation across target domains;

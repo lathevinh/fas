@@ -91,7 +91,9 @@ A gate trained on in-sample branch predictions can learn unrealistically clean e
 patterns, while a gate tuned on the target invalidates domain-generalization claims.
 
 Mitigation: generate risk-model training records only through held-out source-domain
-or held-out attack-family folds and freeze all thresholds before target inference.
+or held-out attack-family folds. Permanently exclude gate-calibration partition $G$
+from every base/risk fit and selection step, select the final threshold on genuinely
+out-of-sample predictions from $G$, and never refit with $G$.
 
 ### Apparent diversity from a weak branch
 
@@ -166,7 +168,16 @@ trained predictors.
 Mitigation: run the same calibration, REF, FARR, and risk evaluation for a
 shared-encoder DINO head-diversity control. Treat it as a minimum control, not as
 proof against all independently tuned same-family ensembles; add frozen DINOv2 without
-Registers when compute permits.
+Registers as a required confirmatory control when retaining the cross-foundation title.
+
+### Potential rescue is not realized rescue
+
+A VLM may correctly block DINO false accepts while calibrated averaging fails to use
+that information.
+
+Mitigation: report both branch-level $REF_{VLM}/FARR_{VLM}$ and deployed-fusion
+$REF_g/FARR_g$. Compare heterogeneous and same-family rescue on the same DINO failures
+using paired subject/video inference.
 
 ## Open decisions
 

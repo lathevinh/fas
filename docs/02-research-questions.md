@@ -35,28 +35,26 @@ optional and must not replace the directly interpretable joint table.
 
 ## RQ2: Source-only failure detection under shift
 
-Can natural cross-foundation disagreement estimate prediction failures under unseen
-domain and attack shifts better than conventional single-model uncertainty without
-target-domain calibration?
+Can a source-only cross-fitted risk model using independently calibrated
+cross-foundation predictions improve failure detection under domain and attack shift,
+and does explicit absolute-difference disagreement add value beyond the two branch
+probabilities?
 
-The raw baseline is:
+Domain-OOF and attack-OOF are separate protocols. Target data never train, select, or
+calibrate either model.
 
-$$D(x)=D_{JS}(p_D\|p_V).$$
+**H2:** Cross-foundation probabilities plus fixed quality features outperform
+quality-only and either single-branch learned-risk baseline ($\Delta_{CF}>0$), while
+the explicit absolute-difference feature adds capacity-matched incremental value
+($\Delta_{dis}>0$).
 
-The proposed calibrator is trained from out-of-fold source predictions. Each fold
-holds out a source domain or attack family as a pseudo-shift, trains the predictors
-on the remainder, and records correctness, uncertainty, and disagreement on the
-held-out fold. Target data never train or select the calibrator.
+**Falsification:** $\Delta_{CF}$ is not repeatably positive, the risk model requires
+target-domain tuning, or failure detection collapses on shared errors. If only
+$\Delta_{dis}$ fails, retain the dual-branch result but remove disagreement-centered
+framing.
 
-**H2:** Raw or source-calibrated disagreement improves error AUROC/AUPR and selective
-risk at matched coverage over maximum softmax probability, entropy, energy,
-representation-space confidence, and the better branch's uncertainty.
-
-**Falsification:** disagreement does not consistently beat these baselines, fails on
-shared errors, or requires target-domain labels or tuning.
-
-Explicit-disagreement wording additionally requires positive $\Delta_{dis}$ from the
-fixed absolute-difference feature over capacity-matched models receiving both branch
+Explicit-disagreement wording requires positive $\Delta_{dis}$ from the fixed
+absolute-difference feature over capacity-matched models receiving both branch
 probabilities and the same quality features.
 
 ## RQ3: Selective deployment
