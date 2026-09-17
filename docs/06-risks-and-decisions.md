@@ -3,20 +3,21 @@
 This file records design arguments rather than presenting the current proposal as
 settled fact.
 
-## Decision 1: Separate evidence spaces
+## Decision 1: Preserve branch independence
 
-**Chosen:** DINO produces forensic evidence; the VLM produces semantic evidence;
-comparison occurs through an explicit ontology.
+**Chosen:** DINO and VLM predictors train independently. Their outputs are compared
+post hoc through disagreement and a source-only risk calibrator.
 
 **Alternative:** project DINO patches directly into the VLM text space and compute
 patch-text cosine similarity.
 
-**Reason:** native spaces are not aligned, and learned patch-text alignment is close
-to existing work. Separate branches preserve complementary inductive biases.
+**Reason:** native spaces are not aligned, learned patch-text alignment is close to
+existing work, and forcing decision agreement destroys the proposed unknown signal.
 
-**Counterargument:** an ontology introduces hand-designed assumptions and label cost.
+**Counterargument:** plain cross-model disagreement is standard ensemble machinery.
 
-**Required test:** compare fixed, sparse learned, unconstrained, and no ontology.
+**Required test:** demonstrate source-only generalization beyond MSP, entropy, energy,
+fixed averaging, and learned score fusion.
 
 ## Decision 2: Structured VLM, not free-form MLLM
 
@@ -31,18 +32,20 @@ to evaluate. MLLM captions may still generate offline annotation candidates.
 
 **Mitigation:** DINO owns local artifacts; evaluate regional semantic scoring.
 
-## Decision 3: Consistency is confidence-weighted
+## Decision 3: No agreement objective in version 1
 
-**Chosen:** delay consistency and apply it only to trusted concepts.
+**Chosen:** do not minimize feature, evidence, or decision disagreement.
 
-**Alternative:** force agreement throughout training.
+**Alternative:** confidence-weighted consistency on known source attacks.
 
-**Reason:** forced agreement can propagate VLM hallucinations and destroy useful
-error diversity.
+**Reason:** forced agreement can propagate VLM errors, collapse branch diversity,
+and directly weaken the signal used for failure and unknown detection.
 
-**Counterargument:** weak consistency may not affect learning.
+**Counterargument:** unconstrained branches may disagree for irrelevant calibration
+or scale reasons.
 
-**Required test:** weight schedules and pseudo-label confidence thresholds.
+**Mitigation:** independently calibrate source scores, compare multiple normalized
+disagreement measures, and learn a regularized calibrator from out-of-fold sources.
 
 ## Decision 4: Physical PAD first
 
@@ -53,6 +56,15 @@ error diversity.
 **Reason:** presentation attacks and digital manipulation have different threat
 models and artifacts. A narrow first paper permits defensible evaluation.
 
+## Decision 5: Strict-source main protocol
+
+**Chosen:** the primary MICO results use only the three designated source PAD datasets
+plus generic foundation-model pretraining. CelebA-Spoof is an explicit extra-data
+ablation.
+
+**Reason:** silently adding a large labeled PAD dataset would make comparison unfair
+and weaken the source-only claim.
+
 ## Major risks
 
 ### Shared shortcuts
@@ -62,6 +74,29 @@ for the wrong reason.
 
 Mitigation: cross-domain evaluation, nuisance interventions, background/face
 ablations, sensor stratification, and shared-error analysis.
+
+### Disagreement misses shared failures
+
+Both branches may confidently accept the same attack, yielding low disagreement.
+
+Mitigation: report double-fault rate and shared-failure subgroups; compare disagreement
+with image quality and single-branch uncertainty. Do not claim complete unknown detection.
+
+### Reliability-calibrator leakage
+
+A gate trained on in-sample branch predictions can learn unrealistically clean error
+patterns, while a gate tuned on the target invalidates domain-generalization claims.
+
+Mitigation: generate risk-model training records only through held-out source-domain
+or held-out attack-family folds and freeze all thresholds before target inference.
+
+### Apparent diversity from a weak branch
+
+Large $P_{cw}+P_{wc}$ may arise because both predictors are weak rather than usefully
+complementary.
+
+Mitigation: require standalone competence, two-sided recovery, low double-fault,
+oracle gain over the better branch, and achievable fusion gain.
 
 ### Semantic evidence is too coarse
 
@@ -87,15 +122,17 @@ treatment where appropriate.
 
 ### Consistency collapse
 
-Branches may become copies, increasing agreement without accuracy.
+Fine-tuning both branches on the same labels may make them copies even without an
+explicit consistency loss.
 
-Mitigation: independent pretraining, branch-specific supervision, stop-gradient
-ablation, error diversity measurements, and no feature-level forced alignment.
+Mitigation: frozen-backbone kill experiment first, branch-specific model selection,
+error-diversity measurements, and no joint fine-tuning in version 1.
 
 ### Publication overlap
 
-The field is moving rapidly; 2026 work already covers DINO prompting and
-compositional forensic prompts.
+The field is moving rapidly; current work already covers semantic consistency,
+confidence-aware FAS, reliability-aware VLMs, DINO prompting, and compositional
+forensic prompts.
 
 Mitigation: monthly literature delta search and explicit comparison against the
 closest methods.
@@ -104,7 +141,8 @@ closest methods.
 
 - Which exact OpenCLIP/SigLIP checkpoint gives the best accuracy/compute tradeoff?
 - Does the VLM consume the context crop, face crop, or both?
-- Which concepts survive human precision audit?
-- Should ontology edges be signed to represent negative evidence?
+- Which source-fold construction best approximates unknown domain and attack shifts?
+- Which low-capacity calibrator avoids overfitting the out-of-fold records?
+- What pre-registered minimum oracle/fusion gain justifies continuing?
 - Is abstention evaluated per image or per authentication transaction?
 - Which target journal and category define the Q3 requirement?

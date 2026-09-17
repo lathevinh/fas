@@ -1,109 +1,117 @@
 # Proposed Method
 
-## Overview
+## Design principle
 
-For image $x$, the system produces two independent evidence views and only then
-compares them.
+For image $x$, two predictors are trained independently:
 
-### Forensic branch
+$$p_D=f_D(x), \qquad p_V=f_V(x).$$
+
+The method does not align their features and does not minimize
+$D_{JS}(p_D,p_V)$. Their different pretraining objectives and natural error diversity
+are the signal under study. Disagreement is measured after prediction:
+
+$$d(x)=D_{JS}(p_D\|p_V).$$
+
+## DINO visual predictor
 
 DINOv2-Reg returns patch, class, and register tokens:
 
 $$
-D=f_D(x)=\{d_1,\ldots,d_N,d_{cls},d_{reg}^1,\ldots,d_{reg}^R\}.
+D(x)=\{d_1,\ldots,d_N,d_{cls},d_{reg}^1,\ldots,d_{reg}^R\}.
 $$
 
-A patch head produces $M$ cue maps:
+The minimum implementation concatenates the class token with attention-pooled patch
+features and trains binary PAD plus optional attack-family heads. Registers remain
+internal context tokens and are not treated as spatial heatmaps.
 
-$$H^F=h_F(d_1,\ldots,d_N)\in\mathbb R^{N\times M}.$$
+This branch is called a visual or forensic predictor because its dense self-supervised
+features can retain local texture. The name does not assert that every patch activation
+is a verified physical forensic cue.
 
-Candidate cues include halftone, paper texture, print blur, moire, pixel grid,
-color banding, reflection, flat geometry, rigid texture, and mask boundary.
-Register/class tokens condition pooling or gating but are not spatial heatmaps.
-The branch produces attack probabilities $p^F$ and forensic concept scores $e^F$.
+Training order:
 
-### Semantic branch
+1. pretrained `dinov2_vitb14_reg4`, frozen backbone, train prediction heads;
+2. compare DINOv2 without registers as an ablation;
+3. add LoRA/adapters to the last four blocks only after the frozen kill experiment;
+4. do not full-fine-tune in the first implementation.
 
-A pretrained CLIP/SigLIP-style model scores prompt ensembles for structured concepts:
+## VLM semantic predictor
 
-- material: natural skin, paper, display, silicone/latex, rigid material;
-- geometry: natural facial depth, flat surface, rigid mask, partial boundary;
-- artifact semantics: printed pattern, recaptured display, artificial reflection;
-- nuisance: blur, compression, illumination, sensor noise.
+A frozen OpenCLIP/SigLIP-style model scores prompt ensembles for coarse concepts:
 
-It produces semantic evidence $e^S$ and attack probabilities $p^S$. Free-form
-generated text is not part of the core training target.
+- bona fide or natural face;
+- printed face or paper presentation;
+- replayed face or display presentation;
+- mask or artificial face.
 
-### Ontology-guided consistency
+Prompt scores are calibrated on source validation data and mapped to binary PAD and,
+where supported, attack-family probabilities. Free-form generated rationales and
+fine-grained concepts such as moire are outside the minimum implementation.
 
-A sparse mapping $W_{onto}$ connects compatible forensic and semantic concepts:
+Training order:
 
-$$\hat e^F=\sigma(W_{onto}\operatorname{Pool}(H^F)).$$
+1. freeze image and text encoders;
+2. select prompt templates and temperature using source validation only;
+3. compare fixed prompts with a small learned calibration/head;
+4. consider image-encoder LoRA only if a frozen branch is competent but underfits;
+5. keep the text encoder frozen to preserve its semantic space.
 
-Examples:
+The VLM must remain independently useful. Fine-tuning both branches jointly on a
+shared consistency loss is prohibited in the main method.
 
-- moire + pixel grid + display reflection -> replay/display;
-- halftone + paper texture + flat surface -> print/paper;
-- rigid texture + eye/mouth boundary + facial depth anomaly -> mask.
+## Complementarity analysis
 
-The mapping is initialized from domain knowledge. An ablation compares fixed,
-learnable sparse, and unconstrained mappings.
+For each target sample, record whether each branch is correct and estimate
+$P_{cc},P_{cw},P_{wc},P_{ww}$. Report:
 
-## Losses
+- each branch's standalone performance;
+- double-fault rate $P_{ww}$;
+- oracle accuracy $1-P_{ww}$ and oracle gain over the better branch;
+- two-sided recovery rates $P_{cw}$ and $P_{wc}$;
+- error correlation by domain and attack family.
+
+This analysis is a gate before any learned reliability component. High disagreement
+between two weak predictors is not useful complementarity.
+
+## Source-only risk calibration
+
+Create out-of-fold source records by holding out one source domain or attack family
+at a time. Predictor training, prompt selection, and score calibration for a fold use
+only the remaining source data. The held-out fold provides features and error labels
+for the reliability model:
 
 $$
-\mathcal L =
-\mathcal L_{pad}+
-\lambda_a\mathcal L_{attack}+
-\lambda_f\mathcal L_{forensic}+
-\lambda_s\mathcal L_{semantic}+
-\lambda_e\mathcal L_{evidence-consistency}+
-\lambda_d\mathcal L_{decision-consistency}+
-\lambda_c\mathcal L_{counterfactual}.
+z(x)=[p_D,p_V,d(x),H(p_D),H(p_V),E_D,E_V,q(x)],
 $$
 
-- `PAD`: binary bona-fide/attack classification.
-- `attack`: print/replay/mask/other when labels exist.
-- `forensic`: cue supervision from verified labels, intervention masks, or trusted pseudo-labels.
-- `semantic`: multi-label material/geometry concepts.
-- `evidence-consistency`: confidence-masked agreement between compatible evidence.
-- `decision-consistency`: Jensen-Shannon divergence between branch predictions.
-- `counterfactual`: intended evidence changes under controlled cue intervention.
+where $H$ denotes entropy, $E$ optional energy scores, and $q(x)$ image-quality
+features. A small regularized calibrator estimates failure risk $r(x)$. Target-domain
+samples never train, select, or calibrate this model.
 
-Consistency weights start at zero and warm up only after both branches are useful.
-Low-confidence semantic pseudo-labels do not impose consistency.
+Raw JS disagreement remains a mandatory baseline. The learned calibrator is useful
+only if it generalizes beyond MSP, entropy, energy, and ordinary learned score fusion.
 
-## Reliability and final decision
+## Decision and conditional inference
 
-A small reliability gate uses branch entropy, evidence confidence, image quality,
-and branch divergence:
+There are two separate gates:
 
-$$p=w_Fp^F+w_Sp^S,\qquad w_F+w_S=1.$$
+1. **Routing gate:** DINO confidence and image quality decide whether to accept a
+   high-confidence DINO result or invoke the VLM.
+2. **Selective gate:** after VLM invocation, cross-model disagreement and calibrated
+   risk decide whether to fuse, accept one branch, or return `retry/abstain`.
 
-Large disagreement triggers abstention or recapture. The gate must be compared
-against fixed averaging and ordinary learned score fusion.
+This distinction avoids claiming that disagreement can route a request before the VLM
+has run. Always-on dual inference is the accuracy upper bound; conditional inference
+is evaluated against it at matched APCER/BPCER and coverage.
 
-## Training strategy
+## Optional evidence extension
 
-### DINO branch
+Only after the three primary research questions pass their kill criteria, evaluate:
 
-1. Start with pretrained `dinov2_vitb14_reg4`, fully frozen, and train heads.
-2. Add LoRA/adapters to the last four blocks if the frozen baseline saturates.
-3. Unfreeze two to four final blocks only if source validation improves without
-   degrading held-out-source generalization.
-4. Do not full-fine-tune from the beginning.
+- DINO patch deletion/insertion and context sensitivity;
+- coarse VLM concept contributions;
+- a small, manually audited cue set;
+- semantic distillation to a compact production head.
 
-### VLM branch
-
-1. Start with frozen OpenCLIP or SigLIP image/text encoders.
-2. Train prompt weights, calibration, and a sparse semantic-to-attack head.
-3. If necessary, apply LoRA to the last image blocks; keep the text encoder frozen.
-4. Use a generative MLLM only offline for candidate annotation, followed by audit.
-
-### Joint stage
-
-1. Freeze stable backbones and train the ontology and reliability gate.
-2. Warm up consistency weights.
-3. Optionally unfreeze adapters at a learning rate ten times below head learning rate.
-4. Distill semantic evidence to a compact production head after establishing the
-   full model as an upper bound.
+Named micro-forensic cue maps, learned ontology edges, synthetic cue interventions,
+and consistency losses are not part of version 1.

@@ -5,22 +5,25 @@
 Build a single-frame RGB PAD model that is:
 
 1. accurate under unseen capture domains and attack instruments;
-2. able to expose localized forensic and structured semantic evidence;
-3. calibrated enough to abstain when its evidence branches conflict;
+2. able to preserve complementary visual and semantic inductive biases;
+3. calibrated from source-only out-of-fold predictions to abstain on likely failures;
 4. practical enough to deploy without a large generative VLM on every request.
 
 ## Intended contribution
 
 Working title:
 
-> Dual-Evidence Consistency Learning for Reliable Open-World Single-Image Face PAD
+> Source-Only Calibrated Cross-Foundation Disagreement for Selective Single-Image Face PAD
 
-The contribution must be the tested mechanism, not the choice of two pretrained
-backbones:
+The contribution must be the tested source-only reliability mechanism, not the
+choice of two pretrained backbones or disagreement by itself:
 
-1. a forensic branch that extracts localized physical artifacts from DINOv2-Reg;
-2. a semantic branch that represents material, geometry, and attack concepts;
-3. ontology-guided evidence consistency plus disagreement-aware selective prediction.
+1. intentionally independent DINOv2-Reg and VLM predictors;
+2. cross-fitted disagreement calibration without target-domain labels;
+3. selective and conditional inference evaluated as a security-coverage-latency trade-off.
+
+Named forensic cue maps and ontology learning are optional follow-up work, not part
+of the minimum viable paper.
 
 ## Primary outputs
 
@@ -34,11 +37,11 @@ backbones:
 
 The approach is worth a model-centric paper only if it:
 
-- beats DINOv2-Reg and learned score fusion on multiple unseen domains;
-- improves unknown-attack/error detection using branch disagreement;
-- produces evidence that passes intervention and deletion tests;
+- demonstrates non-trivial two-sided complementarity and oracle gain;
+- beats DINOv2-Reg, VLM uncertainty, and learned score fusion on multiple unseen domains;
+- improves unknown-attack/error detection over MSP, entropy, and energy baselines;
 - retains the improvement across at least three random seeds;
-- offers a deployable DINO-only or distilled-semantic configuration.
+- offers conditional VLM inference with a measured security-coverage-latency benefit.
 
 An improvement on one in-domain split is insufficient.
 

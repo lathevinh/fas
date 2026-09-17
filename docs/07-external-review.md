@@ -17,14 +17,14 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 1. Is the novelty distinct from MVP-FAS, DINO-VPT, FLIP, FaceShield, and
    primitive-driven compositional prompting?
 2. Is forensic versus semantic evidence operationally defined or merely named?
-3. Can the consistency losses improve agreement while worsening correctness?
-4. Does the ontology encode the answer using attack labels?
-5. Are pseudo-labels evaluated independently from the model that generated them?
+3. Is cross-foundation disagreement itself too incremental to support the claim?
+4. Are reliability records genuinely out-of-fold and source-only?
+5. Does apparent complementarity come from a weak second branch?
 6. Are MICO and leave-one-attack-out protocols leakage-safe?
 7. Does single-image inference remain true despite training on video datasets?
 8. Are score fusion, capacity-matched fusion, and uncertainty baselines sufficient?
-9. Do heatmap experiments test faithfulness rather than visual plausibility?
-10. Is the deployment claim supported by an inference path without a large VLM?
+9. Does the method detect shared failures where both branches confidently agree?
+10. Does conditional inference save compute at matched biometric security and coverage?
 
 ## Expected review format
 

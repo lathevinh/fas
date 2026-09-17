@@ -1,11 +1,12 @@
-# Dual-Evidence Single RGB Image PAD
+# Cross-Foundation Disagreement for Single RGB Image PAD
 
 Research dossier for a practical and publishable face presentation attack detection
-(PAD) system using one RGB image. The proposed system combines:
+(PAD) system using one RGB image. The proposed system studies:
 
-- localized forensic evidence from DINOv2 with Registers;
-- structured semantic evidence from a vision-language model (VLM);
-- evidence- and decision-level consistency for prediction, uncertainty, and abstention.
+- a self-supervised visual predictor based on DINOv2 with Registers;
+- an independently pretrained vision-language semantic predictor;
+- source-only disagreement calibration for failure detection, abstention, and
+	conditional VLM inference.
 
 This repository is documentation-first. Its immediate purpose is to make the
 research proposal auditable and easy to challenge before implementation.
@@ -24,9 +25,9 @@ an attack at the biometric capture device under ISO/IEC 30107 terminology.
 
 ## Research question
 
-Can complementary forensic and semantic evidence improve cross-domain and
-unknown-attack reliability over a strong DINOv2-Reg classifier and a conventional
-ensemble, while preserving interpretable evidence and deployable inference?
+Do independently pretrained visual and vision-language foundation models make
+usefully different errors under domain and attack shift, and can their natural
+disagreement support better selective PAD than conventional uncertainty and fusion?
 
 ## Document map
 
@@ -38,7 +39,9 @@ ensemble, while preserving interpretable evidence and deployable inference?
 6. [Experiment and implementation plan](docs/05-experiment-plan.md)
 7. [Risks, alternatives, and decisions](docs/06-risks-and-decisions.md)
 8. [External review guide](docs/07-external-review.md)
-9. [Reading list](references/reading-list.md)
+9. [ChatGPT review](docs/08-chatgpt-review.md)
+10. [Response to ChatGPT review](docs/09-review-response.md)
+11. [Reading list](references/reading-list.md)
 
 ## Current status
 
@@ -55,6 +58,7 @@ This project does not currently claim that:
 - cosine similarity across their native embeddings is meaningful;
 - a visually plausible heatmap is faithful evidence;
 - consistency implies correctness;
+- cross-model disagreement alone is a novel algorithm;
 - the proposed model outperforms any baseline.
 
 ## Reproduction policy

@@ -7,6 +7,8 @@ Tasks:
 - obtain datasets and archive their agreements;
 - verify every official protocol and label mapping;
 - implement manifests, leakage checks, metrics, and deterministic frame sampling;
+- compare the exact settings of TIFS 2024 Evidential Semantic Consistency,
+  Confidence Aware Learning, RPSR-FAS, DINO-VPT, and primitive-driven prompting;
 - freeze the literature table and search for newer overlapping work.
 
 Exit criteria:
@@ -15,67 +17,71 @@ Exit criteria:
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
 
-## Stage 1: Strong baselines, weeks 3-5
+## Stage 1: Complementarity kill experiment, weeks 3-5
 
 Train under identical sampling:
 
-1. supervised ResNet/ViT baseline;
-2. DINOv2 without registers, frozen probe;
-3. DINOv2-Reg, frozen probe;
-4. DINOv2-Reg with adapters/LoRA;
-5. frozen CLIP/SigLIP class-prompt baseline;
-6. ordinary score fusion.
+1. DINOv2-Reg with a frozen backbone and trained PAD head;
+2. frozen CLIP/SigLIP with source-selected prompt ensemble and temperature;
+3. fixed score average;
+4. regularized learned score fusion.
 
-Run one MICO target first as the cheap discriminating experiment, then all four.
+Cache each branch independently so they never need to share GPU memory. Run one
+MICO target first, selected before observing results, then construct the joint
+correctness table and report $P_{cc},P_{cw},P_{wc},P_{ww}$, double-fault, oracle gain,
+error correlation, and attack/domain subgroups.
 
 Exit criteria:
 
-- DINOv2-Reg is competitive with published/reproduced baselines;
-- results are stable across three seeds;
+- both branches are competent and neither simply dominates every subgroup;
+- oracle gain over the better branch is non-negligible;
+- both $P_{cw}$ and $P_{wc}$ are non-trivial;
 - no target data influenced model selection.
 
-## Stage 2: Independent evidence, weeks 6-9
+Stop the dual-foundation direction if these conditions fail. DINOv2 without registers,
+supervised backbones, LoRA, and larger VLMs are later ablations, not prerequisites.
 
-### Forensic branch
+## Stage 2: Source-only risk calibration, weeks 6-8
 
-- train patch cue maps and global heads;
-- supervise with official labels and controlled intervention masks;
-- measure deletion/insertion and cue intervention response.
+Generate out-of-fold source records:
 
-### Semantic branch
+1. hold out one source domain or attack family;
+2. train/select both predictors using only the remainder;
+3. predict the held-out fold and record correctness, probabilities, entropy, energy,
+   image quality, and cross-model divergence;
+4. repeat all folds and concatenate records;
+5. train a small regularized failure-risk calibrator;
+6. freeze it before target evaluation.
 
-- finalize concept ontology and prompt ensembles;
-- calibrate zero-shot scores;
-- create and manually audit pseudo-labels;
-- add image-encoder LoRA only if frozen features are inadequate.
+Compare raw JS disagreement and the calibrator against MSP, entropy, energy, branch
+ensembles, and ordinary learned fusion.
 
 Exit criteria:
 
-- each branch exceeds its trivial baseline;
-- branch errors are demonstrably non-identical;
-- evidence tests are better than random and generic attention maps.
+- target error/unknown AUROC and AUPR improve consistently over single-model uncertainty;
+- selective risk improves at matched coverage;
+- no target sample or statistic enters calibration.
 
-## Stage 3: Consistency, weeks 10-12
+## Stage 3: Selective and conditional inference, weeks 9-11
 
 Implement in this order:
 
-1. fixed score average;
-2. learned score fusion;
-3. decision consistency only;
-4. evidence consistency with fixed ontology;
-5. sparse learnable ontology;
-6. counterfactual consistency;
-7. disagreement-aware abstention.
+1. always-on DINO + VLM upper bound;
+2. disagreement-aware accept/retry policy;
+3. DINO-confidence routing that calls the VLM only for uncertain samples;
+4. post-VLM selective fusion or retry;
+5. optional semantic distillation after the upper bound is established.
 
 Do not add the next component unless the current comparison is understood.
 
 Exit criteria:
 
-- full consistency beats learned fusion beyond uncertainty intervals;
-- disagreement predicts errors better than entropy/MSP/energy;
+- calibrated disagreement beats learned fusion and entropy/MSP/energy;
+- conditional inference approaches always-on security/selective performance;
+- VLM invocation rate or latency decreases materially at matched operating points;
 - shared wrong predictions are explicitly analyzed.
 
-## Stage 4: Open-world evaluation, weeks 13-15
+## Stage 4: Full open-world evaluation, weeks 12-14
 
 - complete four-target MICO;
 - run SiW-M leave-one-attack-out;
@@ -83,44 +89,49 @@ Exit criteria:
 - stratify results by sensor, illumination, attack instrument, and image quality;
 - inspect worst false accepts and false rejects.
 
-## Stage 5: Deployment variants, weeks 16-17
+## Stage 5: Secondary representation ablations, weeks 15-16
 
-Evaluate:
+Only after Stages 1-4 pass:
 
-- full DINO + VLM upper bound;
-- conditional VLM called only for uncertain DINO samples;
-- DINO plus distilled semantic head;
-- DINO-only fallback.
+- DINOv2 versus DINOv2-Reg;
+- class token versus attention-pooled patches;
+- face versus context crop;
+- frozen versus LoRA-tuned branches;
+- optional patch deletion/insertion analysis;
+- optional coarse semantic concept analysis.
 
-Report parameters, FLOPs, peak memory, latency, throughput, and coverage at a fixed
-security operating point. Hardware and batch size must be stated.
+Named cue ontology, cue pseudo-labeling, and counterfactual synthesis require a
+separate go/no-go decision and are not assumed in the first paper.
 
-## Stage 6: Paper package, weeks 18-20
+## Stage 6: Deployment and paper package, weeks 17-20
 
 - freeze configs and final checkpoints;
 - rerun main tables from clean manifests;
 - complete statistical tests and confidence intervals;
 - prepare evidence maps with quantitative tests, not cherry-picked examples;
 - document failures and negative ablations;
+- report parameters, FLOPs, peak memory, latency, throughput, VLM invocation rate,
+  and coverage at fixed security operating points;
 - update the literature search immediately before submission.
 
 ## Core ablation matrix
 
-| ID | DINO forensic | VLM semantic | Ontology | Counterfactual | Abstention |
-|---|---:|---:|---:|---:|---:|
-| A | Yes | No | No | No | No |
-| B | No | Yes | No | No | No |
-| C | Yes | Yes | No, average | No | No |
-| D | Yes | Yes | No, learned fusion | No | No |
-| E | Yes | Yes | Fixed | No | No |
-| F | Yes | Yes | Sparse learned | No | No |
-| G | Yes | Yes | Sparse learned | Yes | No |
-| H | Yes | Yes | Sparse learned | Yes | Yes |
+| ID | DINO | VLM | Fusion/risk method | Conditional VLM | Retry |
+|---|---:|---:|---|---:|---:|
+| A | Yes | No | DINO uncertainty | No | Optional |
+| B | No | Yes | VLM uncertainty | No | Optional |
+| C | Yes | Yes | Fixed average | No | No |
+| D | Yes | Yes | Learned score fusion | No | No |
+| E | Yes | Yes | Raw JS disagreement | No | Yes |
+| F | Yes | Yes | Source-only risk calibrator | No | Yes |
+| G | Yes | On demand | Source-only risk calibrator | Yes | Yes |
+| H | Yes | Distilled | Source-only risk calibrator | No | Yes |
 
 ## Initial compute plan
 
-- MVP: one 24 GB GPU, frozen backbones, mixed precision, cached frozen embeddings.
-- Adapter stage: one 24-48 GB GPU depending on VLM/input resolution.
+- MVP: one RTX 4080 16 GB, frozen backbones, mixed precision, sequential feature caching.
+- Adapter stage: start with batch-size reduction and gradient accumulation; larger
+  hardware is optional rather than assumed.
 - Full evaluation: parallelize seeds/targets; do not reduce protocol coverage to
   finance unnecessary full fine-tuning.
 
@@ -129,10 +140,10 @@ Indicative starting values, to be selected on source validation only:
 ```yaml
 dino_checkpoint: dinov2_vitb14_reg4
 dino_input_size: 448
-dino_tuning: frozen_then_lora_last_4
+dino_tuning: frozen
 vlm_family: openclip_or_siglip
 vlm_text_encoder: frozen
-vlm_image_tuning: frozen_then_optional_lora
+vlm_image_tuning: frozen
 head_lr: 3.0e-4
 adapter_lr: 3.0e-5
 weight_decay: 0.05

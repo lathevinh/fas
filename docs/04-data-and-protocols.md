@@ -4,7 +4,7 @@
 
 | Dataset | Intended use | Useful labels/properties | Restrictions or caveats |
 |---|---|---|---|
-| CelebA-Spoof | Large-scale PAD/concept pretraining | 625,537 images, 10,177 subjects, spoof type, illumination, environment | Non-commercial research; image-style source differs from video PAD sets |
+| CelebA-Spoof | Optional extra-data pretraining/analysis | 625,537 images, 10,177 subjects, spoof type, illumination, environment | Excluded from strict MICO; non-commercial research only |
 | OULU-NPU | MICO and mobile domain evaluation | Print/replay, protocols for environment/device variation | Preserve official protocols |
 | CASIA-FASD | MICO source/target | Print, cut-photo, replay and quality variation | Verify redistribution/access terms |
 | Replay-Attack | MICO source/target | Print/replay and controlled/adverse settings | Preserve official train/dev/test split |
@@ -16,6 +16,28 @@
 Dataset facts and licenses must be rechecked against downloaded documentation.
 Only CelebA-Spoof details above have been directly checked against its public paper
 and repository during this planning pass.
+
+## Data available to each model
+
+### Strict MICO track
+
+For each target among OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD:
+
+- DINO uses generic pretrained weights plus labels from the other three source datasets;
+- the VLM uses its generic pretrained weights, source images/labels for prompt and
+  temperature selection, and no target samples;
+- the reliability calibrator uses only out-of-fold predictions generated within the
+  three source datasets;
+- CelebA-Spoof and SiW-M are not additional labeled training data.
+
+This is the main comparison track. A separate `+CelebA-Spoof` experiment may measure
+the value of extra FAS supervision, but it must not be compared as if training data
+were equal.
+
+### Unseen-attack track
+
+Use the official SiW-M split/protocol. The held-out attack family cannot participate
+in branch tuning, prompt selection, reliability calibration, or threshold selection.
 
 ## Unified metadata manifest
 
@@ -84,7 +106,7 @@ This prevents CelebA-Spoof and long videos from dominating optimization.
 - mild brightness, contrast, gamma, and white-balance changes;
 - mild sensor noise and compression.
 
-### Controlled forensic interventions
+### Optional controlled forensic interventions
 
 - localized halftone or print degradation;
 - calibrated moire/pixel-grid patterns;
@@ -93,9 +115,10 @@ This prevents CelebA-Spoof and long videos from dominating optimization.
 
 Each intervention stores its spatial mask and affected concept. Synthetic data
 supervise only the intervention that was actually generated; they are not treated
-as complete replicas of real attacks.
+as complete replicas of real attacks. These interventions are deferred until the
+minimum disagreement study succeeds.
 
-## Annotation strategy
+## Optional cue annotation strategy
 
 Priority order:
 
@@ -104,8 +127,10 @@ Priority order:
 3. VLM/MLLM pseudo-label with confidence;
 4. human verification.
 
-Audit 1,000-2,000 balanced samples across datasets and attacks. Report agreement
-and per-concept precision. Low-precision concepts are removed or treated as latent.
+If the evidence extension proceeds, audit 1,000-2,000 balanced samples across
+datasets and attacks. Report agreement and per-concept precision. Low-precision
+concepts are removed or treated as latent. The core disagreement experiment does
+not require cue-level pseudo-labels.
 
 ## Evaluation protocols
 
@@ -113,6 +138,11 @@ and per-concept precision. Low-precision concepts are removed or treated as late
 
 For OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD, train on three and test on
 the fourth. Hyperparameters and thresholds use source-domain validation only.
+
+Within each three-source training set, create out-of-fold reliability records by
+holding out one source dataset at a time. Predictions on a held-out source must come
+from branches that did not train on that source. Fit the final reliability calibrator
+only after concatenating these out-of-fold records.
 
 ### Leave-one-attack-out
 

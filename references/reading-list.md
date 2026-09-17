@@ -20,6 +20,20 @@ Publisher status and bibliographic metadata must be verified before citation.
 - InstructFLIP: <https://arxiv.org/abs/2507.12060>
 - MVP-FAS: <https://arxiv.org/abs/2509.06336>
 
+## Reliability, consistency, and closest overlap
+
+- Cross-Scenario Unknown-Aware Face Anti-Spoofing With Evidential Semantic
+  Consistency Learning, IEEE TIFS 2024:
+  <https://doi.org/10.1109/TIFS.2024.3356234>
+- Confidence Aware Learning for Reliable Face Anti-Spoofing, IEEE TIFS 2025:
+  <https://doi.org/10.1109/TIFS.2025.3564878>
+- Reliability-Aware Vision-Language Face Anti-Spoofing via Progressive Semantic
+  Reorganization, first online 2026-09-08:
+  <https://doi.org/10.1007/s44443-026-01145-z>
+- Dual Semantic Consistency Module for Domain Generalizable Face Anti-Spoofing,
+  first online 2026-08-31:
+  <https://doi.org/10.1007/s44443-026-01259-4>
+
 ## Closest 2026 work
 
 - Benchmarking Vision Foundation Models for Domain-Generalizable FAS:
