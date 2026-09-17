@@ -158,12 +158,19 @@ forensic prompts.
 Mitigation: monthly literature delta search and explicit comparison against the
 closest methods.
 
+### Generic ensemble diversity
+
+Cross-foundation rescue may be no stronger than diversity from ordinary independently
+trained predictors.
+
+Mitigation: run the same calibration, REF, FARR, and risk evaluation for a homogeneous
+DINO control. Treat independent heads on one frozen encoder as a minimum control, not
+as proof against all independently tuned homogeneous ensembles.
+
 ## Open decisions
 
 - Which exact OpenCLIP/SigLIP checkpoint gives the best accuracy/compute tradeoff?
 - Does the VLM consume the context crop, face crop, or both?
 - Which source-fold construction best approximates unseen domain and attack shifts?
-- Which low-capacity calibrator avoids overfitting the out-of-fold records?
 - What pre-registered minimum oracle/fusion gain justifies continuing?
-- Is abstention evaluated per image or per authentication transaction?
 - Which target journal and category define the Q3 requirement?

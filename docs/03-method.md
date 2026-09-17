@@ -45,16 +45,27 @@ Training order:
 
 ## VLM semantic predictor
 
-A frozen OpenCLIP/SigLIP-style model scores prompt ensembles for coarse concepts:
+A frozen OpenCLIP/SigLIP-style model uses an immutable binary core prompt bank
+$T_{core}=T_{live}\cup T_{spoof}$ with generic live and artificial-presentation
+wording. For each class $c$:
+
+$$
+s_c(x)=\frac{1}{|T_c|}\sum_{t\in T_c}\cos(v(x),e_t),\qquad
+p_V(\mathrm{spoof}\mid x)=\sigma\left(\frac{s_{spoof}(x)-s_{live}(x)}{T}\right).
+$$
+
+Temperature $T$ is fitted on source calibration data. Mean cosine is the primary
+aggregation; max and log-sum-exp are ablations. A separate auxiliary attack bank
+$T_{aux}$ scores coarse concepts such as:
 
 - bona fide or natural face;
 - printed face or paper presentation;
 - replayed face or display presentation;
 - mask or artificial face.
 
-Prompt scores are calibrated on source validation data and mapped to binary PAD and,
-where supported, attack-family probabilities. Free-form generated rationales and
-fine-grained concepts such as moire are outside the minimum implementation.
+Auxiliary scores never alter the core binary PAD denominator. Free-form generated
+rationales and fine-grained concepts such as moire are outside the minimum
+implementation.
 
 Training order:
 
@@ -110,12 +121,20 @@ classifier audits whether risk features encode OOF fold identity. High domain
 predictability triggers feature-removal and normalization ablations, but is not alone
 proof of leakage because genuine shift signals may also predict domain.
 
-Correctness labels are defined for one fixed, source-selected post-VLM decision rule
-$g_{ref}$ under one preregistered reference policy, not at EER. The main calibrator
-estimates $r_{err}(x)=P(g_{ref}(x)\neq y\mid z(x),\tau_{ref})$. Transfer to other
-APCER policies is an ablation; policy-specific calibrators are optional and must be
-trained source-only.
+Correctness labels are defined for the deterministic post-VLM rule
+$g_{ref}(x)=\mathbf{1}[(\widehat p_D+\widehat p_V)/2\ge\tau_{ref}]$, not at EER.
+Learned fusion remains an ablation. The main calibrator estimates
+$r_{err}(x)=P(g_{ref}(x)\neq y\mid z(x),\tau_{ref})$. Transfer to other APCER
+policies is an ablation; policy-specific calibrators are optional and must be trained
+source-only.
 Failure risk is not interpreted as a generic OOD or unknownness score.
+
+Every risk estimator is evaluated against the same labels
+$e(x)=\mathbf{1}[g_{ref}(x)\neq y]$. Complete DINO-only and dual-foundation selective
+systems are compared in a separate table because they change both prediction and risk.
+After fitting the risk model, choose its accept threshold from meta-OOF predictions:
+fit the fixed logistic gate on two OOF source domains, predict the third, rotate, and
+concatenate. Refit on all OOF records only after the accept threshold is frozen.
 
 Raw and independently calibrated JS disagreement remain mandatory baselines. The learned calibrator is useful
 only if it generalizes beyond MSP, entropy, energy, and ordinary learned score fusion.
@@ -123,6 +142,10 @@ Because JS and entropy are deterministic transforms of branch probabilities, com
 capacity-matched logistic and MLP baselines using probabilities alone, probabilities
 plus JS, and the same image-quality features. Also compare DINO embedding Mahalanobis
 confidence as a representation-space baseline.
+The fixed quality vector is $q(x)=$ [blur, mean luminance, contrast, face-area ratio,
+detector confidence]. Report risk with and without $q$. Compare sample-OOF and
+domain-OOF gates on identical final target predictions, and quantify OOF-to-full-source
+feature drift using mean/standard-deviation shifts and KS distance.
 
 ## Decision and conditional inference
 

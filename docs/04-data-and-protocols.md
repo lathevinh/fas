@@ -51,11 +51,11 @@ Neither setting proves that the attack was absent from generic foundation-model
 pretraining; foundation-model pretraining exposure at web scale is uncontrolled.
 
 Define exclusions at the declared semantic level
-`family -> instrument -> subtype`. Holding out an entire family removes all prompts in
-that family; holding out only a subtype may retain a generic family prompt. Keep the
-primary PAD prompt bank and its normalization fixed. Any allowed attack-specific
-open-vocabulary prompt produces a separate auxiliary similarity score rather than
-changing the primary PAD softmax denominator.
+`family -> instrument -> subtype`. Holding out an entire family removes all matching
+prompts from the auxiliary attack bank; holding out only a subtype may retain a generic
+auxiliary family prompt. The immutable core PAD bank and its normalization never
+change. Any allowed attack-specific open-vocabulary prompt produces a separate
+auxiliary similarity score rather than changing the core PAD probability.
 
 Compare a preregistered fixed semantic prompt bank with source-tuned template/weight
 selection. The fixed bank is primary for unseen-attack transfer; source tuning is
@@ -91,7 +91,9 @@ Unknown values remain `unknown`; they must not be guessed from coarse labels.
 2. Verify that subject and video identifiers do not cross splits.
 3. Extract frames after split assignment.
 4. During training, sample at most 1-3 random frames per video per epoch.
-5. During evaluation, use a deterministic frame index list.
+5. For the strict single-image primary result, use the middle valid frame by a
+  label-independent temporal rule; evaluate fixed 25%, 50%, and 75% positions as
+  sensitivity analysis.
 6. Perform image-level inference; aggregate scores only for separately reported
    protocol-compatible video metrics.
 7. Hash manifests and save the preprocessing version with every run.
@@ -109,6 +111,8 @@ independent statistical units.
 - Retain a context margin of roughly 1.25-1.4 times the face box.
 - Preserve screen, paper, and mask boundaries where possible.
 - Record detector failures and evaluate them separately rather than silently dropping them.
+- Map detector failure deterministically to terminal `abstain/non-accept` and include
+  it in class coverage and end-to-end transaction metrics.
 - Derive face and context views from the same RGB input.
 
 Each backbone receives its own resize and normalization. Geometry is shared, pixel
@@ -173,6 +177,11 @@ target APCER=1% in a separate post-hoc diagnostic block. Compare thresholds sele
 from pooled sources with thresholds satisfying the APCER constraint on every source
 domain.
 
+Report empirical APCER with binomial confidence intervals. A statistically
+constrained source policy requires $UCB_{95\%}(APCER_d)\leq\alpha$ for every source
+domain. If attack counts cannot support that bound, label the operating point a
+nominal empirical target rather than a certified security level.
+
 Within each three-source training set, create out-of-fold reliability records by
 holding out one source dataset at a time. Predictions on a held-out source must come
 from branches that did not train on that source. Fit the final reliability calibrator
@@ -207,8 +216,13 @@ frames from depth/IR and never use unavailable modalities.
 - prediction-error AUROC and AUPR;
 - optional shift/OOD AUROC and AUPR under a separately defined shift target;
 - prediction-error AUPR as the primary failure-detection endpoint;
+- error prevalence $\pi_{err}$ and normalized
+  $AUPR_{norm}=(AUPR-\pi_{err})/(1-\pi_{err})$ as context; primary comparisons use
+  paired within-target AUPR differences and macro-average target deltas;
 - excess-AURC as the primary selective-classification endpoint, with AURC and
   risk-coverage curves secondary;
+- Brier score, failure-risk NLL, and reliability diagrams when interpreting
+  $r_{err}$ as a probability;
 - attack coverage $Coverage_A=N_{attack,decided}/N_{attack,total}$ and bona-fide
   coverage $Coverage_B=N_{bona,decided}/N_{bona,total}$;
 - covered-sample $APCER_{covered}=N_{attack,accepted\ live}/N_{attack,decided}$ and

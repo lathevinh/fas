@@ -49,7 +49,9 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 16. [Response to ChatGPT review round 4](docs/15-review-response-round4.md)
 17. [ChatGPT review round 5](docs/16-chatgpt-review-round5.md)
 18. [Response to ChatGPT review round 5](docs/17-review-response-round5.md)
-19. [Reading list](references/reading-list.md)
+19. [ChatGPT review round 6](docs/18-chatgpt-review-round6.md)
+20. [Response to ChatGPT review round 6](docs/19-review-response-round6.md)
+21. [Reading list](references/reading-list.md)
 
 ## Current status
 

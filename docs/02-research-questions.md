@@ -26,8 +26,9 @@ class-conditional oracle gain is negligible. A large $P_{cw}+P_{wc}$ alone is
 insufficient when both predictors are weak.
 
 Required analyses include error correlation, double-fault, oracle gain, attack/domain
-stratification, and feasible fusion gain. Conditional mutual information is optional
-and must not replace the directly interpretable joint table.
+stratification, feasible fusion gain, a homogeneous DINO ensemble, and a supervised
+visual head on the frozen VLM image encoder. Conditional mutual information is
+optional and must not replace the directly interpretable joint table.
 
 ## RQ2: Source-only failure detection under shift
 

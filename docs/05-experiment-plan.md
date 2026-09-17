@@ -28,6 +28,16 @@ Train under identical sampling:
 4. calibrated score average as the principal simple-fusion baseline;
 5. regularized learned score fusion using calibrated source scores.
 
+Add two diagnostic controls without changing the proposed architecture:
+
+6. a homogeneous DINO ensemble with independently trained PAD heads and sampling;
+7. a source-supervised linear PAD head on the same frozen CLIP/SigLIP image encoder.
+
+The first is a minimum homogeneous-diversity control but may underestimate ensembles
+with independently tuned backbones. The second isolates prompt-driven versus
+source-supervised adaptation on one VLM encoder; it does not alone prove that text
+semantics causally produced any gain.
+
 Cache each branch independently so they never need to share GPU memory. Designate one
 MICO target in advance as the pilot/development target for pipeline debugging. It is
 not confirmatory evidence after inspection-driven changes. Freeze the Stage 1
@@ -86,8 +96,10 @@ Then generate out-of-fold source records in two variants.
 4. predict the held-out source fold and record the same features;
 5. repeat all folds and concatenate records;
 6. train the preregistered fixed-regularization logistic failure-risk calibrator for
-  the fixed source-selected fusion rule $g_{ref}$;
-7. freeze it before target evaluation.
+  calibrated-average $g_{ref}$;
+7. generate meta-OOF risk predictions by fitting on two OOF domains and predicting
+  the third, then select the accept threshold from concatenated meta-OOF predictions;
+8. refit on all OOF source records and freeze it before target evaluation.
 
 Normalize fold features with source-side statistics and audit OOF domain
 identifiability. Nested pseudo-domain hyperparameter selection is secondary because
@@ -100,12 +112,21 @@ quality, and DINO embedding Mahalanobis confidence. Mahalanobis is a strong simp
 representation-space baseline, not a substitute for reproducing a published
 confidence-aware FAS method when its implementation and protocol are available.
 
+Use two distinct result tables. The risk-estimator table holds $g_{ref}$ and its error
+labels fixed for fused MSP/entropy, JS, Mahalanobis, and learned risk scores. Report
+error prevalence and paired within-target deltas. The end-to-end system table may
+compare DINO-only, homogeneous DINO, DINO plus CLIP visual head, semantic VLM, and
+conditional dual systems because it explicitly measures combined classifier and risk
+changes.
+
 Exit criteria:
 
 - prediction-error AUPR, the primary failure-detection endpoint, improves consistently
   over single-model uncertainty;
 - excess-AURC, the primary selective endpoint, improves at matched class coverage;
 - no target sample or statistic enters calibration.
+- Brier/NLL and reliability diagrams support any probabilistic `calibrated risk`
+  wording; otherwise describe the output only as a failure-risk score.
 
 ## Stage 3: Selective and conditional inference, weeks 9-11
 
@@ -179,6 +200,8 @@ separate go/no-go decision and are not assumed in the first paper.
 | H | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
 | I | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
 | J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
+| K | Two heads | No | Homogeneous calibrated average | No | No |
+| L | Yes | CLIP visual head | Calibrated average | No | No |
 
 ## Initial compute plan
 

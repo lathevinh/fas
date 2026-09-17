@@ -39,6 +39,7 @@ of the minimum viable paper.
 The approach is worth a model-centric paper only if it:
 
 - demonstrates source-preregistered DINO-error and false-accept rescue plus class-conditional oracle gain;
+- exceeds a homogeneous DINO ensemble control in security-useful rescue;
 - beats DINOv2-Reg, VLM uncertainty, and learned score fusion on multiple unseen domains;
 - improves prediction-failure detection under unseen shifts over MSP, entropy, energy,
   representation-space confidence, and capacity-matched risk baselines;
