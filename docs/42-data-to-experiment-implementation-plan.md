@@ -984,3 +984,6 @@ Phase 0 is complete only when all of the following are executable and reviewed:
 The next authorized pull request is the governance/config migration in Document 38.
 Passing the current legacy validator is evidence only that the old scaffold is
 internally consistent; it does not satisfy this Phase-0 definition of done.
+The file-by-file work order, required test matrix, validation commands, expected exit
+behavior, and evidence bundle for that pull request are frozen in
+`docs/61-phase0-governance-migration-and-validation-plan.md`.

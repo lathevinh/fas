@@ -94,7 +94,8 @@ single-branch confidence and a matched same-family ensemble?
 59. [Response closing population and coverage semantics](docs/58-review-response-doc57.md)
 60. [Final research-plan acceptance](docs/59-chatgpt-review-doc58.md)
 61. [Response and final implementation freeze](docs/60-review-response-doc59-final-implementation-freeze.md)
-62. [Reading list](references/reading-list.md)
+62. [Phase 0 governance migration and validation plan](docs/61-phase0-governance-migration-and-validation-plan.md)
+63. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -117,6 +118,7 @@ done before dataset-facing or backbone-facing implementation begins.
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     governance/config migration authorized but not yet complete
+- Current work package: [Phase 0 governance migration and validation](docs/61-phase0-governance-migration-and-validation-plan.md)
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
