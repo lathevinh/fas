@@ -4,14 +4,16 @@ Date: 2026-09-18
 
 ## Authority and boundary
 
-This plan implements the methodology frozen in Rounds 14-15. Normative priority is:
+This plan implements the methodology frozen in Rounds 14-16. Normative priority is:
 
 1. `docs/00-project-charter.md` through `docs/06-risks-and-decisions.md`;
 2. `docs/35-review-response-round14.md`;
 3. `docs/36-chatgpt-review-round15.md` and
    `docs/37-review-response-round15.md`;
-4. this implementation plan;
-5. provisional configs and code only after reconciliation.
+4. `docs/40-paper-skeleton.md` and `docs/41-review-response-round16.md`;
+5. this dependency-ordered implementation plan and the execution-level data-to-
+  experiment plan in `docs/42-data-to-experiment-implementation-plan.md`;
+6. provisional configs and code only after reconciliation.
 
 No phase may read a held-out MICO target to tune a model, threshold, feature, effect
 rule, or analysis choice. Synthetic fixtures and source-only pseudo-shifts are the only

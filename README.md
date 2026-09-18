@@ -8,9 +8,10 @@ Research dossier for a practical and publishable face presentation attack detect
 - source-domain cross-fitted failure-risk estimation for failure detection and
     abstention; fusion rescue, explicit disagreement, and routing remain separate claims.
 
-This repository is currently freezing the research plan and methodology. Existing
-executable preregistration files are provisional scaffolding from review rounds
-11-12; implementation is paused until feasibility and Q3 novelty are agreed.
+The research plan, methodology, paper contract, and data-to-experiment implementation
+plan are frozen. Existing executable preregistration files remain provisional
+scaffolding from review rounds 11-12; coding begins with their Phase-0 migration before
+any dataset-facing implementation.
 
 ## Scope
 
@@ -74,7 +75,8 @@ single-branch confidence and a matched same-family ensemble?
 40. [ChatGPT review round 16](docs/39-chatgpt-review-round16-q3-plan.md)
 41. [Frozen paper skeleton](docs/40-paper-skeleton.md)
 42. [Response to ChatGPT review round 16](docs/41-review-response-round16.md)
-43. [Reading list](references/reading-list.md)
+43. [Data-to-experiment implementation plan](docs/42-data-to-experiment-implementation-plan.md)
+44. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -94,7 +96,7 @@ scaffold must be replaced according to the implementation plan before use.
 
 ## Current status
 
-- Status: Q3-first research plan and paper skeleton frozen; implementation not started
+- Status: research and implementation plans frozen; Phase 0 coding authorized
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
