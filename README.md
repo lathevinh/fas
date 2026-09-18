@@ -68,7 +68,10 @@ single-branch confidence and a matched same-family ensemble?
 34. [Response to ChatGPT review round 13](docs/33-review-response-round13.md)
 35. [ChatGPT review round 14](docs/34-chatgpt-review-round14.md)
 36. [Response to ChatGPT review round 14](docs/35-review-response-round14.md)
-37. [Reading list](references/reading-list.md)
+37. [ChatGPT review round 15](docs/36-chatgpt-review-round15.md)
+38. [Response to ChatGPT review round 15](docs/37-review-response-round15.md)
+39. [Implementation plan](docs/38-implementation-plan.md)
+40. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -82,11 +85,13 @@ python scripts/validate_preregistration.py --stage confirmatory
 
 These commands document prior scaffold behavior; they do not authorize implementation
 or target inspection. The normative method is the strict source-only design in the
-current charter, method, protocol, experiment plan, and Round-13 response.
+current charter, method, protocol, experiment plan, Round-14 methodology freeze, and
+Round-15 estimand specification. Superseded pilot-oriented names and rules in the
+scaffold must be replaced according to the implementation plan before use.
 
 ## Current status
 
-- Status: revised core methodology accepted; implementation planning is the next phase
+- Status: methodology accepted; dependency-ordered implementation plan available
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings

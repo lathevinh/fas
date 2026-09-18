@@ -14,12 +14,12 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 
 ## Current handoff instruction
 
-Research direction and revised core methodology were accepted in principle in Round
-14, and the owner accepted its three requested changes in the Round-14 response.
-Future review should assess the implementation plan against normative `docs/00`
-through `docs/06`; the old executable scaffold remains provisional until that plan is
-written. Do not reopen settled architecture choices without identifying new evidence
-or a concrete contradiction.
+Research direction and revised core methodology were accepted in Round 15. The owner
+accepted its estimand constraints and published the dependency-ordered implementation
+plan in `docs/38-implementation-plan.md`. Future review should assess Phase 0 scaffold
+migration against normative `docs/00` through `docs/06` and Rounds 14-15. Do not reopen
+settled architecture choices without identifying new evidence or a concrete
+contradiction.
 
 ## Questions the reviewer should answer
 

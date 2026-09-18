@@ -206,12 +206,16 @@ transactions. Report detector-failure rates separately for attacks and bona fide
 
 ## Decision and conditional inference
 
-There are two separate gates:
+The core system is always-on dual inference followed by one selective gate: the fixed
+$g_{ref}$ produces the PAD decision and the risk score chooses only `accept` or
+`abstain`. Conditional routing is an optional deployment extension with a separate
+gate:
 
-1. **Routing gate:** DINO confidence decides whether to emit a confident spoof as
-   terminal non-accept or invoke the VLM for every other detector-successful sample.
-2. **Selective gate:** after VLM invocation, the fixed $g_{ref}$ produces the PAD
-   decision and the risk score chooses only `accept` or `abstain`.
+1. **Core selective gate:** after always-on dual inference, gate the fixed
+   $g_{ref}$ decision using its risk score.
+2. **Optional routing gate:** DINO confidence decides whether to emit a confident
+   spoof as terminal non-accept or invoke the VLM for every other detector-successful
+   sample.
 
 The scalar risk score does not choose among DINO, VLM, and fusion. The primary routing
 policy is spoof-only early exit: DINO samples beyond a source-selected confident-spoof

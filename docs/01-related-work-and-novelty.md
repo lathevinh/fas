@@ -96,7 +96,8 @@ Reframe or stop the model-centric risk paper if any holds:
 - domain-OOF error supervision does not improve over matched sample-OOF training;
 - heterogeneous risk transfer does not exceed same-family diversity, requiring a
   broader selective-ensemble framing;
-- agreement is high when both branches are wrong;
+- confident shared errors remain poorly ranked by the proposed and baseline risk
+  scores, materially limiting selective utility;
 - gains disappear under source-only hyperparameter selection;
 - the method only improves CelebA-Spoof in-domain performance;
 - a newer paper implements the same source-only cross-foundation risk estimation.

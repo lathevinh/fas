@@ -25,13 +25,12 @@ Exit criteria:
 - APCER/BPCER/ACER tests pass on synthetic examples.
 - core prompts, primary VLM/preprocessing, and all analysis rules are frozen before
   all four confirmatory MICO targets.
-- before implementation, both reviewers explicitly accept the feasibility, novelty
-  boundary, strict source-only selection, primary method, and kill criteria.
+- Round 15 records `METHODOLOGY ACCEPTED FOR IMPLEMENTATION PLANNING`; implementation
+  begins only through the dependency gates in `docs/38-implementation-plan.md`.
 
 The executable readiness scaffold is provisional and is not the normative research
-plan. No further implementation work proceeds until this strict source-only
-methodology is accepted. Synthetic fixtures may debug accounting without opening any
-target labels.
+plan. It must first be migrated to the accepted strict source-only method. Synthetic
+fixtures may debug accounting without opening any target labels.
 
 ## Stage 1: Classifier complementarity analysis, weeks 3-5
 
@@ -156,6 +155,15 @@ source-only threshold independently inside each allowed fold remainder.
 4. select fold-safe $\tau_{ref}^{(k)}$ on the allowed remainder and record correctness,
    probabilities, operational margin $m_F^{(k)}$, image quality, and disagreement;
 
+The sample-OOF and domain-OOF constructions use the same candidate universe of source
+subjects/videos after removing $G_{domain}$, the same frame/video unit, source-macro
+weighting, quality features, risk-model family, regularization, and optimization
+budget. Sample-OOF is subject-disjoint and never splits frames from one subject/video
+across fit and OOF evaluation. Report OOF record counts, effective branch-fit sizes,
+and natural error prevalence for every pseudo-fold. If branch-fit sizes differ
+materially, add a budget-matched sensitivity; otherwise attribute any gain to the
+complete domain-OOF construction rather than domain holdout alone.
+
 ### Domain-OOF primary MICO protocol
 
 1. hold out one complete source capture domain after removing $G_{domain}$;
@@ -202,6 +210,31 @@ compare DINO-only, shared-encoder DINO head diversity, DINO plus CLIP visual hea
 conditional dual systems because it explicitly measures combined classifier and risk
 changes.
 
+Define AP as non-interpolated average precision with prediction error as the positive
+class and larger scores meaning higher risk; do not substitute trapezoidal PR-AUC.
+The RQ1 primary feature variant is $R_{DVd}$, fixed before target evaluation. For
+target $t$ and seed $s$, both OOF variants score the same final heterogeneous
+classifier errors $e_{DV}$:
+
+$$
+\Delta_{OOF,t,s}=AP(e_{DV},r_{DVd}^{domain})-
+AP(e_{DV},r_{DVd}^{sample}).
+$$
+
+This contrast isolates the source risk-record construction while holding final base
+predictions, error labels, features, loss, and regularization fixed. $R_{DV}$ and
+$R_{DVdm}$ remain attribution and operational variants; they cannot replace the RQ1
+primary after viewing targets.
+
+RQ2 compares complete heterogeneous and same-family selective systems on the same
+transactions using source-selected policies. Each system has its own classifier,
+error labels, risk estimator, and gate, so raw cross-system AP difference is
+descriptive rather than evidence that one estimator is intrinsically better. The
+primary system-level contrast uses end-to-end/selective outcomes, reports both
+classification quality and error prevalence, and claims only an advantage of the
+studied pair over its matched control in this protocol. No causal pretraining claim is
+made.
+
 Report $\Delta_{dis}$ between capacity-matched models with and without the primary
 absolute-difference feature. If it adds no repeatable gain to a nonlinear model already
 receiving both probabilities and quality, reframe the method as cross-foundation
@@ -219,10 +252,13 @@ class-weighted/focal ranking losses are labeled non-probabilistic ablations.
 
 Exit criteria:
 
-- prediction-error AUPR, the primary failure-detection endpoint, improves consistently
-  over single-model uncertainty;
-- excess-AURC, the primary selective endpoint, improves at matched class coverage;
-- **Level 3, retain disagreement claim:** preregistered $\Delta_{dis}>0$;
+- RQ1 $\Delta_{OOF}$ passes its preregistered effect and uncertainty rule and the
+  domain-OOF risk score improves over the fixed list of primary risk baselines;
+- selective utility improves over source-selected comparator gates under K=1, with
+  both achieved attack and bona-fide coverage reported rather than target-matched
+  class thresholds;
+- retain the disagreement claim only if preregistered $\Delta_{dis}>0$ against the
+  capacity-matched nonlinear probability-only model;
 - no target sample or statistic enters calibration.
 - Brier/NLL and reliability diagrams support any probabilistic `calibrated risk`
   wording; otherwise describe the output only as a failure-risk score.
@@ -240,6 +276,25 @@ Implement in this order:
 5. optional semantic distillation after the upper bound is established.
 
 Do not add the next component unless the current comparison is understood.
+
+Steps 1-2 are the core system. Steps 3-5 are optional routing/deployment extensions.
+Under the primary $K=1$ policy, predicted spoof and abstain are both terminal
+non-accept. For gate threshold $u$, report
+
+$$
+FA_{end2end}(u)=P(detector\ success,g_{ref}=live,r\leq u\mid attack),
+$$
+
+$$
+BFNR_{end2end}(u)=1-P(detector\ success,g_{ref}=live,r\leq u\mid bona\ fide).
+$$
+
+Against the same ungated classifier, gating can only weakly reduce false accepts and
+weakly increase bona-fide non-accepts. Therefore the access-control claim is a better
+source-selected security-usability trade-off than comparator risk gates, not a claim
+that abstention improves both axes. Report live decisions blocked by the gate, attacks
+newly blocked, bona-fide transactions newly rejected, and both achieved class
+coverages. Failure diagnosis on false rejects is not by itself security utility.
 
 Conditional routing is an operational extension, not required to establish the core
 scientific claim. Implement it only after source-only risk transfer passes its criteria;
@@ -276,19 +331,26 @@ Exit criteria:
 For each target and seed, train and score independently; never pool seed predictions
 unless deploying an ensemble. Report mean/standard deviation of seed-level metrics and
 subject/video bootstrap within each seed, with no $t$-test at $n=3$ and no best-seed
-selection. A primary confirmatory delta passes only when its paired four-target macro
-lower confidence bound is positive, at least three of four target point estimates are
-positive, no target exceeds a preregistered harm tolerance, and at least two of three
-seeds have positive four-target macro deltas. Claims are limited to the evaluated
-confirmatory domains.
+selection. Every claim preregisters its endpoint, fixed comparator set, delta, minimum
+meaningful effect, harm tolerance, and event-count requirement. A primary claim passes
+only when its paired four-target macro lower confidence bound is positive, its point
+gain is at least the claim-specific $\delta_{min}$, at least three of four target point
+estimates are positive, no target exceeds its harm tolerance, and at least two of
+three seeds have positive four-target macro deltas. Claims against multiple required
+comparators use the preregistered conjunction; no post-target comparator selection is
+allowed. Claims are limited to the evaluated confirmatory domains.
 Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
-zero false-accept denominators, one-class risk labels, and $N_{FA}<N_{min}$ as
-inconclusive rather than fail. Recompute the stronger of $R_D/R_V$ inside every paired
-$\Delta_{CF}$ resample; never switch operating thresholds after viewing a target.
+one-class risk labels as inconclusive only for error-ranking endpoints. Zero
+false-accept denominators and $N_{FA}<N_{min}$ are inconclusive only for FARR and other
+false-accept-conditioned endpoints; they do not invalidate estimable error AP. Report
+inconclusive separately from evidence against. Recompute the stronger of $R_D/R_V$
+inside every paired $\Delta_{CF}$ resample; never switch operating thresholds after
+viewing a target.
 
 ## Stage 5: Secondary representation ablations, weeks 15-16
 
-Only after Stages 1-4 pass:
+Only after the core RQ1 risk-transfer result passes; each optional ablation states any
+additional claim-specific dependency:
 
 - DINOv2 versus DINOv2-Reg;
 - fixed class-token plus mean-patch pooling versus learned attention pooling;
@@ -321,13 +383,13 @@ separate go/no-go decision and are not assumed in the first paper.
 | D | Yes | Yes | Calibrated average | No | No |
 | E | Yes | Yes | Learned fusion of calibrated scores | No | No |
 | F | Yes | Yes | Raw JS disagreement | No | Yes |
-| G | Yes | Yes | Calibrated JS, sample-OOF | No | Yes |
-| H | Yes | Yes | Source-only risk estimator, domain-OOF | No | Yes |
+| G | Yes | Yes | Matched $R_{DVd}$ risk estimator, sample-OOF | No | Yes |
+| H | Yes | Yes | Primary $R_{DVd}$ risk estimator, domain-OOF | No | Yes |
 | I | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
 | J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
 | K | Two heads | No | Shared-encoder head-diversity control | No | No |
 | L | Yes | CLIP visual head | Calibrated average | No | No |
-| M | Reg + plain DINOv2 | No | Strong same-family calibrated average | No | No |
+| M | Reg + plain DINOv2 | No | Same-family average + matched domain-OOF risk gate | No | Yes |
 
 ## Initial compute plan
 
