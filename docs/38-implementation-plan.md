@@ -4,16 +4,23 @@ Date: 2026-09-18
 
 ## Authority and boundary
 
-This plan implements the methodology frozen in Rounds 14-16. Normative priority is:
+This document supplies dependency order and pull-request slicing for the final
+execution specification. Normative priority is:
 
 1. `docs/00-project-charter.md` through `docs/06-risks-and-decisions.md`;
 2. `docs/35-review-response-round14.md`;
 3. `docs/36-chatgpt-review-round15.md` and
    `docs/37-review-response-round15.md`;
-4. `docs/40-paper-skeleton.md` and `docs/41-review-response-round16.md`;
-5. this dependency-ordered implementation plan and the execution-level data-to-
-  experiment plan in `docs/42-data-to-experiment-implementation-plan.md`;
-6. provisional configs and code only after reconciliation.
+4. `docs/40-paper-skeleton.md` and the accepted corrections through
+  `docs/58-review-response-doc57.md`;
+5. the canonical final execution specification in
+  `docs/42-data-to-experiment-implementation-plan.md`;
+6. this companion dependency-ordered plan;
+7. provisional configs and code only after Phase-0 reconciliation.
+
+If this document and Document 42 differ on an operational rule, Document 42 controls.
+Review documents retain decision rationale; they are not alternative executable
+specifications.
 
 For outer fold $T$, no phase may use $T$ to tune a model, threshold, feature, effect
 rule, or analysis choice. Synthetic fixtures and source-only pseudo-shifts are the only

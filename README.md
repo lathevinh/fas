@@ -75,7 +75,7 @@ single-branch confidence and a matched same-family ensemble?
 40. [ChatGPT review round 16](docs/39-chatgpt-review-round16-q3-plan.md)
 41. [Frozen paper skeleton](docs/40-paper-skeleton.md)
 42. [Response to ChatGPT review round 16](docs/41-review-response-round16.md)
-43. [Data-to-experiment implementation plan](docs/42-data-to-experiment-implementation-plan.md)
+43. [Canonical final data-to-experiment implementation plan](docs/42-data-to-experiment-implementation-plan.md)
 44. [ChatGPT review of the implementation plan](docs/43-chatgpt-review-doc42.md)
 45. [Response to implementation-plan review](docs/44-review-response-doc43.md)
 46. [ChatGPT review of the implementation-plan response](docs/45-chatgpt-review-doc44.md)
@@ -92,7 +92,9 @@ single-branch confidence and a matched same-family ensemble?
 57. [Response closing final decision rules](docs/56-review-response-doc55.md)
 58. [Population and coverage clarification review](docs/57-chatgpt-review-doc56.md)
 59. [Response closing population and coverage semantics](docs/58-review-response-doc57.md)
-60. [Reading list](references/reading-list.md)
+60. [Final research-plan acceptance](docs/59-chatgpt-review-doc58.md)
+61. [Response and final implementation freeze](docs/60-review-response-doc59-final-implementation-freeze.md)
+62. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -104,15 +106,17 @@ python scripts/validate_preregistration.py --stage pre-pilot
 python scripts/validate_preregistration.py --stage confirmatory
 ```
 
-These commands document prior scaffold behavior; they do not authorize implementation
-or target inspection. The normative method is the strict source-only design in the
-current charter, method, protocol, experiment plan, Round-14 methodology freeze, and
-Round-15 estimand specification. Superseded pilot-oriented names and rules in the
-scaffold must be replaced according to the implementation plan before use.
+These commands document prior scaffold behavior; they do not authorize target
+inspection or establish Phase-0 completion. The normative implementation authority is
+the strict source-only design consolidated in
+[Document 42](docs/42-data-to-experiment-implementation-plan.md). Superseded
+pilot-oriented names and rules in the scaffold must satisfy its Phase-0 definition of
+done before dataset-facing or backbone-facing implementation begins.
 
 ## Current status
 
-- Status: research and implementation plans frozen; Phase 0 coding authorized
+- Status: research plan and canonical implementation specification frozen; Phase 0
+    governance/config migration authorized but not yet complete
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings

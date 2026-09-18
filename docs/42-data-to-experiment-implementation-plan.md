@@ -1,16 +1,18 @@
-# Data-to-Experiment Implementation Plan
+# Final Data-to-Experiment Implementation Plan
 
 Date: 2026-09-18
-Status: corrected execution blueprint; exact dataset-list hashes freeze at Phase 1
+Status: canonical implementation specification frozen; Phase 0 migration authorized
 
 ## 1. Purpose and authority
 
-This document turns the frozen research method into an operational plan from dataset
-access through locked evaluation. It is subordinate to the scientific contracts
-in `docs/00-project-charter.md` through `docs/06-risks-and-decisions.md`, the accepted
-Round-14 through Round-16 responses, the dependency order in
-`docs/38-implementation-plan.md`, and the paper contract in
-`docs/40-paper-skeleton.md`.
+This document is the canonical implementation specification from dataset access
+through locked evaluation. It implements the scientific contracts in
+`docs/00-project-charter.md` through `docs/06-risks-and-decisions.md`, the paper
+contract in `docs/40-paper-skeleton.md`, and the accepted corrections through
+`docs/58-review-response-doc57.md`. `docs/38-implementation-plan.md` remains the
+companion dependency and pull-request order; if its operational wording differs from
+this document, this document controls. Earlier review responses preserve rationale but
+do not override the final rules consolidated here.
 
 This plan does not authorize target-driven debugging. Implementation proceeds through
 synthetic tests, source-only audits, and source-only dry runs. MCIO is a pre-specified
@@ -21,6 +23,27 @@ result may influence any fitted artifact or global method choice for that fold.
 The core track is four-fold MCIO using OULU-NPU, CASIA-FASD, Replay-Attack, and
 MSU-MFSD. SiW-M, CelebA-Spoof, LoRA, routing, and cue analysis are optional work after
 the core RQ1 analysis.
+
+### 1.1 Final freeze boundary
+
+The specification is frozen before Phase 0 implementation. The following may not
+change after target inspection: two-RQ scope, model identities and preprocessing,
+four MCIO outer folds, three seeds, feature variants, OOF comparators, competence
+dependencies, event applicability, estimands, aggregation order, bootstrap unit,
+effect thresholds, harm tolerances, source gate-selection algorithms, K=1 semantics,
+and four main-table roles.
+
+Exact raw-release checksums, official-list hashes, environment lock hashes, private
+manifest hashes, artifact IDs, and throughput-derived shard/worker settings are
+intentionally populated during Phases 1-3. They instantiate frozen algorithms and do
+not reopen method selection. Any true contradiction discovered during implementation
+requires a dated amendment before the affected target output exists; convenience,
+runtime, or an unfavorable result is not a contradiction.
+
+Specification freeze is not implementation readiness. The checked-in preregistration
+scaffold still contains superseded pilot-oriented fields and command stages. Phase 0
+must migrate it and pass synthetic contracts before dataset-facing or backbone-facing
+work begins.
 
 ## 2. Non-negotiable operating rules
 
@@ -921,3 +944,43 @@ The first coding change is Phase 0 only: reconcile the provisional preregistrati
 scaffold with the frozen source-only contracts and make synthetic governance tests
 pass. Dataset downloads may proceed administratively in parallel, but no real-data
 training, target inspection, or backbone-facing code begins until Phase 0 is reviewed.
+
+### Phase-0 definition of done
+
+Phase 0 is complete only when all of the following are executable and reviewed:
+
+1. One canonical experiment config pins DINOv2-Reg, plain DINOv2, OpenCLIP, native
+  preprocessing, fixed crops/prompts, three seeds, all four MCIO folds, and the two
+  complete systems; pilot selection and multiple-primary-VLM fields are absent.
+2. Typed claim specs encode RQ1, its separate operational consequence, RQ2,
+  classifier benefit, cross-foundation/disagreement attribution, and optional claims
+  without a mutable global claim sequence.
+3. The RQ1 spec fixes non-interpolated error AP, domain-OOF minus matched sample-OOF,
+  identical `e_DV`, all-three-seed then all-four-target aggregation,
+  $N_{error,min}=20$, applicability states, and paired cluster bootstrap.
+4. The RQ2 spec fixes class-balanced raw AURC on the common detector-success mask,
+  $U_{same}-U_{hetero}$, $\delta_{min}=0.01$, LCB/target/seed consistency, 0.02
+  target harm, and FA/BFNR macro/per-target guardrails. Coverage is a required output
+  but is absent from the H2 decision predicate.
+5. Competence dependencies are claim-specific: heterogeneous complete-system gate for
+  RQ1, both complete-system gates for RQ2, DINO anchor nondegeneracy, and standalone
+  branch failures scoped to standalone claims.
+6. Transaction schemas preserve detector failures with null classifier/risk fields;
+  risk views require detector success, while K=1 FA/BFNR and coverage reconcile to
+  original pre-detection denominators.
+7. Freeze records hash resolved configs, claim specs, code, manifests, source counts,
+  source-selected policies, and upstream artifacts. Locked commands reject missing,
+  dirty, mismatched, target-derived, or superseded records.
+8. Synthetic tests cover fixed-error RQ1 pairing, complete-system RQ2 pairing,
+  detector-mask identity, seed/target aggregation, one-class and low-event
+  inconclusive states, competence dependency truth tables, tie-stable AURC, cluster
+  resampling, and K=1 ledger identities.
+9. Readiness stages are `schema`, `data-audit`, `source-dry-run`, `analysis-freeze`,
+  and `locked-evaluation`; old `pre-pilot`/`confirmatory` semantics cannot unlock any
+  new stage.
+10. The focused governance suite and full synthetic suite pass from a clean checkout,
+   and a Phase-0 review confirms that no real target result was accessed.
+
+The next authorized pull request is the governance/config migration in Document 38.
+Passing the current legacy validator is evidence only that the old scaffold is
+internally consistent; it does not satisfy this Phase-0 definition of done.
