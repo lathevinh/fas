@@ -281,11 +281,12 @@ as equal-data comparisons. A like-for-like FLIP comparison requires the already
 separate optional extra-data track.
 
 Track A is a visible panel of the main classifier-comparison table and creates no new
-research question or claim. Exact sample-membership/frame-selection/video-aggregation
-equivalence is claimed only after adapter counts, list contents, labels, frame
-selection, and aggregation reconcile against the pinned artifacts. Image preprocessing
-and source-only model-selection rules differ intentionally. Any other deviation is
-named in the table caption.
+research question or claim. Equivalence of the intended pre-detection video membership,
+selected frame indices, and video-aggregation rule is claimed only after adapter
+counts, list contents, labels, frame selection, and aggregation reconcile against the
+pinned artifacts. Detector failures may reduce the classifier-score population and
+are exposed through coverage. Image preprocessing and source-only model-selection
+rules differ intentionally. Any other deviation is named in the table caption.
 
 Track-A implementation stops after two engineer-days if required artifacts cannot be
 reconciled or the old preprocessing/evaluation stack proves incompatible. The paper
@@ -308,10 +309,12 @@ one immutable protocol manifest per dataset recording pinned benchmark membershi
 two group-disjoint source roles: `track_a_fit` and `track_a_validation`.
 `track_a_fit` trains the DINO head. `track_a_validation` selects its checkpoint, fits
 the positive-slope affine branch calibrators, and selects source operating thresholds;
-it is not reclaimed for refitting. Track A has no `gate_domain`, routing, OOF-risk, or
-selective-gate role. Track B gets one immutable source-role manifest per dataset with
-the full roles below. Within either track, manifests never depend on outer target or
-optimization seed.
+it is not reclaimed for refitting. These three uses constitute shared source
+optimization on one validation partition, not independent validation or certified
+source performance. Track A has no `gate_domain`, routing, OOF-risk, or selective-gate
+role. Track B gets one immutable source-role manifest per dataset with the full roles
+below. Within either track, manifests never depend on outer target or optimization
+seed.
 
 Within the eligible source pool, assign complete subject groups, or complete video
 groups if subject identity is genuinely unavailable, to these immutable roles:
@@ -682,19 +685,30 @@ Track A is a visible classifier-context comparison against published cross-domai
 results. Use the pinned SSDG sample universe, code-derived frame rule, and mean
 class-1-probability video aggregation. For each system and outer fold, fit any affine
 calibrators on the three sources' `track_a_validation` records, with equal source-domain
-weighting, after checkpoint selection. On the same records, choose
-$\tau^A_{HTER}$ by minimizing the absolute difference between macro-source APCER and
-BPCER; break ties by lower macro HTER, then lower numeric threshold. Define attack as
-the positive class. Choose $\tau^A_{1\%}$ as the lowest candidate threshold whose
-macro-source $FPR=P(score\geq\tau\mid bona\ fide)$ is at most 1%, when supported by
-the bona-fide event count. Transfer both thresholds unchanged to the held-out target.
+weighting, after checkpoint selection. Let the deterministic threshold candidate set
+$\mathcal T$ contain $-\infty$, every unique finite validation score, and $+\infty$.
+On the same records, choose $\tau^A_{EER}\in\mathcal T$ by minimizing the absolute
+difference between macro-source APCER and BPCER; break ties by lower macro HTER, then
+lower numeric threshold. Report target HTER at this transferred EER-style threshold.
 
-Report transferred-threshold HTER and TPR at source-selected FPR=1%, conventional
-target ROC/AUC as a post-hoc non-deployable diagnostic, and detector coverage by class.
+Define attack as the positive class. Choose $\tau^A_{BPCER1}\in\mathcal T$ as the
+lowest threshold whose macro-source BPCER is at most 1%, then report target
+$APCER@BPCER\leq1\%$. This point is estimable only when every contributing source has
+at least 100 detector-successful bona-fide validation videos; otherwise report `not
+estimable`. Do not interpolate a nominal 1% point. Transfer all estimable thresholds
+unchanged to the held-out target and report each source domain's achieved APCER and
+BPCER at the selected thresholds.
+
+Report conventional target ROC/AUC as a post-hoc non-deployable diagnostic and
+detector coverage by class. In-house classifier metrics are explicitly conditional on
+success of the frozen detector and therefore do not share an identical effective
+population with published SSDG unless coverage is 100%.
 Footnote that published SSDG HTER uses target validation/thresholding and that its AUC
 also comes from a target-aware selected checkpoint. Disclose the frozen Track-B crop
-and label the in-house pipeline strictly source-selected. Never bold a best result or
-compute a ranking across Panels A and B. Track-A competitiveness is not an RQ1 gate;
+and label the in-house pipeline source-optimized on one shared source-validation
+partition. Historical SSDG values cannot support a controlled superiority claim.
+Never bold a best result or compute a ranking across Panels A and B. Track-A
+competitiveness is not an RQ1 gate;
 only the separately frozen minimum base-classifier competence criterion applies. This
 panel establishes limited external classifier context but does not test Domain-OOF
 Failure Risk Estimation.
