@@ -271,9 +271,12 @@ Track A initially reuses the frozen Track-B detector/context crop. It is consequ
 an SSDG reproduction. An exact MTCNN/256 preprocessing variant is optional and must
 be labeled separately if implemented. Never replace a pinned frame after detector
 failure and never silently remove it from the protocol manifest. Panel-A classifier
-metrics use detector-success videos only and report frame- and video-level detector
-coverage by target and class beside them. Track-B end-to-end accounting remains
-unchanged: detector failures are terminal non-accept transactions.
+metrics use a complete-pair policy: a target video is scoreable only when both pinned
+frames produce valid detector crops, and its score is the mean of those two class-1
+probabilities. A one-frame success is not averaged alone or assigned a synthetic
+failure score. Report frame coverage, complete-pair video coverage, and both measures
+by target and class. Track-B end-to-end accounting remains unchanged: detector
+failures are terminal non-accept transactions.
 
 FLIP's published Benchmark-1 configuration adds CelebA-Spoof to the three MCIO
 sources. Its reported numbers are therefore marked `+CelebA-Spoof` and are not treated
@@ -692,12 +695,16 @@ difference between macro-source APCER and BPCER; break ties by lower macro HTER,
 lower numeric threshold. Report target HTER at this transferred EER-style threshold.
 
 Define attack as the positive class. Choose $\tau^A_{BPCER1}\in\mathcal T$ as the
-lowest threshold whose macro-source BPCER is at most 1%, then report target
-$APCER@BPCER\leq1\%$. This point is estimable only when every contributing source has
-at least 100 detector-successful bona-fide validation videos; otherwise report `not
-estimable`. Do not interpolate a nominal 1% point. Transfer all estimable thresholds
-unchanged to the held-out target and report each source domain's achieved APCER and
-BPCER at the selected thresholds.
+lowest threshold whose equal-domain macro-source BPCER is at most 1%. This does not
+require every source domain to achieve BPCER at most 1%. Transfer the threshold
+unchanged and report both $APCER_{target}(\tau^A_{BPCER1})$ and
+$BPCER_{target}(\tau^A_{BPCER1})$; do not label the target result
+`APCER@BPCER<=1%`. The source operating point is estimable only when every contributing
+source has at least 100 complete-pair bona-fide validation videos; otherwise report
+`not estimable`. This is an empirical resolution rule, not statistical certification.
+Do not interpolate a nominal 1% point. Report error numerator/denominator and achieved
+APCER/BPCER for every source domain at each selected threshold; a binomial interval is
+an optional descriptive addition.
 
 Report conventional target ROC/AUC as a post-hoc non-deployable diagnostic and
 detector coverage by class. In-house classifier metrics are explicitly conditional on

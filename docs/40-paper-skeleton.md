@@ -145,11 +145,14 @@ Use two visible panels. Panel A is an SSDG-compatible MCIO sample/evaluation vie
 limited literature context, while Panel B uses the strict single-image Track-B
 protocol below. Panel A retains source-only model/threshold selection and the Track-B
 crop, so it is not an SSDG reproduction. It reports target HTER at the transferred
-source EER-style threshold and `APCER@BPCER<=1%` only when every source contributes at
-least 100 detector-successful bona-fide validation videos. Target ROC/AUC is a post-hoc
-diagnostic. In-house metrics are conditional on detector success; report coverage by
-target and class, and claim only intended pre-detection membership/frame/aggregation
-matching. Published SSDG HTER receives a target-aware validation/threshold footnote,
+source EER-style threshold. At the empirical equal-domain macro-source BPCER 1%
+threshold, report achieved target APCER and BPCER as separate columns, never as a
+target-constrained `APCER@BPCER=1%` metric. Require at least 100 complete-pair bona-fide
+validation videos per source and report source error counts; this is not statistical
+certification. Target ROC/AUC is a post-hoc diagnostic. In-house classifier metrics
+require valid crops for both pinned target frames; report frame and complete-pair video
+coverage by target and class. Claim only intended pre-detection membership/frame/
+aggregation matching. Published SSDG HTER receives a target-aware validation/threshold footnote,
 and published SSDG AUC is marked target-aware through checkpoint selection. These
 historical values cannot support controlled superiority claims. Mark published FLIP
 comparisons as `+CelebA-Spoof` unless a like-for-like extra-data run is performed. Use

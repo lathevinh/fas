@@ -84,7 +84,9 @@ single-branch confidence and a matched same-family ensemble?
 49. [Response to Track-A execution review](docs/48-review-response-doc47.md)
 50. [ChatGPT review of Track-A execution response](docs/49-chatgpt-review-doc48.md)
 51. [Response to Track-A metric-semantics review](docs/50-review-response-doc49.md)
-52. [Reading list](references/reading-list.md)
+52. [ChatGPT review of Track-A metric-semantics response](docs/51-chatgpt-review-doc50.md)
+53. [Final response closing Track-A semantics](docs/52-review-response-doc51.md)
+54. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
