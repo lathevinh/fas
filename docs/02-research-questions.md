@@ -40,12 +40,23 @@ held-out official target evaluation partition:
 | wrong | wrong | $P_{ww}$ |
 
 **H2:** Under matched data, calibration, risk fitting, gate selection, and transaction
-accounting, the heterogeneous system improves the frozen paired whole-system outcome
-over the same-family control. Primary evidence combines classification errors,
-`FA_end2end`, `BFNR_end2end`, class coverage, and selective utility/AURC according to
-the preregistered system-level rule.
+accounting, the heterogeneous system reduces class-balanced AURC relative to
+the same-family control. For system $j$, define
 
-**Falsification:** The paired whole-system contrast does not pass its frozen rule. Each
+$$
+U_j=\frac12(AURC_{attack,j}+AURC_{bona,j}),
+$$
+
+and $\Delta_{RQ2}=U_{same}-U_{hetero}$, so positive values favor the heterogeneous
+system. The paired macro must have 95% lower bound above zero and point gain at least
+$\delta_{RQ2,min}=0.01$. At each system's source-selected gate, heterogeneous-minus-
+same-family `FA_end2end` and `BFNR_end2end` may each increase by at most 0.01 in the
+four-target macro and 0.02 on any target. Classification errors, each system's error
+AP, and achieved class coverage are mandatory supporting results, not alternative
+primary outcomes.
+
+**Falsification:** The scalar contrast or either operational guardrail does not pass
+its frozen rule. Each
 system's risk AP remains descriptive because the classifiers and error labels differ;
 higher cross-system risk AP alone cannot establish heterogeneous predictive value.
 

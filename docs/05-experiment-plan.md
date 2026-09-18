@@ -206,10 +206,27 @@ RQ2 compares complete heterogeneous and same-family selective systems on the sam
 transactions using source-selected policies. Each system has its own classifier,
 error labels, risk estimator, and gate, so raw cross-system AP difference is
 descriptive rather than evidence that one estimator is intrinsically better. The
-primary system-level contrast uses end-to-end/selective outcomes, reports both
-classification quality and error prevalence, and claims only an advantage of the
-studied pair over its matched control in this protocol. No causal pretraining claim is
-made.
+primary system-level endpoint is class-balanced raw AURC. For system $j$, integrate
+class-conditional classification-error risk over coverage in $[0,1]$ and define
+
+$$
+U_{j,t,s}=\frac12(AURC_{attack,j,t,s}+AURC_{bona,j,t,s}),\qquad
+\Delta_{RQ2,t,s}=U_{same,t,s}-U_{hetero,t,s}.
+$$
+
+Positive values favor the heterogeneous system. Average seeds and targets in the same
+order as RQ1. A pass requires $\Delta_{RQ2,macro}\ge0.01$, its paired cluster-bootstrap
+95% LCB above zero, at least three positive target deltas, at least two positive
+seed-level four-target macros, and no target with $U_{hetero}-U_{same}>0.02$. At each
+system's independently source-selected gate, heterogeneous-minus-same-family
+`FA_end2end` and `BFNR_end2end` may each be at most 0.01 in the four-target macro and
+0.02 on every target. The original transaction denominators and K=1 semantics apply;
+one favorable metric cannot offset a violated guardrail. Classification quality,
+error prevalence, each system's error AP, and achieved attack/bona-fide coverage are
+mandatory supporting results but cannot replace the scalar endpoint. This rule claims
+only an advantage of the studied pair in this protocol, not a causal pretraining
+effect. Report class-conditional excess-AURC as ranking-regret support, not as an
+alternative primary outcome.
 
 Report $\Delta_{dis}$ between capacity-matched models with and without the primary
 absolute-difference feature. If it adds no repeatable gain to a nonlinear model already
@@ -242,30 +259,53 @@ Exit criteria:
 ### Source-only competence and primary-event gates
 
 Before opening any target result, Phase 7 writes an immutable competence artifact from
-source pseudo-shifts. For DINOv2-Reg, OpenCLIP, the calibrated heterogeneous average,
-and the matched same-family average, it records nonconstant score variance, both-class
-support, finite calibration parameters, source-pseudo-shift AUROC/balanced accuracy,
-and error counts. Freeze $\delta_{competence}=0.05$: each claimed system must achieve
-equal-domain macro AUROC and balanced accuracy of at least 0.55, with the
-cluster-bootstrap 95% lower bound for macro AUROC above 0.50. Scores must be finite
-with range greater than $10^{-6}$ and both ground-truth classes present. Each
-pseudo-domain balanced accuracy uses a threshold selected only on that fold's allowed
-source remainder, never its held-out pseudo-domain scores. The final
-heterogeneous reference classifier's concatenated source-OOF records must additionally
-contain at least 20 errors and 20 correct predictions so the binary risk fit is
-defined. These are source-only competence/applicability checks, not target performance
-guarantees. Failure blocks the affected classifier/system claim and triggers no
-target-informed alteration; Track-A SOTA rank is irrelevant.
+source pseudo-shifts for DINOv2-Reg, OpenCLIP, the calibrated heterogeneous average,
+and the matched same-family average. Every entry records nonconstant score variance,
+both-class support, finite calibration parameters, source-pseudo-shift
+AUROC/balanced accuracy, and error counts. The two complete systems are mandatory
+competence gates for RQ2, and the heterogeneous reference is mandatory for RQ1.
+Freeze $\delta_{competence}=0.05$: each gated complete system must achieve equal-domain
+macro AUROC and balanced accuracy of at least 0.55, with cluster-bootstrap 95% LCB for
+macro AUROC above 0.50. Scores must be finite with range greater than $10^{-6}$ and
+both ground-truth classes present. Each pseudo-domain balanced accuracy uses a
+threshold selected only on that fold's allowed source remainder, never its held-out
+pseudo-domain scores. The heterogeneous reference's concatenated source-OOF records
+must additionally contain at least 20 errors and 20 correct predictions so binary risk
+fitting is defined.
 
-Freeze $N_{error,min}=20$ independent video-level classifier errors per target and
-seed for the primary AP applicability rule. Below this count, report AP, paired delta,
-counts, and uncertainty, but mark that target/seed RQ1 contribution underpowered and
-do not count it as positive evidence. A target is event-eligible when at least two of
-three seeds meet $N_{error,min}$. Always compute the frozen equal-weight four-target
-macro, but a primary pass additionally requires at least three event-eligible targets;
-an ineligible target cannot satisfy the three-of-four positive-target rule. Fewer than
-three eligible targets makes RQ1 inconclusive. Scarcity is neither perfect risk
-estimation nor evidence against RQ1.
+For the core RQs, the shared DINOv2-Reg anchor must pass nondegeneracy, finite-score,
+both-class-support, and finite-calibration checks; its standalone 0.55/LCB result is
+descriptive unless a standalone-competence claim is made. The same claim-specific rule
+applies to OpenCLIP: failing its standalone 0.55/LCB threshold forbids calling it a
+competent standalone PAD classifier, but does not block RQ1 or RQ2 when the relevant
+complete systems pass. Any VLM incremental-risk claim still requires its own frozen
+paired attribution test; complete-system competence alone cannot establish that
+mechanism. These are source-only gates, not target performance guarantees. Failure
+blocks exactly the dependent claim and triggers no target-informed alteration;
+Track-A SOTA rank is irrelevant.
+
+Freeze $N_{error,min}=20$ erroneous target transactions/videos per target and seed for
+the primary AP applicability rule; dependence is handled by the preregistered
+subject/video cluster bootstrap. Below this count, report every estimable AP, paired
+delta, count, and uncertainty, but mark that target/seed contribution underpowered and
+do not count that seed as event support. For every target with estimable AP in all
+three seeds, define
+
+$$
+\Delta_{OOF,t}=\frac13\sum_{s=1}^{3}\Delta_{OOF,t,s},\qquad
+\Delta_{OOF,macro}=\frac14\sum_{t=1}^{4}\Delta_{OOF,t}.
+$$
+
+No seed is dropped or reweighted because it falls below 20 errors. A target is
+event-eligible only when all three seed deltas are estimable and at least two seeds
+meet $N_{error,min}$. If a seed has one-class error labels, its AP delta is undefined,
+the target is ineligible, and the four-target primary macro is not estimable; report
+RQ1 as inconclusive rather than inserting a synthetic value or averaging the other
+seeds. Otherwise always compute the frozen equal-weight four-target macro. A primary
+pass additionally requires at least three event-eligible targets, and an ineligible
+target cannot satisfy the three-of-four positive-target rule. Fewer than three
+eligible targets makes RQ1 inconclusive. Scarcity is neither perfect risk estimation
+nor evidence against RQ1.
 
 ## Stage 3: Selective and conditional inference, weeks 9-11
 
@@ -333,7 +373,8 @@ Exit criteria:
 - inspect worst false accepts and false rejects.
 
 For each target and seed, train and score independently; never pool seed predictions
-unless deploying an ensemble. Report mean/standard deviation of seed-level metrics and
+unless deploying an ensemble. Point contrasts first average the three seed-level
+deltas within target and then average the four target deltas. Report mean/standard deviation of seed-level metrics and
 subject/video bootstrap within each seed, with no $t$-test at $n=3$ and no best-seed
 selection. Every claim preregisters its endpoint, fixed comparator set, delta, minimum
 meaningful effect, harm tolerance, and event-count requirement. A primary claim passes
@@ -345,7 +386,11 @@ comparators use the preregistered conjunction; no post-target comparator selecti
 allowed. Claims are limited to consistency across the evaluated four MCIO held-out
 domains. The cluster bootstrap is conditional on these datasets and fitted procedures;
 it does not sample from or establish generalization over a universe of future domains.
-Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
+Use 2,000 paired cluster-bootstrap resamples. Within a target, use the same resampled
+subject/video cluster multiplicities for both methods/systems and all three seeds when
+cluster identities permit, compute seed deltas, average the three seeds, and only then
+average the four target deltas. Seed variability is reported separately and seeds are
+never bootstrap sampling units. Mark
 one-class risk labels or fewer than $N_{error,min}$ errors as inconclusive for
 error-ranking endpoints. Zero
 false-accept denominators and $N_{FA}<N_{min}$ are inconclusive only for FARR and other

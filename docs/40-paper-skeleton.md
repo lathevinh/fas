@@ -131,7 +131,8 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
   analysis selection.
 - Three fixed seeds, per-target reporting, and paired subject/video cluster bootstrap.
 - Primary RQ1 endpoint: non-interpolated prediction-error AP on fixed errors.
-- Primary AP applicability: at least 20 independent target video errors per seed;
+- Primary AP applicability: at least 20 erroneous target transactions/videos per seed,
+   with dependence handled by subject/video cluster bootstrap;
    underpowered target/seed contributions remain reported but cannot count as positive
    evidence, and a pass requires at least three eligible targets.
 - Operational validation: AURC/selective curves and end-to-end K=1 outcomes.
@@ -157,11 +158,14 @@ redefined after target inspection.
 
 Use only the Track-B transaction/sample universe. Report per-target and four-domain
 macro classifier quality before risk gating. Source-only competence is frozen before
-target evaluation from nondegeneracy, both-class support, finite calibration, and a
-fixed $\delta_{competence}=0.05$ above-chance margin: macro AUROC and balanced accuracy are at least 0.55,
-macro-AUROC 95% LCB exceeds 0.50, and reference source-OOF risk labels include at least
-20 errors and 20 correct predictions. Target outcomes report performance but never
-trigger method alteration.
+target evaluation. The heterogeneous reference must pass for RQ1 and both complete
+systems must pass for RQ2: finite nonconstant scores, both-class support, finite
+calibration, macro AUROC and balanced accuracy at least 0.55, and macro-AUROC 95% LCB
+above 0.50. Reference source-OOF risk labels also require at least 20 errors and 20
+correct predictions. The shared DINO anchor must be nondegenerate. A branch missing
+the 0.55/LCB rule loses only its standalone-competence claim; in particular, OpenCLIP
+failure does not block a core RQ if the dependent complete systems pass. Target
+outcomes report performance but never trigger method alteration.
 
 | System | APCER | BPCER | ACER/HTER | AUROC | Error prevalence |
 |---|---:|---:|---:|---:|---:|
@@ -209,7 +213,14 @@ itself falsify a positive fixed-error ranking result.
 | DINOv2-Reg + plain DINOv2 | planned | planned | planned | planned | planned |
 
 Purpose: compare complete matched systems without claiming that heterogeneous
-pretraining causally produces any observed difference.
+pretraining causally produces any observed difference. The sole primary scalar is
+$\Delta_{RQ2}=U_{same}-U_{hetero}$, where $U$ is the equally weighted attack/bona-fide
+raw AURC. A pass requires macro $\Delta\ge0.01$, paired 95% LCB above zero, three
+positive targets, two positive seed macros, and no target selective harm above 0.02.
+At source-selected gates, neither macro `FA_end2end` nor macro `BFNR_end2end` may
+worsen by more than 0.01, and neither may worsen by more than 0.02 on any target.
+Classification quality, error AP, error prevalence, and class coverage are supporting
+results and cannot substitute for this rule.
 
 ## 6. Claim and Falsification Matrix
 

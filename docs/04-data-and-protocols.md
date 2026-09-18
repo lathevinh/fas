@@ -312,6 +312,11 @@ frames from depth/IR and never use unavailable modalities.
 - attack-conditional false-accept $AUPR_{FA}$ and bona-fide-conditional false-reject
   $AUPR_{FR}$;
 - attack-only and bona-fide-only risk-coverage curves plus class-averaged AURC;
+- for each class-conditional curve, integrate classification-error risk over coverage
+  in $[0,1]$; the RQ2 whole-system scalar is the unweighted mean of attack and bona-
+  fide raw AURC, so it jointly reflects classifier errors and risk ordering, lower is
+  better, and differing class prevalence cannot silently reweight it. Excess-AURC
+  against each system's oracle ordering remains a required ranking-regret diagnostic;
 - Brier score, failure-risk NLL, and reliability diagrams when interpreting
   $r_{err}$ as a probability;
 - attack coverage $Coverage_A=N_{attack,decided}/N_{attack,total}$ and bona-fide

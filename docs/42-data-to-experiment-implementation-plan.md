@@ -744,13 +744,24 @@ AP(e_{DV},r_{DVd}^{sample}).
 $$
 
 Use non-interpolated average precision with `error=1` and larger score meaning higher
-risk. Freeze $N_{error,min}=20$ independent video-level errors per target and seed.
-Below this count, report AP, paired delta, counts, and uncertainty, mark the contribution
-underpowered, and do not count it as positive evidence. A target is event-eligible
-when at least two of three seeds meet the count. Always compute the equal-weight
-four-target macro, but a primary pass requires at least three eligible targets; an
-ineligible target cannot satisfy the three-of-four positive-target rule. Also report
-error AUROC, AURC/excess-AURC, error prevalence, and paired deltas.
+risk. Freeze $N_{error,min}=20$ erroneous target transactions/videos per target and
+seed, with dependence handled by subject/video cluster bootstrap. Below this count,
+report every estimable AP, paired delta, count, and uncertainty, mark the contribution
+underpowered, and do not count that seed as event support. For every target whose
+three seed deltas are estimable, compute
+
+$$
+\Delta_{OOF,t}=\frac13\sum_{s=1}^{3}\Delta_{OOF,t,s},\qquad
+\Delta_{OOF,macro}=\frac14\sum_{t=1}^{4}\Delta_{OOF,t}.
+$$
+
+Never drop or reweight a seed below 20. A target is event-eligible only when all three
+seed deltas are estimable and at least two seeds meet the count. A one-class seed has
+undefined AP; it makes the target ineligible and the four-target primary macro/RQ1
+claim inconclusive rather than inducing a synthetic value or two-seed average.
+Otherwise always compute the equal-weight macro, but a pass requires at least three
+eligible targets; an ineligible target cannot satisfy the three-of-four positive-
+target rule. Also report error AUROC, AURC/excess-AURC, prevalence, and paired deltas.
 
 RQ1 tests the complete domain-OOF construction, not a causal domain-identity effect.
 For domain-OOF and sample-OOF, report effective fitting-set size, OOF error prevalence
@@ -788,14 +799,27 @@ Compare DINOv2-Reg plus OpenCLIP with DINOv2-Reg plus plain DINOv2 on identical 
 transactions and matched recipes. Report classifier quality, error prevalence, each
 system's own risk AP, selective utility, and K=1 outcomes. Cross-system AP is
 descriptive because the systems have different errors; the scientific comparison is
-the paired whole-system outcome.
+the following paired whole-system scalar. For each system, integrate class-conditional
+classification-error risk over coverage in $[0,1]$ and define
+$U=(AURC_{attack}+AURC_{bona})/2$. Then
+$\Delta_{RQ2}=U_{same}-U_{hetero}$, so positive favors heterogeneous. Apply the same
+seed-then-target aggregation and paired cluster bootstrap as RQ1. A pass requires
+macro $\Delta\ge0.01$, 95% LCB above zero, three positive target deltas, two positive
+seed macros, and no target with $U_{hetero}-U_{same}>0.02$. At independently
+source-selected gates, heterogeneous-minus-same-family `FA_end2end` and
+`BFNR_end2end` must each be no greater than 0.01 macro and 0.02 on every target under
+the original denominators and K=1. Coverage and classifier/error metrics remain
+mandatory support and cannot be selected as alternative outcomes. Excess-AURC remains
+a required ranking-regret diagnostic, not an alternative primary endpoint.
 
 ### 11.8 Statistical analysis
 
 - Run all four outer targets and three fixed optimization seeds.
 - Never select the best seed or pool seed predictions.
 - For each bootstrap replicate, resample clusters inside each target separately,
-  compute each target-specific paired difference, then take their equal-weight mean.
+  use the same multiplicities for paired methods/systems and all seeds when identities
+  permit, compute seed-specific deltas, average all three seeds within target, then
+  take the equal-weight mean of four target deltas.
   Never pool all target subjects or videos into one bootstrap population.
 - Aggregate target effects with the preregistered equal-weight four-target macro.
 - Report point estimate, 95% interval, event counts, applicability, and pass,
@@ -812,12 +836,16 @@ the paired whole-system outcome.
 Before Phase 8 unlocks, the Phase-7 record includes a source-only competence artifact
 for DINOv2-Reg, OpenCLIP, the heterogeneous average, and the same-family average. It
 records nonconstant scores, both-class support, finite calibration, pseudo-shift
-AUROC/balanced accuracy and errors. Freeze $\delta_{competence}=0.05$: require macro
-AUROC and balanced accuracy at least 0.55, macro-AUROC cluster-bootstrap LCB above
-0.50, score range above $10^{-6}$, and at least 20 errors plus 20 correct predictions
-in the heterogeneous reference source-OOF table. Failure blocks the affected claim
-and cannot trigger a target-informed model change. The same record freezes
-$N_{error,min}=20$ independent target video errors per target and seed.
+AUROC/balanced accuracy and errors. The heterogeneous system must pass for RQ1 and
+both complete systems must pass for RQ2: macro AUROC and balanced accuracy at least
+0.55, macro-AUROC cluster-bootstrap LCB above 0.50, finite score range above $10^{-6}$,
+and both classes present. The heterogeneous source-OOF risk table also needs at least
+20 errors and 20 correct predictions. DINOv2-Reg must pass nondegeneracy; failure of a
+branch's standalone 0.55/LCB threshold blocks only its standalone-competence claim,
+not a core RQ whose complete systems pass. VLM incremental-risk attribution remains a
+separate paired test. No failure can trigger target-informed model change. The same
+record freezes $N_{error,min}=20$ erroneous target transactions/videos per target and
+seed, with dependence handled by cluster bootstrap.
 
 | Phase | Deliverable | Exit gate |
 |---|---|---|

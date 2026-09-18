@@ -50,11 +50,11 @@ Track A is a compact preliminary subsection or supplementary table. Its source-o
 detector-conditional, SSDG/FLIP caveats and two-engineer-day stop rule remain unchanged.
 It hosts no main-table panel, RQ, novelty, or controlled superiority claim.
 
-### 5. Base-classifier competence rule - accepted and numerically closed
+### 5. Base-classifier competence rule - amended by Document 56
 
 Before target commands unlock, Phase 7 writes one immutable source-only competence
 artifact for DINOv2-Reg, OpenCLIP, the heterogeneous average, and the same-family
-average. The rule is fully specified:
+average. Document 56 narrows the scope of the numeric rule without changing it:
 
 - $\delta_{competence}=0.05$;
 - equal-domain macro AUROC and balanced accuracy must each be at least 0.55;
@@ -65,8 +65,12 @@ average. The rule is fully specified:
 - the heterogeneous reference source-OOF table must contain at least 20 errors and
   20 correct predictions.
 
-Failure blocks the affected classifier/system claim and cannot trigger target-informed
-model alteration. Track-A literature rank is irrelevant to competence.
+The heterogeneous complete system must pass this rule for RQ1, and both complete
+systems must pass it for RQ2. DINOv2-Reg must pass the nondegeneracy checks. A branch
+that misses the 0.55/LCB threshold loses only its standalone-competence claim;
+OpenCLIP failure does not block a core RQ whose required complete systems pass.
+Failure cannot trigger target-informed model alteration. Track-A literature rank is
+irrelevant to competence.
 
 ### 6. Complete-construction estimand - accepted
 
@@ -77,17 +81,21 @@ distributions, and risk-feature distributions. A source-predefined
 prevalence/difficulty-matched weighting sensitivity is run where feasible but never
 replaces the unweighted primary contrast.
 
-### 7. Primary error-event rule - accepted and seed aggregation closed
+### 7. Primary error-event rule - seed aggregation amended by Document 56
 
-Freeze $N_{error,min}=20$ independent target video errors per target and seed. Below
-this count, AP, paired delta, counts, and uncertainty remain reported, but the
-contribution is underpowered and cannot count as positive evidence.
+Freeze $N_{error,min}=20$ erroneous target transactions/videos per target and seed,
+with dependence handled by subject/video cluster bootstrap. Below this count, AP,
+paired delta, counts, and uncertainty remain reported when estimable, but the
+contribution is underpowered and cannot count as event support.
 
-A target is event-eligible when at least two of three seeds meet the count. The frozen
-equal-weight four-target macro is always computed. A primary pass additionally requires
-at least three event-eligible targets; an ineligible target cannot satisfy the
-three-of-four positive-target rule. Fewer than three eligible targets makes RQ1
-inconclusive, not evidence against it.
+For target $t$, Document 56 freezes
+$\Delta_t=(\Delta_{t,1}+\Delta_{t,2}+\Delta_{t,3})/3$ using all three estimable seed
+deltas, including any seed below 20 errors, followed by the equal-weight four-target
+macro. A target is event-eligible only when all three deltas are estimable and at least
+two seeds meet the count. An undefined one-class seed makes the primary macro and RQ1
+claim inconclusive; it is never dropped or assigned a synthetic value. A pass also
+requires at least three eligible targets, and an ineligible target cannot satisfy the
+three-of-four positive-target rule.
 
 ### 8. Failure-risk score terminology - accepted
 

@@ -267,15 +267,23 @@ Also write two source-only applicability artifacts before target commands unlock
 
 - a base-classifier competence artifact for DINOv2-Reg, OpenCLIP, heterogeneous
   average, and same-family average, containing nondegeneracy, both-class support,
-  finite calibration, and source-pseudo-shift error counts. Freeze
-  $\delta_{competence}=0.05$: macro AUROC and balanced accuracy must each be at least
-  0.55, macro-AUROC cluster-bootstrap LCB must exceed 0.50, score range must exceed
-  $10^{-6}$, and the heterogeneous reference source-OOF table must contain at least
-  20 errors and 20 correct predictions;
-- $N_{error,min}=20$ independent target video errors per target and seed. Lower counts
-  remain reportable but are underpowered and cannot count as positive evidence. A
-  target is eligible when at least two of three seeds pass; always compute the frozen
-  four-target macro, but require at least three eligible targets for a primary pass.
+  finite calibration, and source-pseudo-shift error counts. The heterogeneous complete
+  system is a mandatory RQ1 gate and both complete systems are mandatory RQ2 gates.
+  Freeze $\delta_{competence}=0.05$ for those complete systems: macro AUROC and balanced
+  accuracy must each be at least 0.55, macro-AUROC cluster-bootstrap LCB must exceed
+  0.50, score range must exceed $10^{-6}$, and the heterogeneous reference source-OOF
+  table must contain at least 20 errors and 20 correct predictions. DINOv2-Reg must
+  pass finite/nonconstant, both-class-support, and finite-calibration checks. A branch
+  that misses 0.55/LCB loses only its standalone-competence claim; OpenCLIP failure
+  does not block a core RQ whose complete-system gates pass, and its incremental-risk
+  value remains subject to the paired attribution test;
+- $N_{error,min}=20$ erroneous target transactions/videos per target and seed, with
+  dependence handled by subject/video cluster bootstrap. Lower counts remain
+  reportable but are underpowered and cannot count as event support. Average all three
+  estimable seed deltas within each target, including seeds below 20, then average the
+  four target deltas. A target is eligible only if every seed delta is estimable and at
+  least two seeds pass the count; any undefined seed delta makes the primary macro and
+  RQ1 claim inconclusive. Require at least three eligible targets for a primary pass.
 
 Competence failure blocks only the affected classifier/system claim. It cannot trigger
 target-informed model alteration, and Track-A literature rank is not a competence gate.
@@ -285,8 +293,11 @@ Primary contracts:
 - RQ1: paired four-target macro of $\Delta_{OOF}$ on fixed `e_DV`;
 - operational utility: a separate downstream consequence of RQ1 ranking, never a
   conjunctive RQ1 pass requirement;
-- RQ2: whole-system selective/end-to-end advantage over the matched same-family
-  selective system;
+- RQ2: $\Delta_{RQ2}=U_{same}-U_{hetero}$, where $U$ is the unweighted attack/bona-
+  fide mean raw AURC. Require macro gain at least 0.01, paired LCB above zero,
+  three positive targets, two positive seed macros, and no target selective harm above
+  0.02. At source-selected gates, heterogeneous-minus-same-family `FA_end2end` and
+  `BFNR_end2end` must each be at most 0.01 macro and 0.02 per target;
 - classifier benefit: net APCER plus BPCER/BFNR harm, with FARR descriptive;
 - disagreement: $R_{DVd}$ versus capacity-matched nonlinear probability-only risk;
 - routing: absent unless optional deployment work is explicitly activated.
