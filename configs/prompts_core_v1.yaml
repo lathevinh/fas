@@ -13,7 +13,7 @@
       "a face presentation attack",
       "an artificial representation of a face presented to a camera",
       "a spoofed face rather than a live person",
-      "a printed, displayed, or masked face presentation"
+      "a non-live artificial face presentation"
     ]
   },
   "class_weights": {"live": 1.0, "spoof": 1.0},

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "pending_model_stack_lock",
+  "python_requires": ">=3.11,<3.13",
+  "platform": "linux_x86_64",
+  "packages": {
+    "torch": null,
+    "torchvision": null,
+    "open_clip_torch": null,
+    "transformers": null,
+    "scikit_learn": null
+  },
+  "lockfile": null,
+  "lockfile_sha256": null
+}

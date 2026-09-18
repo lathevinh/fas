@@ -6,7 +6,7 @@ Do independently pretrained self-supervised visual and vision-language models ma
 usefully different errors under domain and attack shifts?
 
 For source-selected decision thresholds, report the joint correctness table on each
-untouched target:
+held-out official target evaluation partition:
 
 | DINO | VLM | Probability |
 |---|---|---:|
@@ -41,9 +41,11 @@ cross-foundation predictions improve failure detection under domain and attack s
 and does explicit absolute-difference disagreement add value beyond the two branch
 probabilities?
 
-Domain-OOF and attack-OOF are separate protocols. Confirmatory-target data never train,
-select, or calibrate any model, threshold, prompt, or risk gate. The preregistered
-pilot domain is development-only and excluded from confirmatory inference.
+Domain-OOF and attack-OOF are separate protocols. Official confirmatory evaluation
+partitions never train, select, or calibrate any model, threshold, prompt, or risk gate.
+Under the global-development estimand, train/dev partitions from a future confirmatory
+domain may have acted as sources when selecting the candidate on the MSU-MFSD pilot;
+this is test-partition-unseen, not strict outer-domain-unseen selection.
 
 **H2:** On the preregistered primary metric, prediction-error AUPR,
 cross-foundation probabilities plus fixed quality features outperform quality-only

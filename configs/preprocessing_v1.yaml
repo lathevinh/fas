@@ -7,6 +7,7 @@
   },
   "face": {
     "detector": "SCRFD_10G_KPS",
+    "detector_weight_sha256": null,
     "alignment": "five_point_similarity",
     "context_scale": 1.30,
     "color_mode": "RGB",

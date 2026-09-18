@@ -19,10 +19,10 @@ This title is conditional. If explicit disagreement adds no capacity-matched gai
 use `Cross-Foundation Selective Failure Prediction`; if heterogeneous rescue does not
 beat same-family diversity, reframe as a selective-ensemble PAD study.
 
-The contribution must be the tested confirmatory-target-source-only reliability
-mechanism, not the choice of two pretrained backbones or disagreement by itself. One
-committed pilot domain may influence global candidate selection but is excluded from
-confirmatory claims:
+The contribution must be the tested source-only reliability mechanism on held-out
+official confirmatory evaluation partitions, not the choice of two pretrained
+backbones or disagreement by itself. One committed pilot domain may influence global
+candidate selection but is excluded from confirmatory claims:
 
 1. intentionally independent DINOv2-Reg and VLM predictors;
 2. source-only cross-fitted failure-risk calibration from heterogeneous predictors;
@@ -61,9 +61,10 @@ An improvement on one in-domain split is insufficient.
 
 - Input at inference is exactly one RGB image.
 - Video datasets may supply independent frames, but no temporal feature is used.
-- Confirmatory-target labels cannot select checkpoints, prompts, thresholds, or
-    hyperparameters. One preregistered pilot/development domain may select within a
-    committed candidate set and is permanently excluded from confirmatory inference.
+- Official confirmatory evaluation labels cannot select checkpoints, prompts,
+    thresholds, or hyperparameters. Their train/dev partitions may be source data in
+    the global pilot fold; therefore this is test-partition-unseen, not strict
+    outer-domain-unseen selection. The pilot is excluded from confirmatory inference.
 - Dataset licenses and biometric-data restrictions take precedence over convenience.
 - Q3 publication is a target, not a guarantee; venue quartiles change by year/category.
 

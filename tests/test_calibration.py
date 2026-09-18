@@ -7,7 +7,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from fas.calibration import MonotoneAffineCalibrator, equal_domain_log_loss
+from fas.calibration import (
+    MonotoneAffineCalibrator,
+    class_balanced_equal_domain_log_loss,
+    equal_domain_log_loss,
+)
 
 
 class MonotoneAffineCalibratorTest(unittest.TestCase):
@@ -36,6 +40,24 @@ class MonotoneAffineCalibratorTest(unittest.TestCase):
         calibrator = MonotoneAffineCalibrator(theta=0.0, intercept=0.0)
         with self.assertRaises(ValueError):
             calibrator.transform_one(float("nan"))
+
+    def test_loss_rejects_values_outside_probability_domain(self) -> None:
+        with self.assertRaises(ValueError):
+            equal_domain_log_loss([-5.0, 5.0], [0, 1], ["a", "b"])
+
+    def test_branch_loss_balances_classes_within_domain(self) -> None:
+        probabilities = [0.9, 0.9, 0.9, 0.1]
+        labels = [1, 1, 1, 0]
+        domains = ["source", "source", "source", "source"]
+        expected = (-math.log(0.9) - math.log(0.9)) / 2
+        self.assertAlmostEqual(
+            class_balanced_equal_domain_log_loss(probabilities, labels, domains),
+            expected,
+        )
+
+    def test_branch_loss_rejects_one_class_domain(self) -> None:
+        with self.assertRaisesRegex(ValueError, "both classes"):
+            class_balanced_equal_domain_log_loss([0.9, 0.8], [1, 1], ["a", "a"])
 
 
 if __name__ == "__main__":

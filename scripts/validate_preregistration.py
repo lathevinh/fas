@@ -10,18 +10,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from fas.preregistration import artifact_hashes, validate
+from fas.preregistration import STAGES, artifact_hashes, validate_stage
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--allow-incomplete-counts",
-        action="store_true",
-        help="validate frozen config schema while dataset audit is pending",
-    )
+    parser.add_argument("--stage", choices=STAGES, default="schema")
     args = parser.parse_args()
-    errors = validate(ROOT, require_counts=not args.allow_incomplete_counts)
+    errors = validate_stage(ROOT, args.stage)
     for name, digest in artifact_hashes(ROOT).items():
         print(f"{digest}  {name}")
     if errors:
@@ -29,8 +25,7 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    status = "CONFIG FROZEN; COUNTS PENDING" if args.allow_incomplete_counts else "PREREGISTRATION READY"
-    print(f"\n{status}")
+    print(f"\n{args.stage.upper()} READY")
     return 0
 
 

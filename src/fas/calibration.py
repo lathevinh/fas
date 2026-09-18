@@ -41,16 +41,49 @@ def equal_domain_log_loss(
     domains: Sequence[str],
 ) -> float:
     """Average natural-prevalence BCE within domains, then equally across domains."""
-    if not probabilities or not (len(probabilities) == len(labels) == len(domains)):
-        raise ValueError("probabilities, labels, and domains must have equal nonzero length")
+    _validate_probability_inputs(probabilities, labels, domains)
     losses: dict[str, list[float]] = {}
     for probability, label, domain in zip(probabilities, labels, domains, strict=True):
-        if label not in (0, 1) or not math.isfinite(probability):
-            raise ValueError("labels must be binary and probabilities finite")
         clipped = min(max(probability, 1e-12), 1.0 - 1e-12)
         loss = -(label * math.log(clipped) + (1 - label) * math.log(1.0 - clipped))
         losses.setdefault(domain, []).append(loss)
     return sum(sum(values) / len(values) for values in losses.values()) / len(losses)
+
+
+def class_balanced_equal_domain_log_loss(
+    probabilities: Sequence[float],
+    labels: Sequence[int],
+    domains: Sequence[str],
+) -> float:
+    """Average class BCE within each domain, then equally across domains."""
+    _validate_probability_inputs(probabilities, labels, domains)
+    losses: dict[str, dict[int, list[float]]] = {}
+    for probability, label, domain in zip(probabilities, labels, domains, strict=True):
+        clipped = min(max(probability, 1e-12), 1.0 - 1e-12)
+        loss = -(label * math.log(clipped) + (1 - label) * math.log(1.0 - clipped))
+        losses.setdefault(domain, {0: [], 1: []})[label].append(loss)
+    domain_losses = []
+    for domain, class_losses in losses.items():
+        if not class_losses[0] or not class_losses[1]:
+            raise ValueError(f"domain {domain!r} must contain both classes")
+        domain_losses.append(
+            sum(sum(values) / len(values) for values in class_losses.values()) / 2
+        )
+    return sum(domain_losses) / len(domain_losses)
+
+
+def _validate_probability_inputs(
+    probabilities: Sequence[float],
+    labels: Sequence[int],
+    domains: Sequence[str],
+) -> None:
+    if not probabilities or not (len(probabilities) == len(labels) == len(domains)):
+        raise ValueError("probabilities, labels, and domains must have equal nonzero length")
+    for probability, label in zip(probabilities, labels, strict=True):
+        if label not in (0, 1) or not math.isfinite(probability):
+            raise ValueError("labels must be binary and probabilities finite")
+        if not 0.0 <= probability <= 1.0:
+            raise ValueError("probabilities must be in [0, 1]")
 
 
 def _softplus(value: float) -> float:

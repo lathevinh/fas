@@ -62,23 +62,29 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 28. [Response to ChatGPT review round 10](docs/27-review-response-round10.md)
 29. [ChatGPT review round 11](docs/28-chatgpt-review-round11.md)
 30. [Response to ChatGPT review round 11](docs/29-review-response-round11.md)
-31. [Reading list](references/reading-list.md)
+31. [ChatGPT review round 12](docs/30-chatgpt-review-round12.md)
+32. [Response to ChatGPT review round 12](docs/31-review-response-round12.md)
+33. [Reading list](references/reading-list.md)
 
 ## Readiness checks
 
 ```bash
 python -m unittest discover -s tests -v
-python scripts/validate_preregistration.py --allow-incomplete-counts
-python scripts/validate_preregistration.py
+python scripts/validate_preregistration.py --stage schema
+python scripts/validate_preregistration.py --stage data
+python scripts/validate_preregistration.py --stage pre-pilot
+python scripts/validate_preregistration.py --stage confirmatory
 ```
 
-The strict command is expected to fail while manifests are marked `not_audited`,
-effect thresholds are pending, or pilot-history attestation is absent.
+`schema` permits Stage-0 implementation. `data` requires reconciled private evidence
+and hashes. `pre-pilot` additionally requires attestation, exact model/environment pins,
+anchor registry, and a matching freeze record. Source-only experiments then derive the
+effect and validity thresholds required by `confirmatory`.
 
 ## Current status
 
-- Status: executable preregistration freeze; dataset audit pending
-- Last reviewed: 2026-09-17
+- Status: schema-valid Stage-0 scaffold; dataset evidence and model pins pending
+- Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 

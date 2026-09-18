@@ -124,8 +124,8 @@ features. Entropy, branch
 energy, hard/log-odds disagreement, and Mahalanobis are ablations or baselines rather
 than primary features. Version 1 preregisters logistic regression with fixed regularization as the
 primary failure-risk calibrator; nested pseudo-domain selection is a secondary
-sensitivity analysis. Confirmatory-target samples never train, select, or calibrate
-this model. The development-only pilot may select the global VLM candidate but never
+sensitivity analysis. Official confirmatory evaluation samples never train, select, or
+calibrate this model. The development-only pilot may select the global VLM candidate but never
 fits risk calibration or a confirmatory operating threshold.
 
 Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. Only

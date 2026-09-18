@@ -28,8 +28,13 @@ Exit criteria:
 - APCER/BPCER/ACER tests pass on synthetic examples.
 - core prompts are frozen before pilot labels; the selected checkpoint/preprocessing
   artifact is frozen after pilot selection and before confirmatory MICO targets.
-- `python scripts/validate_preregistration.py` reports `PREREGISTRATION READY`; a
-  schema-only pass with unaudited manifest counts does not permit pilot inspection.
+- `python scripts/validate_preregistration.py --stage data` passes before the Stage-0
+  freeze record is written; `--stage pre-pilot` then permits pilot inspection.
+
+Readiness is staged rather than circular: schema-valid permits implementation and
+data audit; data-ready permits source-only model fitting and anchor generation;
+pre-pilot-ready permits pilot selection; source pseudo-shifts then freeze numerical
+claim/validity gates; confirmatory-ready permits official target evaluation.
 
 ## Stage 1: Complementarity kill experiment, weeks 3-5
 
@@ -118,7 +123,8 @@ Exit criteria:
   pass preregistered confidence-bound criteria;
 - **Level 2, retain cross-foundation claim:** paired $\Delta_{hetero}>0$ against the
   stronger DINOv2-Reg plus DINOv2 control;
-- no target data influenced model selection.
+- no official target evaluation partition influenced model selection; global candidate
+  selection is explicitly test-partition-unseen rather than strict outer-domain-unseen.
 
 Apply the claims hierarchically: Level 1 realized rescue, Level 2 heterogeneity,
 cross-foundation risk gain, then explicit-disagreement gain. A failed level blocks its
@@ -255,7 +261,8 @@ Exit criteria:
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
 
-- compute the primary confirmatory macro over the three untouched MICO targets;
+- compute the primary confirmatory macro over the three held-out official MICO target
+  evaluation partitions;
 - report all four MICO folds descriptively with the pilot labeled development-only and
   excluded from confirmatory inference;
 - run SiW-M leave-one-attack-out;
@@ -270,6 +277,10 @@ selection. A confirmatory delta passes only when its three-target macro mean is
 positive, at least two of three target point estimates are positive, no target exceeds
 a preregistered harm tolerance, and at least two of three seeds have positive
 three-target macro deltas. Claims are limited to the evaluated confirmatory domains.
+Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
+zero false-accept denominators, one-class risk labels, and $N_{FA}<N_{min}$ as
+inconclusive rather than fail. Recompute the stronger of $R_D/R_V$ inside every paired
+$\Delta_{CF}$ resample; never switch operating thresholds after viewing a target.
 
 ## Stage 5: Secondary representation ablations, weeks 15-16
 

@@ -25,7 +25,8 @@ For each target among OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD:
 
 - DINO uses generic pretrained weights plus labels from the other three source datasets;
 - the VLM uses its generic pretrained weights, immutable core prompts, source
-  images/labels for one-stage domain-balanced affine calibration, and no target samples;
+  images/labels for one-stage domain-balanced affine calibration, and no samples from
+  the held-out official target evaluation partition;
 - the reliability calibrator uses only out-of-fold predictions generated within the
   three source datasets;
 - CelebA-Spoof and SiW-M are not additional labeled training data.
@@ -49,6 +50,12 @@ Report two distinct downstream-unseen settings:
 Do not pool these into one unknown score because they test different abilities.
 Neither setting proves that the attack was absent from generic foundation-model
 pretraining; foundation-model pretraining exposure at web scale is uncontrolled.
+
+Core binary prompts contain no print/replay/mask family names. Auxiliary family prompts
+never alter primary PAD probability or primary risk, so downstream-unseen and
+open-vocabulary settings have identical primary binary predictions. They differ only
+on explicitly labeled auxiliary concept-recognition endpoints unless a future
+auxiliary-conditioned policy is preregistered as a separate experiment.
 
 Define exclusions at the declared semantic level
 `family -> instrument -> subtype`. Holding out an entire family removes all matching
@@ -234,10 +241,11 @@ target APCER=1% in a separate post-hoc diagnostic block. Compare thresholds sele
 from pooled sources with thresholds satisfying the APCER constraint on every source
 domain.
 
-Report empirical APCER with binomial confidence intervals. A statistically
-constrained source policy requires $UCB_{95\%}(APCER_d)\leq\alpha$ for every source
-domain. If attack counts cannot support that bound, label the operating point a
-nominal empirical target rather than a certified security level.
+Report empirical APCER with cluster-aware confidence intervals. The primary source
+rule is a nominal empirical constraint, not a certified security guarantee. Certified
+wording requires either a disjoint certification set or a tested selection-aware
+simultaneous bound across threshold search and source domains. Pointwise per-domain
+binomial intervals after adaptive threshold selection are insufficient.
 Count independent attack videos/transactions, not frames, before fixing $\alpha$.
 Use the lowest operating point supported by those counts as primary (5% if necessary),
 while 1% and 0.5% remain nominal diagnostics when underpowered.
