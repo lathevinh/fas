@@ -106,7 +106,7 @@ complementarity, while limited fusion rescue does not preclude useful failure ra
 ## Domain-OOF Failure Risk Estimation
 
 Create source records in three distinct protocols. Sample-OOF splits within domains;
-domain-OOF holds out one complete capture domain and is primary for MICO; attack-OOF
+domain-OOF holds out one complete capture domain and is primary for MCIO; attack-OOF
 holds out one attack family and is primary for SiW-M downstream-unseen evaluation.
 A mixed domain/attack gate is secondary. Predictor fitting and branch calibration use
 only the allowed remainder with subject/video-safe disjoint partitions.
@@ -131,7 +131,7 @@ primary failure-risk estimator; nested pseudo-domain selection is a secondary
 sensitivity analysis. For target $T$, no sample from $T$ trains, selects, or calibrates
 any component. The primary VLM checkpoint, preprocessing, crop, and prompt bank are
 fixed a priori and identical in every fold. Candidate search is a secondary robustness
-study performed only after the confirmatory core analysis is frozen.
+study performed only after the core analysis is frozen.
 
 Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. Only
 quality features are standardized with statistics from the final allowed source
@@ -174,7 +174,7 @@ alternative; attack-OOF uses its separate known-attack-only $G_{attack}$.
 Before target evaluation, report prediction-error AUPR, AUROC, Brier score, and the
 risk-coverage curve of the frozen OOF-trained gate on final-model predictions from
 $G_{domain}$. This validity check cannot tune gate parameters. Its nonzero sanity
-threshold is derived from source pseudo-shifts and frozen before confirmatory labels;
+threshold is derived from source pseudo-shifts and frozen before held-out evaluation;
 failure blocks OOF-risk transfer claims even if a threshold can still be selected.
 
 Raw and independently calibrated disagreement remain mandatory baselines. Absolute
@@ -222,7 +222,7 @@ policy is spoof-only early exit: DINO samples beyond a source-selected confident
 margin become terminal non-accepts; every other detector-successful sample invokes the
 VLM. Select the routing threshold on source-only validation under the same finite-sample
 error accounting. Direct-live exit and symmetric routing are ablations and cannot use
-confirmatory data.
+held-out target data.
 
 This distinction avoids claiming that disagreement can route a request before the VLM
 has run. Always-on dual inference is the compute-unconstrained reference under fixed

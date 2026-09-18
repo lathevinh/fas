@@ -39,7 +39,7 @@ baseline or matched same-family risk transfer. The claim then becomes a broader
 selective-ensemble result if RQ1 still passes.
 
 The cross-foundation-specific claim additionally requires positive paired
-heterogeneity advantage over frozen DINOv2-Reg plus plain DINOv2 on confirmatory
+heterogeneity advantage over frozen DINOv2-Reg plus plain DINOv2 on held-out
 targets. Shared-encoder head diversity is only a sanity control.
 
 Required analyses include error correlation, double-fault, oracle gain, attack/domain
@@ -54,10 +54,11 @@ cross-foundation predictions improve failure detection under domain and attack s
 and does explicit absolute-difference disagreement add value beyond the two branch
 probabilities?
 
-Domain-OOF and attack-OOF are separate protocols. For every MICO fold, the entire
+Domain-OOF and attack-OOF are separate protocols. For every MCIO fold, the entire
 target domain is excluded from model, checkpoint, preprocessing, threshold, prompt,
 and risk-gate selection. The primary VLM, preprocessing, prompts, and analysis rules
-are fixed globally before any target result; all four MICO targets are confirmatory.
+are fixed globally before any target result; all four MCIO targets are pre-specified
+outer-domain-held-out folds.
 
 On the preregistered primary metric, prediction-error AUPR,
 cross-foundation probabilities plus fixed quality features outperform quality-only

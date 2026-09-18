@@ -11,12 +11,12 @@ Tasks:
   Confidence Aware Learning, RPSR-FAS, DINO-VPT, and primitive-driven prompting;
 - freeze the literature table and search for newer overlapping work.
 - preregister `configs/prompts_core_v1.yaml`, `configs/prompts_aux_v1.yaml`, and a
-  single primary `configs/vlm_checkpoint_v1.yaml` artifact before confirmatory
+  single primary `configs/vlm_checkpoint_v1.yaml` artifact before locked
   evaluation. The primary is OpenCLIP `ViT-B-16`, `laion2b_s34b_b88k`, native
   224-pixel preprocessing, and the fixed context crop. Record exact prompt strings,
   classes, weights, tokenizer, interpolation, normalization, and weight hash.
 - defer checkpoint/preprocessing candidate search to a secondary robustness study;
-  it cannot replace the globally fixed primary in the confirmatory tables.
+  it cannot replace the globally fixed primary in the core tables.
 
 Exit criteria:
 
@@ -24,7 +24,7 @@ Exit criteria:
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
 - core prompts, primary VLM/preprocessing, and all analysis-rule generation logic are
-  frozen before the first of four outer-domain-held-out MICO results.
+  frozen before the first of four outer-domain-held-out MCIO results.
 - Round 15 records `METHODOLOGY ACCEPTED FOR IMPLEMENTATION PLANNING`; implementation
   begins only through the dependency gates in `docs/38-implementation-plan.md`.
 
@@ -58,7 +58,7 @@ Add two diagnostic controls without changing the proposed architecture:
 
 The first is a minimum homogeneous-diversity control but may underestimate ensembles
 with independent representations. The third is therefore required for the
-cross-foundation-specific confirmatory claim, while the CLIP visual control isolates prompt-driven versus
+cross-foundation-specific claim, while the CLIP visual control isolates prompt-driven versus
 source-supervised adaptation on one VLM encoder; it does not alone prove that text
 semantics causally produced any gain.
 Match source labels, subject/video splits, head capacity, augmentation budget, crop
@@ -68,7 +68,7 @@ one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
 Cache each frozen backbone's features independently so the branches never share GPU
-memory. All four MICO domains are strict outer-domain-held-out targets in turn. The globally fixed VLM
+memory. All four MCIO domains are strict outer-domain-held-out targets in turn. The globally fixed VLM
 is reused in every fold; only fold-local source-fitted heads, calibrators, and
 thresholds vary before target $T$ is evaluated. Report the joint correctness table,
 double-fault, oracle gain, error correlation, and attack/domain subgroups for every
@@ -86,7 +86,7 @@ Also preregister the heterogeneity advantage
 $\Delta_{hetero}=N_{FA}^{-1}\sum_i(r_i^V-r_i^H)$ on the same DINO false accepts,
 with paired subject/video bootstrap and McNemar-style analysis when event counts are
 small. Report both potential-branch and realized-fusion paired versions. If the strong
-DINOv2 same-family comparison is not positive on confirmatory targets, weaken the
+DINOv2 same-family comparison is not positive on held-out targets, weaken the
 cross-foundation claim even when the broader selective ensemble remains useful.
 Use literally the same fitted DINOv2-Reg anchor predictions for heterogeneous and
 same-family rescue at each target, seed, and configuration; cache them once and never
@@ -131,7 +131,7 @@ These classifier claims are separate from failure-risk transfer. Failed fusion r
 removes the classifier-benefit claim but does not stop Stage 2. Heterogeneous advantage
 must be demonstrated separately at every endpoint used for a heterogeneous-foundation
 claim. Explicit disagreement remains a feature-attribution claim only.
-Before confirmatory labels, source pseudo-shifts must freeze nonzero minimum meaningful
+Before held-out evaluation, source pseudo-shifts must freeze nonzero minimum meaningful
 effects or positive paired lower-confidence-bound criteria for $\Delta_{hetero}$,
 $\Delta_{CF}^{AUPR}$, and $\Delta_{dis}^{AUPR}$; $\Delta>0$ alone is insufficient.
 
@@ -164,7 +164,7 @@ and natural error prevalence for every pseudo-fold. If branch-fit sizes differ
 materially, add a budget-matched sensitivity; otherwise attribute any gain to the
 complete domain-OOF construction rather than domain holdout alone.
 
-### Domain-OOF primary MICO protocol
+### Domain-OOF primary MCIO protocol
 
 1. hold out one complete source capture domain after removing $G_{domain}$;
 2. train/select both predictors using only the remainder;
@@ -179,7 +179,7 @@ complete domain-OOF construction rather than domain holdout alone.
    which was excluded from every prior fit and selection step;
 8. select the accept threshold on $G_{domain}$ and do not refit any component afterward.
 
-Use $G_{domain}$ in MICO and a separate known-attack-only $G_{attack}$ in SiW-M.
+Use $G_{domain}$ in MCIO and a separate known-attack-only $G_{attack}$ in SiW-M.
 Neither holdout selects routing thresholds or unrelated ablation policies.
 
 Stratify $G_{domain}$ by source domain, class, and attack family where possible; report its
@@ -321,7 +321,7 @@ Exit criteria:
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
 
-- compute the primary confirmatory macro over all four strict outer-domain-unseen MICO
+- compute the primary macro over all four strict outer-domain-unseen MCIO
   targets;
 - run SiW-M leave-one-attack-out;
 - run external mask transfer when licensing permits;
@@ -338,7 +338,7 @@ gain is at least the claim-specific $\delta_{min}$, at least three of four targe
 estimates are positive, no target exceeds its harm tolerance, and at least two of
 three seeds have positive four-target macro deltas. Claims against multiple required
 comparators use the preregistered conjunction; no post-target comparator selection is
-allowed. Claims are limited to the evaluated confirmatory domains.
+allowed. Claims are limited to the evaluated held-out domains.
 Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
 one-class risk labels as inconclusive only for error-ranking endpoints. Zero
 false-accept denominators and $N_{FA}<N_{min}$ are inconclusive only for FARR and other

@@ -21,7 +21,7 @@ a selective-ensemble PAD study rather than making a heterogeneous-foundation cla
 
 The contribution must be the tested source-only reliability mechanism on held-out
 domains, not the choice of two pretrained backbones or disagreement by itself. No
-labeled MICO target may influence candidate, checkpoint, threshold, or feature
+labeled MCIO target may influence candidate, checkpoint, threshold, or feature
 selection for its fold:
 
 1. intentionally independent DINOv2-Reg and fixed OpenCLIP ViT-B/16 predictors;
@@ -89,10 +89,10 @@ before target evaluation; do not silently reuse a partition.
 - The primary VLM is fixed globally as OpenCLIP `ViT-B-16` with
     `laion2b_s34b_b88k` weights, native 224-pixel preprocessing, the immutable generic
     core prompt bank, and the preregistered context crop. It is not selected per fold.
-- For target $T$, every fitted component and threshold uses only the other three MICO
+- For target $T$, every fitted component and threshold uses only the other three MCIO
     source domains. The complete target domain is strict outer-domain-unseen until
     final evaluation. Pipeline debugging uses synthetic data or source-only folds,
-    never a labeled MICO pilot target.
+    never a labeled MCIO pilot target.
 - Dataset licenses and biometric-data restrictions take precedence over convenience.
 - Q3 publication is a target, not a guarantee; venue quartiles change by year/category.
 

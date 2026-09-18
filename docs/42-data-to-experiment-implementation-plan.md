@@ -6,19 +6,19 @@ Status: corrected execution blueprint; exact dataset-list hashes freeze at Phase
 ## 1. Purpose and authority
 
 This document turns the frozen research method into an operational plan from dataset
-access through confirmatory evaluation. It is subordinate to the scientific contracts
+access through locked evaluation. It is subordinate to the scientific contracts
 in `docs/00-project-charter.md` through `docs/06-risks-and-decisions.md`, the accepted
 Round-14 through Round-16 responses, the dependency order in
 `docs/38-implementation-plan.md`, and the paper contract in
 `docs/40-paper-skeleton.md`.
 
 This plan does not authorize target-driven debugging. Implementation proceeds through
-synthetic tests, source-only audits, and source-only dry runs. MICO is a pre-specified
+synthetic tests, source-only audits, and source-only dry runs. MCIO is a pre-specified
 leave-one-domain-out evaluation: researchers may know a dataset's labels when it is a
 source in other folds, but for outer target $T$, no $T$ sample, label, statistic, or
 result may influence any fitted artifact or global method choice for that fold.
 
-The core track is four-fold MICO using OULU-NPU, CASIA-FASD, Replay-Attack, and
+The core track is four-fold MCIO using OULU-NPU, CASIA-FASD, Replay-Attack, and
 MSU-MFSD. SiW-M, CelebA-Spoof, LoRA, routing, and cue analysis are optional work after
 the core RQ1 analysis.
 
@@ -132,12 +132,12 @@ Dataset-specific intake scope:
 
 | Dataset | Core role | Intake requirement |
 |---|---|---|
-| OULU-NPU | MICO source/target | Preserve official protocol, device, session, environment, subject, and attack metadata |
-| CASIA-FASD | MICO source/target | Preserve train/test metadata and quality/attack-medium identity when officially available |
-| Replay-Attack | MICO source/target | Preserve official train/devel/test and controlled/adverse conditions |
-| MSU-MFSD | MICO source/target | Verify subject/video identity carefully because the dataset is small |
+| OULU-NPU | MCIO source/target | Preserve official protocol, device, session, environment, subject, and attack metadata |
+| CASIA-FASD | MCIO source/target | Preserve train/test metadata and quality/attack-medium identity when officially available |
+| Replay-Attack | MCIO source/target | Preserve official train/devel/test and controlled/adverse conditions |
+| MSU-MFSD | MCIO source/target | Verify subject/video identity carefully because the dataset is small |
 | SiW-M | Optional attack-shift target | Obtain official zero-shot protocol and attack-family definitions before activation |
-| CelebA-Spoof | Optional extra-data ablation | Keep entirely outside strict MICO source supervision |
+| CelebA-Spoof | Optional extra-data ablation | Keep entirely outside strict MCIO source supervision |
 
 No acquisition script will bypass authentication or redistribute protected URLs.
 Adapters receive a local raw root after access is granted.
@@ -209,7 +209,11 @@ The required video-level fields additionally include `raw_label_token`,
 adapter fixtures must prove the canonical polarity `bona_fide=0`, `attack=1`, larger
 classifier score means attack, and `error=1` means a wrong fixed-classifier decision.
 
-## 6. Role assignment and MICO folds
+## 6. Role assignment and MCIO folds
+
+`MCIO` is the sole manuscript acronym for MSU-MFSD, CASIA-FASD, Idiap
+Replay-Attack, and OULU-NPU. Existing lowercase `mico` artifact paths are internal
+legacy identifiers for the same benchmark and do not define a different protocol.
 
 ### 6.1 Official protocol first
 
@@ -221,7 +225,7 @@ outer target.
 The project keeps two visible evaluation tracks because literature comparability and
 the strict single-image selective estimand require different data views.
 
-#### Track A: literature-compatible MCIO/MICO
+#### Track A: literature-compatible MCIO sample/evaluation view
 
 Use the official SSDG repository at commit
 `c268920a7408ca78fb425954de2bf5745d1c660a` as the strict three-source MCIO
@@ -239,20 +243,42 @@ blob SHAs. Do not reconstruct membership from folder names alone.
 | MSU-MFSD | subjects in official train + test lists | source frame 6; target frame 6 and frame $6+\lfloor N/2\rfloor$ |
 
 For each fold, the other three universes are labeled sources and the held-out universe
-is the target. Track A uses the MTCNN-style alignment contract, target video-score
-aggregation, and literature metrics. It reproduces sample-universe and evaluation
-conventions, not SSDG's target-aware checkpoint selection; all model and threshold
-selection remains source-only.
+is the target. The pinned SSDG frame-selection function is
+
+```text
+index_j = sorted_frame_list[6 + j * floor(N / num_frames)]
+source num_frames = 1
+target num_frames = 2
+```
+
+For HTER/AUC, pinned SSDG evaluation averages the class-1 softmax probabilities of
+the two selected frames within each video. Its evaluation code then derives an EER
+threshold from those target video scores, and its training code selects checkpoints
+using `tgt_valid_dataloader`. Track A intentionally reproduces neither target-aware
+operation: checkpoint and threshold selection remain source-only. Published SSDG HTER
+must therefore carry a footnote and is not a like-for-like target-blind comparison;
+AUC is less affected by this threshold distinction.
+
+Track A initially reuses the frozen Track-B detector/context crop. It is consequently
+**sample-universe/frame-rule compatible**, not SSDG preprocessing compatible and not
+an SSDG reproduction. An exact MTCNN/256 preprocessing variant is optional and must
+be labeled separately if implemented.
 
 FLIP's published Benchmark-1 configuration adds CelebA-Spoof to the three MCIO
 sources. Its reported numbers are therefore marked `+CelebA-Spoof` and are not treated
 as equal-data comparisons. A like-for-like FLIP comparison requires the already
 separate optional extra-data track.
 
-Track A is a visible panel of the main classifier-comparison table and does not host
-the primary RQ1 claim. Exact equivalence is claimed only after adapter counts, list
-contents, labels, and preprocessing reconcile against the pinned artifacts. Any
-deviation is named in the table caption.
+Track A is a visible panel of the main classifier-comparison table and creates no new
+research question or claim. Exact sample/evaluation equivalence is claimed only after
+adapter counts, list contents, labels, frame selection, and aggregation reconcile
+against the pinned artifacts. Any deviation is named in the table caption.
+
+Track-A implementation stops after two engineer-days if required artifacts cannot be
+reconciled or the old preprocessing/evaluation stack proves incompatible. The paper
+then uses a clearly labeled literature-context table of reported results and includes
+only those in-house Track-A results whose equivalence is verified. This stop rule
+cannot delay Track-B RQ1 execution.
 
 #### Track B: strict single-image selective protocol
 
@@ -263,6 +289,13 @@ selective utility, and RQ2 tables. Track-A and Track-B numbers are never present
 if they came from the same sample universe.
 
 ### 6.2 Immutable source roles
+
+Role manifests are track-specific because the sample universes differ. Track A gets
+one immutable protocol manifest per dataset recording pinned benchmark membership and
+a deterministic source-only fit/checkpoint-selection split. It has no
+`branch_calibration`, `gate_domain`, or routing roles and never trains risk models.
+Track B gets one immutable source-role manifest per dataset with the full roles below.
+Within either track, manifests never depend on outer target or optimization seed.
 
 Within the eligible source pool, assign complete subject groups, or complete video
 groups if subject identity is genuinely unavailable, to these immutable roles:
@@ -288,7 +321,7 @@ group integrity and report the imbalance rather than splitting a subject or vide
 
 ### 6.3 Outer folds
 
-Create exactly four MICO folds:
+Create exactly four MCIO folds:
 
 | Fold | Source domains | Untouched target domain |
 |---|---|---|
@@ -450,7 +483,7 @@ The primary paper is a frozen-backbone experiment. No full fine-tuning is planne
 Only after the core frozen experiment and claim decisions are complete may a separate
 ablation add LoRA/adapters to the last four DINO blocks or the OpenCLIP image encoder.
 Such an ablation gets new configs, caches, models, and tables; it may not overwrite or
-retroactively tune the confirmatory system. Joint consistency/agreement training and
+retroactively tune the locked core system. Joint consistency/agreement training and
 text-encoder fine-tuning remain prohibited.
 
 ## 9. Training and calibration workflow
@@ -589,14 +622,14 @@ python -m fas.cli.build_oof --strategy sample_oof --target <target> --seed <seed
 python -m fas.cli.fit_risk --target <target> --seed <seed>
 python -m fas.cli.select_gate --target <target> --seed <seed>
 
-# Freeze, confirmatory prediction, and analysis
+# Freeze, locked prediction, and analysis
 python -m fas.cli.freeze_analysis --config <resolved.yaml>
 python -m fas.cli.predict_target --target <target> --seed <seed> --freeze <record.json>
 python -m fas.cli.evaluate --experiment <id> --freeze <record.json>
 ```
 
 Every command supports `--dry-run`, prints input/output hashes, refuses unexpected
-roles, and writes atomically. Confirmatory commands require a valid signed freeze
+roles, and writes atomically. Locked evaluation commands require a valid freeze
 record and refuse dirty or mismatched analysis code.
 
 ## 11. Evaluation plan
@@ -627,13 +660,14 @@ be dropped. End-to-end metrics are computed only from this ledger and must recon
 exactly to the pre-detection target manifest. Risk metrics use an explicit filtered
 view where `detector_status=success`.
 
-### 11.3 Classifier Table 1, Panel A: literature-compatible
+### 11.3 Classifier Table 1, Panel A: MCIO literature context
 
-Track A is a visible main comparison against published cross-domain FAS results. Use
-the pinned FLIP/SSDG-compatible list and two-frame protocol, report HTER, AUC, and
-TPR at FPR=1% when estimable, and disclose any preprocessing deviation. This table
-establishes external classifier comparability but does not test Domain-OOF Failure
-Risk Estimation.
+Track A is a visible classifier-context comparison against published cross-domain FAS
+results. Use the pinned SSDG sample universe, code-derived frame rule, and mean
+class-1-probability video aggregation. Report AUC and source-threshold HTER/TPR at
+FPR=1% when estimable, and disclose the frozen Track-B crop. Footnote that published
+SSDG HTER uses target-aware validation/thresholding. This panel establishes limited
+external classifier context but does not test Domain-OOF Failure Risk Estimation.
 
 ### 11.4 Classifier Table 1, Panel B: strict single-image
 
@@ -664,6 +698,9 @@ risk. Also report error AUROC, AURC/excess-AURC, error prevalence, and paired de
 preregistered relevant attack/predicted-live population as security-specific support
 when event counts permit. An `AP_error` gain driven by false rejects must not be called
 a security improvement; that wording requires the selective deployment endpoints.
+`AP_FA` remains supporting, never co-primary. Report $R_{DVd}$ with and without $q$;
+if the gain depends on $q$, interpret it as reliance on source-observed quality/domain
+nuisance signals rather than cross-branch evidence alone.
 
 ### 11.6 Selective utility table
 
@@ -709,14 +746,14 @@ the paired whole-system outcome.
 | Phase | Deliverable | Exit gate |
 |---|---|---|
 | 0. Governance | Reconciled schemas/configs and synthetic fixtures | No pilot fields or stale claim ordering; tests pass |
-| 1. Intake | Verified raw releases, pinned Track-A lists, canonical manifests, one global role manifest per dataset | License/protocol evidence, hashes, no overlap, feasible event counts |
+| 1. Intake | Verified raw releases, pinned Track-A lists, canonical manifests, one immutable manifest per dataset per active track | License/protocol evidence, hashes, no overlap, feasible event counts |
 | 2. Metrics | Metric, transaction, estimand, and bootstrap modules | Hand-computed synthetic identities pass |
 | 3. Frames/features | Deterministic frame/crop manifests and frozen feature shards | Repeatability, exact joins, parity, disk budget pass |
 | 4. Branches | Fold-local heads, calibrators, thresholds, prediction registry | Exclusion and one-stage calibration tests pass |
 | 5. OOF | Matched domain-OOF and sample-OOF tables | Lineage, overlap, fit-budget, and fixed-prediction checks pass |
 | 6. Risk/gates | Risk models, baselines, same-family system, source gates | Fixed-error and whole-system synthetic tests pass |
 | 7. Freeze | Immutable source-only analysis record | Config/code/count/effect hashes complete; evaluation commands unlock |
-| 8. MICO | Four outer-domain-held-out folds by three seeds | Immutable transaction outputs and reproducible metrics |
+| 8. MCIO | Four outer-domain-held-out folds by three seeds | Immutable transaction outputs and reproducible metrics |
 | 9. Optional | SiW-M, LoRA, routing, or cue studies | Separate preregistration; no overwrite of core results |
 
 ## 13. Compute, storage, and scheduling
@@ -740,7 +777,7 @@ Recommended work sequence:
 5. Week 6: OOF engine and matched-record audits.
 6. Week 7: risk estimators, baselines, gate selection, same-family system.
 7. Week 8: source-only dry run, event-count decisions, and immutable analysis freeze.
-8. Weeks 9-10: four-fold outer-domain-held-out MICO execution and locked analysis.
+8. Weeks 9-10: four-fold outer-domain-held-out MCIO execution and locked analysis.
 9. Later: optional claims only after the core result state is recorded.
 
 Dates are planning estimates, not permission to bypass an exit gate.

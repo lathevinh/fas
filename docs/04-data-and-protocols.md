@@ -4,11 +4,11 @@
 
 | Dataset | Intended use | Useful labels/properties | Restrictions or caveats |
 |---|---|---|---|
-| CelebA-Spoof | Optional extra-data pretraining/analysis | 625,537 images, 10,177 subjects, spoof type, illumination, environment | Excluded from strict MICO; non-commercial research only |
-| OULU-NPU | MICO and mobile domain evaluation | Print/replay, protocols for environment/device variation | Preserve official protocols |
-| CASIA-FASD | MICO source/target | Print, cut-photo, replay and quality variation | Verify redistribution/access terms |
-| Replay-Attack | MICO source/target | Print/replay and controlled/adverse settings | Preserve official train/dev/test split |
-| MSU-MFSD | MICO source/target | Print/replay across capture devices | Small dataset; high leakage risk |
+| CelebA-Spoof | Optional extra-data pretraining/analysis | 625,537 images, 10,177 subjects, spoof type, illumination, environment | Excluded from strict MCIO; non-commercial research only |
+| OULU-NPU | MCIO and mobile domain evaluation | Print/replay, protocols for environment/device variation | Preserve official protocols |
+| CASIA-FASD | MCIO source/target | Print, cut-photo, replay and quality variation | Verify redistribution/access terms |
+| Replay-Attack | MCIO source/target | Print/replay and controlled/adverse settings | Preserve official train/dev/test split |
+| MSU-MFSD | MCIO source/target | Print/replay across capture devices | Small dataset; high leakage risk |
 | SiW-M | Main unseen-attack evaluation | 13 diverse attack types and zero-shot protocols | Access and current official protocol must be verified |
 | 3DMAD/HiFiMask | External mask transfer | 3D mask evidence | Sensor/modality and access may not match RGB-only scope |
 | UniAttackData | Later unified physical/digital extension | Diverse physical and digital attacks | Out of first-paper scope unless physical subset is cleanly defined |
@@ -19,7 +19,7 @@ and repository during this planning pass.
 
 ## Data available to each model
 
-### Strict MICO track
+### Strict MCIO track
 
 For each target among OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD:
 
@@ -66,7 +66,7 @@ auxiliary similarity score rather than changing the core PAD probability.
 
 Freeze the exact core prompt bank and primary OpenCLIP `ViT-B-16`
 (`laion2b_s34b_b88k`) checkpoint, native 224-pixel preprocessing, and context crop
-before all MICO evaluation. Use this same VLM in every target fold. Candidate search
+before all MCIO evaluation. Use this same VLM in every target fold. Candidate search
 and source-tuned template/weight selection are secondary robustness studies and cannot
 replace the primary fixed system.
 
@@ -108,7 +108,7 @@ Unknown values remain `unknown`; they must not be guessed from coarse labels.
    protocol-compatible video metrics.
 7. Hash manifests and save the preprocessing version with every run.
 
-Assign one immutable subject/video role manifest per dataset before running any MICO
+Assign one immutable subject/video role manifest per dataset before running any MCIO
 fold. A dataset reuses the same train, branch-calibration, gate-candidate, and routing
 validation roles whenever it is a source; its official protocol applies when it is the
 target. Publish every role-manifest SHA-256. Compute subject/video and independent
@@ -233,7 +233,7 @@ metrics, and analysis code. The commit SHA is the preregistration reference. The
 fixed VLM is used in all folds; only fitted source components vary with the available
 source domains.
 
-### MICO cross-domain
+### MCIO cross-domain
 
 For OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD, train on three and test on
 the fourth. Hyperparameters and thresholds use source-domain validation only.
@@ -262,7 +262,7 @@ Inside each remaining-source fold, keep model fitting, prompt selection, and bra
 probability calibration disjoint from the held-out OOF evaluation domain.
 
 Compare this domain-OOF construction with sample-OOF records made inside each source
-domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the MICO claim.
+domain. Sample-OOF is an ablation, not a substitute for domain-OOF in the MCIO claim.
 
 The strict selective-method track trains every internal baseline on the same reduced
 $Source\setminus G$ data. A separate literature-compatible branch-only track may use

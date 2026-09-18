@@ -78,7 +78,9 @@ single-branch confidence and a matched same-family ensemble?
 43. [Data-to-experiment implementation plan](docs/42-data-to-experiment-implementation-plan.md)
 44. [ChatGPT review of the implementation plan](docs/43-chatgpt-review-doc42.md)
 45. [Response to implementation-plan review](docs/44-review-response-doc43.md)
-46. [Reading list](references/reading-list.md)
+46. [ChatGPT review of the implementation-plan response](docs/45-chatgpt-review-doc44.md)
+47. [Response to Track-A benchmark review](docs/46-review-response-doc45.md)
+48. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 

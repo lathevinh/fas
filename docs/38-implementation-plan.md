@@ -35,7 +35,7 @@ Superseded contracts to replace, not preserve:
 - labeled-pilot stages and `pilot_selection_v1.yaml`;
 - a two-candidate primary VLM requirement;
 - `claim_sequence` beginning with fusion rescue;
-- routing thresholds as core confirmatory requirements;
+- routing thresholds as core locked-evaluation requirements;
 - one global $N_{FA}$ rule for unrelated endpoints;
 - a same-family row without risk estimation or abstention.
 
@@ -76,7 +76,7 @@ Planned changes:
 - encode OpenCLIP `ViT-B-16` / `laion2b_s34b_b88k`, native 224 preprocessing, fixed
   1.30 context crop, DINOv2-Reg, and CLS-plus-mean-patch pooling;
 - rename readiness stages to `schema`, `data-audit`, `source-dry-run`,
-  `analysis-freeze`, and `confirmatory`;
+  `analysis-freeze`, and `locked-evaluation`;
 - remove target/pilot label attestations and add explicit all-four-target exclusion;
 - update freeze hashing to include analysis specifications and exclude superseded files.
 
@@ -115,7 +115,7 @@ Required audit outputs per dataset:
   optional routing validation;
 - lowest estimable security operating point based on independent attack events.
 
-Exit gate: all four MICO datasets have verified subject/video lineage and feasible
+Exit gate: all four MCIO datasets have verified subject/video lineage and feasible
 source roles, or the operational split is simplified in documentation before any target
 result. SiW-M failure removes only the attack-shift claim.
 
@@ -270,9 +270,9 @@ Primary contracts:
 - routing: absent unless optional deployment work is explicitly activated.
 
 Exit gate: signed freeze record hashes configs, source counts, effect rules, code commit,
-and analysis specification. Confirmatory commands refuse to run without this record.
+and analysis specification. Locked-evaluation commands refuse to run without this record.
 
-## Phase 8: pre-specified four-fold MICO execution
+## Phase 8: pre-specified four-fold MCIO execution
 
 Goal: evaluate four strict outer-domain-held-out folds under one frozen procedure.
 
@@ -322,7 +322,7 @@ Keep implementation reviews small and executable:
 7. risk estimators and same-family selective system;
 8. analysis freeze and bootstrap;
 9. source-only dry run;
-10. confirmatory runner.
+10. locked-evaluation runner.
 
 Each change must pass focused unit tests first, then the full synthetic suite. Real-data
 smoke tests use source roles only until the analysis freeze is signed.

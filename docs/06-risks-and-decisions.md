@@ -60,7 +60,7 @@ models and artifacts. A narrow first paper permits defensible evaluation.
 
 ## Decision 5: Strict-source main protocol
 
-**Chosen:** the primary MICO results use only the three designated source PAD datasets
+**Chosen:** the primary MCIO results use only the three designated source PAD datasets
 plus generic foundation-model pretraining. CelebA-Spoof is an explicit extra-data
 ablation.
 
@@ -178,7 +178,7 @@ trained predictors.
 Mitigation: run the same calibration, REF, FARR, and risk evaluation for a
 shared-encoder DINO head-diversity control. Treat it as a minimum control, not as
 proof against all independently tuned same-family ensembles; add frozen DINOv2 without
-Registers as a required confirmatory control when retaining the cross-foundation title.
+Registers as a required held-out control when retaining the cross-foundation title.
 
 ### Potential rescue is not realized rescue
 
@@ -201,7 +201,7 @@ using paired subject/video inference.
   preprocessing, and one fixed 1.30 context crop in all folds.
 - Primary DINO pooling: fixed class token concatenated with mean-pooled patch tokens;
   learned attention pooling is secondary.
-- Primary risk records: domain-OOF for MICO; matched sample-OOF is the attribution
+- Primary risk records: domain-OOF for MCIO; matched sample-OOF is the attribution
   control. Attack-OOF is separate and only required for an attack-shift claim.
 - Core continuation: failure-ranking and selective-utility evidence. Fusion rescue,
   explicit disagreement, and conditional routing each govern only their own claims.

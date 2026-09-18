@@ -40,7 +40,7 @@ Planned contributions, stated as methods and evaluations rather than results:
    systems.
 3. A strict fold-local target-exclusion evaluation connecting failure ranking to source-selected
    PAD security, usability, class coverage, and K=1 transaction outcomes over four
-   MICO folds.
+   MCIO folds.
 
 ## 2. Related Work
 
@@ -122,7 +122,7 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
 
 ## 4. Experimental Protocol
 
-- Four pre-specified MICO outer-domain-held-out folds: three source domains and one
+- Four pre-specified MCIO outer-domain-held-out folds: three source domains and one
    excluded target per fold. They are not described as independent external domains.
 - No labeled pilot and no target-dependent model, prompt, threshold, feature, or
   analysis selection.
@@ -141,11 +141,12 @@ redefined after target inspection.
 
 ### Table 1: Classifier quality
 
-Use two visible panels: Panel A follows the pinned SSDG-compatible MCIO benchmark
-sample universe and metrics for literature comparison; Panel B uses the strict
-single-image Track-B protocol below. Mark published FLIP comparisons as
-`+CelebA-Spoof` unless a like-for-like extra-data run is performed. The two panels do
-not share a sample universe and are never pooled.
+Use two visible panels. Panel A is an SSDG-compatible MCIO sample/evaluation view for
+limited literature context, while Panel B uses the strict single-image Track-B
+protocol below. Panel A retains source-only model/threshold selection and the Track-B
+crop, so it is not an SSDG reproduction; published SSDG HTER receives a target-aware
+validation/threshold footnote. Mark published FLIP comparisons as `+CelebA-Spoof`
+unless a like-for-like extra-data run is performed. The panels are never pooled.
 
 | System | APCER | BPCER | ACER/HTER | AUROC | Error prevalence |
 |---|---:|---:|---:|---:|---:|
