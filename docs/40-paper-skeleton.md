@@ -38,7 +38,7 @@ Planned contributions, stated as methods and evaluations rather than results:
 2. A controlled heterogeneous DINOv2-Reg/OpenCLIP instantiation that preserves
    independent predictors and is compared with single-branch and matched same-family
    systems.
-3. A strict target-blind evaluation connecting failure ranking to source-selected
+3. A strict fold-local target-exclusion evaluation connecting failure ranking to source-selected
    PAD security, usability, class coverage, and K=1 transaction outcomes over four
    MICO folds.
 
@@ -122,7 +122,8 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
 
 ## 4. Experimental Protocol
 
-- Four strict MICO outer folds: three source domains and one untouched target.
+- Four pre-specified MICO outer-domain-held-out folds: three source domains and one
+   excluded target per fold. They are not described as independent external domains.
 - No labeled pilot and no target-dependent model, prompt, threshold, feature, or
   analysis selection.
 - Three fixed seeds, per-target reporting, and paired subject/video cluster bootstrap.
@@ -139,6 +140,12 @@ Columns may gain lineage or uncertainty fields, but a table may not be replaced 
 redefined after target inspection.
 
 ### Table 1: Classifier quality
+
+Use two visible panels: Panel A follows the pinned SSDG-compatible MCIO benchmark
+sample universe and metrics for literature comparison; Panel B uses the strict
+single-image Track-B protocol below. Mark published FLIP comparisons as
+`+CelebA-Spoof` unless a like-for-like extra-data run is performed. The two panels do
+not share a sample universe and are never pooled.
 
 | System | APCER | BPCER | ACER/HTER | AUROC | Error prevalence |
 |---|---:|---:|---:|---:|---:|

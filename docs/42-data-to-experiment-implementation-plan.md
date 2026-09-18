@@ -1,7 +1,7 @@
 # Data-to-Experiment Implementation Plan
 
 Date: 2026-09-18
-Status: execution blueprint frozen before dataset-facing code
+Status: corrected execution blueprint; exact dataset-list hashes freeze at Phase 1
 
 ## 1. Purpose and authority
 
@@ -13,11 +13,10 @@ Round-14 through Round-16 responses, the dependency order in
 `docs/40-paper-skeleton.md`.
 
 This plan does not authorize target-driven debugging. Implementation proceeds through
-synthetic tests, source-only audits, and source-only dry runs. A data custodian may
-ingest labels to construct sealed manifests, but an experiment for outer target $T$
-cannot expose $T$ labels, class/attack counts, or target-derived diagnostics before
-the analysis freeze in Phase 7. The same dataset may expose labels through a separate
-source namespace when it is a source in another outer fold.
+synthetic tests, source-only audits, and source-only dry runs. MICO is a pre-specified
+leave-one-domain-out evaluation: researchers may know a dataset's labels when it is a
+source in other folds, but for outer target $T$, no $T$ sample, label, statistic, or
+result may influence any fitted artifact or global method choice for that fold.
 
 The core track is four-fold MICO using OULU-NPU, CASIA-FASD, Replay-Attack, and
 MSU-MFSD. SiW-M, CelebA-Spoof, LoRA, routing, and cue analysis are optional work after
@@ -27,8 +26,8 @@ the core RQ1 analysis.
 
 1. Raw archives and biometric data never enter Git.
 2. Official protocols are parsed before frames are extracted.
-3. Subject/video roles are assigned once per dataset and reused whenever that dataset
-   is a source.
+3. Subject/video roles are assigned once per dataset, independently of outer target,
+  and reused whenever that dataset is a source.
 4. A video, subject, or duplicate capture may not cross source roles.
 5. Filesystem folders are storage locations, not labels or split authority. Versioned
    manifests are the sole source of truth.
@@ -217,9 +216,51 @@ classifier score means attack, and `error=1` means a wrong fixed-classifier deci
 Every dataset adapter exposes official roles without rewriting them. A versioned
 dataset policy then declares which official partitions are eligible when the dataset
 acts as a source and which official evaluation partition is used when it acts as the
-outer target. This mapping is approved during the data audit and frozen before any
-target result. Where publications use a recognized cross-dataset convention, match
-that convention and document any deviation.
+outer target.
+
+The project keeps two visible evaluation tracks because literature comparability and
+the strict single-image selective estimand require different data views.
+
+#### Track A: literature-compatible MCIO/MICO
+
+Use the official SSDG repository at commit
+`c268920a7408ca78fb425954de2bf5745d1c660a` as the strict three-source MCIO
+sample-universe reference. Use the official FLIP repository at commit
+`4f95def259e135a0cbaff1d770f559ca739c4c9f` as a derivative list/preprocessing
+cross-check. Pin local SHA-256 values for its 16
+`<dataset>_{real,fake}_{train,test}.txt` files during Phase 1 and record upstream Git
+blob SHAs. Do not reconstruct membership from folder names alone.
+
+| Dataset | SSDG source/target benchmark universe | Published frame rule |
+|---|---|---|
+| OULU-NPU | `Train_files` + `Test_files`; exclude `Dev_files` | source frame 6; target frame 6 and frame $6+\lfloor N/2\rfloor$ |
+| CASIA-FASD | `train_release` + `test_release` | source frame 6; target frame 6 and frame $6+\lfloor N/2\rfloor$ |
+| Replay-Attack | official train + test; exclude devel | source frame 6; target frame 6 and frame $6+\lfloor N/2\rfloor$ |
+| MSU-MFSD | subjects in official train + test lists | source frame 6; target frame 6 and frame $6+\lfloor N/2\rfloor$ |
+
+For each fold, the other three universes are labeled sources and the held-out universe
+is the target. Track A uses the MTCNN-style alignment contract, target video-score
+aggregation, and literature metrics. It reproduces sample-universe and evaluation
+conventions, not SSDG's target-aware checkpoint selection; all model and threshold
+selection remains source-only.
+
+FLIP's published Benchmark-1 configuration adds CelebA-Spoof to the three MCIO
+sources. Its reported numbers are therefore marked `+CelebA-Spoof` and are not treated
+as equal-data comparisons. A like-for-like FLIP comparison requires the already
+separate optional extra-data track.
+
+Track A is a visible panel of the main classifier-comparison table and does not host
+the primary RQ1 claim. Exact equivalence is claimed only after adapter counts, list
+contents, labels, and preprocessing reconcile against the pinned artifacts. Any
+deviation is named in the table caption.
+
+#### Track B: strict single-image selective protocol
+
+Use canonical official-lineage manifests, immutable source roles, one fixed middle
+frame per video, the frozen detector/context crop, domain/sample-OOF construction,
+and K=1 transaction accounting specified below. Track B contains the primary RQ1,
+selective utility, and RQ2 tables. Track-A and Track-B numbers are never presented as
+if they came from the same sample universe.
 
 ### 6.2 Immutable source roles
 
@@ -233,14 +274,13 @@ groups if subject identity is genuinely unavailable, to these immutable roles:
 | `gate_domain` | Final post-VLM gate threshold and ranking sanity check | No |
 | `routing_validation` | Optional routing threshold after core claims | No |
 
-Do not freeze universal percentages before seeing source-side event counts. For outer
-fold $T$, the role builder takes preregistered fractions as initial values, then may
-perform one feasibility pass using only its three source domains and their
-domain/class/attack-event counts. Target $T$ statistics cannot influence that fold's
-roles. Any rule change that would affect all folds must be chosen without inspecting
-any target result, applied symmetrically, documented, and frozen before confirmatory
-evaluation. The algorithm is deterministic given dataset release, role-policy
-version, outer target, and seed.
+Do not freeze universal percentages before the dataset audit. For each dataset, the
+role builder takes preregistered fractions as initial values, then performs one
+feasibility pass using only that dataset's source-eligible partition and required
+domain/class/attack-event counts. If any dataset is too small, revise the role policy
+globally before evaluating any outer target. The assignment depends only on dataset
+release, official source-eligible partition, role-policy version, and one frozen split
+seed; it never depends on outer target or optimization seed.
 
 Stratification priority is dataset protocol, subject, binary class, attack family,
 device/session, then environment. If exact stratification is impossible, preserve
@@ -258,13 +298,12 @@ Create exactly four MICO folds:
 | `T_msu` | OULU-NPU, CASIA-FASD, Replay-Attack | MSU-MFSD |
 
 For fold $T$, only source-role manifests from the other three datasets are visible to
-training commands. The target loader is a separate evaluation-only API and rejects
+training commands. The target loader is an evaluation-only API and rejects
 fit, calibration, threshold, and configuration-selection modes.
 
-The data custodian writes separate access-controlled namespaces for each outer fold.
-Experiment code receives either `source/<T>` with labels or `target/<T>` with labels
-sealed. The evaluator releases target labels only to the locked analysis command and
-never returns per-sample labels to training or configuration code.
+This is fold-local exclusion, not a claim that researchers have never seen the
+dataset's labels elsewhere. Namespace isolation is optional infrastructure hardening;
+manifest lineage assertions and immutable fold configs are mandatory.
 
 ### 6.4 Inner and OOF splits
 
@@ -318,7 +357,7 @@ JPEG quality setting and record encoder/version metadata. Never repeatedly trans
 
 ### 7.3 Face detection and crop
 
-Use one pinned detector and checkpoint, selected before target access. The initial
+Use one pinned detector and checkpoint, selected before outer-target evaluation. The initial
 implementation may support SCRFD or RetinaFace behind one interface, but the Phase-0
 config must name exactly one primary detector/checkpoint from documented operational
 availability without comparing FAS dataset outcomes. Later source-only coverage tests
@@ -358,8 +397,9 @@ Before full extraction, validate a balanced source-only shard:
   patch token; register tokens remain internal and are not pooled as spatial evidence.
 - Primary head: one linear binary layer over the 1536-dimensional frozen vector.
 - Loss: equal-domain, class-balanced BCE on source fitting data.
-- Sampling: dataset, class, attack family, video, then frame; at most three frames per
-  video per epoch.
+- Sampling: dataset approximately uniformly, then video and frame; attack-family
+  exposure is monitored but class/family balance is not forced again in the sampler.
+  Draw at most three frames per video per epoch.
 - Selection: lowest equal-domain class-balanced BCE on fold-local subject-disjoint
   inner validation; ties choose the earlier epoch.
 - Seeds: the three globally frozen seeds from `configs/seeds_v1.yaml` after Phase 0
@@ -428,7 +468,11 @@ For every outer target $T$ and seed:
 6. Fit one positive-slope affine calibrator per branch with class-balanced loss inside
    each source domain and equal weighting across domains.
 7. Produce calibrated source predictions and choose the fixed reference classifier
-   threshold using the source-only operating-point rule.
+  threshold on the same `branch_calibration` partition using the source-only
+  operating-point rule. This is the predeclared data-efficient Option C: calibration
+  fitting and threshold selection share source records, so $\tau_{ref}$ is a
+  source-optimized operating threshold, not an independently validated or certified
+  security guarantee. Report this limitation and do not use certified wording.
 8. Freeze the calibrated average
    $p_F=(\widehat p_D+\widehat p_V)/2$ as the heterogeneous classifier.
 
@@ -471,10 +515,21 @@ R_DVdm  = [p_D, p_V, abs(p_D - p_V), margin, q]
 ```
 
 Only quality features `[blur, mean_luminance, contrast, face_area_ratio,
-detector_confidence]` are standardized, using allowed source-fit statistics. Preserve
-natural error prevalence and average unweighted BCE equally across pseudo-domains.
-Fit required MSP/entropy, policy-margin, Mahalanobis, and capacity-matched nonlinear
-comparators on the same fixed classifier errors.
+detector_confidence]` are standardized. Each OOF pseudo-fold uses statistics from its
+allowed fitting remainder, so held-out records receive fold-relative nuisance
+features; final target inference uses statistics from the final allowed source-fit
+partition. Run an unstandardized-quality sensitivity for physically defined/bounded
+features. Preserve natural error prevalence and average unweighted BCE equally across
+pseudo-domains.
+
+Comparator taxonomy is fixed as:
+
+- non-learned scores: MSP, entropy, operational margin, and absolute disagreement;
+- source-statistic baseline: DINO Mahalanobis confidence;
+- learned risk models: fixed-regularization logistic models and capacity-matched
+  probability MLP variants.
+
+All score the same fixed classifier errors in RQ1.
 
 ### 9.5 Gate selection
 
@@ -483,6 +538,23 @@ First report risk AUPR, AUROC, Brier, and risk-coverage validity against the fro
 source sanity criterion. Then select only the post-VLM accept/abstain threshold under
 the source-only utility/security rule. Do not refit any branch, calibrator, risk model,
 or feature normalization after this step.
+
+The K=1 operational action is a live-decision filter:
+
+$$
+g_{ref}(x)=spoof\Rightarrow non\text{-}accept,
+$$
+
+$$
+g_{ref}(x)=live\Rightarrow
+\begin{cases}
+accept,&r(x)\le u,\\
+abstain/non\text{-}accept,&r(x)>u.
+\end{cases}
+$$
+
+Risk ranking still uses all fixed-classifier errors. Abstaining an already spoof
+decision does not count as a new security intervention.
 
 ## 10. Planned command surface
 
@@ -555,7 +627,15 @@ be dropped. End-to-end metrics are computed only from this ledger and must recon
 exactly to the pre-detection target manifest. Risk metrics use an explicit filtered
 view where `detector_status=success`.
 
-### 11.3 Classifier table
+### 11.3 Classifier Table 1, Panel A: literature-compatible
+
+Track A is a visible main comparison against published cross-domain FAS results. Use
+the pinned FLIP/SSDG-compatible list and two-frame protocol, report HTER, AUC, and
+TPR at FPR=1% when estimable, and disclose any preprocessing deviation. This table
+establishes external classifier comparability but does not test Domain-OOF Failure
+Risk Estimation.
+
+### 11.4 Classifier Table 1, Panel B: strict single-image
 
 For DINOv2-Reg, OpenCLIP, calibrated heterogeneous average, and matched same-family
 average, report per target and four-target macro:
@@ -567,7 +647,7 @@ average, report per target and four-target macro:
 
 Deployment metrics use the frozen source threshold.
 
-### 11.4 RQ1 fixed-error risk table
+### 11.5 RQ1 fixed-error risk table
 
 Score the identical final heterogeneous classifier errors with domain-OOF and matched
 sample-OOF `R_DVd`, plus all required baselines. Primary endpoint:
@@ -580,7 +660,12 @@ $$
 Use non-interpolated average precision with `error=1` and larger score meaning higher
 risk. Also report error AUROC, AURC/excess-AURC, error prevalence, and paired deltas.
 
-### 11.5 Selective utility table
+`AP_error` is the methodological endpoint. Also report false-accept ranking on the
+preregistered relevant attack/predicted-live population as security-specific support
+when event counts permit. An `AP_error` gain driven by false rejects must not be called
+a security improvement; that wording requires the selective deployment endpoints.
+
+### 11.6 Selective utility table
 
 At source-selected thresholds report:
 
@@ -594,7 +679,9 @@ At source-selected thresholds report:
 Under K=1, spoof and abstain are both terminal non-accept. Aggregate coverage alone
 cannot establish benefit.
 
-### 11.6 RQ2 complete-system table
+The gate changes only predicted-live decisions; predicted spoof remains non-accept.
+
+### 11.7 RQ2 complete-system table
 
 Compare DINOv2-Reg plus OpenCLIP with DINOv2-Reg plus plain DINOv2 on identical target
 transactions and matched recipes. Report classifier quality, error prevalence, each
@@ -602,40 +689,34 @@ system's own risk AP, selective utility, and K=1 outcomes. Cross-system AP is
 descriptive because the systems have different errors; the scientific comparison is
 the paired whole-system outcome.
 
-### 11.7 Benchmark-compatible track
-
-In addition to the strict one-frame primary track, each dataset adapter provides a
-versioned benchmark evaluation policy matching its official protocol: eligible frame
-indices, frame-score aggregation into a video score, official population, required
-metrics, and threshold convention. Benchmark outputs are secondary and kept separate
-from the strict single-image tables. Confidence intervals and tests still cluster by
-subject where possible, otherwise video; correlated frames are never replicates.
-
 ### 11.8 Statistical analysis
 
 - Run all four outer targets and three fixed optimization seeds.
 - Never select the best seed or pool seed predictions.
-- Bootstrap paired differences by subject where possible, otherwise video; never by
-  frame.
-- Aggregate target effects with the preregistered four-target macro.
+- For each bootstrap replicate, resample clusters inside each target separately,
+  compute each target-specific paired difference, then take their equal-weight mean.
+  Never pool all target subjects or videos into one bootstrap population.
+- Aggregate target effects with the preregistered equal-weight four-target macro.
 - Report point estimate, 95% interval, event counts, applicability, and pass,
   inconclusive, or evidence-against state.
 - Apply claim-specific minimum effects, lower-bound rules, consistency requirements,
   and target harm tolerance frozen from source pseudo-shifts.
+- Keep seeds as separate optimization replicates; never add them to the cluster
+  bootstrap as independent samples.
 
 ## 12. Execution phases and gates
 
 | Phase | Deliverable | Exit gate |
 |---|---|---|
 | 0. Governance | Reconciled schemas/configs and synthetic fixtures | No pilot fields or stale claim ordering; tests pass |
-| 1. Intake | Verified raw releases, canonical manifests, role manifests | License/protocol evidence, hashes, no overlap, feasible event counts |
+| 1. Intake | Verified raw releases, pinned Track-A lists, canonical manifests, one global role manifest per dataset | License/protocol evidence, hashes, no overlap, feasible event counts |
 | 2. Metrics | Metric, transaction, estimand, and bootstrap modules | Hand-computed synthetic identities pass |
 | 3. Frames/features | Deterministic frame/crop manifests and frozen feature shards | Repeatability, exact joins, parity, disk budget pass |
 | 4. Branches | Fold-local heads, calibrators, thresholds, prediction registry | Exclusion and one-stage calibration tests pass |
 | 5. OOF | Matched domain-OOF and sample-OOF tables | Lineage, overlap, fit-budget, and fixed-prediction checks pass |
 | 6. Risk/gates | Risk models, baselines, same-family system, source gates | Fixed-error and whole-system synthetic tests pass |
-| 7. Freeze | Signed source-only analysis record | Config/code/count/effect hashes complete; target commands unlock |
-| 8. MICO | Four targets by three seeds | Immutable transaction outputs and reproducible metrics |
+| 7. Freeze | Immutable source-only analysis record | Config/code/count/effect hashes complete; evaluation commands unlock |
+| 8. MICO | Four outer-domain-held-out folds by three seeds | Immutable transaction outputs and reproducible metrics |
 | 9. Optional | SiW-M, LoRA, routing, or cue studies | Separate preregistration; no overwrite of core results |
 
 ## 13. Compute, storage, and scheduling
@@ -658,8 +739,8 @@ Recommended work sequence:
 4. Week 5: complete frozen extraction and branch fitting on source-only dry runs.
 5. Week 6: OOF engine and matched-record audits.
 6. Week 7: risk estimators, baselines, gate selection, same-family system.
-7. Week 8: source-only dry run, event-count decisions, and signed analysis freeze.
-8. Weeks 9-10: four-fold confirmatory MICO execution and locked analysis.
+7. Week 8: source-only dry run, event-count decisions, and immutable analysis freeze.
+8. Weeks 9-10: four-fold outer-domain-held-out MICO execution and locked analysis.
 9. Later: optional claims only after the core result state is recorded.
 
 Dates are planning estimates, not permission to bypass an exit gate.
@@ -683,6 +764,11 @@ Recoverable outcomes are reported rather than patched:
 - weak frozen branches trigger the predefined claim reframe, not target-guided
   fine-tuning;
 - optional dataset access failure removes only the corresponding optional study.
+
+Cryptographic signatures, a separate label-release service, and OS-level namespace
+isolation are optional hardening. Git commits, immutable manifests/configs, hashes,
+fold-local exclusion assertions, and refusal of post-result method changes are
+mandatory.
 
 ## 15. Immediate authorization
 

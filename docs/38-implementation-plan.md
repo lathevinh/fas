@@ -15,10 +15,11 @@ This plan implements the methodology frozen in Rounds 14-16. Normative priority 
   experiment plan in `docs/42-data-to-experiment-implementation-plan.md`;
 6. provisional configs and code only after reconciliation.
 
-No phase may read a held-out MICO target to tune a model, threshold, feature, effect
+For outer fold $T$, no phase may use $T$ to tune a model, threshold, feature, effect
 rule, or analysis choice. Synthetic fixtures and source-only pseudo-shifts are the only
-debugging inputs before the confirmatory freeze. Code completion is not evidence for a
-scientific claim.
+debugging inputs before the global analysis freeze. All rule-generation logic freezes
+before the first outer-target result; fold-specific numeric thresholds then follow the
+same frozen algorithm. Code completion is not evidence for a scientific claim.
 
 ## Current scaffold
 
@@ -271,9 +272,9 @@ Primary contracts:
 Exit gate: signed freeze record hashes configs, source counts, effect rules, code commit,
 and analysis specification. Confirmatory commands refuse to run without this record.
 
-## Phase 8: confirmatory four-fold MICO execution
+## Phase 8: pre-specified four-fold MICO execution
 
-Goal: evaluate each complete target exactly once under the frozen procedure.
+Goal: evaluate four strict outer-domain-held-out folds under one frozen procedure.
 
 Execution order per target and seed:
 

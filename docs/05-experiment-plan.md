@@ -23,8 +23,8 @@ Exit criteria:
 - no subject/video leakage;
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
-- core prompts, primary VLM/preprocessing, and all analysis rules are frozen before
-  all four confirmatory MICO targets.
+- core prompts, primary VLM/preprocessing, and all analysis-rule generation logic are
+  frozen before the first of four outer-domain-held-out MICO results.
 - Round 15 records `METHODOLOGY ACCEPTED FOR IMPLEMENTATION PLANNING`; implementation
   begins only through the dependency gates in `docs/38-implementation-plan.md`.
 
@@ -68,14 +68,14 @@ one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
 Cache each frozen backbone's features independently so the branches never share GPU
-memory. All four MICO domains are confirmatory targets in turn. The globally fixed VLM
+memory. All four MICO domains are strict outer-domain-held-out targets in turn. The globally fixed VLM
 is reused in every fold; only fold-local source-fitted heads, calibrators, and
 thresholds vary before target $T$ is evaluated. Report the joint correctness table,
 double-fault, oracle gain, error correlation, and attack/domain subgroups for every
 fold and the four-target macro.
 
-Before opening each MICO target, use domain-OOF source pseudo-shifts to lock
-numeric continuation thresholds for recoverable error fraction
+Before the first outer-target result, freeze the logic that uses domain-OOF source
+pseudo-shifts to derive fold-specific numeric continuation thresholds for recoverable error fraction
 $REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and potential false-accept rescue
 $FARR_{VLM}=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Also report
 realized $REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$ and

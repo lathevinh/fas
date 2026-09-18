@@ -76,7 +76,9 @@ single-branch confidence and a matched same-family ensemble?
 41. [Frozen paper skeleton](docs/40-paper-skeleton.md)
 42. [Response to ChatGPT review round 16](docs/41-review-response-round16.md)
 43. [Data-to-experiment implementation plan](docs/42-data-to-experiment-implementation-plan.md)
-44. [Reading list](references/reading-list.md)
+44. [ChatGPT review of the implementation plan](docs/43-chatgpt-review-doc42.md)
+45. [Response to implementation-plan review](docs/44-review-response-doc43.md)
+46. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
