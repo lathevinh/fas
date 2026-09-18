@@ -110,9 +110,9 @@ the OOF domain-identifiability audit.
 Large $P_{cw}+P_{wc}$ may arise because both predictors are weak rather than usefully
 complementary.
 
-Mitigation: require standalone competence, source-preregistered DINO-error recovery
-and false-accept rescue with confidence bounds, low class-conditional double-fault,
-and achievable fusion gain. Symmetric recovery is descriptive, not mandatory.
+Mitigation: require the frozen source-only competence rule, then report joint
+correctness/double fault and one directional rescue summary with event counts. These
+are diagnostics, not continuation gates; RQ2 uses the matched whole-system comparison.
 
 ### Meta-selection leakage
 
@@ -175,10 +175,9 @@ closest methods.
 Cross-foundation rescue may be no stronger than diversity from ordinary independently
 trained predictors.
 
-Mitigation: run the same calibration, REF, FARR, and risk evaluation for a
-shared-encoder DINO head-diversity control. Treat it as a minimum control, not as
-proof against all independently tuned same-family ensembles; add frozen DINOv2 without
-Registers as a required held-out control when retaining the cross-foundation title.
+Mitigation: use frozen DINOv2 without Registers as the required matched same-family
+control for the complete-system comparison. A shared-encoder DINO head-diversity
+analysis is an optional appendix diagnostic and is not an RQ1/RQ2 gate.
 
 ### Potential rescue is not realized rescue
 

@@ -2,22 +2,32 @@
 
 ## RQ1: Source-only failure-risk transfer
 
-Does source-domain cross-fitted error supervision improve transferable failure ranking
-and selective security-usability under unseen domains relative to sample-OOF training,
-single-branch confidence, and matched learned-risk baselines?
+Does source-domain OOF failure supervision improve transferable prediction-error
+ranking over matched sample-OOF supervision for the same final classifier errors?
 
-**H1:** Domain-OOF risk training improves prediction-error AUPR and selective utility
-for the fixed heterogeneous classifier. The paired four-target macro gain has a
-positive preregistered lower confidence bound, at least three of four target estimates
-are positive, and no target exceeds the preregistered class-specific harm tolerance.
+**H1:** Domain-OOF risk training yields a positive preregistered paired four-target
+macro gain in non-interpolated prediction-error AP for the fixed heterogeneous
+classifier, relative to matched sample-OOF training. The claim also requires the
+frozen minimum effect, consistency, event-count, and uncertainty rules.
 
-**Falsification:** Failure ranking or selective utility does not improve over the
-required controls, requires target-domain tuning, or hides attack/bona-fide harm.
+**Falsification:** The fixed-error AP contrast does not pass its frozen rule or requires
+target-domain tuning. Failure of one selective operating point does not by itself
+falsify a supported RQ1 ranking result.
 
-## RQ2: Heterogeneous predictive value and attribution
+**Secondary operational consequence:** Test whether any ranking gain translates into
+a better source-selected security-usability trade-off with explicit attack/bona-fide
+coverage and K=1 accounting. This is downstream validation, not part of H1.
 
-Do independently pretrained self-supervised visual and vision-language models provide
-failure information beyond either branch and a matched same-family pair?
+RQ1 evaluates the complete domain-OOF construction, whose held-out-domain predictors
+may have different fit sizes, error prevalence, error composition, and calibration
+difficulty from sample-OOF predictors. It does not identify a causal effect of domain
+identity alone. The valid claim is that the complete construction yields more
+transferable failure supervision across the evaluated MCIO domains.
+
+## RQ2: Heterogeneous versus same-family complete systems
+
+Does the complete DINOv2-Reg plus OpenCLIP selective system provide better held-out-
+domain system outcomes than a matched DINOv2-Reg plus plain-DINOv2 selective system?
 
 For source-selected decision thresholds, report the joint correctness table on each
 held-out official target evaluation partition:
@@ -29,30 +39,24 @@ held-out official target evaluation partition:
 | wrong | correct | $P_{wc}$ |
 | wrong | wrong | $P_{ww}$ |
 
-**H2:** Cross-foundation probabilities improve risk estimation beyond either
-single-branch learned-risk model and the DINOv2-Reg plus plain-DINOv2 system at the
-same claimed endpoint. Complementarity may be asymmetric; equal recovery in both
-directions is not required.
+**H2:** Under matched data, calibration, risk fitting, gate selection, and transaction
+accounting, the heterogeneous system improves the frozen paired whole-system outcome
+over the same-family control. Primary evidence combines classification errors,
+`FA_end2end`, `BFNR_end2end`, class coverage, and selective utility/AURC according to
+the preregistered system-level rule.
 
-**Falsification:** Cross-foundation risk transfer does not exceed either single-branch
-baseline or matched same-family risk transfer. The claim then becomes a broader
-selective-ensemble result if RQ1 still passes.
+**Falsification:** The paired whole-system contrast does not pass its frozen rule. Each
+system's risk AP remains descriptive because the classifiers and error labels differ;
+higher cross-system risk AP alone cannot establish heterogeneous predictive value.
 
-The cross-foundation-specific claim additionally requires positive paired
-heterogeneity advantage over frozen DINOv2-Reg plus plain DINOv2 on held-out
-targets. Shared-encoder head diversity is only a sanity control.
+Required classifier diagnostics are standalone DINOv2-Reg and OpenCLIP performance,
+the fixed heterogeneous fusion, the matched DINOv2-Reg/plain-DINOv2 control, joint
+correctness/double fault, and a simple directional rescue summary. Complementarity may
+be asymmetric. Extensive oracle diagnostics, a supervised CLIP visual head,
+shared-encoder head diversity, and conditional mutual information are optional
+appendix analyses and cannot determine RQ1.
 
-Required analyses include error correlation, double-fault, oracle gain, attack/domain
-stratification, feasible fusion gain, a shared-encoder DINO head-diversity control,
-and a supervised visual head on the frozen VLM image encoder. Conditional mutual information is
-optional and must not replace the directly interpretable joint table.
-
-### Secondary attribution hypotheses
-
-Can a source-only cross-fitted risk model using independently calibrated
-cross-foundation predictions improve failure detection under domain and attack shift,
-and does explicit absolute-difference disagreement add value beyond the two branch
-probabilities?
+### Attribution ablations, not research questions
 
 Domain-OOF and attack-OOF are separate protocols. For every MCIO fold, the entire
 target domain is excluded from model, checkpoint, preprocessing, threshold, prompt,
@@ -60,22 +64,22 @@ and risk-gate selection. The primary VLM, preprocessing, prompts, and analysis r
 are fixed globally before any target result; all four MCIO targets are pre-specified
 outer-domain-held-out folds.
 
-On the preregistered primary metric, prediction-error AUPR,
-cross-foundation probabilities plus fixed quality features outperform quality-only
-and either single-branch learned-risk baseline
-($\Delta_{CF}^{AUPR}>0$), while explicit absolute-difference disagreement adds
-capacity-matched incremental value ($\Delta_{dis}^{AUPR}>0$).
+On fixed heterogeneous classifier errors, report whether cross-foundation probabilities
+outperform either single-branch learned-risk baseline
+($\Delta_{CF}^{AP}>0$), and whether explicit absolute-difference disagreement adds
+capacity-matched incremental value ($\Delta_{dis}^{AP}>0$). Report $R_{DVd}$ with and
+without quality features $q$ as a visible attribution result.
 
-If $\Delta_{CF}$ is not repeatably positive, the risk model requires
-target-domain tuning, or failure detection collapses on shared errors. If only
-$\Delta_{dis}$ fails, retain the dual-branch result but remove disagreement-centered
-framing.
+If only the `+q` variant succeeds, interpret the mechanism as transferable
+failure/nuisance signatures rather than cross-branch evidence alone. If
+$\Delta_{dis}$ fails, remove disagreement-centered framing. SiW-M attack-shift
+evaluation remains optional and is not part of either core RQ.
 
 Explicit-disagreement wording requires positive $\Delta_{dis}$ from the fixed
 absolute-difference feature over capacity-matched models receiving both branch
 probabilities and the same quality features.
 The signed policy margin is excluded from both scientific claim quantities; its
-deployment contribution is measured separately as $\Delta_{margin}^{AUPR}$.
+deployment contribution is measured separately as $\Delta_{margin}^{AP}$.
 
 ### Separate classifier hypothesis
 

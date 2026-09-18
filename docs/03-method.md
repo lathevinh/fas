@@ -94,10 +94,11 @@ $P_{cc},P_{cw},P_{wc},P_{ww}$. Report:
 
 - each branch's standalone performance;
 - double-fault rate $P_{ww}$;
-- class-conditional oracle APCER, BPCER, and ACER;
-- DINO-error recoverable fraction and DINO false-accept rescue rate;
-- both directional recovery rates as descriptive diagnostics;
-- error correlation by domain and attack family.
+- one simple directional DINO-error recovery and false-accept rescue summary.
+
+Class-conditional oracle metrics, both-direction recovery, detailed error correlation,
+the supervised OpenCLIP visual head, and shared-encoder head diversity are optional
+appendix diagnostics. They are not RQ1 gates.
 
 This analysis diagnoses classifier complementarity but is not a gate for the learned
 risk study. High disagreement between two weak predictors is not useful
@@ -137,7 +138,9 @@ Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. On
 quality features are standardized with statistics from the final allowed source
 fitting partition; those same frozen statistics transform target quality features. A domain-ID
 classifier audits whether risk features encode OOF fold identity. High domain
-predictability triggers feature-removal and normalization ablations, but is not alone
+predictability is reported diagnostically and motivates only source-predefined
+feature-removal or normalization sensitivities. It never changes the preregistered
+primary RQ1 feature set after any target evaluation. Domain predictability is not alone
 proof of leakage because genuine shift signals may also predict domain.
 
 For OOF fold $k$, select $\tau_{ref}^{(k)}$ using only that fold's allowed remainder
@@ -154,10 +157,13 @@ fold-specific thresholds. Because $m_F$ algebraically reveals the fold threshold
 paired with both probabilities, it is excluded from scientific $\Delta_{CF}$ and
 $\Delta_{dis}$ models and contributes only to operational $\Delta_{margin}$. The final
 post-VLM rule is not selected at EER.
-Learned fusion remains an ablation. The main calibrator estimates
-$r_{err}(x)=P(g_{ref}(x)\neq y\mid z_{oper}(x),\tau_{ref})$. Transfer to other APCER
-policies is an ablation; policy-specific calibrators are optional and must be trained
-source-only.
+Learned fusion remains an ablation. The primary model outputs a failure-risk score
+$r_{err}(x)$ for the event $g_{ref}(x)\neq y$. Equal pseudo-domain weighting means this
+score is not assumed to equal a deployment posterior probability. It may be described
+as an estimate of $P(g_{ref}(x)\neq y\mid z_{oper}(x),\tau_{ref})$ only if held-out
+source Brier, NLL, and reliability checks support calibrated-probability wording.
+Transfer to other APCER policies is an ablation; policy-specific models are optional
+and must be trained source-only.
 Failure risk is not interpreted as a generic OOD or unknownness score.
 
 Every risk estimator is evaluated against the same labels
@@ -171,7 +177,7 @@ and never refit either base models or risk gate. All compared methods use the sa
 reduced source data. Fully cross-fitted thresholding is a future data-efficiency
 alternative; attack-OOF uses its separate known-attack-only $G_{attack}$.
 
-Before target evaluation, report prediction-error AUPR, AUROC, Brier score, and the
+Before target evaluation, report non-interpolated prediction-error AP, AUROC, Brier score, and the
 risk-coverage curve of the frozen OOF-trained gate on final-model predictions from
 $G_{domain}$. This validity check cannot tune gate parameters. Its nonzero sanity
 threshold is derived from source pseudo-shifts and frozen before held-out evaluation;
@@ -186,9 +192,12 @@ capacity-matched logistic and MLP baselines using probabilities alone, probabili
 plus JS, and the same image-quality features. Also compare DINO embedding Mahalanobis
 confidence as a representation-space baseline.
 The fixed quality vector is $q(x)=$ [blur, mean luminance, contrast, face-area ratio,
-detector confidence]. Report risk with and without $q$. Compare sample-OOF and
-domain-OOF gates on identical final target predictions, and quantify OOF-to-full-source
-feature drift using mean/standard-deviation shifts and KS distance.
+detector confidence]. Report primary domain-OOF and matched sample-OOF $R_{DVd}$ both
+with and without $q$ in the visible RQ1 attribution result. If only `+q` improves,
+interpret the mechanism as transferable nuisance/failure signatures rather than
+cross-foundation disagreement. Compare both OOF strategies on identical final target
+predictions, and quantify OOF-to-full-source feature drift using
+mean/standard-deviation shifts and KS distance.
 
 All primary risk models use fixed-regularization logistic regression. The exact
 feature sets are $R_q=[q]$, $R_D=[\widehat p_D,q]$,

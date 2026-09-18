@@ -222,7 +222,7 @@ claims pass and routing proceeds, select its threshold on a separate source vali
 partition using a fully preregistered rule. No holdout is reused to compare threshold
 policies.
 
-| Dataset role | Checkpoint/config selection | Threshold/calibration | Confirmatory macro |
+| Dataset role | Checkpoint/config selection | Threshold/calibration | Locked four-domain macro |
 |---|---|---|---:|
 | Three source domains for fold $T$ | Fold-local head selection only; primary VLM fixed globally | Assigned source partitions only | N/A |
 | Complete target domain $T$ | Never | Never | Yes |
@@ -271,8 +271,9 @@ differences to architecture or risk estimation.
 
 Leave calibrated probabilities and absolute disagreement unstandardized. Normalize
 only quality features using source-fitting statistics that are frozen and reused at
-target time. Audit fold/domain identifiability and report feature-removal sensitivity
-if domain prediction remains strong.
+target time. Audit fold/domain identifiability. High predictability is diagnostic:
+report only source-predefined feature-removal/normalization sensitivities and never
+replace the frozen primary RQ1 feature set after target evaluation.
 
 ### Leave-one-attack-out
 
@@ -302,7 +303,7 @@ frames from depth/IR and never use unavailable modalities.
 - ECE and NLL;
 - prediction-error AUROC and AUPR;
 - optional shift/OOD AUROC and AUPR under a separately defined shift target;
-- prediction-error AUPR as the primary failure-detection endpoint;
+- non-interpolated prediction-error AP as the primary failure-detection endpoint;
 - error prevalence $\pi_{err}$ and normalized
   $AUPR_{norm}=(AUPR-\pi_{err})/(1-\pi_{err})$ as context; primary comparisons use
   paired within-target AUPR differences and macro-average target deltas;

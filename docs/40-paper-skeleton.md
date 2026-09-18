@@ -93,10 +93,13 @@ z_i=[\widehat p_D,\widehat p_V,|\widehat p_D-\widehat p_V|,q_i],
 e_i=\mathbf 1[g_{DV}(x_i)\ne y_i].
 $$
 
-A fixed-regularization logistic model learns $r_\theta(z)\approx P(e=1\mid z)$
-from the union of held-out-domain records. The matched sample-OOF control uses the
-same candidate universe, feature family, loss, weighting, optimization budget, and
-final target predictions; only the OOF supervision construction differs.
+A fixed-regularization logistic model learns a failure-risk score $r_\theta(z)$ from
+the union of held-out-domain records. Probability language is reserved for cases where
+held-out source Brier, NLL, and reliability checks support calibration. The matched
+sample-OOF control uses the same candidate universe, feature family, loss, weighting,
+optimization budget, and final target predictions; only the OOF supervision
+construction differs. RQ1 tests this complete construction, not a causal effect of
+domain identity alone.
 
 The primary RQ1 estimand is
 
@@ -128,10 +131,21 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
   analysis selection.
 - Three fixed seeds, per-target reporting, and paired subject/video cluster bootstrap.
 - Primary RQ1 endpoint: non-interpolated prediction-error AP on fixed errors.
+- Primary AP applicability: at least 20 independent target video errors per seed;
+   underpowered target/seed contributions remain reported but cannot count as positive
+   evidence, and a pass requires at least three eligible targets.
 - Operational validation: AURC/selective curves and end-to-end K=1 outcomes.
 - RQ2 compares complete heterogeneous and same-family systems; cross-system raw AP is
   descriptive because the classifiers and error sets differ.
 - SiW-M is optional external attack-shift validation and does not block the core paper.
+
+### Literature context outside the main tables
+
+Track A is a compact preliminary subsection or supplementary table only. It establishes
+that the classifier is not obviously incompetent relative to historical MCIO work and
+hosts no RQ, novelty claim, controlled superiority claim, or main-table panel. Preserve
+its frozen source-only thresholds, detector-conditional population, SSDG/FLIP caveats,
+and two-engineer-day stop rule from Document 42.
 
 ## 5. Planned Main Tables
 
@@ -139,24 +153,15 @@ The identities and purposes of these four tables are frozen before implementatio
 Columns may gain lineage or uncertainty fields, but a table may not be replaced or
 redefined after target inspection.
 
-### Table 1: Classifier quality
+### Table 1: Strict single-image classifier competence
 
-Use two visible panels. Panel A is an SSDG-compatible MCIO sample/evaluation view for
-limited literature context, while Panel B uses the strict single-image Track-B
-protocol below. Panel A retains source-only model/threshold selection and the Track-B
-crop, so it is not an SSDG reproduction. It reports target HTER at the transferred
-source EER-style threshold. At the empirical equal-domain macro-source BPCER 1%
-threshold, report achieved target APCER and BPCER as separate columns, never as a
-target-constrained `APCER@BPCER=1%` metric. Require at least 100 complete-pair bona-fide
-validation videos per source and report source error counts; this is not statistical
-certification. Target ROC/AUC is a post-hoc diagnostic. In-house classifier metrics
-require valid crops for both pinned target frames; report frame and complete-pair video
-coverage by target and class. Claim only intended pre-detection membership/frame/
-aggregation matching. Published SSDG HTER receives a target-aware validation/threshold footnote,
-and published SSDG AUC is marked target-aware through checkpoint selection. These
-historical values cannot support controlled superiority claims. Mark published FLIP
-comparisons as `+CelebA-Spoof` unless a like-for-like extra-data run is performed. Use
-separate panel captions; never pool, rank, or bold best results across the panels.
+Use only the Track-B transaction/sample universe. Report per-target and four-domain
+macro classifier quality before risk gating. Source-only competence is frozen before
+target evaluation from nondegeneracy, both-class support, finite calibration, and a
+fixed $\delta_{competence}=0.05$ above-chance margin: macro AUROC and balanced accuracy are at least 0.55,
+macro-AUROC 95% LCB exceeds 0.50, and reference source-OOF risk labels include at least
+20 errors and 20 correct predictions. Target outcomes report performance but never
+trigger method alteration.
 
 | System | APCER | BPCER | ACER/HTER | AUROC | Error prevalence |
 |---|---:|---:|---:|---:|---:|
@@ -175,7 +180,9 @@ classifier improvement as evidence for risk-estimator quality.
 | Fused MSP/entropy | planned | planned | planned | planned |
 | Operational boundary distance | planned | planned | planned | planned |
 | DINO Mahalanobis control | planned | planned | planned | planned |
+| Matched sample-OOF $R_{DVd}$ without $q$ | planned | planned | planned | planned |
 | Matched sample-OOF $R_{DVd}$ | planned | planned | planned | planned |
+| Domain-OOF $R_{DVd}$ without $q$ | planned | planned | planned | planned |
 | Domain-OOF $R_{DVd}$ | planned | planned | planned | reference |
 
 Purpose: test the primary methodological claim while holding classifier predictions
@@ -208,7 +215,7 @@ pretraining causally produces any observed difference.
 
 | Claim | Primary evidence | Required controls | Falsification or reframe |
 |---|---|---|---|
-| Domain-OOF supervision transfers better | Positive preregistered paired macro $\Delta_{OOF}$ on fixed errors, with consistency and harm rules | Matched sample-OOF and fixed-error confidence baselines | If unsupported, stop the Domain-OOF method claim |
+| Domain-OOF supervision transfers better | Positive preregistered paired macro $\Delta_{OOF}^{AP}$ on fixed errors, with minimum effect, consistency, uncertainty, and $N_{error,min}$ applicability | Matched sample-OOF and fixed-error confidence baselines | If unsupported, stop the Domain-OOF method claim |
 | Failure ranking is operationally useful | Better source-selected selective trade-off with explicit class coverage and K=1 accounting | Comparator gates under identical transaction semantics | If unsupported, retain at most a ranking result and remove practical utility wording |
 | Studied heterogeneous system is advantageous | Better complete-system outcomes than the matched DINO-DINO system | Shared DINO anchor, data, calibration, risk, gate, and accounting | If unsupported, remove heterogeneous-foundation advantage and reframe around RQ1 |
 | Explicit disagreement adds value | Capacity-matched positive $\Delta_{dis}$ on fixed errors | Nonlinear probability-only risk model | If unsupported, remove disagreement from title and contributions |

@@ -212,11 +212,14 @@ Implement one OOF engine with two strategies:
 Both strategies share source candidate universe after $G_{domain}$ removal, frame/video
 unit, quality features, source-macro weighting, risk feature code, and optimization
 budget. Each table records effective branch-fit sizes, OOF count, domain/class/error
-prevalence, and every upstream hash.
+prevalence and error-type composition, branch probability/calibration distributions,
+risk-feature distributions, and every upstream hash. These diagnostics disclose that
+RQ1 tests the complete OOF construction rather than a causal domain-identity effect.
 
 Add an optional budget-matched sensitivity when effective training sizes differ beyond
 a preregistered source-derived tolerance. Never downsample errors to equalize natural
-prevalence.
+prevalence. Add a source-predefined prevalence/difficulty-matched weighting sensitivity
+when feasible; it is diagnostic and never replaces the unweighted primary contrast.
 
 Exit gate: negative tests catch subject/video overlap, holdout reuse, missing folds,
 duplicate predictions, changed final target predictions, feature drift, and unequal
@@ -260,9 +263,28 @@ For each claim freeze:
 - bootstrap unit/repetitions and seed aggregation;
 - inconclusive versus evidence-against outcomes.
 
+Also write two source-only applicability artifacts before target commands unlock:
+
+- a base-classifier competence artifact for DINOv2-Reg, OpenCLIP, heterogeneous
+  average, and same-family average, containing nondegeneracy, both-class support,
+  finite calibration, and source-pseudo-shift error counts. Freeze
+  $\delta_{competence}=0.05$: macro AUROC and balanced accuracy must each be at least
+  0.55, macro-AUROC cluster-bootstrap LCB must exceed 0.50, score range must exceed
+  $10^{-6}$, and the heterogeneous reference source-OOF table must contain at least
+  20 errors and 20 correct predictions;
+- $N_{error,min}=20$ independent target video errors per target and seed. Lower counts
+  remain reportable but are underpowered and cannot count as positive evidence. A
+  target is eligible when at least two of three seeds pass; always compute the frozen
+  four-target macro, but require at least three eligible targets for a primary pass.
+
+Competence failure blocks only the affected classifier/system claim. It cannot trigger
+target-informed model alteration, and Track-A literature rank is not a competence gate.
+
 Primary contracts:
 
 - RQ1: paired four-target macro of $\Delta_{OOF}$ on fixed `e_DV`;
+- operational utility: a separate downstream consequence of RQ1 ranking, never a
+  conjunctive RQ1 pass requirement;
 - RQ2: whole-system selective/end-to-end advantage over the matched same-family
   selective system;
 - classifier benefit: net APCER plus BPCER/BFNR harm, with FARR descriptive;

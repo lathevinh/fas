@@ -283,8 +283,9 @@ sources. Its reported numbers are therefore marked `+CelebA-Spoof` and are not t
 as equal-data comparisons. A like-for-like FLIP comparison requires the already
 separate optional extra-data track.
 
-Track A is a visible panel of the main classifier-comparison table and creates no new
-research question or claim. Equivalence of the intended pre-detection video membership,
+Track A is a compact preliminary subsection or supplementary literature-context table
+and creates no new research question, main-table panel, or claim. Equivalence of the
+intended pre-detection video membership,
 selected frame indices, and video-aggregation rule is claimed only after adapter
 counts, list contents, labels, frame selection, and aggregation reconcile against the
 pinned artifacts. Detector failures may reduce the classifier-score population and
@@ -682,10 +683,10 @@ be dropped. End-to-end metrics are computed only from this ledger and must recon
 exactly to the pre-detection target manifest. Risk metrics use an explicit filtered
 view where `detector_status=success`.
 
-### 11.3 Classifier Table 1, Panel A: MCIO literature context
+### 11.3 Compact or supplementary MCIO literature context
 
-Track A is a visible classifier-context comparison against published cross-domain FAS
-results. Use the pinned SSDG sample universe, code-derived frame rule, and mean
+Track A is outside the four main tables and provides classifier context against
+published cross-domain FAS results. Use the pinned SSDG sample universe, code-derived frame rule, and mean
 class-1-probability video aggregation. For each system and outer fold, fit any affine
 calibrators on the three sources' `track_a_validation` records, with equal source-domain
 weighting, after checkpoint selection. Let the deterministic threshold candidate set
@@ -714,13 +715,13 @@ Footnote that published SSDG HTER uses target validation/thresholding and that i
 also comes from a target-aware selected checkpoint. Disclose the frozen Track-B crop
 and label the in-house pipeline source-optimized on one shared source-validation
 partition. Historical SSDG values cannot support a controlled superiority claim.
-Never bold a best result or compute a ranking across Panels A and B. Track-A
-competitiveness is not an RQ1 gate;
+Never bold a best result or compute a ranking against Track B. Track-A competitiveness
+is not an RQ1 gate;
 only the separately frozen minimum base-classifier competence criterion applies. This
 panel establishes limited external classifier context but does not test Domain-OOF
 Failure Risk Estimation.
 
-### 11.4 Classifier Table 1, Panel B: strict single-image
+### 11.4 Main Table 1: strict single-image classifier competence
 
 For DINOv2-Reg, OpenCLIP, calibrated heterogeneous average, and matched same-family
 average, report per target and four-target macro:
@@ -743,7 +744,19 @@ AP(e_{DV},r_{DVd}^{sample}).
 $$
 
 Use non-interpolated average precision with `error=1` and larger score meaning higher
-risk. Also report error AUROC, AURC/excess-AURC, error prevalence, and paired deltas.
+risk. Freeze $N_{error,min}=20$ independent video-level errors per target and seed.
+Below this count, report AP, paired delta, counts, and uncertainty, mark the contribution
+underpowered, and do not count it as positive evidence. A target is event-eligible
+when at least two of three seeds meet the count. Always compute the equal-weight
+four-target macro, but a primary pass requires at least three eligible targets; an
+ineligible target cannot satisfy the three-of-four positive-target rule. Also report
+error AUROC, AURC/excess-AURC, error prevalence, and paired deltas.
+
+RQ1 tests the complete domain-OOF construction, not a causal domain-identity effect.
+For domain-OOF and sample-OOF, report effective fitting-set size, OOF error prevalence
+and type composition, branch score/calibration distributions, and risk-feature
+distributions. Run the source-predefined prevalence/difficulty-matched weighting
+sensitivity when feasible, without replacing or reweighting the primary result.
 
 `AP_error` is the methodological endpoint. Also report false-accept ranking on the
 preregistered relevant attack/predicted-live population as security-specific support
@@ -787,12 +800,24 @@ the paired whole-system outcome.
 - Aggregate target effects with the preregistered equal-weight four-target macro.
 - Report point estimate, 95% interval, event counts, applicability, and pass,
   inconclusive, or evidence-against state.
+- Interpret intervals conditionally on the evaluated four MCIO domains and fitted
+  procedures; do not claim sampling-based generalization to all future domains.
 - Apply claim-specific minimum effects, lower-bound rules, consistency requirements,
   and target harm tolerance frozen from source pseudo-shifts.
 - Keep seeds as separate optimization replicates; never add them to the cluster
   bootstrap as independent samples.
 
 ## 12. Execution phases and gates
+
+Before Phase 8 unlocks, the Phase-7 record includes a source-only competence artifact
+for DINOv2-Reg, OpenCLIP, the heterogeneous average, and the same-family average. It
+records nonconstant scores, both-class support, finite calibration, pseudo-shift
+AUROC/balanced accuracy and errors. Freeze $\delta_{competence}=0.05$: require macro
+AUROC and balanced accuracy at least 0.55, macro-AUROC cluster-bootstrap LCB above
+0.50, score range above $10^{-6}$, and at least 20 errors plus 20 correct predictions
+in the heterogeneous reference source-OOF table. Failure blocks the affected claim
+and cannot trigger a target-informed model change. The same record freezes
+$N_{error,min}=20$ independent target video errors per target and seed.
 
 | Phase | Deliverable | Exit gate |
 |---|---|---|
@@ -803,7 +828,7 @@ the paired whole-system outcome.
 | 4. Branches | Fold-local heads, calibrators, thresholds, prediction registry | Exclusion and one-stage calibration tests pass |
 | 5. OOF | Matched domain-OOF and sample-OOF tables | Lineage, overlap, fit-budget, and fixed-prediction checks pass |
 | 6. Risk/gates | Risk models, baselines, same-family system, source gates | Fixed-error and whole-system synthetic tests pass |
-| 7. Freeze | Immutable source-only analysis record | Config/code/count/effect hashes complete; evaluation commands unlock |
+| 7. Freeze | Immutable source-only analysis, competence, and applicability records | Config/code/count/effect hashes complete; competence and $N_{error,min}$ rules pass schema checks; evaluation commands unlock |
 | 8. MCIO | Four outer-domain-held-out folds by three seeds | Immutable transaction outputs and reproducible metrics |
 | 9. Optional | SiW-M, LoRA, routing, or cue studies | Separate preregistration; no overwrite of core results |
 

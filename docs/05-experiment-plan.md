@@ -48,92 +48,64 @@ class-balanced BCE on a deterministic subject-disjoint inner split of the allowe
 source-train pool; ties use the earlier epoch. Branch/gate/routing calibration and OOF
 evaluation records cannot perform early stopping.
 
-Add two diagnostic controls without changing the proposed architecture:
+Add one required matched control without changing the proposed architecture:
 
-6. a shared-encoder DINO head-diversity control using independent video bootstraps,
-   augmentation streams, initialization, and small nonlinear heads;
-7. a source-supervised linear PAD head on the same frozen CLIP/SigLIP image encoder.
-8. frozen DINOv2 without Registers paired with DINOv2-Reg as the required stronger
+6. frozen DINOv2 without Registers paired with DINOv2-Reg as the required stronger
   same-family control when retaining a cross-foundation title.
 
-The first is a minimum homogeneous-diversity control but may underestimate ensembles
-with independent representations. The third is therefore required for the
-cross-foundation-specific claim, while the CLIP visual control isolates prompt-driven versus
-source-supervised adaptation on one VLM encoder; it does not alone prove that text
-semantics causally produced any gain.
-Match source labels, subject/video splits, head capacity, augmentation budget, crop
-geometry, and calibration protocol across DINO and CLIP visual-head controls.
 The DINOv2-Reg + plain-DINOv2 strong control and heterogeneous pair use identical
 one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
+A shared-encoder two-head diversity control and a source-supervised visual head on the
+OpenCLIP image encoder are optional appendix diagnostics. They do not determine RQ1,
+RQ2, or continuation to risk fitting.
+
 Cache each frozen backbone's features independently so the branches never share GPU
 memory. All four MCIO domains are strict outer-domain-held-out targets in turn. The globally fixed VLM
 is reused in every fold; only fold-local source-fitted heads, calibrators, and
-thresholds vary before target $T$ is evaluated. Report the joint correctness table,
-double-fault, oracle gain, error correlation, and attack/domain subgroups for every
-fold and the four-target macro.
+thresholds vary before target $T$ is evaluated. Required complementarity reporting is
+standalone branch quality, the fixed fusion, the matched same-family control, joint
+correctness/double fault, and a simple directional rescue summary. Extensive oracle,
+correlation, and subgroup diagnostics are optional appendix analyses.
 
-Before the first outer-target result, freeze the logic that uses domain-OOF source
-pseudo-shifts to derive fold-specific numeric continuation thresholds for recoverable error fraction
-$REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and potential false-accept rescue
-$FARR_{VLM}=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Also report
-realized $REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$ and
-$FARR_g=P(g_{ref}\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
-preregistration with the run configuration; target results cannot redefine it.
+Report one descriptive directional rescue summary:
+$REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and the realized fusion counterpart
+$REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$, with event counts and paired
+subject/video uncertainty. On attacks, report false accepts blocked and newly admitted
+by fusion. These diagnose the classifier but are not continuation thresholds or a
+third claim gate. Use literally the same fitted DINOv2-Reg anchor predictions for
+heterogeneous and same-family summaries at each target, seed, and configuration; cache
+them once and never retrain the anchor by pair.
 
-Also preregister the heterogeneity advantage
-$\Delta_{hetero}=N_{FA}^{-1}\sum_i(r_i^V-r_i^H)$ on the same DINO false accepts,
-with paired subject/video bootstrap and McNemar-style analysis when event counts are
-small. Report both potential-branch and realized-fusion paired versions. If the strong
-DINOv2 same-family comparison is not positive on held-out targets, weaken the
-cross-foundation claim even when the broader selective ensemble remains useful.
-Use literally the same fitted DINOv2-Reg anchor predictions for heterogeneous and
-same-family rescue at each target, seed, and configuration; cache them once and never
-retrain the anchor by pair.
-
-FARR is descriptive because it conditions only on DINO false accepts. Also report the
-opposing count of attacks blocked by DINO but admitted by fusion, net
+False-accept rescue is descriptive because it conditions only on DINO false accepts.
+Report the opposing count of attacks blocked by DINO but admitted by fusion, net
 $APCER(D)-APCER(g_{ref})$, and the corresponding BPCER/BFNR change at source-selected
 thresholds. Target-matched thresholds and curves are diagnostics, not deployed-policy
 evidence.
 
-Report complementarity lift relative to each second branch's standalone correctness
-as a strength-adjusted diagnostic. Do not use it as a kill criterion: the subtraction
-can penalize a uniformly strong branch and does not identify a causal source of diversity.
-Also report normalized double fault
-$NDF=P(E_D=1,E_B=1)/(P(E_D=1)P(E_B=1))$ overall and attack-conditionally. It is a
-descriptive strength-normalized diagnostic, not a kill criterion, and must include
-uncertainty because it is unstable when either marginal error rate is small.
+Complementarity lift and normalized double fault are optional appendix diagnostics.
+If reported, include uncertainty and do not use them as kill criteria.
 
-Preregister a minimum DINO false-accept count $N_{min}$ and a 95% lower confidence
-bound requirement $LCB_{95\%}(FARR_g)>\gamma$, both chosen from source pseudo-shifts.
-If low-APCER pseudo-shifts yield too few false accepts, estimate complementarity at a
-preregistered higher diagnostic APCER while retaining low-APCER points for deployment.
-
-Define oracle gain on thresholded decisions using balanced accuracy/error and at
-source-selected biometric operating points. Do not report an `oracle AUC` unless a
-label-independent score construction is specified; choosing the correct branch per
-sample uses ground-truth labels and does not define a deployable ROC score.
-Report class-conditional oracle APCER, BPCER, and ACER; bootstrap by video or subject,
-not by frame.
+If optional oracle gain is reported, define it on thresholded decisions using balanced
+accuracy/error at source-selected biometric operating points. Never report `oracle
+AUC` from ground-truth branch selection; bootstrap optional oracle diagnostics by
+video or subject, not frame.
 
 Exit criteria:
 
-- both branches are competent enough for meaningful comparison;
-- **Classifier-benefit claim:** realized rescue, net APCER reduction, and BPCER/BFNR
-  harm pass their preregistered criteria;
-- **Heterogeneous-classifier claim:** paired $\Delta_{hetero}>0$ against the stronger
-  DINOv2-Reg plus DINOv2 control at the classifier endpoint;
+- the source-only base-classifier competence artifact is frozen and passes before any
+  target result is opened;
+- standalone branches, fixed fusion, matched same-family control, joint correctness/
+  double fault, and the directional rescue summary are reproducibly reported;
 - the complete target domain did not influence model or configuration selection.
 
-These classifier claims are separate from failure-risk transfer. Failed fusion rescue
-removes the classifier-benefit claim but does not stop Stage 2. Heterogeneous advantage
-must be demonstrated separately at every endpoint used for a heterogeneous-foundation
-claim. Explicit disagreement remains a feature-attribution claim only.
+These classifier diagnostics are separate from failure-risk transfer and do not stop
+Stage 2. Heterogeneous advantage is decided only by the RQ2 matched whole-system rule.
+Explicit disagreement remains a feature-attribution claim only.
 Before held-out evaluation, source pseudo-shifts must freeze nonzero minimum meaningful
-effects or positive paired lower-confidence-bound criteria for $\Delta_{hetero}$,
-$\Delta_{CF}^{AUPR}$, and $\Delta_{dis}^{AUPR}$; $\Delta>0$ alone is insufficient.
+effects or positive paired lower-confidence-bound criteria for $\Delta_{CF}^{AP}$
+and $\Delta_{dis}^{AP}$; $\Delta>0$ alone is insufficient.
 
 DINOv2 without Registers is required for any heterogeneous-foundation claim;
 supervised backbones, LoRA, and larger VLMs remain later ablations.
@@ -221,10 +193,14 @@ $$
 AP(e_{DV},r_{DVd}^{sample}).
 $$
 
-This contrast isolates the source risk-record construction while holding final base
-predictions, error labels, features, loss, and regularization fixed. $R_{DV}$ and
-$R_{DVdm}$ remain attribution and operational variants; they cannot replace the RQ1
-primary after viewing targets.
+This contrast holds final base predictions, error labels, features, loss, and
+regularization fixed, but tests the complete domain-OOF construction rather than a
+causal effect of domain identity alone. Branch fit size, error prevalence/composition,
+score distributions, and calibration difficulty may differ from sample-OOF. Report
+those diagnostics and risk-feature distributions by strategy. Add a source-predefined
+prevalence/difficulty-matched weighting sensitivity where feasible; it cannot replace
+the unweighted primary contrast. $R_{DV}$ and $R_{DVdm}$ remain attribution and
+operational variants; they cannot replace the RQ1 primary after viewing targets.
 
 RQ2 compares complete heterogeneous and same-family selective systems on the same
 transactions using source-selected policies. Each system has its own classifier,
@@ -243,9 +219,9 @@ Freeze $R_q=[q]$, $R_D=[\widehat p_D,q]$, $R_V=[\widehat p_V,q]$,
 $R_{DV}=[\widehat p_D,\widehat p_V,q]$,
 $R_{DVd}=[\widehat p_D,\widehat p_V,d_{abs},q]$, and
 $R_{DVdm}=[\widehat p_D,\widehat p_V,d_{abs},m_F,q]$. Define
-$\Delta_{CF}^{AUPR}=AUPR(R_{DV})-\max(AUPR(R_D),AUPR(R_V))$ and
-$\Delta_{dis}^{AUPR}=AUPR(R_{DVd})-AUPR(R_{DV})$ as scientific claim quantities,
-and $\Delta_{margin}^{AUPR}=AUPR(R_{DVdm})-AUPR(R_{DVd})$ as an operational gain.
+$\Delta_{CF}^{AP}=AP(R_{DV})-\max(AP(R_D),AP(R_V))$ and
+$\Delta_{dis}^{AP}=AP(R_{DVd})-AP(R_{DV})$ as scientific claim quantities,
+and $\Delta_{margin}^{AP}=AP(R_{DVdm})-AP(R_{DVd})$ as an operational gain.
 All use the same fixed-regularization logistic family and source lineage. Primary risk
 fitting uses equal pseudo-domain weighting with unweighted BCE inside each domain;
 class-weighted/focal ranking losses are labeled non-probabilistic ablations.
@@ -254,14 +230,42 @@ Exit criteria:
 
 - RQ1 $\Delta_{OOF}$ passes its preregistered effect and uncertainty rule and the
   domain-OOF risk score improves over the fixed list of primary risk baselines;
-- selective utility improves over source-selected comparator gates under K=1, with
-  both achieved attack and bona-fide coverage reported rather than target-matched
-  class thresholds;
+- selective utility is evaluated separately over source-selected comparator gates
+  under K=1, with both achieved attack and bona-fide coverage reported. Failure of
+  this operational consequence does not by itself falsify RQ1;
 - retain the disagreement claim only if preregistered $\Delta_{dis}>0$ against the
   capacity-matched nonlinear probability-only model;
 - no target sample or statistic enters calibration.
 - Brier/NLL and reliability diagrams support any probabilistic `calibrated risk`
   wording; otherwise describe the output only as a failure-risk score.
+
+### Source-only competence and primary-event gates
+
+Before opening any target result, Phase 7 writes an immutable competence artifact from
+source pseudo-shifts. For DINOv2-Reg, OpenCLIP, the calibrated heterogeneous average,
+and the matched same-family average, it records nonconstant score variance, both-class
+support, finite calibration parameters, source-pseudo-shift AUROC/balanced accuracy,
+and error counts. Freeze $\delta_{competence}=0.05$: each claimed system must achieve
+equal-domain macro AUROC and balanced accuracy of at least 0.55, with the
+cluster-bootstrap 95% lower bound for macro AUROC above 0.50. Scores must be finite
+with range greater than $10^{-6}$ and both ground-truth classes present. Each
+pseudo-domain balanced accuracy uses a threshold selected only on that fold's allowed
+source remainder, never its held-out pseudo-domain scores. The final
+heterogeneous reference classifier's concatenated source-OOF records must additionally
+contain at least 20 errors and 20 correct predictions so the binary risk fit is
+defined. These are source-only competence/applicability checks, not target performance
+guarantees. Failure blocks the affected classifier/system claim and triggers no
+target-informed alteration; Track-A SOTA rank is irrelevant.
+
+Freeze $N_{error,min}=20$ independent video-level classifier errors per target and
+seed for the primary AP applicability rule. Below this count, report AP, paired delta,
+counts, and uncertainty, but mark that target/seed RQ1 contribution underpowered and
+do not count it as positive evidence. A target is event-eligible when at least two of
+three seeds meet $N_{error,min}$. Always compute the frozen equal-weight four-target
+macro, but a primary pass additionally requires at least three event-eligible targets;
+an ineligible target cannot satisfy the three-of-four positive-target rule. Fewer than
+three eligible targets makes RQ1 inconclusive. Scarcity is neither perfect risk
+estimation nor evidence against RQ1.
 
 ## Stage 3: Selective and conditional inference, weeks 9-11
 
@@ -338,9 +342,12 @@ gain is at least the claim-specific $\delta_{min}$, at least three of four targe
 estimates are positive, no target exceeds its harm tolerance, and at least two of
 three seeds have positive four-target macro deltas. Claims against multiple required
 comparators use the preregistered conjunction; no post-target comparator selection is
-allowed. Claims are limited to the evaluated held-out domains.
+allowed. Claims are limited to consistency across the evaluated four MCIO held-out
+domains. The cluster bootstrap is conditional on these datasets and fitted procedures;
+it does not sample from or establish generalization over a universe of future domains.
 Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
-one-class risk labels as inconclusive only for error-ranking endpoints. Zero
+one-class risk labels or fewer than $N_{error,min}$ errors as inconclusive for
+error-ranking endpoints. Zero
 false-accept denominators and $N_{FA}<N_{min}$ are inconclusive only for FARR and other
 false-accept-conditioned endpoints; they do not invalidate estimable error AP. Report
 inconclusive separately from evidence against. Recompute the stronger of $R_D/R_V$
@@ -373,7 +380,11 @@ separate go/no-go decision and are not assumed in the first paper.
   and coverage at fixed security operating points;
 - update the literature search immediately before submission.
 
-## Core ablation matrix
+## System matrix
+
+Rows A-H and M cover the core classifier, fixed-error, and same-family comparisons.
+Rows I-J are optional deployment extensions. Rows K-L are optional appendix diagnostics
+and cannot block either RQ.
 
 | ID | DINO | VLM | Fusion/risk method | Conditional VLM | Abstain |
 |---|---:|---:|---|---:|---:|
