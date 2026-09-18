@@ -103,7 +103,7 @@ This analysis diagnoses classifier complementarity but is not a gate for the lea
 risk study. High disagreement between two weak predictors is not useful
 complementarity, while limited fusion rescue does not preclude useful failure ranking.
 
-## Source-only risk estimation
+## Domain-OOF Failure Risk Estimation
 
 Create source records in three distinct protocols. Sample-OOF splits within domains;
 domain-OOF holds out one complete capture domain and is primary for MICO; attack-OOF

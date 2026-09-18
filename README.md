@@ -1,4 +1,4 @@
-# Source-Only Failure-Risk Estimation for Selective Face Presentation Attack Detection with Heterogeneous Foundation Models
+# Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
@@ -71,7 +71,10 @@ single-branch confidence and a matched same-family ensemble?
 37. [ChatGPT review round 15](docs/36-chatgpt-review-round15.md)
 38. [Response to ChatGPT review round 15](docs/37-review-response-round15.md)
 39. [Implementation plan](docs/38-implementation-plan.md)
-40. [Reading list](references/reading-list.md)
+40. [ChatGPT review round 16](docs/39-chatgpt-review-round16-q3-plan.md)
+41. [Frozen paper skeleton](docs/40-paper-skeleton.md)
+42. [Response to ChatGPT review round 16](docs/41-review-response-round16.md)
+43. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -91,7 +94,7 @@ scaffold must be replaced according to the implementation plan before use.
 
 ## Current status
 
-- Status: methodology accepted; dependency-ordered implementation plan available
+- Status: Q3-first research plan and paper skeleton frozen; implementation not started
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings

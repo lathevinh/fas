@@ -1,6 +1,6 @@
 # Reading List
 
-Last checked: 2026-09-17. This is a working list, not a systematic review.
+Last checked: 2026-09-18. This is a working list, not a systematic review.
 Publisher status and bibliographic metadata must be verified before citation.
 
 ## Foundation models
@@ -36,6 +36,15 @@ Publisher status and bibliographic metadata must be verified before citation.
 
 ## Closest 2026 work
 
+- AIM-FAS, Vision-Language Adaptation with Imbalance Mitigation for Generalizable
+  Face Anti-Spoofing, Pattern Recognition 175 (2026), 113101:
+  <https://doi.org/10.1016/j.patcog.2026.113101>
+- DGPDL: Domain-Guided Prompt Distribution Learning for Generalizable Face
+  Anti-Spoofing, IEEE TPAMI 48(8) (2026), 8953-8969:
+  <https://doi.org/10.1109/TPAMI.2026.3674204>
+- CLIP-SA: CLIP-Guided Semantic Alignment for Generalizable Face Anti-Spoofing,
+  IEEE Transactions on Multimedia (2026):
+  <https://doi.org/10.1109/TMM.2026.3668651>
 - Benchmarking Vision Foundation Models for Domain-Generalizable FAS:
   <https://arxiv.org/abs/2604.19196>
 - DINO-VPT: <https://arxiv.org/abs/2607.20900>
@@ -65,7 +74,4 @@ Repeat at least monthly:
 Do not cite these as verified prior work until title, authors, venue, year, and DOI or
 stable publisher record are confirmed independently:
 
-- AIM-FAS, reportedly Pattern Recognition 2026;
-- DGPDL, reportedly IEEE TPAMI 2026;
-- CLIP-SA, reportedly IEEE Transactions on Multimedia 2026;
 - class-aware AURC/risk-coverage methods for selective classification.

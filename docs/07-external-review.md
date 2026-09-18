@@ -14,12 +14,12 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 
 ## Current handoff instruction
 
-Research direction and revised core methodology were accepted in Round 15. The owner
-accepted its estimand constraints and published the dependency-ordered implementation
-plan in `docs/38-implementation-plan.md`. Future review should assess Phase 0 scaffold
-migration against normative `docs/00` through `docs/06` and Rounds 14-15. Do not reopen
-settled architecture choices without identifying new evidence or a concrete
-contradiction.
+Research direction and revised core methodology were accepted in Round 15. Round 16
+then accepted the Q3-first paper plan, named Domain-OOF Failure Risk Estimation, and
+froze the manuscript structure and four main tables in `docs/40-paper-skeleton.md`.
+Future implementation review should assess Phase 0 scaffold migration against
+normative `docs/00` through `docs/06`, Rounds 14-16, and the paper skeleton. Do not
+reopen settled architecture choices without new evidence or a concrete contradiction.
 
 ## Questions the reviewer should answer
 

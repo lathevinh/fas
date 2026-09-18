@@ -16,6 +16,9 @@
 | DINO-VPT, IJCB 2026 | DINO visual prompt tuning for physical/digital FAS | DINO plus prompt tuning is already occupied |
 | VFM benchmark, CVPRW 2026 | DINOv2-Reg as a strong DG-FAS baseline | This must be reproduced or fairly compared |
 | Primitive-driven prompting, 2026 | Patch-aware compositional forensic primitives | Compositional visual evidence is a close competitor |
+| AIM-FAS, Pattern Recognition 2026 | Vision-language adaptation with imbalance mitigation for generalizable FAS | Adapting a VLM to improve the classifier is occupied; this project instead freezes independent predictors and studies post-predictive failure risk |
+| DGPDL, TPAMI 2026 | Domain-guided prompt-distribution learning for generalizable FAS | Domain-conditioned prompt learning is occupied; prompts are fixed in this project |
+| CLIP-SA, TMM 2026 | CLIP-guided semantic alignment for generalizable FAS | Semantic alignment is occupied; this project does not align branch representations or decisions |
 | RPSR-FAS, September 2026 | Organized VLM semantics and reliability-aware FAS | Semantic pools plus reliability substantially overlap the original plan |
 
 Bibliographic links are maintained in the reading list. Acceptance/publication
@@ -41,9 +44,17 @@ $D_{JS}(p_D,p_V)$ removes the signal later used for selective prediction. Generi
 semantic consistency and reliability are also occupied by the TIFS 2024 and
 RPSR-FAS work above.
 
+RPSR-FAS uses reliability inside classifier training to organize supervision and
+improve the learned FAS representation. In contrast, the proposed estimator is
+post-predictive: source-domain-held-out prediction failures supervise a separate,
+target-blind selector while the DINO and OpenCLIP predictors remain independent.
+Accordingly, this project does not claim to be the first reliability-aware or
+vision-language FAS method.
+
 ## Current novelty hypothesis
 
-The remaining defensible hypothesis is narrower:
+The remaining defensible hypothesis, named **Domain-OOF Failure Risk Estimation**, is
+narrower:
 
 - DINOv2-Reg and the VLM remain independently trained to preserve error diversity.
 - Disagreement is observed, not minimized as a training objective.
@@ -75,6 +86,13 @@ classifier-benefit claim; it is not a prerequisite for useful failure ranking.
 Conditional routing is not part of the minimum novelty claim. A Q1/top-conference
 claim would likely require a stronger algorithmic contribution than this plan
 currently contains.
+
+CA-FAS is a first-class reliability competitor because it combines confidence-aware
+representation learning, Gaussian class modeling, Mahalanobis confidence, and
+rejection. A simple source-fitted Mahalanobis score on frozen DINO features is a
+required representation-space control, not a faithful CA-FAS reproduction. A
+faithful reproduction is reported only if its training objective and evaluation
+protocol can be matched without violating the frozen source-only design.
 
 ## Claims that require evidence
 

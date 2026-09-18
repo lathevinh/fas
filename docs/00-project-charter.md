@@ -13,7 +13,7 @@ Build a single-frame RGB PAD model that is:
 
 Working title:
 
-> Source-Only Failure-Risk Estimation for Selective Face Presentation Attack Detection with Heterogeneous Foundation Models
+> Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
 Use `Disagreement` in the title only if explicit disagreement adds capacity-matched
 gain. If heterogeneous risk transfer does not beat same-family diversity, reframe as
@@ -25,7 +25,7 @@ labeled MICO target may influence candidate, checkpoint, threshold, or feature
 selection for its fold:
 
 1. intentionally independent DINOv2-Reg and fixed OpenCLIP ViT-B/16 predictors;
-2. source-only cross-fitted failure-risk estimation from heterogeneous predictors;
+2. Domain-OOF Failure Risk Estimation from source-domain-held-out prediction errors;
 3. selective inference evaluated with target-blind security, usability, and coverage
     accounting.
 
