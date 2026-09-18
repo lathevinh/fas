@@ -80,7 +80,9 @@ single-branch confidence and a matched same-family ensemble?
 45. [Response to implementation-plan review](docs/44-review-response-doc43.md)
 46. [ChatGPT review of the implementation-plan response](docs/45-chatgpt-review-doc44.md)
 47. [Response to Track-A benchmark review](docs/46-review-response-doc45.md)
-48. [Reading list](references/reading-list.md)
+48. [ChatGPT review of Track-A benchmark response](docs/47-chatgpt-review-doc46.md)
+49. [Response to Track-A execution review](docs/48-review-response-doc47.md)
+50. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 

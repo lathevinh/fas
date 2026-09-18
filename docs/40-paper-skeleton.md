@@ -144,9 +144,13 @@ redefined after target inspection.
 Use two visible panels. Panel A is an SSDG-compatible MCIO sample/evaluation view for
 limited literature context, while Panel B uses the strict single-image Track-B
 protocol below. Panel A retains source-only model/threshold selection and the Track-B
-crop, so it is not an SSDG reproduction; published SSDG HTER receives a target-aware
-validation/threshold footnote. Mark published FLIP comparisons as `+CelebA-Spoof`
-unless a like-for-like extra-data run is performed. The panels are never pooled.
+crop, so it is not an SSDG reproduction. Its transferred HTER/TPR thresholds come
+from `track_a_validation`; target ROC/AUC is a post-hoc diagnostic. Report detector
+coverage separately. Published SSDG HTER receives a target-aware validation/threshold
+footnote, and published SSDG AUC is marked target-aware through checkpoint selection.
+Mark published FLIP comparisons as `+CelebA-Spoof` unless a like-for-like extra-data
+run is performed. Use separate panel captions; never pool, rank, or bold best results
+across the panels.
 
 | System | APCER | BPCER | ACER/HTER | AUROC | Error prevalence |
 |---|---:|---:|---:|---:|---:|

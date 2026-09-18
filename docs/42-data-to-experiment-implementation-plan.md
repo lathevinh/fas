@@ -251,18 +251,29 @@ source num_frames = 1
 target num_frames = 2
 ```
 
+The Phase-1 protocol-provenance record stores the upstream repository URL, commit SHA,
+source file path, function name, and SHA-256 of the normalized code block for both the
+frame selector and video aggregator. A repository branch name or prose formula alone
+is insufficient provenance.
+
 For HTER/AUC, pinned SSDG evaluation averages the class-1 softmax probabilities of
 the two selected frames within each video. Its evaluation code then derives an EER
 threshold from those target video scores, and its training code selects checkpoints
 using `tgt_valid_dataloader`. Track A intentionally reproduces neither target-aware
 operation: checkpoint and threshold selection remain source-only. Published SSDG HTER
-must therefore carry a footnote and is not a like-for-like target-blind comparison;
-AUC is less affected by this threshold distinction.
+must therefore carry a footnote and is not a like-for-like target-blind comparison.
+Published SSDG AUC is threshold-free at evaluation time but remains target-aware
+because the reported checkpoint was selected with the held-out target loader. It is
+historical context, not a strict target-blind baseline.
 
 Track A initially reuses the frozen Track-B detector/context crop. It is consequently
 **sample-universe/frame-rule compatible**, not SSDG preprocessing compatible and not
 an SSDG reproduction. An exact MTCNN/256 preprocessing variant is optional and must
-be labeled separately if implemented.
+be labeled separately if implemented. Never replace a pinned frame after detector
+failure and never silently remove it from the protocol manifest. Panel-A classifier
+metrics use detector-success videos only and report frame- and video-level detector
+coverage by target and class beside them. Track-B end-to-end accounting remains
+unchanged: detector failures are terminal non-accept transactions.
 
 FLIP's published Benchmark-1 configuration adds CelebA-Spoof to the three MCIO
 sources. Its reported numbers are therefore marked `+CelebA-Spoof` and are not treated
@@ -270,9 +281,11 @@ as equal-data comparisons. A like-for-like FLIP comparison requires the already
 separate optional extra-data track.
 
 Track A is a visible panel of the main classifier-comparison table and creates no new
-research question or claim. Exact sample/evaluation equivalence is claimed only after
-adapter counts, list contents, labels, frame selection, and aggregation reconcile
-against the pinned artifacts. Any deviation is named in the table caption.
+research question or claim. Exact sample-membership/frame-selection/video-aggregation
+equivalence is claimed only after adapter counts, list contents, labels, frame
+selection, and aggregation reconcile against the pinned artifacts. Image preprocessing
+and source-only model-selection rules differ intentionally. Any other deviation is
+named in the table caption.
 
 Track-A implementation stops after two engineer-days if required artifacts cannot be
 reconciled or the old preprocessing/evaluation stack proves incompatible. The paper
@@ -292,10 +305,13 @@ if they came from the same sample universe.
 
 Role manifests are track-specific because the sample universes differ. Track A gets
 one immutable protocol manifest per dataset recording pinned benchmark membership and
-a deterministic source-only fit/checkpoint-selection split. It has no
-`branch_calibration`, `gate_domain`, or routing roles and never trains risk models.
-Track B gets one immutable source-role manifest per dataset with the full roles below.
-Within either track, manifests never depend on outer target or optimization seed.
+two group-disjoint source roles: `track_a_fit` and `track_a_validation`.
+`track_a_fit` trains the DINO head. `track_a_validation` selects its checkpoint, fits
+the positive-slope affine branch calibrators, and selects source operating thresholds;
+it is not reclaimed for refitting. Track A has no `gate_domain`, routing, OOF-risk, or
+selective-gate role. Track B gets one immutable source-role manifest per dataset with
+the full roles below. Within either track, manifests never depend on outer target or
+optimization seed.
 
 Within the eligible source pool, assign complete subject groups, or complete video
 groups if subject identity is genuinely unavailable, to these immutable roles:
@@ -664,10 +680,24 @@ view where `detector_status=success`.
 
 Track A is a visible classifier-context comparison against published cross-domain FAS
 results. Use the pinned SSDG sample universe, code-derived frame rule, and mean
-class-1-probability video aggregation. Report AUC and source-threshold HTER/TPR at
-FPR=1% when estimable, and disclose the frozen Track-B crop. Footnote that published
-SSDG HTER uses target-aware validation/thresholding. This panel establishes limited
-external classifier context but does not test Domain-OOF Failure Risk Estimation.
+class-1-probability video aggregation. For each system and outer fold, fit any affine
+calibrators on the three sources' `track_a_validation` records, with equal source-domain
+weighting, after checkpoint selection. On the same records, choose
+$\tau^A_{HTER}$ by minimizing the absolute difference between macro-source APCER and
+BPCER; break ties by lower macro HTER, then lower numeric threshold. Define attack as
+the positive class. Choose $\tau^A_{1\%}$ as the lowest candidate threshold whose
+macro-source $FPR=P(score\geq\tau\mid bona\ fide)$ is at most 1%, when supported by
+the bona-fide event count. Transfer both thresholds unchanged to the held-out target.
+
+Report transferred-threshold HTER and TPR at source-selected FPR=1%, conventional
+target ROC/AUC as a post-hoc non-deployable diagnostic, and detector coverage by class.
+Footnote that published SSDG HTER uses target validation/thresholding and that its AUC
+also comes from a target-aware selected checkpoint. Disclose the frozen Track-B crop
+and label the in-house pipeline strictly source-selected. Never bold a best result or
+compute a ranking across Panels A and B. Track-A competitiveness is not an RQ1 gate;
+only the separately frozen minimum base-classifier competence criterion applies. This
+panel establishes limited external classifier context but does not test Domain-OOF
+Failure Risk Estimation.
 
 ### 11.4 Classifier Table 1, Panel B: strict single-image
 
