@@ -800,7 +800,8 @@ transactions and matched recipes. Report classifier quality, error prevalence, e
 system's own risk AP, selective utility, and K=1 outcomes. Cross-system AP is
 descriptive because the systems have different errors; the scientific comparison is
 the following paired whole-system scalar. For each system, integrate class-conditional
-classification-error risk over coverage in $[0,1]$ and define
+classification-error risk over coverage in $[0,1]$ on the identical transaction mask
+where the shared fixed detector succeeded, and define
 $U=(AURC_{attack}+AURC_{bona})/2$. Then
 $\Delta_{RQ2}=U_{same}-U_{hetero}$, so positive favors heterogeneous. Apply the same
 seed-then-target aggregation and paired cluster bootstrap as RQ1. A pass requires
@@ -808,8 +809,11 @@ macro $\Delta\ge0.01$, 95% LCB above zero, three positive target deltas, two pos
 seed macros, and no target with $U_{hetero}-U_{same}>0.02$. At independently
 source-selected gates, heterogeneous-minus-same-family `FA_end2end` and
 `BFNR_end2end` must each be no greater than 0.01 macro and 0.02 on every target under
-the original denominators and K=1. Coverage and classifier/error metrics remain
-mandatory support and cannot be selected as alternative outcomes. Excess-AURC remains
+the original denominators and K=1. Detector failures are excluded from both AURC
+inputs but deterministically enter these end-to-end metrics as terminal non-accepts
+and enter class-coverage accounting. Coverage and classifier/error metrics remain
+mandatory explanatory support and cannot be selected as alternative outcomes;
+coverage has no separate RQ2 pass/fail threshold. Excess-AURC remains
 a required ranking-regret diagnostic, not an alternative primary endpoint.
 
 ### 11.8 Statistical analysis

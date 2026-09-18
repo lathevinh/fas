@@ -317,6 +317,11 @@ frames from depth/IR and never use unavailable modalities.
   fide raw AURC, so it jointly reflects classifier errors and risk ordering, lower is
   better, and differing class prevalence cannot silently reweight it. Excess-AURC
   against each system's oracle ordering remains a required ranking-regret diagnostic;
+- compute RQ2 AURC for both systems on the same transaction mask where the single
+  fixed face detector succeeded; detector failures are excluded from AURC rather than
+  assigned a risk rank, but remain terminal non-accepts in full-denominator K=1
+  `FA_end2end`/`BFNR_end2end` and class-coverage accounting. Coverage is reported to
+  expose this population boundary and is not an additional RQ2 decision guardrail;
 - Brier score, failure-risk NLL, and reliability diagrams when interpreting
   $r_{err}$ as a probability;
 - attack coverage $Coverage_A=N_{attack,decided}/N_{attack,total}$ and bona-fide

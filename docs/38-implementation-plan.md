@@ -297,7 +297,10 @@ Primary contracts:
   fide mean raw AURC. Require macro gain at least 0.01, paired LCB above zero,
   three positive targets, two positive seed macros, and no target selective harm above
   0.02. At source-selected gates, heterogeneous-minus-same-family `FA_end2end` and
-  `BFNR_end2end` must each be at most 0.01 macro and 0.02 per target;
+  `BFNR_end2end` must each be at most 0.01 macro and 0.02 per target. Compute both
+  AURCs on the common fixed-detector-success mask; detector failures enter only the
+  full-denominator K=1 guardrails and coverage accounting. Coverage is explanatory,
+  not another RQ2 gate;
 - classifier benefit: net APCER plus BPCER/BFNR harm, with FARR descriptive;
 - disagreement: $R_{DVd}$ versus capacity-matched nonlinear probability-only risk;
 - routing: absent unless optional deployment work is explicitly activated.

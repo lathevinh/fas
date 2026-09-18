@@ -90,7 +90,9 @@ single-branch confidence and a matched same-family ensemble?
 55. [Response to final core-plan audit](docs/54-review-response-doc53.md)
 56. [Final decision-rule review](docs/55-chatgpt-review-doc54-final.md)
 57. [Response closing final decision rules](docs/56-review-response-doc55.md)
-58. [Reading list](references/reading-list.md)
+58. [Population and coverage clarification review](docs/57-chatgpt-review-doc56.md)
+59. [Response closing population and coverage semantics](docs/58-review-response-doc57.md)
+60. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 

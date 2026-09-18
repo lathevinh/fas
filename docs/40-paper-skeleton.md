@@ -217,10 +217,14 @@ pretraining causally produces any observed difference. The sole primary scalar i
 $\Delta_{RQ2}=U_{same}-U_{hetero}$, where $U$ is the equally weighted attack/bona-fide
 raw AURC. A pass requires macro $\Delta\ge0.01$, paired 95% LCB above zero, three
 positive targets, two positive seed macros, and no target selective harm above 0.02.
+Both systems use the common fixed-detector-success population for AURC. Detector
+failures enter full-denominator K=1 end-to-end metrics and coverage accounting, not
+the AURC ordering.
 At source-selected gates, neither macro `FA_end2end` nor macro `BFNR_end2end` may
 worsen by more than 0.01, and neither may worsen by more than 0.02 on any target.
 Classification quality, error AP, error prevalence, and class coverage are supporting
-results and cannot substitute for this rule.
+results and cannot substitute for this rule. Coverage is explanatory and has no
+additional RQ2 pass/fail threshold.
 
 ## 6. Claim and Falsification Matrix
 

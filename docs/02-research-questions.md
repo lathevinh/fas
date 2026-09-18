@@ -48,12 +48,15 @@ U_j=\frac12(AURC_{attack,j}+AURC_{bona,j}),
 $$
 
 and $\Delta_{RQ2}=U_{same}-U_{hetero}$, so positive values favor the heterogeneous
-system. The paired macro must have 95% lower bound above zero and point gain at least
+system. Both systems' AURCs use the identical fixed-detector-success transaction mask;
+detector failures enter only full-denominator K=1 `FA_end2end`, `BFNR_end2end`, and
+coverage accounting. The paired macro must have 95% lower bound above zero and point gain at least
 $\delta_{RQ2,min}=0.01$. At each system's source-selected gate, heterogeneous-minus-
 same-family `FA_end2end` and `BFNR_end2end` may each increase by at most 0.01 in the
 four-target macro and 0.02 on any target. Classification errors, each system's error
 AP, and achieved class coverage are mandatory supporting results, not alternative
-primary outcomes.
+primary outcomes. Coverage is explanatory only and is not an additional H2 pass/fail
+guardrail.
 
 **Falsification:** The scalar contrast or either operational guardrail does not pass
 its frozen rule. Each

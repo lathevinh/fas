@@ -74,11 +74,15 @@ classifier error burden and failure-ranking quality. Excess-AURC is still report
 a ranking-regret diagnostic.
 
 For class $c\in\{attack,bona\}$, system $j$, target $t$, and seed $s$, sort
-transactions from lowest to highest predicted failure risk. At retained coverage
+the common transaction population on which the single fixed face detector succeeded
+for both systems from lowest to highest predicted failure risk. At retained coverage
 $k/n_c$, let the class-conditional risk be the fraction of classification errors among
-the first $k$ transactions. Define empirical raw AURC as the equal-width staircase
-mean over $k=1,\ldots,n_c$; tied scores use the expectation over permutations within
-the tied block so transaction IDs cannot determine the result.
+the first $k$ detector-successful transactions. Define empirical raw AURC as the
+equal-width staircase mean over $k=1,\ldots,n_c$; tied scores use the expectation over
+permutations within the tied block so transaction IDs cannot determine the result.
+Detector failures receive no artificial risk rank and are absent from both systems'
+AURC inputs. They remain terminal non-accepts in original-denominator K=1
+`FA_end2end`/`BFNR_end2end` and are included in class-coverage accounting.
 
 Define:
 
@@ -126,7 +130,10 @@ invitation to choose another primary metric.
 Classification quality, error prevalence, each system's own error AP, raw/excess-AURC,
 attack coverage, bona-fide coverage, `FA_end2end`, and `BFNR_end2end` remain mandatory
 table entries. They explain the scalar outcome but cannot replace it. Cross-system AP
-remains descriptive because the classifiers induce different error labels.
+remains descriptive because the classifiers induce different error labels. Coverage
+is supporting and explanatory only: H2 has no minimum-coverage threshold or additional
+coverage pass/fail guardrail. Its role is to expose the detector/gate population and
+prevent a selective metric from being interpreted without its achieved coverage.
 
 If a required class has no transactions for a target/seed, class-balanced AURC is
 undefined and RQ2 is inconclusive. A zero-error class is valid and has raw AURC zero;

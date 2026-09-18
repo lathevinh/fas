@@ -207,7 +207,8 @@ transactions using source-selected policies. Each system has its own classifier,
 error labels, risk estimator, and gate, so raw cross-system AP difference is
 descriptive rather than evidence that one estimator is intrinsically better. The
 primary system-level endpoint is class-balanced raw AURC. For system $j$, integrate
-class-conditional classification-error risk over coverage in $[0,1]$ and define
+class-conditional classification-error risk over coverage in $[0,1]$ on the common
+fixed-detector-success transaction mask and define
 
 $$
 U_{j,t,s}=\frac12(AURC_{attack,j,t,s}+AURC_{bona,j,t,s}),\qquad
@@ -221,6 +222,9 @@ seed-level four-target macros, and no target with $U_{hetero}-U_{same}>0.02$. At
 system's independently source-selected gate, heterogeneous-minus-same-family
 `FA_end2end` and `BFNR_end2end` may each be at most 0.01 in the four-target macro and
 0.02 on every target. The original transaction denominators and K=1 semantics apply;
+detector failures are absent from both systems' AURC rows but enter these end-to-end
+guardrails as terminal non-accepts and enter class-coverage accounting. Coverage is a
+mandatory explanatory result, not an additional pass/fail guardrail. Thus
 one favorable metric cannot offset a violated guardrail. Classification quality,
 error prevalence, each system's error AP, and achieved attack/bona-fide coverage are
 mandatory supporting results but cannot replace the scalar endpoint. This rule claims
