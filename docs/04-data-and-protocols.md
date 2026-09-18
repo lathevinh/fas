@@ -64,10 +64,10 @@ auxiliary family prompt. The immutable core PAD bank and its normalization never
 change. Any allowed attack-specific open-vocabulary prompt produces a separate
 auxiliary similarity score rather than changing the core PAD probability.
 
-Freeze the exact core prompt bank before pilot labels. The pilot may select only VLM
-checkpoint, resolution, and preprocessing from a committed finite set. Source-tuned
-template/weight selection is a labeled ablation and cannot replace the primary fixed
-bank in confirmatory claims.
+Freeze the exact core prompt bank and finite VLM/preprocessing candidate set before
+all MICO evaluation. For target $T$, select a candidate only by nested domain-OOF over
+the other three source domains. Source-tuned template/weight selection is a labeled
+ablation and cannot replace the primary fixed bank.
 
 ## Unified metadata manifest
 
@@ -112,7 +112,7 @@ fold. A dataset reuses the same train, branch-calibration, gate-candidate, and r
 validation roles whenever it is a source; its official protocol applies when it is the
 target. Publish every role-manifest SHA-256. Compute subject/video and independent
 attack-event counts before freezing holdouts; if counts cannot support calibration or
-low-APCER estimation, simplify the split before opening pilot labels.
+low-APCER estimation, simplify the split before any target evaluation.
 
 Report two evaluation tracks. The benchmark-compatible track follows each dataset's
 official frame/video aggregation. The strict single-image track uses one deterministic
@@ -193,42 +193,44 @@ returned to final training.
 
 | Partition | Branch/head fit | Branch calibration | OOF risk records | Risk fit | Gate threshold | Preregistration |
 |---|---:|---:|---:|---:|---:|---:|
-| Source train | Yes | No | Fold-dependent | No | No | No |
+| Source train + fold-local inner validation | Fit/selection only | No | Fold-dependent | No | No | No |
 | Branch calibration | No | Yes, domain-balanced | Fold-dependent | No | No | No |
 | OOF pseudo-shift | No for held-out fold | Fold-specific only | Yes | Yes | No | Yes |
 | Gate calibration $G_{domain}$ | No | No | No | No | Post-VLM gate only | No |
 | Attack gate calibration $G_{attack}$ | No | No | No | No | Attack gate only | No |
-| Routing validation | No | No | No | No | Spoof-only routing only | No |
+| Routing validation, optional after core claims | No | No | No | No | Spoof-only routing only | No |
 | Target | No | No | No | No | No | Evaluation only |
 
 Checkpoint/preprocessing and fusion selection use designated source-only validation
 inside the allowed training remainder; they never use a gate holdout, OOF samples for
 that fold, or target data. All system controls use the same reduced source lineage.
 
+Within each allowed fitting remainder, derive a deterministic subject-disjoint inner
+validation split from the source-train pool. Select the small DINO head checkpoint by
+lowest equal-domain, class-balanced validation BCE, with earlier epoch as tie-break.
+Do not use branch-calibration, gate-calibration, routing, OOF evaluation, or target
+partitions for early stopping. Serialize the inner split for every outer/inner fold.
+
 Stratify $G_{domain}$ by source domain, class, and attack family where possible. Publish
 $N_G$, attack count, prediction-error count, and false-accept count. If these counts
 cannot support the desired gate operating point, label it unstable rather than
 reporting a precise selective threshold.
 
-Use $G_{domain}$ only for the primary post-VLM accept/abstain threshold. Select the
-spoof-only routing threshold on a separate branch-validation partition using a fully
-preregistered rule. No holdout is reused to compare alternative threshold policies.
+Use $G_{domain}$ only for the primary post-VLM accept/abstain threshold. If the core
+claims pass and routing proceeds, select its threshold on a separate source validation
+partition using a fully preregistered rule. No holdout is reused to compare threshold
+policies.
 
 | Dataset role | Checkpoint/config selection | Threshold/calibration | Confirmatory macro |
 |---|---|---|---:|
-| Source domains | Source-only rules | Yes, assigned partitions only | N/A |
-| Preregistered pilot target | Within committed candidate set | No final threshold fitting | No |
-| Three confirmatory targets | Never | Never | Yes |
+| Three source domains for fold $T$ | Nested source-domain OOF only | Assigned source partitions only | N/A |
+| Complete target domain $T$ | Never | Never | Yes |
 
-Before pilot labels, commit candidate models, allowed preprocessing, pilot identity,
-and analysis code. After pilot but before confirmatory labels, commit the selected
-checkpoint, exact prompts/preprocessing, continuation thresholds, primary operating
-point and metrics, and confirmatory target list. The commit SHA is the preregistration
-reference.
-
-The pilot is excluded as a confirmatory target but remains an allowed labeled source
-domain when another dataset is the confirmatory MICO target. This is standard MICO
-training, not leakage into that confirmatory target.
+Before any target evaluation, commit candidate models, allowed preprocessing, exact
+prompts, source-only selection algorithm, continuation thresholds, primary operating
+point, metrics, and analysis code. The commit SHA is the preregistration reference.
+Each fold may select a different committed candidate because the available source set
+differs, but the selection algorithm and candidate set are identical and target-blind.
 
 ### MICO cross-domain
 

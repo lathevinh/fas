@@ -13,16 +13,16 @@ Build a single-frame RGB PAD model that is:
 
 Working title:
 
-> Source-Only Calibrated Cross-Foundation Disagreement for Selective Single-Image Face PAD
+> Source-Only Cross-Foundation Failure-Risk Calibration for Selective Single-Image Face PAD
 
-This title is conditional. If explicit disagreement adds no capacity-matched gain,
-use `Cross-Foundation Selective Failure Prediction`; if heterogeneous rescue does not
-beat same-family diversity, reframe as a selective-ensemble PAD study.
+Use `Disagreement` in the title only if explicit disagreement adds capacity-matched
+gain. If heterogeneous rescue does not beat same-family diversity, reframe as a
+selective-ensemble PAD study rather than making a cross-foundation novelty claim.
 
 The contribution must be the tested source-only reliability mechanism on held-out
-official confirmatory evaluation partitions, not the choice of two pretrained
-backbones or disagreement by itself. One committed pilot domain may influence global
-candidate selection but is excluded from confirmatory claims:
+domains, not the choice of two pretrained backbones or disagreement by itself. No
+labeled MICO target may influence candidate, checkpoint, threshold, or feature
+selection for its fold:
 
 1. intentionally independent DINOv2-Reg and VLM predictors;
 2. source-only cross-fitted failure-risk calibration from heterogeneous predictors;
@@ -57,14 +57,28 @@ The approach is worth a model-centric paper only if it:
 
 An improvement on one in-domain split is insufficient.
 
+## Feasibility verdict
+
+The minimum study is feasible on one RTX 4080 16 GB because both foundation backbones
+remain frozen and are run sequentially; image features are cached once per frozen
+candidate, while only small PAD heads, affine calibrators, and logistic risk models are
+fitted. The expected heavy work is dataset preparation and repeated split-safe
+evaluation, not simultaneous GPU memory. The primary scope excludes full fine-tuning,
+large generative MLLMs, learned cue ontologies, and counterfactual generation.
+
+The main feasibility blocker is dataset access and independent subject/video counts.
+If official source partitions cannot support disjoint head validation, branch
+calibration, and gate calibration, simplify the operational threshold experiment
+before target evaluation; do not silently reuse a partition.
+
 ## Constraints
 
 - Input at inference is exactly one RGB image.
 - Video datasets may supply independent frames, but no temporal feature is used.
-- Official confirmatory evaluation labels cannot select checkpoints, prompts,
-    thresholds, or hyperparameters. Their train/dev partitions may be source data in
-    the global pilot fold; therefore this is test-partition-unseen, not strict
-    outer-domain-unseen selection. The pilot is excluded from confirmatory inference.
+- For target $T$, every selection decision uses only the other three MICO source
+    domains through nested source-domain OOF. The complete target domain is strict
+    outer-domain-unseen until final evaluation. Pipeline debugging uses synthetic data
+    or source-only folds, never a labeled MICO pilot target.
 - Dataset licenses and biometric-data restrictions take precedence over convenience.
 - Q3 publication is a target, not a guarantee; venue quartiles change by year/category.
 

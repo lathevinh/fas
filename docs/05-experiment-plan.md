@@ -15,26 +15,26 @@ Tasks:
   `configs/vlm_checkpoint_v1.yaml` artifacts before confirmatory evaluation. Record
   exact strings, classes, weights, text preprocessing, checkpoint/weights, tokenizer,
   resolution, interpolation, and normalization.
-- freeze core prompts before pilot labels. Among committed checkpoint/preprocessing
-  candidates under the pre-label latency ceiling, choose the one with lowest pilot
-  ACER for calibrated-average fusion at the source-selected operating threshold.
-  Candidates within 0.1 percentage point tie by lower median batch-1 latency, then
-  lexical configuration ID. Do not choose among metrics after pilot inspection.
+- freeze core prompts and the finite checkpoint/preprocessing candidate set before
+  MICO evaluation. For each target fold, choose the candidate with lowest nested
+  source-domain-OOF macro ACER for calibrated-average fusion at candidate-specific
+  source thresholds. Candidates within 0.1 percentage point tie by lower median
+  batch-1 latency, then lexical configuration ID.
 
 Exit criteria:
 
 - no subject/video leakage;
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
-- core prompts are frozen before pilot labels; the selected checkpoint/preprocessing
-  artifact is frozen after pilot selection and before confirmatory MICO targets.
-- `python scripts/validate_preregistration.py --stage data` passes before the Stage-0
-  freeze record is written; `--stage pre-pilot` then permits pilot inspection.
+- core prompts, candidates, and the target-blind source-only selection algorithm are
+  frozen before all four confirmatory MICO targets.
+- before implementation, both reviewers explicitly accept the feasibility, novelty
+  boundary, strict source-only selection, primary method, and kill criteria.
 
-Readiness is staged rather than circular: schema-valid permits implementation and
-data audit; data-ready permits source-only model fitting and anchor generation;
-pre-pilot-ready permits pilot selection; source pseudo-shifts then freeze numerical
-claim/validity gates; confirmatory-ready permits official target evaluation.
+The executable readiness scaffold is provisional and is not the normative research
+plan. No further implementation work proceeds until this strict source-only
+methodology is accepted. Synthetic fixtures may debug accounting without opening any
+target labels.
 
 ## Stage 1: Complementarity kill experiment, weeks 3-5
 
@@ -46,6 +46,11 @@ Train under identical sampling:
 3. raw score average as a diagnostic;
 4. calibrated score average as the principal simple-fusion baseline;
 5. regularized learned score fusion using calibrated source scores.
+
+For every fitted DINO head, select the checkpoint by lowest equal-domain,
+class-balanced BCE on a deterministic subject-disjoint inner split of the allowed
+source-train pool; ties use the earlier epoch. Branch/gate/routing calibration and OOF
+evaluation records cannot perform early stopping.
 
 Add two diagnostic controls without changing the proposed architecture:
 
@@ -66,25 +71,20 @@ The DINOv2-Reg + plain-DINOv2 strong control and heterogeneous pair use identica
 one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
-Cache each branch independently so they never need to share GPU memory. Version 1
-freezes MSU-MFSD as the pilot/development target and OULU-NPU, CASIA-FASD, and
-Replay-Attack as confirmatory targets. The pilot is
-not confirmatory evidence after inspection-driven changes. Freeze the Stage 1
-configuration before evaluating the remaining three confirmatory targets, then report
-the joint correctness table, double-fault, oracle gain, error correlation, and
-attack/domain subgroups separately for pilot and confirmatory results.
+Cache each frozen backbone's features independently so the branches never share GPU
+memory. All four MICO domains are confirmatory targets in turn. For target $T$, nested
+source-domain OOF on the other three domains selects the committed VLM candidate and
+all source-derived settings before $T$ is evaluated. Report the joint correctness
+table, double-fault, oracle gain, error correlation, and attack/domain subgroups for
+every fold and the four-target macro.
 
-Before opening any confirmatory MICO target labels, use domain-OOF source pseudo-shifts to lock
+Before opening each MICO target, use domain-OOF source pseudo-shifts to lock
 numeric continuation thresholds for recoverable error fraction
 $REF_{VLM}=P(V\text{ correct}\mid D\text{ wrong})$ and potential false-accept rescue
 $FARR_{VLM}=P(V\text{ blocks attack}\mid D\text{ false accepts})$. Also report
 realized $REF_g=P(g_{ref}\text{ correct}\mid D\text{ wrong})$ and
 $FARR_g=P(g_{ref}\text{ blocks attack}\mid D\text{ false accepts})$. Store the signed
 preregistration with the run configuration; target results cannot redefine it.
-
-Interpret `target labels` here as confirmatory-target labels after the pilot is
-preregistered. The pilot may select only within the previously committed candidate set
-and is permanently excluded from confirmatory statistics.
 
 Also preregister the heterogeneity advantage
 $\Delta_{hetero}=N_{FA}^{-1}\sum_i(r_i^V-r_i^H)$ on the same DINO false accepts,
@@ -123,8 +123,7 @@ Exit criteria:
   pass preregistered confidence-bound criteria;
 - **Level 2, retain cross-foundation claim:** paired $\Delta_{hetero}>0$ against the
   stronger DINOv2-Reg plus DINOv2 control;
-- no official target evaluation partition influenced model selection; global candidate
-  selection is explicitly test-partition-unseen rather than strict outer-domain-unseen.
+- the complete target domain did not influence model or configuration selection.
 
 Apply the claims hierarchically: Level 1 realized rescue, Level 2 heterogeneity,
 cross-foundation risk gain, then explicit-disagreement gain. A failed level blocks its
@@ -144,8 +143,8 @@ primary absolute-difference disagreement and its JS ablation.
 Then generate out-of-fold source records in two variants.
 
 For every VLM candidate, independently fit allowed source calibration and select its
-own source-only $\tau_j$ before computing pilot ACER. Reusing a threshold selected for
-another candidate is prohibited.
+own source-only $\tau_j$ before computing nested source-OOF ACER. Reusing a threshold
+selected for another candidate is prohibited.
 
 ### Sample-OOF ablation
 
@@ -240,6 +239,11 @@ Implement in this order:
 
 Do not add the next component unless the current comparison is understood.
 
+Conditional routing is an operational extension, not required to establish the core
+scientific claim. Implement it only after cross-foundation rescue and source-only risk
+calibration pass their kill criteria; this prevents routing infrastructure from
+consuming effort if the publishable signal is absent.
+
 Exit criteria:
 
 - classifier comparisons (DINO, VLM, calibrated average, learned fusion) and
@@ -261,10 +265,8 @@ Exit criteria:
 
 ## Stage 4: Full open-world evaluation, weeks 12-14
 
-- compute the primary confirmatory macro over the three held-out official MICO target
-  evaluation partitions;
-- report all four MICO folds descriptively with the pilot labeled development-only and
-  excluded from confirmatory inference;
+- compute the primary confirmatory macro over all four strict outer-domain-unseen MICO
+  targets;
 - run SiW-M leave-one-attack-out;
 - run external mask transfer when licensing permits;
 - stratify results by sensor, illumination, attack instrument, and image quality;
@@ -273,10 +275,10 @@ Exit criteria:
 For each target and seed, train and score independently; never pool seed predictions
 unless deploying an ensemble. Report mean/standard deviation of seed-level metrics and
 subject/video bootstrap within each seed, with no $t$-test at $n=3$ and no best-seed
-selection. A confirmatory delta passes only when its three-target macro mean is
-positive, at least two of three target point estimates are positive, no target exceeds
+selection. A confirmatory delta passes only when its four-target macro mean is
+positive, at least three of four target point estimates are positive, no target exceeds
 a preregistered harm tolerance, and at least two of three seeds have positive
-three-target macro deltas. Claims are limited to the evaluated confirmatory domains.
+four-target macro deltas. Claims are limited to the evaluated confirmatory domains.
 Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
 zero false-accept denominators, one-class risk labels, and $N_{FA}<N_{min}$ as
 inconclusive rather than fail. Recompute the stronger of $R_D/R_V$ inside every paired

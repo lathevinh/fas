@@ -12,6 +12,15 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 > revised method and experiment set that could still support a publishable claim.
 > Do not assume proposed results are observed results.
 
+## Current methodology-freeze instruction
+
+Implementation audit is paused. Review the normative plan in `docs/00` through
+`docs/06` and the latest response, not the provisional validator scaffold. The next
+review must decide whether the frozen minimum method is feasible and whether its
+conditional evidence package is sufficiently novel for a Q3 empirical-method paper.
+Do not request another code patch unless a conceptual decision depends on executable
+evidence that cannot be reasoned about from the protocol.
+
 ## Questions the reviewer should answer
 
 1. Is the novelty distinct from MVP-FAS, DINO-VPT, FLIP, FaceShield, and
@@ -25,6 +34,15 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 8. Are score fusion, capacity-matched fusion, and uncertainty baselines sufficient?
 9. Does the method detect shared failures where both branches confidently agree?
 10. Does conditional inference save compute at matched biometric security and coverage?
+11. Is per-target nested source-domain OOF candidate selection valid strict
+   outer-domain-unseen model selection for all four MICO folds?
+12. Does heterogeneous-vs-same-family attribution plus source-only cross-fitted
+   failure-risk transfer clear a plausible Q3 novelty bar given the closest work?
+13. Is the frozen-backbone, sequential cached-feature plan feasible on one RTX 4080
+   16 GB, and what is the smallest necessary simplification if not?
+14. Is any missing baseline or endpoint fatal to the five-condition claim hierarchy?
+15. If no conceptual blocker remains, explicitly state `METHODOLOGY ACCEPTED FOR
+   IMPLEMENTATION PLANNING`.
 
 ## Expected review format
 

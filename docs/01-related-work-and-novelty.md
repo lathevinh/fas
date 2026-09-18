@@ -58,6 +58,23 @@ independently trained heterogeneous foundation predictors, with separate operati
 validation under PAD domain shifts and attack-family shifts. Explicit disagreement belongs in the
 title/contribution only if its preregistered incremental test passes.
 
+## Publication positioning
+
+This is not claimed as a fundamentally new ensemble or uncertainty algorithm. Its
+defensible contribution is an empirical-method result: whether heterogeneous
+foundation predictors provide transferable, security-useful failure information in
+single-image PAD when every selector and calibrator is source-only. The same-family
+control, fixed-error risk comparisons, and strict outer-domain protocol distinguish
+that claim from merely averaging two pretrained models.
+
+A Q3 submission is plausible, not guaranteed, if the confirmatory evidence jointly
+shows: useful realized false-accept rescue; positive paired advantage over the
+DINOv2-Reg + plain-DINOv2 control; risk AUPR/AURC gains over conventional uncertainty
+and capacity-matched probability-only models; and a measured security-coverage-compute
+benefit. Without the first three, architecture-level novelty is insufficient and the
+paper must be reframed or stopped. A Q1/top-conference claim would likely require a
+stronger algorithmic contribution than this plan currently contains.
+
 ## Claims that require evidence
 
 | Candidate claim | Minimum supporting evidence |

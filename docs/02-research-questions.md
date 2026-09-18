@@ -41,11 +41,10 @@ cross-foundation predictions improve failure detection under domain and attack s
 and does explicit absolute-difference disagreement add value beyond the two branch
 probabilities?
 
-Domain-OOF and attack-OOF are separate protocols. Official confirmatory evaluation
-partitions never train, select, or calibrate any model, threshold, prompt, or risk gate.
-Under the global-development estimand, train/dev partitions from a future confirmatory
-domain may have acted as sources when selecting the candidate on the MSU-MFSD pilot;
-this is test-partition-unseen, not strict outer-domain-unseen selection.
+Domain-OOF and attack-OOF are separate protocols. For every MICO fold, the entire
+target domain is excluded from model, checkpoint, preprocessing, threshold, prompt,
+and risk-gate selection. Candidate selection is nested inside the other three source
+domains; all four MICO targets are confirmatory.
 
 **H2:** On the preregistered primary metric, prediction-error AUPR,
 cross-foundation probabilities plus fixed quality features outperform quality-only

@@ -1,4 +1,4 @@
-# Cross-Foundation Disagreement for Single RGB Image PAD
+# Cross-Foundation Failure-Risk Calibration for Single RGB Image PAD
 
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
@@ -8,9 +8,9 @@ Research dossier for a practical and publishable face presentation attack detect
 - source-only cross-fitted failure-risk calibration for failure detection, abstention,
   and conditional VLM inference; explicit disagreement remains a conditional claim.
 
-This repository contains the research dossier and the first executable
-preregistration checks. Pilot inspection remains blocked until strict data-readiness
-validation passes.
+This repository is currently freezing the research plan and methodology. Existing
+executable preregistration files are provisional scaffolding from review rounds
+11-12; implementation is paused until feasibility and Q3 novelty are agreed.
 
 ## Scope
 
@@ -64,9 +64,11 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 30. [Response to ChatGPT review round 11](docs/29-review-response-round11.md)
 31. [ChatGPT review round 12](docs/30-chatgpt-review-round12.md)
 32. [Response to ChatGPT review round 12](docs/31-review-response-round12.md)
-33. [Reading list](references/reading-list.md)
+33. [ChatGPT review round 13](docs/32-chatgpt-review-round13.md)
+34. [Response to ChatGPT review round 13](docs/33-review-response-round13.md)
+35. [Reading list](references/reading-list.md)
 
-## Readiness checks
+## Provisional readiness scaffold
 
 ```bash
 python -m unittest discover -s tests -v
@@ -76,14 +78,13 @@ python scripts/validate_preregistration.py --stage pre-pilot
 python scripts/validate_preregistration.py --stage confirmatory
 ```
 
-`schema` permits Stage-0 implementation. `data` requires reconciled private evidence
-and hashes. `pre-pilot` additionally requires attestation, exact model/environment pins,
-anchor registry, and a matching freeze record. Source-only experiments then derive the
-effect and validity thresholds required by `confirmatory`.
+These commands document prior scaffold behavior; they do not authorize implementation
+or target inspection. The normative method is the strict source-only design in the
+current charter, method, protocol, experiment plan, and Round-13 response.
 
 ## Current status
 
-- Status: schema-valid Stage-0 scaffold; dataset evidence and model pins pending
+- Status: methodology freeze candidate; implementation paused
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
