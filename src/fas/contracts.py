@@ -218,12 +218,24 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
     }
     required_fields = {
         "transaction_id",
+        "sample_id",
+        "dataset",
+        "subject_id",
+        "video_id",
+        "outer_target",
         "system",
-        "label",
+        "ground_truth",
         "detector_status",
-        "classifier_score",
+        "pad_score",
+        "pad_threshold",
+        "pad_decision",
         "risk_score",
+        "gate_threshold",
+        "gate_action",
         "final_k1_action",
+        "classifier_artifact_hash",
+        "risk_artifact_hash",
+        "policy_artifact_hash",
     }
     for row in rows:
         missing = required_fields - row.keys()
@@ -238,14 +250,53 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
         if transaction_id in by_system[system]:
             errors.append(f"duplicate {system} transaction {transaction_id}")
         by_system[system][transaction_id] = row
+        for field in ("sample_id", "dataset", "subject_id", "video_id"):
+            if not isinstance(row[field], str) or not row[field]:
+                errors.append(f"transaction {transaction_id} requires nonempty {field}")
+        if row["outer_target"] not in MCIO_DOMAINS:
+            errors.append(f"transaction {transaction_id} requires a frozen MCIO outer target")
+        if row["ground_truth"] not in {"attack", "bona_fide"}:
+            errors.append(f"transaction {transaction_id} has invalid ground truth")
+        for field in (
+            "classifier_artifact_hash",
+            "risk_artifact_hash",
+            "policy_artifact_hash",
+        ):
+            if not _sha256(row[field]):
+                errors.append(f"transaction {transaction_id} requires valid {field}")
         status = row["detector_status"]
         if status not in {"success", "failure"}:
             errors.append(f"invalid detector status for transaction {transaction_id}")
         if status == "failure":
-            if row["classifier_score"] is not None or row["risk_score"] is not None:
-                errors.append("detector failures require null scores")
+            nullable = (
+                "pad_score",
+                "pad_threshold",
+                "pad_decision",
+                "risk_score",
+                "gate_threshold",
+                "gate_action",
+            )
+            if any(row[field] is not None for field in nullable):
+                errors.append("detector failures require null scores and decisions")
             if row["final_k1_action"] != "non_accept":
                 errors.append("detector failures must be terminal non-accepts under K=1")
+        elif status == "success":
+            for field in ("pad_score", "pad_threshold", "risk_score", "gate_threshold"):
+                value = row[field]
+                if (
+                    not isinstance(value, (int, float))
+                    or isinstance(value, bool)
+                    or not math.isfinite(value)
+                ):
+                    errors.append(f"detector success requires finite {field}")
+            if row["pad_decision"] not in {"attack", "bona_fide"}:
+                errors.append("detector success requires a typed PAD decision")
+            if row["gate_action"] not in {"accept", "non_accept"}:
+                errors.append("detector success requires a typed gate action")
+            if row["final_k1_action"] not in {"accept", "non_accept"}:
+                errors.append("detector success requires a typed final K=1 action")
+            if row["pad_decision"] == "attack" and row["final_k1_action"] != "non_accept":
+                errors.append("PAD attack decisions must be terminal non-accepts under K=1")
 
     heterogeneous = by_system["heterogeneous"]
     same_family = by_system["same_family"]
@@ -257,9 +308,25 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
         right = same_family[transaction_id]
         if left["detector_status"] != right["detector_status"]:
             errors.append("RQ2 systems require a bit-identical detector-success mask")
-        if left["label"] != right["label"]:
-            errors.append("RQ2 systems require identical ground-truth labels")
+        identity_fields = (
+            "sample_id",
+            "dataset",
+            "subject_id",
+            "video_id",
+            "outer_target",
+            "ground_truth",
+        )
+        if any(left[field] != right[field] for field in identity_fields):
+            errors.append("RQ2 systems require bit-identical paired identity and ground truth")
     return errors
+
+
+def _sha256(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
 
 
 def validate_risk_view(rows: Sequence[Mapping[str, Any]]) -> list[str]:

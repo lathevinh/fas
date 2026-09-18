@@ -19,6 +19,7 @@ from fas.preregistration import (
     DATASET_COLUMNS,
     SPLIT_COLUMNS,
     artifact_hashes,
+    _validate_locked_authorization,
     validate,
     validate_stage,
 )
@@ -87,6 +88,13 @@ class PreregistrationTest(unittest.TestCase):
             self._write_synthetic_evidence(copy)
             self.assertEqual(validate_stage(copy, "data-audit"), [])
 
+    def test_data_stage_accepts_core_roles_without_optional_routing(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            for path in (copy / "manifests" / "private").glob("*_roles.csv"):
+                self.assertNotIn("routing_validation", path.read_text())
+            self.assertEqual(validate_stage(copy, "data-audit"), [])
+
     def test_data_stage_rejects_subject_role_overlap(self) -> None:
         with self._copy() as copy:
             self._write_synthetic_evidence(copy)
@@ -98,6 +106,78 @@ class PreregistrationTest(unittest.TestCase):
             self._update_hash(copy / "manifests" / "split_summary.csv", "OULU-NPU", "role_manifest_sha256", role_path)
             errors = validate_stage(copy, "data-audit")
             self.assertTrue(any("multiple roles" in error for error in errors))
+
+    def test_source_dry_run_reconciles_required_artifacts_and_policy(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            self._write_source_evidence(copy)
+            self.assertEqual(validate_stage(copy, "source-dry-run"), [])
+
+    def test_source_dry_run_rejects_fake_unknown_and_stale_hashes(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            evidence_path = self._write_source_evidence(copy)
+            evidence = json.loads(evidence_path.read_text())
+            competence_path = copy / "results" / "source-dry-run" / "competence.json"
+            competence_path.write_text('{"no_target_selection_input": false}', encoding="utf-8")
+            evidence["artifact_sha256"]["unknown"] = "a" * 64
+            evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+            errors = validate_stage(copy, "source-dry-run")
+            self.assertTrue(any("artifact set" in error for error in errors))
+            self.assertTrue(any("does not match" in error for error in errors))
+            self.assertTrue(any("target selection" in error for error in errors))
+
+    def test_source_dry_run_rejects_nonexistent_valid_looking_artifact(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            evidence_path = self._write_source_evidence(copy)
+            (copy / "results" / "source-dry-run" / "applicability.json").unlink()
+            errors = validate_stage(copy, "source-dry-run")
+            self.assertTrue(any("missing source-dry-run artifact" in error for error in errors))
+
+    def test_locked_authorization_is_tied_to_analysis_freeze(self) -> None:
+        with self._copy() as copy:
+            freeze_path = copy / "results" / "analysis-freeze" / "freeze_record.json"
+            freeze_path.parent.mkdir(parents=True, exist_ok=True)
+            freeze = {
+                "version": 2,
+                "created_from_commit": "a" * 40,
+                "artifact_sha256": artifact_hashes(copy),
+                "outer_targets": ["CASIA-FASD", "MSU-MFSD", "OULU-NPU", "Replay-Attack"],
+                "seeds": [20260917, 20260923, 20261001],
+            }
+            freeze_path.write_text(json.dumps(freeze), encoding="utf-8")
+            authorization_path = copy / "results" / "locked-evaluation" / "authorization.json"
+            authorization_path.parent.mkdir(parents=True, exist_ok=True)
+            authorization = {
+                "version": 1,
+                "state": "authorized",
+                "analysis_freeze_sha256": self._digest(freeze_path),
+                "created_from_commit": freeze["created_from_commit"],
+                "experiment_config_sha256": freeze["artifact_sha256"]["configs/experiment_core_v1.yaml"],
+                "claim_spec_sha256": freeze["artifact_sha256"]["configs/claims_v1.yaml"],
+                "outer_targets": freeze["outer_targets"],
+                "seeds": freeze["seeds"],
+            }
+            authorization_path.write_text(json.dumps(authorization), encoding="utf-8")
+            errors: list[str] = []
+            _validate_locked_authorization(copy, errors)
+            self.assertEqual(errors, [])
+
+            authorization["analysis_freeze_sha256"] = "f" * 64
+            authorization_path.write_text(json.dumps(authorization), encoding="utf-8")
+            errors = []
+            _validate_locked_authorization(copy, errors)
+            self.assertTrue(any("does not match" in error for error in errors))
+
+    def test_locked_authorization_rejects_empty_record(self) -> None:
+        with self._copy() as copy:
+            authorization_path = copy / "results" / "locked-evaluation" / "authorization.json"
+            authorization_path.parent.mkdir(parents=True, exist_ok=True)
+            authorization_path.write_text("{}", encoding="utf-8")
+            errors: list[str] = []
+            _validate_locked_authorization(copy, errors)
+            self.assertTrue(any("analysis-freeze record" in error or "authorization" in error for error in errors))
 
     @contextmanager
     def _copy(self) -> Iterator[Path]:
@@ -112,7 +192,7 @@ class PreregistrationTest(unittest.TestCase):
         dataset_rows = []
         split_rows = []
         for dataset in ("OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD", "SiW-M"):
-            roles = ["train", "branch_calibration", "routing_validation", "g_attack" if dataset == "SiW-M" else "g_domain"]
+            roles = ["train", "branch_calibration", "g_attack" if dataset == "SiW-M" else "g_domain"]
             metadata = []
             role_records = []
             for index, role in enumerate(roles):
@@ -126,7 +206,7 @@ class PreregistrationTest(unittest.TestCase):
             role_path = private / f"{slug}_roles.csv"
             self._write_csv(metadata_path, tuple(metadata[0]), metadata)
             self._write_csv(role_path, tuple(role_records[0]), role_records)
-            dataset_rows.append({"dataset": dataset, "audit_status": "complete", "subjects": "8", "bona_videos": "4", "attack_videos": "4", "attack_families": "1", "metadata_source": "synthetic_test", "manifest_sha256": self._digest(metadata_path)})
+            dataset_rows.append({"dataset": dataset, "audit_status": "complete", "subjects": "6", "bona_videos": "3", "attack_videos": "3", "attack_families": "1", "metadata_source": "synthetic_test", "manifest_sha256": self._digest(metadata_path)})
             role_values = {f"{role}_{suffix}": "" for role in ("train", "branch_calibration", "g_domain", "routing_validation", "g_attack") for suffix in ("subjects", "attack_videos")}
             for role in roles:
                 role_values[f"{role}_subjects"] = "2"
@@ -134,6 +214,33 @@ class PreregistrationTest(unittest.TestCase):
             split_rows.append({"dataset": dataset, "audit_status": "complete", **role_values, "role_manifest_sha256": self._digest(role_path)})
         self._write_csv(root / "manifests" / "dataset_summary.csv", DATASET_COLUMNS, dataset_rows)
         self._write_csv(root / "manifests" / "split_summary.csv", SPLIT_COLUMNS, split_rows)
+
+    def _write_source_evidence(self, root: Path) -> Path:
+        directory = root / "results" / "source-dry-run"
+        directory.mkdir(parents=True, exist_ok=True)
+        artifacts = {}
+        for name in ("competence.json", "applicability.json"):
+            path = directory / name
+            path.write_text(
+                json.dumps({"version": 1, "no_target_selection_input": True}),
+                encoding="utf-8",
+            )
+            artifacts[f"results/source-dry-run/{name}"] = self._digest(path)
+        policy_path = root / "configs" / "source_recipe_v2.yaml"
+        evidence_path = directory / "evidence.json"
+        evidence_path.write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "no_target_selection_input": True,
+                    "artifact_sha256": artifacts,
+                    "source_policy_path": "configs/source_recipe_v2.yaml",
+                    "source_policy_sha256": self._digest(policy_path),
+                }
+            ),
+            encoding="utf-8",
+        )
+        return evidence_path
 
     @staticmethod
     def _write_csv(path: Path, fields: tuple[str, ...], rows: list[dict[str, str]]) -> None:

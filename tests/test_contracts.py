@@ -89,24 +89,8 @@ class PairingAndLedgerContractTest(unittest.TestCase):
 
     def test_detector_failure_stays_in_ledger_with_null_scores(self) -> None:
         rows = [
-            {
-                "transaction_id": "t1",
-                "system": "heterogeneous",
-                "label": "attack",
-                "detector_status": "failure",
-                "classifier_score": None,
-                "risk_score": None,
-                "final_k1_action": "non_accept",
-            },
-            {
-                "transaction_id": "t1",
-                "system": "same_family",
-                "label": "attack",
-                "detector_status": "failure",
-                "classifier_score": None,
-                "risk_score": None,
-                "final_k1_action": "non_accept",
-            },
+            self._ledger_row("heterogeneous", detector_status="failure"),
+            self._ledger_row("same_family", detector_status="failure"),
         ]
         self.assertEqual(validate_transaction_ledger(rows), [])
 
@@ -127,28 +111,29 @@ class PairingAndLedgerContractTest(unittest.TestCase):
 
     def test_ledger_rejects_score_after_failure_and_mask_mismatch(self) -> None:
         rows = [
-            {
-                "transaction_id": "t1",
-                "system": "heterogeneous",
-                "label": "attack",
-                "detector_status": "failure",
-                "classifier_score": 0.2,
-                "risk_score": None,
-                "final_k1_action": "non_accept",
-            },
-            {
-                "transaction_id": "t1",
-                "system": "same_family",
-                "label": "attack",
-                "detector_status": "success",
-                "classifier_score": 0.2,
-                "risk_score": 0.3,
-                "final_k1_action": "accept",
-            },
+            {**self._ledger_row("heterogeneous", detector_status="failure"), "pad_score": 0.2},
+            self._ledger_row("same_family", detector_status="success"),
         ]
         errors = validate_transaction_ledger(rows)
         self.assertTrue(any("null scores" in error for error in errors))
         self.assertTrue(any("bit-identical" in error for error in errors))
+
+    def test_ledger_rejects_missing_cluster_and_lineage_fields(self) -> None:
+        left = self._ledger_row("heterogeneous")
+        right = self._ledger_row("same_family")
+        del left["subject_id"]
+        del right["policy_artifact_hash"]
+        errors = validate_transaction_ledger([left, right])
+        self.assertTrue(any("subject_id" in error for error in errors))
+        self.assertTrue(any("policy_artifact_hash" in error for error in errors))
+
+    def test_ledger_rejects_paired_cluster_or_fold_mismatch(self) -> None:
+        left = self._ledger_row("heterogeneous")
+        right = self._ledger_row("same_family")
+        right["video_id"] = "v2"
+        right["outer_target"] = "CASIA-FASD"
+        errors = validate_transaction_ledger([left, right])
+        self.assertTrue(any("paired identity" in error for error in errors))
 
     def test_risk_view_rejects_detector_failures(self) -> None:
         rows = [
@@ -167,6 +152,31 @@ class PairingAndLedgerContractTest(unittest.TestCase):
         self.assertTrue(competence_allows_claim("rq1_oof_transfer", competence))
         self.assertTrue(competence_allows_claim("rq2_complete_system", competence))
         self.assertFalse(competence_allows_claim("openclip_standalone", competence))
+
+    @staticmethod
+    def _ledger_row(system: str, detector_status: str = "success") -> dict[str, object]:
+        failed = detector_status == "failure"
+        return {
+            "transaction_id": "t1",
+            "sample_id": "OULU-NPU/r1/s1/v1/middle/10",
+            "dataset": "OULU-NPU",
+            "subject_id": "s1",
+            "video_id": "v1",
+            "outer_target": "OULU-NPU",
+            "system": system,
+            "ground_truth": "attack",
+            "detector_status": detector_status,
+            "pad_score": None if failed else 0.8,
+            "pad_threshold": None if failed else 0.5,
+            "pad_decision": None if failed else "bona_fide",
+            "risk_score": None if failed else 0.2,
+            "gate_threshold": None if failed else 0.4,
+            "gate_action": None if failed else "accept",
+            "final_k1_action": "non_accept" if failed else "accept",
+            "classifier_artifact_hash": "a" * 64,
+            "risk_artifact_hash": "b" * 64,
+            "policy_artifact_hash": "c" * 64,
+        }
 
 
 if __name__ == "__main__":

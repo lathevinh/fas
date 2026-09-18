@@ -108,6 +108,26 @@ class GovernanceContractTest(unittest.TestCase):
             self.assertTrue(any("solver contract" in error for error in errors))
             self.assertTrue(any("competence" in error for error in errors))
 
+    def test_schema_rejects_acer_checkpoint_selection(self) -> None:
+        with self._copy() as copy:
+            path = copy / "configs" / "source_recipe_v2.yaml"
+            recipe = json.loads(path.read_text())
+            recipe["branch_head"]["checkpoint_rule"] = (
+                "lowest_source_validation_domain_macro_acer_then_earlier_epoch"
+            )
+            path.write_text(json.dumps(recipe), encoding="utf-8")
+            errors = validate_stage(copy, "schema")
+            self.assertTrue(any("solver contract" in error for error in errors))
+
+    def test_schema_rejects_replacement_seed(self) -> None:
+        with self._copy() as copy:
+            path = copy / "configs" / "seeds_v1.yaml"
+            seeds = json.loads(path.read_text())
+            seeds["seeds"][-1] = 20261002
+            path.write_text(json.dumps(seeds), encoding="utf-8")
+            errors = validate_stage(copy, "schema")
+            self.assertTrue(any("frozen primary seeds" in error for error in errors))
+
     @contextmanager
     def _copy(self) -> Iterator[Path]:
         with tempfile.TemporaryDirectory() as temporary:

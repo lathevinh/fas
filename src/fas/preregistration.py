@@ -46,6 +46,11 @@ FAMILY_TERMS = {"print", "printed", "display", "displayed", "replay", "mask", "m
 METADATA_COLUMNS = ("dataset", "subject_id", "video_id", "binary_label", "attack_family", "official_split")
 ROLE_COLUMNS = ("dataset", "subject_id", "video_id", "binary_label", "role")
 ROLES = ("train", "branch_calibration", "g_domain", "routing_validation", "g_attack")
+SOURCE_DRY_RUN_ARTIFACTS = {
+    "results/source-dry-run/competence.json",
+    "results/source-dry-run/applicability.json",
+}
+SOURCE_POLICY_PATH = "configs/source_recipe_v2.yaml"
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -85,9 +90,7 @@ def validate_stage(root: Path, stage: str) -> list[str]:
     if STAGES.index(stage) >= STAGES.index("analysis-freeze"):
         _validate_analysis_freeze(root, errors)
     if stage == "locked-evaluation":
-        authorization = root / "results" / "locked-evaluation" / "authorization.json"
-        if not authorization.exists():
-            errors.append("locked-evaluation remains blocked until authorization exists")
+        _validate_locked_authorization(root, errors)
     return errors
 
 
@@ -123,8 +126,34 @@ def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
         for name, digest in recorded.items()
     ):
         errors.append("source-dry-run evidence requires named artifact SHA-256 values")
-    if not _sha256_string(evidence.get("source_policy_sha256", "")):
-        errors.append("source-dry-run evidence requires a source policy SHA-256")
+        recorded = {}
+    if set(recorded) != SOURCE_DRY_RUN_ARTIFACTS:
+        errors.append("source-dry-run evidence requires the exact frozen artifact set")
+    for relative_path in SOURCE_DRY_RUN_ARTIFACTS:
+        artifact_path = root / relative_path
+        if not artifact_path.exists():
+            errors.append(f"missing source-dry-run artifact: {relative_path}")
+            continue
+        expected_digest = recorded.get(relative_path)
+        actual_digest = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        if expected_digest != actual_digest:
+            errors.append(f"source-dry-run SHA-256 does not match artifact: {relative_path}")
+        try:
+            artifact = load_config(artifact_path)
+        except (ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"invalid source-dry-run artifact {relative_path}: {exc}")
+            continue
+        if artifact.get("version") != 1:
+            errors.append(f"source-dry-run artifact requires schema version 1: {relative_path}")
+        if artifact.get("no_target_selection_input") is not True:
+            errors.append(f"source-dry-run artifact must exclude target selection input: {relative_path}")
+    if evidence.get("source_policy_path") != SOURCE_POLICY_PATH:
+        errors.append(f"source-dry-run policy must reference {SOURCE_POLICY_PATH}")
+    policy_path = root / SOURCE_POLICY_PATH
+    if not policy_path.exists():
+        errors.append(f"missing frozen source policy: {SOURCE_POLICY_PATH}")
+    elif hashlib.sha256(policy_path.read_bytes()).hexdigest() != evidence.get("source_policy_sha256"):
+        errors.append("source policy SHA-256 does not match the frozen policy artifact")
 
 
 def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
@@ -171,6 +200,39 @@ def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
         return
     if record != expected:
         errors.append("analysis-freeze record does not match current frozen artifacts")
+
+
+def _validate_locked_authorization(root: Path, errors: list[str]) -> None:
+    authorization_path = root / "results" / "locked-evaluation" / "authorization.json"
+    freeze_path = root / "results" / "analysis-freeze" / "freeze_record.json"
+    if not authorization_path.exists():
+        errors.append("locked-evaluation remains blocked until typed authorization exists")
+        return
+    if not freeze_path.exists():
+        errors.append("locked-evaluation authorization requires an analysis-freeze record")
+        return
+    try:
+        authorization = load_config(authorization_path)
+        freeze = load_config(freeze_path)
+    except (ValueError, json.JSONDecodeError) as exc:
+        errors.append(f"invalid locked-evaluation authorization: {exc}")
+        return
+    artifacts = freeze.get("artifact_sha256")
+    if not isinstance(artifacts, dict):
+        errors.append("locked-evaluation authorization requires freeze artifact identities")
+        return
+    expected = {
+        "version": 1,
+        "state": "authorized",
+        "analysis_freeze_sha256": hashlib.sha256(freeze_path.read_bytes()).hexdigest(),
+        "created_from_commit": freeze.get("created_from_commit"),
+        "experiment_config_sha256": artifacts.get("configs/experiment_core_v1.yaml"),
+        "claim_spec_sha256": artifacts.get("configs/claims_v1.yaml"),
+        "outer_targets": freeze.get("outer_targets"),
+        "seeds": freeze.get("seeds"),
+    }
+    if authorization != expected:
+        errors.append("locked-evaluation authorization does not match the immutable analysis freeze")
 
 
 def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str]) -> None:
@@ -267,9 +329,17 @@ def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str
     seed_config = configs.get("seeds_v1.yaml", {})
     if forbidden & seed_config.keys():
         errors.append("seed config contains forbidden legacy selection field")
-    seeds = seed_config.get("seeds")
-    if not isinstance(seeds, list) or len(seeds) != 3 or len(seeds) != len(set(seeds)) or not all(isinstance(seed, int) for seed in seeds):
-        errors.append("exactly three unique integer primary seeds are required")
+    expected_seed_config = {
+        "version": 1,
+        "seeds": [20260917, 20260923, 20261001],
+        "replacement_policy": (
+            "Never replace a failed primary run silently; document the failure and "
+            "rerun the same seed after fixing infrastructure-only causes."
+        ),
+        "shared_across_primary_controls": True,
+    }
+    if seed_config != expected_seed_config:
+        errors.append("seed config must preserve the exact frozen primary seeds and policy")
 
     recipe = configs.get("source_recipe_v2.yaml", {})
     for section in ("representation", "branch_head", "branch_calibration", "risk_model"):
@@ -280,7 +350,7 @@ def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str
     expected_solver = {
         "branch_head": {
             "family": "linear_logistic",
-            "checkpoint_rule": "lowest_source_validation_domain_macro_acer_then_earlier_epoch",
+            "checkpoint_rule": "lowest_equal_domain_class_balanced_validation_bce_then_earlier_epoch",
         },
         "branch_calibration": {
             "family": "monotone_affine_logistic",
@@ -450,14 +520,16 @@ def _validate_split_rows(
     for dataset, row in rows.items():
         if row["audit_status"] != "complete":
             errors.append(f"split_summary.csv has unaudited dataset: {dataset}")
-        required_roles = {"train", "branch_calibration", "routing_validation"}
+        required_roles = {"train", "branch_calibration"}
         required_roles.add("g_attack" if dataset == "SiW-M" else "g_domain")
         for role in ROLES:
             for suffix in ("subjects", "attack_videos"):
                 column = f"{role}_{suffix}"
                 if role in required_roles and not _nonnegative_integer_string(row[column], positive=True):
                     errors.append(f"split_summary.csv {dataset} {column} must be a positive integer")
-                if role not in required_roles and row[column] not in ("", "0"):
+                if role == "routing_validation" and row[column] not in ("", "0") and not _nonnegative_integer_string(row[column], positive=True):
+                    errors.append(f"split_summary.csv {dataset} {column} must be empty or a positive integer")
+                if role not in required_roles | {"routing_validation"} and row[column] not in ("", "0"):
                     errors.append(f"split_summary.csv {dataset} {column} is not applicable")
         evidence = root / "manifests" / "private" / f"{_slug(dataset)}_roles.csv"
         if _validate_evidence_hash(evidence, row["role_manifest_sha256"], f"{dataset} roles", errors):

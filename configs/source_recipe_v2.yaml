@@ -6,7 +6,7 @@
   },
   "branch_head": {
     "family": "linear_logistic",
-    "checkpoint_rule": "lowest_source_validation_domain_macro_acer_then_earlier_epoch"
+    "checkpoint_rule": "lowest_equal_domain_class_balanced_validation_bce_then_earlier_epoch"
   },
   "branch_calibration": {
     "family": "monotone_affine_logistic",

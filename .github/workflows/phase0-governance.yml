@@ -1,0 +1,38 @@
+name: Phase 0 governance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run synthetic regression suite
+        run: python -m unittest discover -s tests -v
+      - name: Validate canonical schema
+        run: python scripts/validate_preregistration.py --stage schema
+      - name: Verify unavailable stages fail closed
+        run: |
+          for stage in data-audit source-dry-run analysis-freeze locked-evaluation; do
+            if python scripts/validate_preregistration.py --stage "$stage"; then
+              echo "Unexpected readiness: $stage" >&2
+              exit 1
+            fi
+          done
+      - name: Verify legacy stages are rejected
+        run: |
+          for stage in data pre-pilot confirmatory; do
+            if python scripts/validate_preregistration.py --stage "$stage"; then
+              echo "Unexpected legacy stage acceptance: $stage" >&2
+              exit 1
+            fi
+          done

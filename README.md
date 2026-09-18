@@ -95,7 +95,9 @@ single-branch confidence and a matched same-family ensemble?
 60. [Final research-plan acceptance](docs/59-chatgpt-review-doc58.md)
 61. [Response and final implementation freeze](docs/60-review-response-doc59-final-implementation-freeze.md)
 62. [Phase 0 governance migration and validation plan](docs/61-phase0-governance-migration-and-validation-plan.md)
-63. [Reading list](references/reading-list.md)
+63. [Phase 0 implementation rework review](docs/63-phase0-implementation-rework-review.md)
+64. [Response to Phase 0 implementation rework](docs/64-review-response-doc63-phase0-rework.md)
+65. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
