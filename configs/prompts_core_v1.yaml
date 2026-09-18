@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "frozen_before_pilot": true,
+  "frozen_before_target_evaluation": true,
   "aggregation": "mean_cosine",
   "classes": {
     "live": [

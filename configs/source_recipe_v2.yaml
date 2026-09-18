@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "representation": {
+    "dino_reg": "cls_plus_mean_patch",
+    "dino_plain": "cls_plus_mean_patch"
+  },
+  "branch_head": {
+    "family": "linear_logistic",
+    "checkpoint_rule": "lowest_source_validation_domain_macro_acer_then_earlier_epoch"
+  },
+  "branch_calibration": {
+    "family": "monotone_affine_logistic",
+    "slope_parameterization": "softplus_theta_plus_1e-6",
+    "objective": "class_balanced_within_domain_equal_domain_bce"
+  },
+  "risk_model": {
+    "family": "logistic_regression",
+    "regularization": "l2",
+    "inverse_regularization_strength": 1.0,
+    "objective": "natural_prevalence_within_domain_equal_domain_bce"
+  },
+  "oof_strategies": ["domain_oof", "matched_sample_oof"],
+  "risk_features": ["R_q", "R_D", "R_V", "R_DV", "R_DVd", "R_DVdm"],
+  "gate_partition": "G_domain",
+  "target_tuning_allowed": false
+}

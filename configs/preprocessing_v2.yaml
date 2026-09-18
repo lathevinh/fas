@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "frame_policy": {
     "primary": "middle_decodable_frame_in_official_interval",
     "detector_success_replacement": false,
@@ -14,20 +14,12 @@
     "interpolation": "bicubic",
     "detector_failure_action": "terminal_non_accept"
   },
+  "openclip": {
+    "resolution": 224,
+    "normalization": "checkpoint_native"
+  },
   "dino": {
-    "model": "dinov2_vitb14_reg4",
     "resolution": 518,
     "normalization": "official_dinov2"
-  },
-  "latency": {
-    "device": "NVIDIA_RTX_4080_16GB",
-    "batch_size": 1,
-    "precision": "fp16",
-    "warmup_runs": 50,
-    "timed_runs": 500,
-    "cuda_synchronize": true,
-    "include_preprocessing": true,
-    "statistic": "median",
-    "ceiling_ms": 100.0
   }
 }

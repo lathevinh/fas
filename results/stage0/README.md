@@ -1,17 +1,8 @@
-# Stage 0 Audit Outputs
+# Superseded Stage-0 Location
 
-This directory stores generated, non-sensitive audit outputs. Dataset counts are not
-known yet and must not be inferred from papers or guessed.
+This directory belongs to the retired pilot-oriented scaffold. It is not an active
+freeze location and cannot unlock any readiness stage.
 
-Before pilot inspection:
-
-1. populate `manifests/dataset_summary.csv` from official downloaded metadata;
-2. generate immutable subject/video role manifests per dataset;
-3. populate `manifests/split_summary.csv` from those manifests;
-4. record each role-manifest SHA-256;
-5. run `python scripts/validate_preregistration.py --stage data`;
-6. pin model bytes/environment and generate source anchor registry;
-7. run `python scripts/write_freeze_record.py`, commit it, and obtain owner attestation;
-8. run `python scripts/validate_preregistration.py --stage pre-pilot`.
-
-Until the final command prints `PRE-PILOT READY`, pilot labels must remain unopened.
+The final workflow uses source-only evidence under `results/source-dry-run/` and an
+immutable record under `results/analysis-freeze/`, as specified by Document 61. This
+notice may be removed after migration history no longer needs an in-tree pointer.

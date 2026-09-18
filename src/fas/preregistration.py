@@ -5,25 +5,32 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
-import math
 import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
+from .freeze import build_analysis_freeze_record
+
 CONFIG_FILES = (
+    "experiment_core_v1.yaml",
+    "claims_v1.yaml",
     "prompts_core_v1.yaml",
     "prompts_aux_v1.yaml",
-    "vlm_candidates_v1.yaml",
-    "pilot_selection_v1.yaml",
-    "preprocessing_v1.yaml",
+    "preprocessing_v2.yaml",
     "seeds_v1.yaml",
-    "evaluation_v1.yaml",
-    "source_recipe_v1.yaml",
+    "source_recipe_v2.yaml",
     "environment_v1.yaml",
 )
 MICO_DOMAINS = {"OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"}
 ALL_DATASETS = MICO_DOMAINS | {"SiW-M"}
-STAGES = ("schema", "data", "pre-pilot", "confirmatory")
+STAGES = (
+    "schema",
+    "data-audit",
+    "source-dry-run",
+    "analysis-freeze",
+    "locked-evaluation",
+)
 DATASET_COLUMNS = (
     "dataset", "audit_status", "subjects", "bona_videos", "attack_videos",
     "attack_families", "metadata_source", "manifest_sha256",
@@ -50,8 +57,8 @@ def load_config(path: Path) -> dict[str, Any]:
 
 
 def validate(root: Path, require_counts: bool = True) -> list[str]:
-    """Backward-compatible validation; strict mode means confirmatory readiness."""
-    return validate_stage(root, "confirmatory" if require_counts else "schema")
+    """Validate schema or the first evidence-backed data stage."""
+    return validate_stage(root, "data-audit" if require_counts else "schema")
 
 
 def validate_stage(root: Path, stage: str) -> list[str]:
@@ -71,26 +78,24 @@ def validate_stage(root: Path, stage: str) -> list[str]:
 
     _validate_config_schema(configs, errors)
 
-    if STAGES.index(stage) >= STAGES.index("data"):
+    if STAGES.index(stage) >= STAGES.index("data-audit"):
         _validate_data_evidence(root, errors)
-    if STAGES.index(stage) >= STAGES.index("pre-pilot"):
-        pilot = configs.get("pilot_selection_v1.yaml", {})
-        if pilot.get("pilot_label_access_status") != "attested_not_inspected":
-            errors.append("owner must attest that pilot labels were not inspected before freeze")
-        freeze_path = root / "results" / "stage0" / "freeze_record.json"
-        if not freeze_path.exists():
-            errors.append("missing immutable Stage-0 freeze record")
-        else:
-            _validate_freeze_record(root, freeze_path, errors)
-        _validate_model_pins(root, configs, errors)
-    if stage == "confirmatory":
-        _validate_confirmatory_thresholds(configs.get("evaluation_v1.yaml", {}), errors)
+    if STAGES.index(stage) >= STAGES.index("source-dry-run"):
+        _validate_source_dry_run(root, errors)
+    if STAGES.index(stage) >= STAGES.index("analysis-freeze"):
+        _validate_analysis_freeze(root, errors)
+    if stage == "locked-evaluation":
+        authorization = root / "results" / "locked-evaluation" / "authorization.json"
+        if not authorization.exists():
+            errors.append("locked-evaluation remains blocked until authorization exists")
     return errors
 
 
 def artifact_hashes(root: Path) -> dict[str, str]:
     paths = [root / "configs" / name for name in CONFIG_FILES]
     paths += [root / "manifests" / "dataset_summary.csv", root / "manifests" / "split_summary.csv"]
+    for directory in (root / "src" / "fas", root / "scripts"):
+        paths.extend(sorted(directory.rglob("*.py")))
     return {
         str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in paths
@@ -98,130 +103,284 @@ def artifact_hashes(root: Path) -> dict[str, str]:
     }
 
 
-def _validate_freeze_record(root: Path, path: Path, errors: list[str]) -> None:
+def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
+    path = root / "results" / "source-dry-run" / "evidence.json"
+    if not path.exists():
+        errors.append("missing source-dry-run evidence")
+        return
+    try:
+        evidence = load_config(path)
+    except (ValueError, json.JSONDecodeError) as exc:
+        errors.append(f"invalid source-dry-run evidence: {exc}")
+        return
+    if evidence.get("version") != 1:
+        errors.append("source-dry-run evidence requires schema version 1")
+    if evidence.get("no_target_selection_input") is not True:
+        errors.append("source-dry-run evidence must exclude target selection input")
+    recorded = evidence.get("artifact_sha256")
+    if not isinstance(recorded, dict) or not recorded or any(
+        not isinstance(name, str) or not name or not _sha256_string(digest)
+        for name, digest in recorded.items()
+    ):
+        errors.append("source-dry-run evidence requires named artifact SHA-256 values")
+    if not _sha256_string(evidence.get("source_policy_sha256", "")):
+        errors.append("source-dry-run evidence requires a source policy SHA-256")
+
+
+def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
+    path = root / "results" / "analysis-freeze" / "freeze_record.json"
+    if not path.exists():
+        errors.append("missing immutable analysis-freeze record")
+        return
+    evidence_path = root / "results" / "source-dry-run" / "evidence.json"
+    if not evidence_path.exists():
+        errors.append("analysis freeze requires source-dry-run evidence")
+        return
     try:
         record = load_config(path)
-    except (ValueError, json.JSONDecodeError) as exc:
-        errors.append(f"invalid freeze record: {exc}")
+        evidence = load_config(evidence_path)
+        experiment = load_config(root / "configs" / "experiment_core_v1.yaml")
+        seed_config = load_config(root / "configs" / "seeds_v1.yaml")
+        commit = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=root, text=True, stderr=subprocess.DEVNULL
+        ).strip()
+        status = subprocess.check_output(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=root,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).splitlines()
+        allowed_untracked = "?? results/analysis-freeze/freeze_record.json"
+        if any(line != allowed_untracked for line in status):
+            errors.append("analysis freeze requires a clean worktree")
+        if evidence.get("no_target_selection_input") is not True:
+            errors.append("analysis freeze requires source evidence excluding target selection input")
+            return
+        expected = build_analysis_freeze_record(
+            created_at_utc=record.get("created_at_utc", ""),
+            created_from_commit=commit,
+            artifact_sha256=artifact_hashes(root),
+            source_evidence_sha256=hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
+            source_policy_sha256=evidence.get("source_policy_sha256", ""),
+            outer_targets=experiment.get("outer_domains", []),
+            seeds=seed_config.get("seeds", []),
+            no_target_selection_input=evidence.get("no_target_selection_input", False),
+        )
+    except (ValueError, json.JSONDecodeError, subprocess.CalledProcessError) as exc:
+        errors.append(f"invalid analysis-freeze record: {exc}")
         return
-    recorded = record.get("artifact_sha256")
-    if not isinstance(recorded, dict) or recorded != artifact_hashes(root):
-        errors.append("freeze record hashes do not match current artifacts")
-    if not isinstance(record.get("created_from_commit"), str) or len(record["created_from_commit"]) != 40:
-        errors.append("freeze record requires a 40-character source commit")
-
-
-def _validate_model_pins(root: Path, configs: dict[str, dict[str, Any]], errors: list[str]) -> None:
-    environment = configs.get("environment_v1.yaml", {})
-    packages = environment.get("packages", {})
-    lockfile = environment.get("lockfile")
-    if environment.get("status") != "locked" or not isinstance(packages, dict) or not packages or any(not value for value in packages.values()):
-        errors.append("model environment must have exact package pins before pilot")
-    if not isinstance(lockfile, str) or not lockfile or not _sha256_string(environment.get("lockfile_sha256", "")):
-        errors.append("model environment lockfile and SHA-256 are required before pilot")
-    elif not (root / lockfile).exists() or hashlib.sha256((root / lockfile).read_bytes()).hexdigest() != environment["lockfile_sha256"]:
-        errors.append("model environment lockfile hash does not match")
-
-    candidates = configs.get("vlm_candidates_v1.yaml", {}).get("candidates", [])
-    if any(not candidate.get("library_revision") or not _sha256_string(candidate.get("weight_sha256", "")) for candidate in candidates if isinstance(candidate, dict)):
-        errors.append("every VLM candidate requires a library revision and weight SHA-256 before pilot")
-    detector_hash = configs.get("preprocessing_v1.yaml", {}).get("face", {}).get("detector_weight_sha256")
-    if not _sha256_string(detector_hash or ""):
-        errors.append("detector weight SHA-256 is required before pilot")
-    if not (root / "results" / "stage0" / "anchor_registry.json").exists():
-        errors.append("source-trained DINO anchor registry is required before pilot")
+    if record != expected:
+        errors.append("analysis-freeze record does not match current frozen artifacts")
 
 
 def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str]) -> None:
+    experiment = configs.get("experiment_core_v1.yaml", {})
+    forbidden = {
+        "pilot_domain",
+        "confirmatory_domains",
+        "pilot_label_access_status",
+        "claim_sequence",
+        "selection_seed",
+    }
+    present_forbidden = sorted(forbidden & experiment.keys())
+    if present_forbidden:
+        errors.append(
+            "experiment config contains forbidden legacy field(s): "
+            + ", ".join(present_forbidden)
+        )
+    if experiment.get("version") != 1 or not experiment.get("study_id"):
+        errors.append("canonical experiment requires version 1 and a study ID")
+    domains = experiment.get("outer_domains")
+    if not isinstance(domains, list) or set(domains) != MICO_DOMAINS or len(domains) != 4:
+        errors.append("canonical experiment must contain each MCIO outer domain exactly once")
+    expected_references = {
+        "claim_spec": "claims_v1.yaml",
+        "seed_spec": "seeds_v1.yaml",
+        "preprocessing_spec": "preprocessing_v2.yaml",
+        "source_recipe": "source_recipe_v2.yaml",
+    }
+    for field, expected in expected_references.items():
+        if experiment.get(field) != expected:
+            errors.append(f"canonical experiment {field} must reference {expected}")
+
+    models = experiment.get("models", {})
+    if not isinstance(models, dict) or set(models) != {"dino_reg", "dino_plain", "openclip"}:
+        errors.append("canonical experiment requires exactly three frozen model recipes")
+        models = {}
+    dino_reg = models.get("dino_reg", {})
+    dino_plain = models.get("dino_plain", {})
+    openclip = models.get("openclip", {})
+    if dino_reg.get("model") != "dinov2_vitb14_reg4" or dino_reg.get("state") != "frozen":
+        errors.append("DINOv2-Reg must be frozen dinov2_vitb14_reg4")
+    if dino_plain.get("model") != "dinov2_vitb14" or dino_plain.get("state") != "frozen":
+        errors.append("same-family control must use frozen plain dinov2_vitb14")
+    if any(model.get("pooling") != "cls_plus_mean_patch" for model in (dino_reg, dino_plain)):
+        errors.append("both DINO branches require fixed CLS plus mean-patch pooling")
+    expected_openclip = {
+        "model": "ViT-B-16",
+        "pretrained": "laion2b_s34b_b88k",
+        "state": "frozen",
+        "resolution": 224,
+        "preprocessing": "checkpoint_native",
+        "crop_scale": 1.30,
+        "prompts": "prompts_core_v1.yaml",
+    }
+    if any(openclip.get(key) != value for key, value in expected_openclip.items()):
+        errors.append("OpenCLIP must use the frozen ViT-B-16 LAION2B native-224 recipe")
+
+    systems = experiment.get("systems", {})
+    expected_systems = {
+        "heterogeneous": ["dino_reg", "openclip"],
+        "same_family": ["dino_reg", "dino_plain"],
+    }
+    for system_id, branches in expected_systems.items():
+        system = systems.get(system_id, {}) if isinstance(systems, dict) else {}
+        if system.get("branches") != branches or system.get("fusion") != "calibrated_equal_average":
+            errors.append(f"{system_id} system recipe does not match the frozen contract")
+
     core = configs.get("prompts_core_v1.yaml", {})
     classes = core.get("classes")
     if not isinstance(classes, dict) or not _string_list(classes.get("live")) or not _string_list(classes.get("spoof")):
         errors.append("core prompts require nonempty live and spoof string lists")
     elif any(re.search(rf"\b{term}\b", prompt.lower()) for prompt in classes["spoof"] for term in FAMILY_TERMS):
         errors.append("core spoof prompts must not name held-out attack families")
+    if core.get("frozen_before_target_evaluation") is not True:
+        errors.append("core prompts must freeze before target evaluation")
 
     auxiliary = configs.get("prompts_aux_v1.yaml", {})
     if auxiliary.get("affects_core_probability") is not False or not isinstance(auxiliary.get("concepts"), dict):
         errors.append("auxiliary prompts must define concepts and never affect core probability")
 
-    candidate_config = configs.get("vlm_candidates_v1.yaml", {})
-    candidates = candidate_config.get("candidates")
-    required_candidate = {"id", "library", "library_revision", "model", "pretrained", "weight_sha256", "resolution", "crop_mode", "normalization", "tokenizer", "precision", "backend"}
-    if candidate_config.get("immutable_ids") is not True or not isinstance(candidates, list) or len(candidates) < 2:
-        errors.append("VLM candidates require immutable IDs and at least two entries")
-    else:
-        ids = []
-        for candidate in candidates:
-            if not isinstance(candidate, dict) or not required_candidate <= candidate.keys():
-                errors.append("every VLM candidate must contain the complete typed recipe")
-                continue
-            ids.append(candidate["id"])
-            if not isinstance(candidate["id"], str) or not candidate["id"] or not _positive_int(candidate["resolution"]):
-                errors.append("candidate ID must be nonempty and resolution a positive integer")
-        if len(ids) != len(set(ids)):
-            errors.append("VLM candidate IDs must be unique")
-
-    pilot = configs.get("pilot_selection_v1.yaml", {})
-    confirmatory = pilot.get("confirmatory_domains")
-    if not isinstance(confirmatory, list):
-        errors.append("confirmatory domains must be a list")
-    else:
-        domains = {pilot.get("pilot_domain"), *confirmatory}
-        if domains != MICO_DOMAINS or len(confirmatory) != 3:
-            errors.append("pilot and three confirmatory domains must partition MICO")
-    if not _positive_number(pilot.get("latency_ceiling_ms")) or pilot.get("optimization") != "minimize":
-        errors.append("pilot selection requires a positive latency ceiling and minimize objective")
-    selection_dino = pilot.get("selection_dino")
-    if not isinstance(selection_dino, dict) or not isinstance(selection_dino.get("seed"), int) or not selection_dino.get("model"):
-        errors.append("pilot selection requires a fixed DINO model and integer seed")
-
-    preprocessing = configs.get("preprocessing_v1.yaml", {})
-    for section in ("frame_policy", "face", "dino", "latency"):
+    preprocessing = configs.get("preprocessing_v2.yaml", {})
+    for section in ("frame_policy", "face", "dino", "openclip"):
         if not isinstance(preprocessing.get(section), dict) or not preprocessing[section]:
             errors.append(f"preprocessing requires nonempty {section} section")
-    latency = preprocessing.get("latency", {})
-    for key in ("batch_size", "warmup_runs", "timed_runs"):
-        if not _positive_int(latency.get(key)):
-            errors.append(f"latency {key} must be a positive integer")
-    if not _positive_number(latency.get("ceiling_ms")):
-        errors.append("latency ceiling_ms must be positive")
+    frame_policy = preprocessing.get("frame_policy", {})
+    if frame_policy.get("primary") != "middle_decodable_frame_in_official_interval" or frame_policy.get("detector_success_replacement") is not False:
+        errors.append("primary frame selection must be deterministic and precede detection")
+    face = preprocessing.get("face", {})
+    if face.get("context_scale") != 1.30 or face.get("detector_failure_action") != "terminal_non_accept":
+        errors.append("face preprocessing must preserve the fixed crop and detector-failure action")
+    if preprocessing.get("openclip") != {"resolution": 224, "normalization": "checkpoint_native"}:
+        errors.append("OpenCLIP preprocessing must remain checkpoint-native at 224")
 
-    seeds = configs.get("seeds_v1.yaml", {}).get("seeds")
+    seed_config = configs.get("seeds_v1.yaml", {})
+    if forbidden & seed_config.keys():
+        errors.append("seed config contains forbidden legacy selection field")
+    seeds = seed_config.get("seeds")
     if not isinstance(seeds, list) or len(seeds) != 3 or len(seeds) != len(set(seeds)) or not all(isinstance(seed, int) for seed in seeds):
         errors.append("exactly three unique integer primary seeds are required")
 
-    evaluation = configs.get("evaluation_v1.yaml", {})
-    if evaluation.get("risk_population") != "face_detector_success_only" or evaluation.get("end_to_end_population") != "all_original_transactions":
-        errors.append("evaluation populations must distinguish risk from end-to-end transactions")
-    bootstrap = evaluation.get("bootstrap_unit")
-    if not isinstance(bootstrap, dict) or set(bootstrap) != ALL_DATASETS or not all(value in {"subject", "video"} for value in bootstrap.values()):
-        errors.append("bootstrap units must cover every dataset with subject or video")
-    if not isinstance(evaluation.get("minimum_effects"), dict) or not isinstance(evaluation.get("oof_to_final_validity"), dict):
-        errors.append("evaluation requires effect and OOF-validity specifications")
-    if evaluation.get("confirmatory_firewall") != "official_target_evaluation_partitions_unseen":
-        errors.append("evaluation must declare the test-partition-unseen firewall")
-    inference = evaluation.get("confirmatory_inference", {})
-    if not _positive_int(inference.get("bootstrap_repetitions")) or not _unit_interval(inference.get("confidence_level"), strict=True):
-        errors.append("confirmatory inference requires bootstrap repetitions and confidence level")
-    if inference.get("below_n_min") != "inconclusive_not_fail" or inference.get("target_threshold_switching") is not False:
-        errors.append("confirmatory inference must freeze inconclusive and threshold-switching rules")
-    security = evaluation.get("security_operating_point", {})
-    if not _unit_interval(security.get("primary_alpha"), strict=True) or security.get("interpretation") != "nominal_empirical_constraint":
-        errors.append("primary security point must be a nominal empirical alpha")
-
-    recipe = configs.get("source_recipe_v1.yaml", {})
-    for section in ("anchor", "branch_calibration", "risk_model", "source_threshold"):
+    recipe = configs.get("source_recipe_v2.yaml", {})
+    for section in ("representation", "branch_head", "branch_calibration", "risk_model"):
         if not isinstance(recipe.get(section), dict) or not recipe[section]:
             errors.append(f"source recipe requires nonempty {section} section")
-    threshold = recipe.get("source_threshold", {})
-    if not _unit_interval(threshold.get("primary_alpha"), strict=True):
-        errors.append("primary source alpha must be strictly between zero and one")
-    if threshold.get("selection_rule") != "largest threshold satisfying empirical APCER <= alpha in every source domain":
-        errors.append("source threshold rule must match spoof-score polarity")
+    if recipe.get("representation") != {"dino_reg": "cls_plus_mean_patch", "dino_plain": "cls_plus_mean_patch"}:
+        errors.append("source recipe requires fixed CLS plus mean-patch representations")
+    expected_solver = {
+        "branch_head": {
+            "family": "linear_logistic",
+            "checkpoint_rule": "lowest_source_validation_domain_macro_acer_then_earlier_epoch",
+        },
+        "branch_calibration": {
+            "family": "monotone_affine_logistic",
+            "slope_parameterization": "softplus_theta_plus_1e-6",
+            "objective": "class_balanced_within_domain_equal_domain_bce",
+        },
+        "risk_model": {
+            "family": "logistic_regression",
+            "regularization": "l2",
+            "inverse_regularization_strength": 1.0,
+            "objective": "natural_prevalence_within_domain_equal_domain_bce",
+        },
+        "risk_features": ["R_q", "R_D", "R_V", "R_DV", "R_DVd", "R_DVdm"],
+        "gate_partition": "G_domain",
+    }
+    if any(recipe.get(key) != value for key, value in expected_solver.items()):
+        errors.append("source recipe does not match the frozen solver contract")
+    if recipe.get("oof_strategies") != ["domain_oof", "matched_sample_oof"]:
+        errors.append("source recipe requires matched domain and sample OOF strategies")
+    if recipe.get("target_tuning_allowed") is not False:
+        errors.append("source recipe must forbid target tuning")
+
+    _validate_claims(configs.get("claims_v1.yaml", {}), errors)
 
     environment = configs.get("environment_v1.yaml", {})
     if not environment.get("python_requires") or not isinstance(environment.get("packages"), dict):
         errors.append("environment config requires Python range and package map")
+
+
+def _validate_claims(config: dict[str, Any], errors: list[str]) -> None:
+    claims = config.get("claims")
+    required = {
+        "rq1_oof_transfer",
+        "rq1_operational_utility",
+        "rq2_complete_system",
+        "classifier_benefit",
+        "cross_foundation_attribution",
+        "explicit_disagreement",
+        "quality_attribution",
+        "optional_routing",
+    }
+    if config.get("version") != 1 or not isinstance(claims, dict) or set(claims) != required:
+        errors.append("claim spec must define exactly the frozen typed claim set")
+        return
+    rq1 = claims["rq1_oof_transfer"]
+    expected_rq1 = {
+        "endpoint": "non_interpolated_prediction_error_ap",
+        "population": "detector_success",
+        "contrast": "domain_oof_minus_matched_sample_oof",
+        "fixed_error_set": "heterogeneous_e_DV",
+        "seed_aggregation": "equal_mean_all_three_estimable",
+        "target_aggregation": "equal_mean_all_four",
+        "n_error_min": 20,
+        "minimum_eligible_targets": 3,
+    }
+    if any(rq1.get(key) != value for key, value in expected_rq1.items()):
+        errors.append("RQ1 claim does not match the frozen fixed-error AP contract")
+    if rq1.get("bootstrap_repetitions") != 2000 or rq1.get("confidence_level") != 0.95:
+        errors.append("RQ1 requires the frozen paired cluster bootstrap")
+    rq2 = claims["rq2_complete_system"]
+    expected_rq2 = {
+        "endpoint": "class_balanced_raw_aurc",
+        "population": "common_detector_success_mask",
+        "contrast": "U_same_minus_U_heterogeneous",
+        "class_aggregation": "equal_attack_bona_fide_mean",
+        "delta_min": 0.01,
+        "minimum_positive_targets": 3,
+        "minimum_positive_seed_macros": 2,
+        "target_selective_harm_max": 0.02,
+        "fa_end2end_macro_harm_max": 0.01,
+        "fa_end2end_target_harm_max": 0.02,
+        "bfnr_end2end_macro_harm_max": 0.01,
+        "bfnr_end2end_target_harm_max": 0.02,
+        "coverage_role": "required_explanatory_not_decision_predicate",
+    }
+    if any(rq2.get(key) != value for key, value in expected_rq2.items()):
+        errors.append("RQ2 claim does not match the frozen complete-system contract")
+    if claims["rq1_operational_utility"].get("role") != "secondary_not_rq1_conjunct":
+        errors.append("RQ1 operational utility must remain a separate consequence")
+    routing = claims["optional_routing"]
+    if routing.get("enabled") is not False or routing.get("core_readiness_dependency") is not False:
+        errors.append("optional routing cannot be a core readiness dependency")
+    competence = config.get("competence", {})
+    complete = competence.get("complete_system", {})
+    expected_complete = {
+        "macro_auroc_min": 0.55,
+        "macro_balanced_accuracy_min": 0.55,
+        "macro_auroc_lcb_min_exclusive": 0.50,
+        "score_range_min_exclusive": 0.000001,
+        "both_classes_required": True,
+        "finite_calibration_required": True,
+    }
+    if complete != expected_complete:
+        errors.append("complete-system competence does not match the frozen contract")
+    if competence.get("heterogeneous_risk_fit") != {"minimum_errors": 20, "minimum_correct": 20}:
+        errors.append("heterogeneous risk-fit competence requires 20 errors and 20 correct")
+    if competence.get("dino_anchor") != {"nondegeneracy_required": True}:
+        errors.append("DINO anchor competence must require nondegeneracy")
+    if competence.get("standalone_branch_failure_scope") != "standalone_claim_only":
+        errors.append("standalone branch failure must remain scoped to its own claim")
 
 
 def _validate_data_evidence(root: Path, errors: list[str]) -> None:
@@ -389,42 +548,8 @@ def _reconcile_split_summary(
                 errors.append(f"split_summary.csv {dataset} {column} does not reconcile with roles")
 
 
-def _validate_confirmatory_thresholds(evaluation: dict[str, Any], errors: list[str]) -> None:
-    effects = evaluation.get("minimum_effects", {})
-    effect_keys = ("delta_hetero", "delta_cf_aupr", "delta_dis_aupr", "target_harm_tolerance")
-    if effects.get("status") != "frozen" or not all(_positive_number(effects.get(key)) for key in effect_keys):
-        errors.append("confirmatory minimum effects must be frozen, finite, and positive")
-    validity = evaluation.get("oof_to_final_validity", {})
-    if validity.get("sanity_threshold_status") != "frozen" or not _positive_number(validity.get("threshold_value")):
-        errors.append("OOF-to-final validity threshold must be frozen, finite, and positive")
-    if validity.get("metric") not in {"prediction_error_aupr", "auroc"} or validity.get("direction") != "greater_equal":
-        errors.append("OOF-to-final validity requires an executable metric and direction")
-    gates = evaluation.get("source_derived_gates", {})
-    if gates.get("status") != "frozen":
-        errors.append("source-derived continuation and routing gates must be frozen")
-    if not _positive_int(gates.get("n_min_false_accepts")):
-        errors.append("N_min false accepts must be a positive integer")
-    for key in ("farr_lcb_gamma", "diagnostic_apcer", "routing_bpcerr_increase_beta", "branch_competency_balanced_accuracy"):
-        if not _unit_interval(gates.get(key), strict=True):
-            errors.append(f"source-derived {key} must be strictly between zero and one")
-
-
 def _string_list(value: Any) -> bool:
     return isinstance(value, list) and bool(value) and all(isinstance(item, str) and item.strip() for item in value)
-
-
-def _positive_int(value: Any) -> bool:
-    return isinstance(value, int) and not isinstance(value, bool) and value > 0
-
-
-def _positive_number(value: Any) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value) and value > 0
-
-
-def _unit_interval(value: Any, strict: bool = False) -> bool:
-    if not isinstance(value, (int, float)) or isinstance(value, bool) or not math.isfinite(value):
-        return False
-    return 0 < value < 1 if strict else 0 <= value <= 1
 
 
 def _nonnegative_integer_string(value: str, positive: bool = False) -> bool:

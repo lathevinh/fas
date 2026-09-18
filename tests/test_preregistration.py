@@ -34,16 +34,18 @@ class PreregistrationTest(unittest.TestCase):
 
     def test_all_frozen_artifacts_have_hashes(self) -> None:
         hashes = artifact_hashes(ROOT)
-        self.assertEqual(len(hashes), len(CONFIG_FILES) + 2)
+        self.assertGreater(len(hashes), len(CONFIG_FILES) + 2)
+        self.assertIn("src/fas/contracts.py", hashes)
+        self.assertIn("scripts/write_freeze_record.py", hashes)
         self.assertTrue(all(len(digest) == 64 for digest in hashes.values()))
 
     def test_schema_rejects_empty_critical_configs(self) -> None:
         with self._copy() as copy:
-            for name in ("preprocessing_v1.yaml", "evaluation_v1.yaml", "prompts_aux_v1.yaml"):
+            for name in ("preprocessing_v2.yaml", "claims_v1.yaml", "prompts_aux_v1.yaml"):
                 (copy / "configs" / name).write_text("{}", encoding="utf-8")
             errors = validate_stage(copy, "schema")
             self.assertTrue(any("preprocessing requires" in error for error in errors))
-            self.assertTrue(any("evaluation populations" in error for error in errors))
+            self.assertTrue(any("claim spec" in error for error in errors))
             self.assertTrue(any("auxiliary prompts" in error for error in errors))
 
     def test_schema_rejects_attack_family_names_in_core_prompts(self) -> None:
@@ -55,34 +57,35 @@ class PreregistrationTest(unittest.TestCase):
             errors = validate_stage(copy, "schema")
             self.assertTrue(any("must not name" in error for error in errors))
 
-    def test_pre_pilot_requires_exact_model_pins(self) -> None:
-        errors = validate_stage(ROOT, "pre-pilot")
-        self.assertTrue(any("exact package pins" in error for error in errors))
-        self.assertTrue(any("weight SHA-256" in error for error in errors))
-        self.assertTrue(any("anchor registry" in error for error in errors))
+    def test_later_stages_remain_explicitly_blocked(self) -> None:
+        source_errors = validate_stage(ROOT, "source-dry-run")
+        freeze_errors = validate_stage(ROOT, "analysis-freeze")
+        locked_errors = validate_stage(ROOT, "locked-evaluation")
+        self.assertTrue(any("source-dry-run evidence" in error for error in source_errors))
+        self.assertTrue(any("missing immutable analysis-freeze record" in error for error in freeze_errors))
+        self.assertTrue(any("locked-evaluation remains blocked" in error for error in locked_errors))
 
     def test_fake_counts_and_hashes_do_not_pass_data_stage(self) -> None:
         with self._copy() as copy:
             for name in ("dataset_summary.csv", "split_summary.csv"):
                 path = copy / "manifests" / name
                 path.write_text(path.read_text().replace("not_audited", "complete").replace(",,,,", ",1,1,1,1,"), encoding="utf-8")
-            errors = validate_stage(copy, "data")
+            errors = validate_stage(copy, "data-audit")
             self.assertTrue(any("must be a positive integer" in error or "missing private evidence" in error for error in errors))
 
-    def test_null_effects_cannot_pass_confirmatory_stage(self) -> None:
+    def test_schema_rejects_changed_primary_effect(self) -> None:
         with self._copy() as copy:
-            evaluation_path = copy / "configs" / "evaluation_v1.yaml"
-            evaluation = json.loads(evaluation_path.read_text())
-            evaluation["minimum_effects"]["status"] = "frozen"
-            evaluation["oof_to_final_validity"]["sanity_threshold_status"] = "frozen"
-            evaluation_path.write_text(json.dumps(evaluation), encoding="utf-8")
-            errors = validate_stage(copy, "confirmatory")
-            self.assertTrue(any("finite, and positive" in error for error in errors))
+            claims_path = copy / "configs" / "claims_v1.yaml"
+            claims = json.loads(claims_path.read_text())
+            claims["claims"]["rq2_complete_system"]["delta_min"] = 0
+            claims_path.write_text(json.dumps(claims), encoding="utf-8")
+            errors = validate_stage(copy, "schema")
+            self.assertTrue(any("RQ2 claim" in error for error in errors))
 
     def test_data_stage_accepts_reconciled_synthetic_evidence(self) -> None:
         with self._copy() as copy:
             self._write_synthetic_evidence(copy)
-            self.assertEqual(validate_stage(copy, "data"), [])
+            self.assertEqual(validate_stage(copy, "data-audit"), [])
 
     def test_data_stage_rejects_subject_role_overlap(self) -> None:
         with self._copy() as copy:
@@ -93,7 +96,7 @@ class PreregistrationTest(unittest.TestCase):
             rows[2]["subject_id"] = rows[0]["subject_id"]
             self._write_csv(role_path, tuple(rows[0]), rows)
             self._update_hash(copy / "manifests" / "split_summary.csv", "OULU-NPU", "role_manifest_sha256", role_path)
-            errors = validate_stage(copy, "data")
+            errors = validate_stage(copy, "data-audit")
             self.assertTrue(any("multiple roles" in error for error in errors))
 
     @contextmanager

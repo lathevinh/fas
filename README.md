@@ -9,9 +9,9 @@ Research dossier for a practical and publishable face presentation attack detect
     abstention; fusion rescue, explicit disagreement, and routing remain separate claims.
 
 The research plan, methodology, paper contract, and data-to-experiment implementation
-plan are frozen. Existing executable preregistration files remain provisional
-scaffolding from review rounds 11-12; coding begins with their Phase-0 migration before
-any dataset-facing implementation.
+plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
+governance, typed contract, staged-readiness, and immutable-freeze primitives. Phase 1
+and all dataset-facing execution remain locked pending audited source evidence.
 
 ## Scope
 
@@ -97,30 +97,31 @@ single-branch confidence and a matched same-family ensemble?
 62. [Phase 0 governance migration and validation plan](docs/61-phase0-governance-migration-and-validation-plan.md)
 63. [Reading list](references/reading-list.md)
 
-## Provisional readiness scaffold
+## Readiness validation
 
 ```bash
 python -m unittest discover -s tests -v
 python scripts/validate_preregistration.py --stage schema
-python scripts/validate_preregistration.py --stage data
-python scripts/validate_preregistration.py --stage pre-pilot
-python scripts/validate_preregistration.py --stage confirmatory
+python scripts/validate_preregistration.py --stage data-audit
+python scripts/validate_preregistration.py --stage source-dry-run
+python scripts/validate_preregistration.py --stage analysis-freeze
+python scripts/validate_preregistration.py --stage locked-evaluation
 ```
 
-These commands document prior scaffold behavior; they do not authorize target
-inspection or establish Phase-0 completion. The normative implementation authority is
-the strict source-only design consolidated in
-[Document 42](docs/42-data-to-experiment-implementation-plan.md). Superseded
-pilot-oriented names and rules in the scaffold must satisfy its Phase-0 definition of
-done before dataset-facing or backbone-facing implementation begins.
+Only `schema` is expected to pass before audited data and source-only evidence exist.
+Every later stage must fail closed with explicit missing-prerequisite errors. These
+commands do not authorize target inspection; the normative implementation authority
+is the strict source-only design consolidated in
+[Document 42](docs/42-data-to-experiment-implementation-plan.md).
 
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
-    governance/config migration authorized but not yet complete
+    governance/config migration implemented and validated with synthetic evidence
 - Current work package: [Phase 0 governance migration and validation](docs/61-phase0-governance-migration-and-validation-plan.md)
 - Last reviewed: 2026-09-18
-- Code: Stage-0 validator and monotone calibration primitive implemented
+- Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
+    primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 
 ## Non-claims

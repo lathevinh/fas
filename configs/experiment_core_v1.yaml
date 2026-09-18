@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "study_id": "strict_single_image_mcio_oof_risk_v1",
+  "outer_domains": ["OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"],
+  "models": {
+    "dino_reg": {
+      "library": "torch_hub",
+      "model": "dinov2_vitb14_reg4",
+      "state": "frozen",
+      "resolution": 518,
+      "pooling": "cls_plus_mean_patch"
+    },
+    "dino_plain": {
+      "library": "torch_hub",
+      "model": "dinov2_vitb14",
+      "state": "frozen",
+      "resolution": 518,
+      "pooling": "cls_plus_mean_patch"
+    },
+    "openclip": {
+      "library": "open_clip",
+      "model": "ViT-B-16",
+      "pretrained": "laion2b_s34b_b88k",
+      "state": "frozen",
+      "resolution": 224,
+      "preprocessing": "checkpoint_native",
+      "crop_scale": 1.30,
+      "prompts": "prompts_core_v1.yaml"
+    }
+  },
+  "systems": {
+    "heterogeneous": {
+      "branches": ["dino_reg", "openclip"],
+      "fusion": "calibrated_equal_average"
+    },
+    "same_family": {
+      "branches": ["dino_reg", "dino_plain"],
+      "fusion": "calibrated_equal_average"
+    }
+  },
+  "claim_spec": "claims_v1.yaml",
+  "seed_spec": "seeds_v1.yaml",
+  "preprocessing_spec": "preprocessing_v2.yaml",
+  "source_recipe": "source_recipe_v2.yaml"
+}
