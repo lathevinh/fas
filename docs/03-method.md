@@ -32,9 +32,11 @@ $$
 D(x)=\{d_1,\ldots,d_N,d_{cls},d_{reg}^1,\ldots,d_{reg}^R\}.
 $$
 
-The minimum implementation concatenates the class token with attention-pooled patch
-features and trains binary PAD plus optional attack-family heads. Registers remain
-internal context tokens and are not treated as spatial heatmaps.
+The minimum implementation concatenates the class token with mean-pooled patch
+features and trains a binary PAD head. This pooling is fixed, so pooled frozen features
+can be cached without fold-dependent lineage. Learned attention pooling and optional
+attack-family heads are secondary ablations. Registers remain internal context tokens
+and are not treated as spatial heatmaps.
 
 This branch is called a visual or forensic predictor because its dense self-supervised
 features can retain local texture. The name does not assert that every patch activation
@@ -49,7 +51,8 @@ Training order:
 
 ## VLM semantic predictor
 
-A frozen OpenCLIP/SigLIP-style model uses an immutable binary core prompt bank
+A frozen OpenCLIP `ViT-B-16` model with `laion2b_s34b_b88k` weights, native 224-pixel
+preprocessing, and the preregistered context crop uses an immutable binary core prompt bank
 $T_{core}=T_{live}\cup T_{spoof}$ with generic live and artificial-presentation
 wording. For each class $c$:
 
@@ -96,10 +99,11 @@ $P_{cc},P_{cw},P_{wc},P_{ww}$. Report:
 - both directional recovery rates as descriptive diagnostics;
 - error correlation by domain and attack family.
 
-This analysis is a gate before any learned reliability component. High disagreement
-between two weak predictors is not useful complementarity.
+This analysis diagnoses classifier complementarity but is not a gate for the learned
+risk study. High disagreement between two weak predictors is not useful
+complementarity, while limited fusion rescue does not preclude useful failure ranking.
 
-## Source-only risk calibration
+## Source-only risk estimation
 
 Create source records in three distinct protocols. Sample-OOF splits within domains;
 domain-OOF holds out one complete capture domain and is primary for MICO; attack-OOF
@@ -123,10 +127,11 @@ $p_F=(\widehat p_D+\widehat p_V)/2$. The vector $q(x)$ contains fixed image-qual
 features. Entropy, branch
 energy, hard/log-odds disagreement, and Mahalanobis are ablations or baselines rather
 than primary features. Version 1 preregisters logistic regression with fixed regularization as the
-primary failure-risk calibrator; nested pseudo-domain selection is a secondary
+primary failure-risk estimator; nested pseudo-domain selection is a secondary
 sensitivity analysis. For target $T$, no sample from $T$ trains, selects, or calibrates
-any component. A finite VLM candidate is selected independently for that fold using
-only nested source-domain OOF records from the other three domains.
+any component. The primary VLM checkpoint, preprocessing, crop, and prompt bank are
+fixed a priori and identical in every fold. Candidate search is a secondary robustness
+study performed only after the confirmatory core analysis is frozen.
 
 Bounded $\widehat p_D$, $\widehat p_V$, and $d_{abs}$ are never standardized. Only
 quality features are standardized with statistics from the final allowed source
@@ -206,7 +211,7 @@ There are two separate gates:
 1. **Routing gate:** DINO confidence decides whether to emit a confident spoof as
    terminal non-accept or invoke the VLM for every other detector-successful sample.
 2. **Selective gate:** after VLM invocation, the fixed $g_{ref}$ produces the PAD
-   decision and calibrated risk chooses only `accept` or `abstain`.
+   decision and the risk score chooses only `accept` or `abstain`.
 
 The scalar risk score does not choose among DINO, VLM, and fusion. The primary routing
 policy is spoof-only early exit: DINO samples beyond a source-selected confident-spoof
@@ -230,7 +235,7 @@ deployable source-only policies.
 
 ## Optional evidence extension
 
-Only after the three primary research questions pass their kill criteria, evaluate:
+Only after the two primary research questions pass their criteria, evaluate:
 
 - DINO patch deletion/insertion and context sensitivity;
 - coarse VLM concept contributions;

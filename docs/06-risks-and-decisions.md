@@ -6,7 +6,7 @@ settled fact.
 ## Decision 1: Preserve branch independence
 
 **Chosen:** DINO and VLM predictors train independently. Their outputs are compared
-post hoc through disagreement and a source-only failure-risk calibrator.
+post hoc through disagreement and a source-only failure-risk estimator.
 
 **Alternative:** project DINO patches directly into the VLM text space and compute
 patch-text cosine similarity.
@@ -191,8 +191,17 @@ using paired subject/video inference.
 
 ## Open decisions
 
-- Which exact OpenCLIP/SigLIP checkpoint gives the best accuracy/compute tradeoff?
-- Does the VLM consume the context crop, face crop, or both?
-- Which source-fold construction best approximates unseen domain and attack shifts?
-- What pre-registered minimum oracle/fusion gain justifies continuing?
+- What source-derived minimum meaningful effect and harm tolerance are supportable
+  after the event-count audit?
 - Which target journal and category define the Q3 requirement?
+
+## Decisions closed at methodology freeze
+
+- Primary VLM: OpenCLIP `ViT-B-16`, `laion2b_s34b_b88k`, native 224-pixel
+  preprocessing, and one fixed 1.30 context crop in all folds.
+- Primary DINO pooling: fixed class token concatenated with mean-pooled patch tokens;
+  learned attention pooling is secondary.
+- Primary risk records: domain-OOF for MICO; matched sample-OOF is the attribution
+  control. Attack-OOF is separate and only required for an attack-shift claim.
+- Core continuation: failure-ranking and selective-utility evidence. Fusion rescue,
+  explicit disagreement, and conditional routing each govern only their own claims.

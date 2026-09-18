@@ -49,11 +49,11 @@ The remaining defensible hypothesis is narrower:
 - Disagreement is observed, not minimized as a training objective.
 - A reliability model is trained only from cross-fitted source-domain predictions,
   including held-out source domains or attack families as pseudo-shifts.
-- The output is selective prediction or conditional VLM invocation, with explicit
-  security, coverage, compute, and latency trade-offs.
+- The core output is selective prediction with explicit security, usability, and
+  coverage accounting. Conditional VLM invocation is secondary.
 
 Cross-model disagreement is standard ensemble machinery and is not novel by itself.
-The candidate contribution is source-only cross-fitted failure-risk calibration from
+The candidate contribution is source-only cross-fitted failure-risk estimation from
 independently trained heterogeneous foundation predictors, with separate operational
 validation under PAD domain shifts and attack-family shifts. Explicit disagreement belongs in the
 title/contribution only if its preregistered incremental test passes.
@@ -67,13 +67,14 @@ single-image PAD when every selector and calibrator is source-only. The same-fam
 control, fixed-error risk comparisons, and strict outer-domain protocol distinguish
 that claim from merely averaging two pretrained models.
 
-A Q3 submission is plausible, not guaranteed, if the confirmatory evidence jointly
-shows: useful realized false-accept rescue; positive paired advantage over the
-DINOv2-Reg + plain-DINOv2 control; risk AUPR/AURC gains over conventional uncertainty
-and capacity-matched probability-only models; and a measured security-coverage-compute
-benefit. Without the first three, architecture-level novelty is insufficient and the
-paper must be reframed or stopped. A Q1/top-conference claim would likely require a
-stronger algorithmic contribution than this plan currently contains.
+A Q3 submission is plausible, not guaranteed, if the confirmatory evidence shows
+transferable error-ranking and selective-utility gains over conventional uncertainty,
+sample-OOF risk training, capacity-matched learned-risk baselines, and the DINOv2-Reg
++ plain-DINOv2 same-family system. Realized fusion rescue supports a separate
+classifier-benefit claim; it is not a prerequisite for useful failure ranking.
+Conditional routing is not part of the minimum novelty claim. A Q1/top-conference
+claim would likely require a stronger algorithmic contribution than this plan
+currently contains.
 
 ## Claims that require evidence
 
@@ -84,19 +85,22 @@ stronger algorithmic contribution than this plan currently contains.
 | Explicit disagreement matters | Capacity-matched with/without-disagreement risk models on fixed prediction errors |
 | Failure risk generalizes | Source-only cross-fitting, held-out gate threshold selection, and confirmatory targets |
 | Method beats uncertainty heuristics | Fused MSP/entropy, simple disagreement, Mahalanobis, and capacity-matched risk comparisons |
-| Method is deployable | Conditional-call latency, memory, throughput, and coverage comparison |
+| Selective decisions are useful | AUPR, AURC/selective curves, attack/bona-fide coverage, and end-to-end FA/BFNR accounting |
+| Routing saves compute | Conditional-call latency, memory, throughput, and coverage comparison; secondary claim only |
 
 ## Novelty kill conditions
 
-Reframe or stop the model-centric paper if any holds:
+Reframe or stop the model-centric risk paper if any holds:
 
-- VLM rescue or class-conditional oracle gain is negligible;
-- cross-foundation rescue does not exceed same-family diversity, requiring a broader
-  selective-ensemble framing;
-- explicit disagreement adds no capacity-matched gain, requiring selective failure
-  prediction rather than disagreement-centered framing;
+- failure ranking and selective utility do not improve over the required baselines;
+- domain-OOF error supervision does not improve over matched sample-OOF training;
+- heterogeneous risk transfer does not exceed same-family diversity, requiring a
+  broader selective-ensemble framing;
 - agreement is high when both branches are wrong;
 - gains disappear under source-only hyperparameter selection;
 - the method only improves CelebA-Spoof in-domain performance;
-- conditional VLM inference provides no useful security-coverage-compute trade-off;
-- a newer paper implements the same source-only cross-foundation risk calibration.
+- a newer paper implements the same source-only cross-foundation risk estimation.
+
+Negligible fusion rescue removes only the classifier-improvement claim. Failure of the
+capacity-matched disagreement test removes disagreement wording. Failure of optional
+routing removes only the compute-saving claim.

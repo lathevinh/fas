@@ -1,12 +1,12 @@
-# Cross-Foundation Failure-Risk Calibration for Single RGB Image PAD
+# Source-Only Failure-Risk Estimation for Selective Face Presentation Attack Detection with Heterogeneous Foundation Models
 
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 
 - a self-supervised visual predictor based on DINOv2 with Registers;
-- an independently pretrained vision-language semantic predictor;
-- source-only cross-fitted failure-risk calibration for failure detection, abstention,
-  and conditional VLM inference; explicit disagreement remains a conditional claim.
+- a fixed, independently pretrained OpenCLIP ViT-B/16 predictor;
+- source-domain cross-fitted failure-risk estimation for failure detection and
+    abstention; fusion rescue, explicit disagreement, and routing remain separate claims.
 
 This repository is currently freezing the research plan and methodology. Existing
 executable preregistration files are provisional scaffolding from review rounds
@@ -26,9 +26,9 @@ an attack at the biometric capture device under ISO/IEC 30107 terminology.
 
 ## Research question
 
-Do independently pretrained visual and vision-language foundation models make
-usefully different errors under domain and attack shift, and can their natural
-disagreement support better selective PAD than conventional uncertainty and fusion?
+Does source-domain cross-fitted error supervision make heterogeneous frozen foundation
+predictors useful for selective single-image PAD under unseen domains, beyond
+single-branch confidence and a matched same-family ensemble?
 
 ## Document map
 
@@ -66,7 +66,9 @@ disagreement support better selective PAD than conventional uncertainty and fusi
 32. [Response to ChatGPT review round 12](docs/31-review-response-round12.md)
 33. [ChatGPT review round 13](docs/32-chatgpt-review-round13.md)
 34. [Response to ChatGPT review round 13](docs/33-review-response-round13.md)
-35. [Reading list](references/reading-list.md)
+35. [ChatGPT review round 14](docs/34-chatgpt-review-round14.md)
+36. [Response to ChatGPT review round 14](docs/35-review-response-round14.md)
+37. [Reading list](references/reading-list.md)
 
 ## Provisional readiness scaffold
 
@@ -84,7 +86,7 @@ current charter, method, protocol, experiment plan, and Round-13 response.
 
 ## Current status
 
-- Status: methodology freeze candidate; implementation paused
+- Status: revised core methodology accepted; implementation planning is the next phase
 - Last reviewed: 2026-09-18
 - Code: Stage-0 validator and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings

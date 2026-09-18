@@ -64,10 +64,11 @@ auxiliary family prompt. The immutable core PAD bank and its normalization never
 change. Any allowed attack-specific open-vocabulary prompt produces a separate
 auxiliary similarity score rather than changing the core PAD probability.
 
-Freeze the exact core prompt bank and finite VLM/preprocessing candidate set before
-all MICO evaluation. For target $T$, select a candidate only by nested domain-OOF over
-the other three source domains. Source-tuned template/weight selection is a labeled
-ablation and cannot replace the primary fixed bank.
+Freeze the exact core prompt bank and primary OpenCLIP `ViT-B-16`
+(`laion2b_s34b_b88k`) checkpoint, native 224-pixel preprocessing, and context crop
+before all MICO evaluation. Use this same VLM in every target fold. Candidate search
+and source-tuned template/weight selection are secondary robustness studies and cannot
+replace the primary fixed system.
 
 ## Unified metadata manifest
 
@@ -223,14 +224,14 @@ policies.
 
 | Dataset role | Checkpoint/config selection | Threshold/calibration | Confirmatory macro |
 |---|---|---|---:|
-| Three source domains for fold $T$ | Nested source-domain OOF only | Assigned source partitions only | N/A |
+| Three source domains for fold $T$ | Fold-local head selection only; primary VLM fixed globally | Assigned source partitions only | N/A |
 | Complete target domain $T$ | Never | Never | Yes |
 
-Before any target evaluation, commit candidate models, allowed preprocessing, exact
-prompts, source-only selection algorithm, continuation thresholds, primary operating
-point, metrics, and analysis code. The commit SHA is the preregistration reference.
-Each fold may select a different committed candidate because the available source set
-differs, but the selection algorithm and candidate set are identical and target-blind.
+Before any target evaluation, commit the primary models, preprocessing, exact prompts,
+fold-local source-only fitting rules, claim thresholds, primary operating point,
+metrics, and analysis code. The commit SHA is the preregistration reference. The same
+fixed VLM is used in all folds; only fitted source components vary with the available
+source domains.
 
 ### MICO cross-domain
 

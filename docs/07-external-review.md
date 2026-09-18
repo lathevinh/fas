@@ -12,14 +12,14 @@ This document is a prompt and checklist for ChatGPT or another independent revie
 > revised method and experiment set that could still support a publishable claim.
 > Do not assume proposed results are observed results.
 
-## Current methodology-freeze instruction
+## Current handoff instruction
 
-Implementation audit is paused. Review the normative plan in `docs/00` through
-`docs/06` and the latest response, not the provisional validator scaffold. The next
-review must decide whether the frozen minimum method is feasible and whether its
-conditional evidence package is sufficiently novel for a Q3 empirical-method paper.
-Do not request another code patch unless a conceptual decision depends on executable
-evidence that cannot be reasoned about from the protocol.
+Research direction and revised core methodology were accepted in principle in Round
+14, and the owner accepted its three requested changes in the Round-14 response.
+Future review should assess the implementation plan against normative `docs/00`
+through `docs/06`; the old executable scaffold remains provisional until that plan is
+written. Do not reopen settled architecture choices without identifying new evidence
+or a concrete contradiction.
 
 ## Questions the reviewer should answer
 
@@ -34,15 +34,16 @@ evidence that cannot be reasoned about from the protocol.
 8. Are score fusion, capacity-matched fusion, and uncertainty baselines sufficient?
 9. Does the method detect shared failures where both branches confidently agree?
 10. Does conditional inference save compute at matched biometric security and coverage?
-11. Is per-target nested source-domain OOF candidate selection valid strict
-   outer-domain-unseen model selection for all four MICO folds?
+11. Does the globally fixed OpenCLIP primary remove selector influence from every
+   domain-OOF risk record and all four outer MICO folds?
 12. Does heterogeneous-vs-same-family attribution plus source-only cross-fitted
    failure-risk transfer clear a plausible Q3 novelty bar given the closest work?
 13. Is the frozen-backbone, sequential cached-feature plan feasible on one RTX 4080
    16 GB, and what is the smallest necessary simplification if not?
-14. Is any missing baseline or endpoint fatal to the five-condition claim hierarchy?
-15. If no conceptual blocker remains, explicitly state `METHODOLOGY ACCEPTED FOR
-   IMPLEMENTATION PLANNING`.
+14. Does the implementation plan preserve separate classifier, risk, disagreement,
+   and routing claims with the required baselines and endpoint semantics?
+15. Does each implementation acceptance test trace to the frozen methodology rather
+   than to superseded provisional configuration behavior?
 
 ## Expected review format
 

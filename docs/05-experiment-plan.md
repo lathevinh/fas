@@ -10,24 +10,21 @@ Tasks:
 - compare the exact settings of TIFS 2024 Evidential Semantic Consistency,
   Confidence Aware Learning, RPSR-FAS, DINO-VPT, and primitive-driven prompting;
 - freeze the literature table and search for newer overlapping work.
-- preregister the finite VLM candidate set and create versioned
-  `configs/prompts_core_v1.yaml`, `configs/prompts_aux_v1.yaml`, and
-  `configs/vlm_checkpoint_v1.yaml` artifacts before confirmatory evaluation. Record
-  exact strings, classes, weights, text preprocessing, checkpoint/weights, tokenizer,
-  resolution, interpolation, and normalization.
-- freeze core prompts and the finite checkpoint/preprocessing candidate set before
-  MICO evaluation. For each target fold, choose the candidate with lowest nested
-  source-domain-OOF macro ACER for calibrated-average fusion at candidate-specific
-  source thresholds. Candidates within 0.1 percentage point tie by lower median
-  batch-1 latency, then lexical configuration ID.
+- preregister `configs/prompts_core_v1.yaml`, `configs/prompts_aux_v1.yaml`, and a
+  single primary `configs/vlm_checkpoint_v1.yaml` artifact before confirmatory
+  evaluation. The primary is OpenCLIP `ViT-B-16`, `laion2b_s34b_b88k`, native
+  224-pixel preprocessing, and the fixed context crop. Record exact prompt strings,
+  classes, weights, tokenizer, interpolation, normalization, and weight hash.
+- defer checkpoint/preprocessing candidate search to a secondary robustness study;
+  it cannot replace the globally fixed primary in the confirmatory tables.
 
 Exit criteria:
 
 - no subject/video leakage;
 - independently reproducible split counts;
 - APCER/BPCER/ACER tests pass on synthetic examples.
-- core prompts, candidates, and the target-blind source-only selection algorithm are
-  frozen before all four confirmatory MICO targets.
+- core prompts, primary VLM/preprocessing, and all analysis rules are frozen before
+  all four confirmatory MICO targets.
 - before implementation, both reviewers explicitly accept the feasibility, novelty
   boundary, strict source-only selection, primary method, and kill criteria.
 
@@ -36,7 +33,7 @@ plan. No further implementation work proceeds until this strict source-only
 methodology is accepted. Synthetic fixtures may debug accounting without opening any
 target labels.
 
-## Stage 1: Complementarity kill experiment, weeks 3-5
+## Stage 1: Classifier complementarity analysis, weeks 3-5
 
 Train under identical sampling:
 
@@ -72,11 +69,11 @@ one-stage affine branch calibration, calibrated-average fusion, operating-point
 selection, denominators, and bootstrap units.
 
 Cache each frozen backbone's features independently so the branches never share GPU
-memory. All four MICO domains are confirmatory targets in turn. For target $T$, nested
-source-domain OOF on the other three domains selects the committed VLM candidate and
-all source-derived settings before $T$ is evaluated. Report the joint correctness
-table, double-fault, oracle gain, error correlation, and attack/domain subgroups for
-every fold and the four-target macro.
+memory. All four MICO domains are confirmatory targets in turn. The globally fixed VLM
+is reused in every fold; only fold-local source-fitted heads, calibrators, and
+thresholds vary before target $T$ is evaluated. Report the joint correctness table,
+double-fault, oracle gain, error correlation, and attack/domain subgroups for every
+fold and the four-target macro.
 
 Before opening each MICO target, use domain-OOF source pseudo-shifts to lock
 numeric continuation thresholds for recoverable error fraction
@@ -95,6 +92,12 @@ cross-foundation claim even when the broader selective ensemble remains useful.
 Use literally the same fitted DINOv2-Reg anchor predictions for heterogeneous and
 same-family rescue at each target, seed, and configuration; cache them once and never
 retrain the anchor by pair.
+
+FARR is descriptive because it conditions only on DINO false accepts. Also report the
+opposing count of attacks blocked by DINO but admitted by fusion, net
+$APCER(D)-APCER(g_{ref})$, and the corresponding BPCER/BFNR change at source-selected
+thresholds. Target-matched thresholds and curves are diagnostics, not deployed-policy
+evidence.
 
 Report complementarity lift relative to each second branch's standalone correctness
 as a strength-adjusted diagnostic. Do not use it as a kill criterion: the subtraction
@@ -119,32 +122,31 @@ not by frame.
 Exit criteria:
 
 - both branches are competent enough for meaningful comparison;
-- **Level 1, continue dual branch:** competent branches and realized $REF_g/FARR_g$
-  pass preregistered confidence-bound criteria;
-- **Level 2, retain cross-foundation claim:** paired $\Delta_{hetero}>0$ against the
-  stronger DINOv2-Reg plus DINOv2 control;
+- **Classifier-benefit claim:** realized rescue, net APCER reduction, and BPCER/BFNR
+  harm pass their preregistered criteria;
+- **Heterogeneous-classifier claim:** paired $\Delta_{hetero}>0$ against the stronger
+  DINOv2-Reg plus DINOv2 control at the classifier endpoint;
 - the complete target domain did not influence model or configuration selection.
 
-Apply the claims hierarchically: Level 1 realized rescue, Level 2 heterogeneity,
-cross-foundation risk gain, then explicit-disagreement gain. A failed level blocks its
-downstream title claim rather than allowing another correlated endpoint to rescue it.
+These classifier claims are separate from failure-risk transfer. Failed fusion rescue
+removes the classifier-benefit claim but does not stop Stage 2. Heterogeneous advantage
+must be demonstrated separately at every endpoint used for a heterogeneous-foundation
+claim. Explicit disagreement remains a feature-attribution claim only.
 Before confirmatory labels, source pseudo-shifts must freeze nonzero minimum meaningful
 effects or positive paired lower-confidence-bound criteria for $\Delta_{hetero}$,
 $\Delta_{CF}^{AUPR}$, and $\Delta_{dis}^{AUPR}$; $\Delta>0$ alone is insufficient.
 
-Stop the dual-foundation direction if Level 1 fails. DINOv2 without Registers is
-required only to retain the cross-foundation title; supervised backbones, LoRA, and
-larger VLMs remain later ablations.
+DINOv2 without Registers is required for any heterogeneous-foundation claim;
+supervised backbones, LoRA, and larger VLMs remain later ablations.
 
-## Stage 2: Source-only risk calibration, weeks 6-8
+## Stage 2: Source-only risk estimation, weeks 6-8
 
 Calibrate each branch independently on source validation data before computing the
 primary absolute-difference disagreement and its JS ablation.
 Then generate out-of-fold source records in two variants.
 
-For every VLM candidate, independently fit allowed source calibration and select its
-own source-only $\tau_j$ before computing nested source-OOF ACER. Reusing a threshold
-selected for another candidate is prohibited.
+Use the globally fixed primary VLM in every OOF fold. Fit its branch calibration and
+source-only threshold independently inside each allowed fold remainder.
 
 ### Sample-OOF ablation
 
@@ -163,7 +165,7 @@ selected for another candidate is prohibited.
 4. select $\tau_{ref}^{(k)}$ only on the allowed remainder, then predict the held-out
   fold with margin $m_F^{(k)}=p_F^{(k)}-\tau_{ref}^{(k)}$;
 5. repeat all folds and concatenate records;
-6. train the preregistered fixed-regularization logistic failure-risk calibrator for
+6. train the preregistered fixed-regularization logistic failure-risk estimator for
   calibrated-average $g_{ref}$;
 7. generate out-of-sample predictions on permanent gate-calibration $G_{domain}$,
    which was excluded from every prior fit and selection step;
@@ -240,9 +242,8 @@ Implement in this order:
 Do not add the next component unless the current comparison is understood.
 
 Conditional routing is an operational extension, not required to establish the core
-scientific claim. Implement it only after cross-foundation rescue and source-only risk
-calibration pass their kill criteria; this prevents routing infrastructure from
-consuming effort if the publishable signal is absent.
+scientific claim. Implement it only after source-only risk transfer passes its criteria;
+failure of classifier rescue does not by itself block this optional study.
 
 Exit criteria:
 
@@ -275,10 +276,11 @@ Exit criteria:
 For each target and seed, train and score independently; never pool seed predictions
 unless deploying an ensemble. Report mean/standard deviation of seed-level metrics and
 subject/video bootstrap within each seed, with no $t$-test at $n=3$ and no best-seed
-selection. A confirmatory delta passes only when its four-target macro mean is
-positive, at least three of four target point estimates are positive, no target exceeds
-a preregistered harm tolerance, and at least two of three seeds have positive
-four-target macro deltas. Claims are limited to the evaluated confirmatory domains.
+selection. A primary confirmatory delta passes only when its paired four-target macro
+lower confidence bound is positive, at least three of four target point estimates are
+positive, no target exceeds a preregistered harm tolerance, and at least two of three
+seeds have positive four-target macro deltas. Claims are limited to the evaluated
+confirmatory domains.
 Use 2,000 paired cluster-bootstrap resamples, pairing each subject across seeds. Mark
 zero false-accept denominators, one-class risk labels, and $N_{FA}<N_{min}$ as
 inconclusive rather than fail. Recompute the stronger of $R_D/R_V$ inside every paired
@@ -289,7 +291,7 @@ $\Delta_{CF}$ resample; never switch operating thresholds after viewing a target
 Only after Stages 1-4 pass:
 
 - DINOv2 versus DINOv2-Reg;
-- class token versus attention-pooled patches;
+- fixed class-token plus mean-patch pooling versus learned attention pooling;
 - face versus context crop;
 - frozen versus LoRA-tuned branches;
 - optional patch deletion/insertion analysis;
@@ -320,7 +322,7 @@ separate go/no-go decision and are not assumed in the first paper.
 | E | Yes | Yes | Learned fusion of calibrated scores | No | No |
 | F | Yes | Yes | Raw JS disagreement | No | Yes |
 | G | Yes | Yes | Calibrated JS, sample-OOF | No | Yes |
-| H | Yes | Yes | Source-only risk calibrator, domain-OOF | No | Yes |
+| H | Yes | Yes | Source-only risk estimator, domain-OOF | No | Yes |
 | I | Yes | On demand | Domain-OOF calibrator | Yes | Yes |
 | J | Yes | Distilled | Domain-OOF calibrator | No | Yes |
 | K | Two heads | No | Shared-encoder head-diversity control | No | No |
@@ -341,7 +343,9 @@ Indicative starting values, to be selected on source validation only:
 dino_checkpoint: dinov2_vitb14_reg4
 dino_input_size: 448
 dino_tuning: frozen
-vlm_family: openclip_or_siglip
+vlm_model: ViT-B-16
+vlm_pretrained: laion2b_s34b_b88k
+vlm_input_size: 224
 vlm_text_encoder: frozen
 vlm_image_tuning: frozen
 head_lr: 3.0e-4
