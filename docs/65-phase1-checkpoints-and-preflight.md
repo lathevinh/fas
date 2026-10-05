@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoint 1.0 locally validated; Phase-0 prerequisite rework awaits confirmation
+Status: checkpoint 1.0 and prerequisite rework approved; checkpoint 1.1 locally verified, awaiting confirmation
 
 ## Approval boundary
 
@@ -23,9 +23,9 @@ in chat.
 
 | Checkpoint | Deliverable | Acceptance criteria | Evidence to review |
 |---|---|---|---|
-| 0.R Prerequisite rework | Typed source evidence and explicit K=1 gate applicability | Reject empty/false evidence; gate applies only to predicted-live; focused/full suites pass; owner review and fresh CI | Document 66, pending acceptance before 1.1 |
+| 0.R Prerequisite rework | Typed source evidence and explicit K=1 gate applicability | Reject empty/false evidence; gate applies only to predicted-live; focused/full suites pass; owner review and fresh CI | Document 66, approved; fresh CI success on 7775937 |
 | 1.0 Preflight | Read-only runtime/lock checker and checkpoint plan | Phase-0 CI verified; positive/negative checker tests pass; real pending environment returns nonzero; no false readiness | JSON report, test counts, CI link, host observations below |
-| 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Lock/hash, environment report, import/CUDA logs, recreate command |
+| 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Document 67, native/wheel reconstruction, ready preflight, pass CUDA smoke, 76 tests; owner confirmation pending |
 | 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Schema, fixtures, CLI report; separate approved local data roots |
 | 1.3 Dataset adapters | Official-metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; official partitions preserved; unknown labels and duplicate IDs rejected; fixture counts reconcile | One separately approved checkpoint per OULU-NPU, CASIA-FASD, Replay-Attack and MSU-MFSD adapter |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
@@ -53,6 +53,9 @@ CUDA, or certify model/checkpoint identity. Those are checkpoint 1.1/3 acceptanc
 checks, not implied by this tool's `ready` status.
 
 ## Observed evidence
+
+The following is the historical checkpoint-1.0 snapshot, not current runtime state.
+Current locked-environment evidence is in Document 67; the original JSON is retained.
 
 Base commit: `a39cac2d6b0f4e173f2b0805fe98c7569406fbd9`.
 
@@ -102,15 +105,17 @@ For a new immutable snapshot, choose a new output path:
 conda run -n fas python scripts/check_environment.py --out /tmp/fas-environment-review.json
 ```
 
-Expected preflight status remains `blocked` until checkpoint 1.1. An existing output
-path is refused; the checked-in report describes the interpreter used at checkpoint
-1.0 and is not a live readiness attestation.
+Preflight was `blocked` at checkpoint 1.0; the current locked config returns `ready`
+after checkpoint 1.1. An existing output path is refused. The original checked-in
+report describes checkpoint 1.0, not current runtime state; Document 67 links the
+new locked preflight and CUDA evidence.
 
 ## Next approval
 
-Approve the prerequisite rework in Document 66 before provisioning checkpoint 1.1.
-The existing `fas` environment is outside this repository. Its Python is currently
-3.13.15, outside the declared range; approval is required before changing it.
+The prerequisite rework and Python adjustment were approved. Checkpoint 1.1 now
+passes its local criteria in existing `fas` with Python 3.12.14; see Document 67
+and the new immutable reports. Confirm that checkpoint before starting 1.2.
+The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
 large in-tree environment.
 

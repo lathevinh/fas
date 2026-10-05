@@ -11,10 +11,10 @@ Research dossier for a practical and publishable face presentation attack detect
 The research plan, methodology, paper contract, and data-to-experiment implementation
 plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
 governance, typed contract, staged-readiness, and immutable-freeze primitives.
-Post-rework review found two remaining contracts; their local repairs await review
-and fresh CI. Phase 1 read-only preflight is implemented, but provisioning and
-dataset-facing work remain paused at that prerequisite checkpoint. Training and
-target evaluation remain locked.
+Post-rework source-evidence and gate repairs passed fresh CI and owner approval.
+Phase 1 environment lock is implemented and locally verified in existing conda
+env `fas`; checkpoint 1.1 awaits owner confirmation before dataset intake.
+Training and target evaluation remain locked.
 
 ## Scope
 
@@ -103,7 +103,8 @@ single-branch confidence and a matched same-family ensemble?
 65. [Phase 0 rework verification review](docs/65-review-phase0-after-doc64.md)
 66. [Phase 1 checkpoints and preflight](docs/65-phase1-checkpoints-and-preflight.md)
 67. [Source-evidence and gate prerequisite rework](docs/66-review-response-doc65-source-evidence-and-gate.md)
-68. [Reading list](references/reading-list.md)
+68. [Environment lock and CUDA smoke](docs/67-phase1-step1.1-environment-lock.md)
+69. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -125,17 +126,20 @@ is the strict source-only design consolidated in
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
-    source-evidence/gate rework locally validated; owner acceptance and fresh CI pending
-- Current work package: [Prerequisite rework](docs/66-review-response-doc65-source-evidence-and-gate.md);
-    Phase 1.1 environment provisioning paused until acceptance
+    source-evidence/gate rework approved; environment lock locally verified
+- Current work package: [Checkpoint 1.1](docs/67-phase1-step1.1-environment-lock.md);
+    awaiting owner confirmation before checkpoint 1.2
 - Last reviewed: 2026-10-05
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
-- Environment preflight: [report](results/phase1/environment-preflight.json)
-    is a historical base-interpreter snapshot, blocked as expected. All current
-    execution uses existing conda env `fas`; its Python 3.13.15 is outside the
-    declared range and the model stack is not yet locked
+- Environment: existing conda env `fas`, approved Python 3.12.14, exact native/wheel
+    locks and upstream commits; [preflight](results/phase1/environment-preflight-locked.json)
+    ready, [CUDA smoke](results/phase1/environment-smoke-locked.json) pass and
+    [76-test regression/reconstruction](results/phase1/environment-lock-verification.json)
+    pass. The old [report](results/phase1/environment-preflight.json) remains historical.
+    No pretrained weights or datasets were loaded; environment readiness is not
+    scientific or extraction readiness
 
 ## Non-claims
 

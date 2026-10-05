@@ -1,0 +1,56 @@
+{
+  "checks": {
+    "analysis-freeze": {
+      "exit": 1,
+      "expected": 1
+    },
+    "confirmatory": {
+      "exit": 2,
+      "expected": 2
+    },
+    "data": {
+      "exit": 2,
+      "expected": 2
+    },
+    "data-audit": {
+      "exit": 1,
+      "expected": 1
+    },
+    "freeze_writer": {
+      "exit": 1,
+      "record_unchanged": true
+    },
+    "locked-evaluation": {
+      "exit": 1,
+      "expected": 1
+    },
+    "pre-pilot": {
+      "exit": 2,
+      "expected": 2
+    },
+    "schema": {
+      "exit": 0,
+      "expected": 0
+    },
+    "source-dry-run": {
+      "exit": 1,
+      "expected": 1
+    },
+    "tests": {
+      "exit": 0,
+      "output": "----------------------------------------------------------------------\nRan 76 tests in 11.325s\n\nOK"
+    }
+  },
+  "config_sha256": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+  "python_executable": "/home/lathevinh/miniforge3/envs/fas/bin/python",
+  "reconstruction": {
+    "conda_command": "conda install -n fas -y --force-reinstall --file configs/environment-conda-linux-64.lock",
+    "native_inventory_matches_lock": true,
+    "observed_exit": 0,
+    "pip_command": "conda run -n fas python -m pip install --require-hashes --force-reinstall --no-deps -r configs/environment-linux-py312.lock",
+    "post_reconstruction_smoke_matches_committed_report": true,
+    "scope": "in-place native conda and hashed-wheel reinstall in existing fas; not a cold clean environment"
+  },
+  "status": "pass",
+  "version": 1
+}

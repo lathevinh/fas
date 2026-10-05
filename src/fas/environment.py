@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import platform
 import re
+import subprocess
 import sys
 from collections.abc import Mapping, Sequence
 from importlib import metadata
@@ -15,6 +16,16 @@ from typing import Any
 REQUIRED_PACKAGES = (
     "torch", "torchvision", "open_clip_torch", "transformers", "scikit_learn",
 )
+
+
+def verify_source_checkout(path: Path, expected_commit: str) -> dict[str, str]:
+    if re.fullmatch(r"[0-9a-f]{40}", expected_commit) is None:
+        raise ValueError("source commit must be an immutable 40-character SHA")
+    actual = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=path, text=True).strip()
+    dirty = subprocess.check_output(["git", "status", "--porcelain"], cwd=path, text=True).strip()
+    if actual != expected_commit or dirty:
+        raise ValueError(f"source checkout must be clean at {expected_commit}: {path}")
+    return {"commit": actual, "status": "clean"}
 
 
 def check_environment(

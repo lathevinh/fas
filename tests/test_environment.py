@@ -6,13 +6,13 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from fas.environment import REQUIRED_PACKAGES, check_environment
-from fas.preregistration import load_config
+from fas.environment import REQUIRED_PACKAGES, check_environment, verify_source_checkout
 
 
 class EnvironmentTest(unittest.TestCase):
@@ -42,14 +42,24 @@ class EnvironmentTest(unittest.TestCase):
     def test_matching_synthetic_environment_is_ready(self) -> None:
         self.assertEqual(self.check()["status"], "ready")
 
+    def test_source_checkout_requires_exact_clean_commit(self) -> None:
+        with patch("fas.environment.subprocess.check_output", side_effect=["a" * 40, ""]):
+            self.assertEqual(verify_source_checkout(self.root, "a" * 40)["status"], "clean")
+        for commit, status in (("b" * 40, ""), ("a" * 40, " M model.py")):
+            with self.subTest(commit=commit, status=status), patch("fas.environment.subprocess.check_output", side_effect=[commit, status]):
+                with self.assertRaises(ValueError):
+                    verify_source_checkout(self.root, "a" * 40)
+        with self.assertRaises(ValueError):
+            verify_source_checkout(self.root, "main")
+
     def test_python_boundaries(self) -> None:
         for version, expected in (((3, 10, 9), "blocked"), ((3, 11, 0), "ready"), ((3, 12, 9), "ready"), ((3, 13, 0), "blocked")):
             with self.subTest(version=version):
                 self.assertEqual(self.check(version)["status"], expected)
 
-    def test_pending_repository_config_stays_blocked(self) -> None:
-        config = load_config(ROOT / "configs/environment_v1.yaml")
-        result = check_environment(ROOT, config, python_version=(3, 12, 0), runtime_platform="linux_x86_64", installed_packages=self.packages)
+    def test_pending_config_stays_blocked(self) -> None:
+        self.config["status"] = "pending_model_stack_lock"
+        result = self.check()
         self.assertEqual(result["status"], "blocked")
 
     def test_changed_or_missing_lock_is_blocked(self) -> None:
@@ -88,8 +98,9 @@ class EnvironmentTest(unittest.TestCase):
         self.assertEqual(self.check()["status"], "blocked")
 
     def test_cli_reports_current_blockers_without_writing(self) -> None:
+        config_path = self._pending_config()
         result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts/check_environment.py")],
+            [sys.executable, str(ROOT / "scripts/check_environment.py"), "--config", str(config_path)],
             capture_output=True, text=True, check=False,
         )
         self.assertEqual(result.returncode, 1)
@@ -97,7 +108,8 @@ class EnvironmentTest(unittest.TestCase):
 
     def test_cli_writes_immutable_report_and_refuses_overwrite(self) -> None:
         output = self.root / "report.json"
-        command = [sys.executable, str(ROOT / "scripts/check_environment.py"), "--out", str(output)]
+        config_path = self._pending_config()
+        command = [sys.executable, str(ROOT / "scripts/check_environment.py"), "--config", str(config_path), "--out", str(output)]
         first = subprocess.run(command, capture_output=True, text=True, check=False)
         self.assertEqual(first.returncode, 1)
         original = output.read_bytes()
@@ -105,6 +117,11 @@ class EnvironmentTest(unittest.TestCase):
         second = subprocess.run(command, capture_output=True, text=True, check=False)
         self.assertEqual(second.returncode, 2)
         self.assertEqual(output.read_bytes(), original)
+
+    def _pending_config(self) -> Path:
+        path = self.root / "pending.json"
+        path.write_text(json.dumps({"version": 1, "status": "pending_model_stack_lock"}), encoding="utf-8")
+        return path
 
 
 if __name__ == "__main__":

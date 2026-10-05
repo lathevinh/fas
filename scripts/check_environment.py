@@ -18,10 +18,11 @@ from fas.preregistration import load_config
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=Path, default=ROOT / "configs/environment_v1.yaml")
     parser.add_argument("--out", type=Path, help="create an immutable JSON report")
     args = parser.parse_args()
     try:
-        result = inspect_environment(ROOT, load_config(ROOT / "configs/environment_v1.yaml"))
+        result = inspect_environment(ROOT, load_config(args.config))
         if args.out:
             write_immutable_record(args.out, result)
     except (ValueError, OSError) as exc:
