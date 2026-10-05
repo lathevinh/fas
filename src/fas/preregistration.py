@@ -10,6 +10,7 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
+from .contracts import validate_source_evidence
 from .freeze import build_analysis_freeze_record
 
 CONFIG_FILES = (
@@ -129,6 +130,7 @@ def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
         recorded = {}
     if set(recorded) != SOURCE_DRY_RUN_ARTIFACTS:
         errors.append("source-dry-run evidence requires the exact frozen artifact set")
+    source_artifacts: dict[str, dict[str, Any]] = {}
     for relative_path in SOURCE_DRY_RUN_ARTIFACTS:
         artifact_path = root / relative_path
         if not artifact_path.exists():
@@ -147,6 +149,11 @@ def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
             errors.append(f"source-dry-run artifact requires schema version 1: {relative_path}")
         if artifact.get("no_target_selection_input") is not True:
             errors.append(f"source-dry-run artifact must exclude target selection input: {relative_path}")
+        source_artifacts[Path(relative_path).name] = artifact
+    errors.extend(validate_source_evidence(
+        source_artifacts.get("competence.json", {}),
+        source_artifacts.get("applicability.json", {}),
+    ))
     if evidence.get("source_policy_path") != SOURCE_POLICY_PATH:
         errors.append(f"source-dry-run policy must reference {SOURCE_POLICY_PATH}")
     policy_path = root / SOURCE_POLICY_PATH

@@ -2,13 +2,17 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoint 1.0 implemented; awaiting owner confirmation
+Status: checkpoint 1.0 locally validated; Phase-0 prerequisite rework awaits confirmation
 
 ## Approval boundary
 
-Complete one checkpoint, publish its acceptance criteria and actual evidence, then
-stop for owner confirmation. A completed tool is not a completed environment or
+Complete one checkpoint, publish its acceptance criteria and actual evidence,
+commit and push it to GitHub, then stop for owner confirmation. A completed tool is not a completed environment or
 dataset audit. Do not move to the next checkpoint automatically.
+
+Current execution policy: all Python code, tests, validation and package installation
+must use the existing conda environment `fas`. Do not use `base`, create another
+environment, or change the Python version without owner approval.
 
 No target-derived selection input is permitted. Raw data, private manifests, model
 weights, and caches stay outside Git. Restricted dataset access requires the owner's
@@ -19,8 +23,9 @@ in chat.
 
 | Checkpoint | Deliverable | Acceptance criteria | Evidence to review |
 |---|---|---|---|
+| 0.R Prerequisite rework | Typed source evidence and explicit K=1 gate applicability | Reject empty/false evidence; gate applies only to predicted-live; focused/full suites pass; owner review and fresh CI | Document 66, pending acceptance before 1.1 |
 | 1.0 Preflight | Read-only runtime/lock checker and checkpoint plan | Phase-0 CI verified; positive/negative checker tests pass; real pending environment returns nonzero; no false readiness | JSON report, test counts, CI link, host observations below |
-| 1.1 Environment lock | Isolated Python 3.12 environment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Lock/hash, environment report, import/CUDA logs, recreate command |
+| 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Lock/hash, environment report, import/CUDA logs, recreate command |
 | 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Schema, fixtures, CLI report; separate approved local data roots |
 | 1.3 Dataset adapters | Official-metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; official partitions preserved; unknown labels and duplicate IDs rejected; fixture counts reconcile | One separately approved checkpoint per OULU-NPU, CASIA-FASD, Replay-Attack and MSU-MFSD adapter |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
@@ -84,17 +89,17 @@ provisioning remains blocked/not performed; checkpoint 1.1 awaits owner confirma
 Run from the repository root:
 
 ```bash
-python -m unittest discover -s tests -p test_environment.py -v
-python -m unittest discover -s tests -v
-python scripts/check_environment.py
-python scripts/validate_preregistration.py --stage schema
+conda run -n fas python -m unittest discover -s tests -p test_environment.py -v
+conda run -n fas python -m unittest discover -s tests -v
+conda run -n fas python scripts/check_environment.py
+conda run -n fas python scripts/validate_preregistration.py --stage schema
 git diff --check
 ```
 
 For a new immutable snapshot, choose a new output path:
 
 ```bash
-python scripts/check_environment.py --out /tmp/fas-environment-review.json
+conda run -n fas python scripts/check_environment.py --out /tmp/fas-environment-review.json
 ```
 
 Expected preflight status remains `blocked` until checkpoint 1.1. An existing output
@@ -103,9 +108,11 @@ path is refused; the checked-in report describes the interpreter used at checkpo
 
 ## Next approval
 
-Approve checkpoint 1.0 before provisioning checkpoint 1.1. Keep the environment
-outside this repository: existing temporary-repository tests copy the working tree,
-so a large in-tree environment would make those tests unnecessarily expensive.
+Approve the prerequisite rework in Document 66 before provisioning checkpoint 1.1.
+The existing `fas` environment is outside this repository. Its Python is currently
+3.13.15, outside the declared range; approval is required before changing it.
+Existing temporary-repository tests copy the working tree, so do not introduce a
+large in-tree environment.
 
 The remaining readiness validator currently lists SiW-M among required datasets.
 Before checkpoint 1.5 acceptance, align that gate with Document 42's four-dataset

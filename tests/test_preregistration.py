@@ -113,6 +113,117 @@ class PreregistrationTest(unittest.TestCase):
             self._write_source_evidence(copy)
             self.assertEqual(validate_stage(copy, "source-dry-run"), [])
 
+    def test_source_dry_run_rejects_correctly_hashed_empty_artifacts(self) -> None:
+        for name in ("competence.json", "applicability.json"):
+            with self.subTest(name=name), self._copy() as copy:
+                self._write_synthetic_evidence(copy)
+                evidence_path = self._write_source_evidence(copy)
+                artifact_path = copy / "results/source-dry-run" / name
+                artifact_path.write_text(json.dumps({"version": 1, "no_target_selection_input": True}), encoding="utf-8")
+                evidence = json.loads(evidence_path.read_text())
+                evidence["artifact_sha256"][f"results/source-dry-run/{name}"] = self._digest(artifact_path)
+                evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+                for stage in ("source-dry-run", "analysis-freeze", "locked-evaluation"):
+                    errors = validate_stage(copy, stage)
+                    self.assertTrue(any(name in error and "contents" in error for error in errors), errors)
+
+    def test_source_evidence_rejects_invalid_science_and_lineage(self) -> None:
+        cases = (
+            ("competence.json", lambda payload: payload.update(version=True)),
+            ("competence.json", lambda payload: payload.update(no_target_selection_input=False)),
+            ("competence.json", lambda payload: payload["records"].pop()),
+            ("competence.json", lambda payload: payload["records"].__setitem__(1, payload["records"][0])),
+            ("competence.json", lambda payload: payload["records"][0].update(seed=1)),
+            ("competence.json", lambda payload: payload["records"][0].update(source_domains=["OULU-NPU", "CASIA-FASD", "Replay-Attack"])),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_auroc=0.54)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_balanced_accuracy=0.54)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_auroc_lcb=0.50)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(score_range=1e-6)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_auroc=float("nan"))),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_auroc=True)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(macro_auroc=1.1)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(both_classes=False)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["heterogeneous"].update(finite_calibration=False)),
+            ("competence.json", lambda payload: payload["records"][0]["systems"]["dino_reg"].update(score_range=0, **{"pass": False})),
+            ("competence.json", lambda payload: payload["records"][0]["heterogeneous_risk_fit"].update(error_count=19)),
+            ("competence.json", lambda payload: payload["records"][0]["heterogeneous_risk_fit"].update(correct_count=True)),
+            ("applicability.json", lambda payload: payload.update(n_error_min=0)),
+            ("applicability.json", lambda payload: payload.update(target_event_support="eligible")),
+            ("applicability.json", lambda payload: payload["records"][0]["claims"].update(rq1_oof_transfer="not_applicable")),
+            ("applicability.json", lambda payload: payload["records"][0]["source_events"]["CASIA-FASD"].update(error_count=21)),
+            ("applicability.json", lambda payload: payload["records"][0]["source_events"]["CASIA-FASD"].update(error_count=-1)),
+            ("applicability.json", lambda payload: payload["records"][0]["source_events"]["CASIA-FASD"].update(ap_estimable=False)),
+            ("applicability.json", lambda payload: payload["records"][0]["source_events"].update({"OULU-NPU": {}})),
+        )
+        for index, (name, mutate) in enumerate(cases):
+            with self.subTest(index=index, name=name), self._copy() as copy:
+                self._write_synthetic_evidence(copy)
+                self._write_source_evidence(copy)
+                path = copy / "results/source-dry-run" / name
+                payload = json.loads(path.read_text())
+                mutate(payload)
+                self._rewrite_source_artifact(copy, name, payload)
+                errors = validate_stage(copy, "source-dry-run")
+                self.assertTrue(any("contents" in error for error in errors), errors)
+
+    def test_complete_competence_accepts_inclusive_minimums(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            self._write_source_evidence(copy)
+            payload = json.loads((copy / "results/source-dry-run/competence.json").read_text())
+            for record in payload["records"]:
+                for values in record["systems"].values():
+                    values.update(macro_auroc=0.55, macro_balanced_accuracy=0.55, macro_auroc_lcb=0.500001, score_range=0.0000011)
+            self._rewrite_source_artifact(copy, "competence.json", payload)
+            self.assertEqual(validate_stage(copy, "source-dry-run"), [])
+
+    def test_weak_standalone_branches_do_not_block_core_readiness(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            self._write_source_evidence(copy)
+            payload = json.loads((copy / "results/source-dry-run/competence.json").read_text())
+            for record in payload["records"]:
+                for name in ("dino_reg", "openclip"):
+                    record["systems"][name].update(macro_auroc=0.51, **{"pass": False})
+            self._rewrite_source_artifact(copy, "competence.json", payload)
+            self.assertEqual(validate_stage(copy, "source-dry-run"), [])
+
+    def test_same_family_failure_scopes_applicability_to_rq2(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            self._write_source_evidence(copy)
+            competence = json.loads((copy / "results/source-dry-run/competence.json").read_text())
+            applicability = json.loads((copy / "results/source-dry-run/applicability.json").read_text())
+            for record in competence["records"]:
+                record["systems"]["same_family"].update(macro_auroc=0.51, **{"pass": False})
+            self._rewrite_source_artifact(copy, "competence.json", competence)
+            self.assertTrue(validate_stage(copy, "source-dry-run"))
+            for record in applicability["records"]:
+                record["claims"]["rq2_complete_system"] = "not_applicable"
+            self._rewrite_source_artifact(copy, "applicability.json", applicability)
+            self.assertEqual(validate_stage(copy, "source-dry-run"), [])
+
+    def test_source_low_event_and_one_class_support_is_reported_not_fabricated(self) -> None:
+        for error_count, estimable in ((8, True), (0, False)):
+            with self.subTest(error_count=error_count), self._copy() as copy:
+                self._write_synthetic_evidence(copy)
+                self._write_source_evidence(copy)
+                competence = json.loads((copy / "results/source-dry-run/competence.json").read_text())
+                applicability = json.loads((copy / "results/source-dry-run/applicability.json").read_text())
+                competence["records"][0]["heterogeneous_risk_fit"]["error_count"] = 40 + error_count
+                applicability["records"][0]["source_events"]["CASIA-FASD"].update(error_count=error_count, ap_estimable=estimable, meets_n_error_min=False)
+                self._rewrite_source_artifact(copy, "competence.json", competence)
+                self._rewrite_source_artifact(copy, "applicability.json", applicability)
+                self.assertEqual(validate_stage(copy, "source-dry-run"), [])
+
+    def _rewrite_source_artifact(self, root: Path, name: str, payload: dict) -> None:
+        path = root / "results/source-dry-run" / name
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        evidence_path = root / "results/source-dry-run/evidence.json"
+        evidence = json.loads(evidence_path.read_text())
+        evidence["artifact_sha256"][f"results/source-dry-run/{name}"] = self._digest(path)
+        evidence_path.write_text(json.dumps(evidence), encoding="utf-8")
+
     def test_source_dry_run_rejects_fake_unknown_and_stale_hashes(self) -> None:
         with self._copy() as copy:
             self._write_synthetic_evidence(copy)
@@ -219,10 +330,19 @@ class PreregistrationTest(unittest.TestCase):
         directory = root / "results" / "source-dry-run"
         directory.mkdir(parents=True, exist_ok=True)
         artifacts = {}
-        for name in ("competence.json", "applicability.json"):
+        competence = {"version": 1, "no_target_selection_input": True, "records": []}
+        applicability = {"version": 1, "no_target_selection_input": True, "n_error_min": 20, "target_event_support": "not_inspected", "records": []}
+        domains = ("OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD")
+        for target in domains:
+            for seed in (20260917, 20260923, 20261001):
+                identity = {"outer_target": target, "seed": seed, "source_domains": [domain for domain in domains if domain != target]}
+                metrics = {"macro_auroc": 0.6, "macro_balanced_accuracy": 0.6, "macro_auroc_lcb": 0.51, "score_range": 0.4, "finite_scores": True, "both_classes": True, "finite_calibration": True, "pass": True}
+                competence["records"].append({**identity, "systems": {name: dict(metrics) for name in ("dino_reg", "openclip", "heterogeneous", "same_family")}, "dino_anchor_pass": True, "heterogeneous_risk_fit": {"error_count": 60, "correct_count": 60, "pass": True}})
+                applicability["records"].append({**identity, "claims": {"rq1_oof_transfer": "eligible", "rq2_complete_system": "eligible"}, "source_events": {domain: {"error_count": 20, "correct_count": 20, "ap_estimable": True, "meets_n_error_min": True} for domain in identity["source_domains"]}})
+        for name, payload in (("competence.json", competence), ("applicability.json", applicability)):
             path = directory / name
             path.write_text(
-                json.dumps({"version": 1, "no_target_selection_input": True}),
+                json.dumps(payload),
                 encoding="utf-8",
             )
             artifacts[f"results/source-dry-run/{name}"] = self._digest(path)

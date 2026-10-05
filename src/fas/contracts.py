@@ -19,6 +19,137 @@ RQ2_DEPENDENCIES = (
     "same_family_complete_competence",
     "dino_anchor_nondegeneracy",
 )
+PRIMARY_SEEDS = (20260917, 20260923, 20261001)
+
+
+def _source_records(artifact: Mapping[str, Any], name: str, errors: list[str]) -> dict[tuple[str, int], Mapping[str, Any]]:
+    records = artifact.get("records")
+    if not isinstance(records, list) or len(records) != 12:
+        errors.append(f"{name} contents require all four excluded-target folds and three seeds")
+        return {}
+    indexed: dict[tuple[str, int], Mapping[str, Any]] = {}
+    for record in records:
+        if not isinstance(record, Mapping):
+            errors.append(f"{name} contents require typed source records")
+            continue
+        target, seed = record.get("outer_target"), record.get("seed")
+        if not isinstance(target, str) or target not in MCIO_DOMAINS or type(seed) is not int or seed not in PRIMARY_SEEDS:
+            errors.append(f"{name} contents require frozen fold/seed identities")
+            continue
+        sources = record.get("source_domains")
+        if not isinstance(sources, list) or not all(isinstance(domain, str) for domain in sources) or len(sources) != 3 or set(sources) != MCIO_DOMAINS - {target}:
+            errors.append(f"{name} contents require exactly the three non-target source domains")
+        key = (target, seed)
+        if key in indexed:
+            errors.append(f"{name} contents contain a duplicate fold/seed")
+        indexed[key] = record
+    if set(indexed) != {(target, seed) for target in MCIO_DOMAINS for seed in PRIMARY_SEEDS}:
+        errors.append(f"{name} contents omit a frozen fold/seed")
+    return indexed
+
+
+def _finite_number(value: Any, minimum: float, maximum: float | None = None) -> bool:
+    return (
+        isinstance(value, (int, float)) and not isinstance(value, bool)
+        and math.isfinite(value) and value >= minimum
+        and (maximum is None or value <= maximum)
+    )
+
+
+def _event_count(value: Any) -> bool:
+    return type(value) is int and value >= 0
+
+
+def validate_source_evidence(
+    competence: Mapping[str, Any], applicability: Mapping[str, Any],
+) -> list[str]:
+    """Validate source-only evidence, not target results or scientific outcomes."""
+    errors: list[str] = []
+    for name, artifact in (("competence.json", competence), ("applicability.json", applicability)):
+        if type(artifact.get("version")) is not int or artifact.get("version") != 1 or artifact.get("no_target_selection_input") is not True:
+            errors.append(f"{name} contents require version 1 and source-only lineage")
+    competence_records = _source_records(competence, "competence.json", errors)
+    applicability_records = _source_records(applicability, "applicability.json", errors)
+    if applicability.get("n_error_min") != 20 or type(applicability.get("n_error_min")) is not int:
+        errors.append("applicability.json contents require the frozen n_error_min=20")
+    if applicability.get("target_event_support") != "not_inspected":
+        errors.append("applicability.json contents cannot attest target event support before evaluation")
+    for key, record in competence_records.items():
+        systems = record.get("systems")
+        system_names = {"dino_reg", "openclip", "heterogeneous", "same_family"}
+        if not isinstance(systems, Mapping) or set(systems) != system_names:
+            errors.append(f"competence.json contents require all four systems for {key}")
+            continue
+        computed: dict[str, bool] = {}
+        nondegenerate: dict[str, bool] = {}
+        for name, values in systems.items():
+            if not isinstance(values, Mapping):
+                errors.append(f"competence.json contents require typed {name} metrics for {key}")
+                continue
+            numerical = ("macro_auroc", "macro_balanced_accuracy", "macro_auroc_lcb")
+            flags = ("finite_scores", "both_classes", "finite_calibration", "pass")
+            valid = all(_finite_number(values.get(field), 0, 1) for field in numerical)
+            valid = valid and _finite_number(values.get("score_range"), 0)
+            valid = valid and all(type(values.get(field)) is bool for field in flags)
+            if not valid:
+                errors.append(f"competence.json contents require finite typed {name} metrics for {key}")
+                continue
+            nondegenerate[name] = (
+                values["finite_scores"] and values["both_classes"]
+                and values["finite_calibration"] and values["score_range"] > 1e-6
+            )
+            computed[name] = (
+                nondegenerate[name] and values["macro_auroc"] >= 0.55
+                and values["macro_balanced_accuracy"] >= 0.55
+                and values["macro_auroc_lcb"] > 0.50
+            )
+            if values["pass"] is not computed[name]:
+                errors.append(f"competence.json contents have inconsistent {name} pass for {key}")
+        if set(computed) != system_names:
+            continue
+        anchor = nondegenerate["dino_reg"]
+        if record.get("dino_anchor_pass") is not anchor:
+            errors.append(f"competence.json contents have inconsistent DINO anchor pass for {key}")
+        risk_fit = record.get("heterogeneous_risk_fit")
+        if not isinstance(risk_fit, Mapping) or not all(_event_count(risk_fit.get(field)) for field in ("error_count", "correct_count")):
+            errors.append(f"competence.json contents require typed risk-fit counts for {key}")
+            continue
+        risk_pass = risk_fit["error_count"] >= 20 and risk_fit["correct_count"] >= 20
+        if risk_fit.get("pass") is not risk_pass:
+            errors.append(f"competence.json contents have inconsistent risk-fit pass for {key}")
+        rq1_eligible = computed["heterogeneous"] and anchor and risk_pass
+        rq2_eligible = computed["heterogeneous"] and computed["same_family"] and anchor
+        if not rq1_eligible:
+            errors.append(f"competence.json contents do not satisfy core source prerequisites for {key}")
+        application = applicability_records.get(key)
+        if application is None:
+            continue
+        expected_claims = {
+            "rq1_oof_transfer": "eligible" if rq1_eligible else "not_applicable",
+            "rq2_complete_system": "eligible" if rq2_eligible else "not_applicable",
+        }
+        if application.get("claims") != expected_claims:
+            errors.append(f"applicability.json contents disagree with claim-specific competence for {key}")
+        events = application.get("source_events")
+        if not isinstance(events, Mapping) or set(events) != MCIO_DOMAINS - {key[0]}:
+            errors.append(f"applicability.json contents require non-target source event counts for {key}")
+            continue
+        totals = {"error_count": 0, "correct_count": 0}
+        valid_events = True
+        for domain, counts in events.items():
+            if not isinstance(counts, Mapping) or not all(_event_count(counts.get(field)) for field in totals):
+                errors.append(f"applicability.json contents require typed event counts for {key}/{domain}")
+                valid_events = False
+                continue
+            estimable = counts["error_count"] > 0 and counts["correct_count"] > 0
+            supported = estimable and counts["error_count"] >= 20
+            if counts.get("ap_estimable") is not estimable or counts.get("meets_n_error_min") is not supported:
+                errors.append(f"applicability.json contents have inconsistent event support for {key}/{domain}")
+            for field in totals:
+                totals[field] += counts[field]
+        if valid_events and any(totals[field] != risk_fit[field] for field in totals):
+            errors.append(f"applicability.json contents do not reconcile with risk-fit counts for {key}")
+    return errors
 
 
 @dataclass(frozen=True)
@@ -281,7 +412,7 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
             if row["final_k1_action"] != "non_accept":
                 errors.append("detector failures must be terminal non-accepts under K=1")
         elif status == "success":
-            for field in ("pad_score", "pad_threshold", "risk_score", "gate_threshold"):
+            for field in ("pad_score", "pad_threshold", "risk_score"):
                 value = row[field]
                 if (
                     not isinstance(value, (int, float))
@@ -291,12 +422,20 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
                     errors.append(f"detector success requires finite {field}")
             if row["pad_decision"] not in {"attack", "bona_fide"}:
                 errors.append("detector success requires a typed PAD decision")
-            if row["gate_action"] not in {"accept", "non_accept"}:
-                errors.append("detector success requires a typed gate action")
             if row["final_k1_action"] not in {"accept", "non_accept"}:
                 errors.append("detector success requires a typed final K=1 action")
-            if row["pad_decision"] == "attack" and row["final_k1_action"] != "non_accept":
-                errors.append("PAD attack decisions must be terminal non-accepts under K=1")
+            if row["pad_decision"] == "attack":
+                if row["gate_threshold"] is not None or row["gate_action"] is not None:
+                    errors.append("gate is not applied to PAD attack decisions; gate fields must be null")
+                if row["final_k1_action"] != "non_accept":
+                    errors.append("PAD attack decisions must be terminal non-accepts under K=1")
+            elif row["pad_decision"] == "bona_fide":
+                if not _finite_number(row["gate_threshold"], -math.inf):
+                    errors.append("predicted-live decisions require a finite gate_threshold")
+                if row["gate_action"] not in {"accept", "non_accept"}:
+                    errors.append("predicted-live decisions require a typed gate action")
+                if row["final_k1_action"] != row["gate_action"]:
+                    errors.append("predicted-live final K=1 action must match gate action")
 
     heterogeneous = by_system["heterogeneous"]
     same_family = by_system["same_family"]

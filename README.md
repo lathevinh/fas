@@ -10,10 +10,11 @@ Research dossier for a practical and publishable face presentation attack detect
 
 The research plan, methodology, paper contract, and data-to-experiment implementation
 plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
-governance, typed contract, staged-readiness, and immutable-freeze primitives. Phase 1
-has started with read-only environment preflight. Further provisioning and
-dataset-facing work await explicit checkpoint approval; training and target
-evaluation remain locked.
+governance, typed contract, staged-readiness, and immutable-freeze primitives.
+Post-rework review found two remaining contracts; their local repairs await review
+and fresh CI. Phase 1 read-only preflight is implemented, but provisioning and
+dataset-facing work remain paused at that prerequisite checkpoint. Training and
+target evaluation remain locked.
 
 ## Scope
 
@@ -99,17 +100,20 @@ single-branch confidence and a matched same-family ensemble?
 62. [Phase 0 governance migration and validation plan](docs/61-phase0-governance-migration-and-validation-plan.md)
 63. [Phase 0 implementation rework review](docs/63-phase0-implementation-rework-review.md)
 64. [Response to Phase 0 implementation rework](docs/64-review-response-doc63-phase0-rework.md)
-65. [Reading list](references/reading-list.md)
+65. [Phase 0 rework verification review](docs/65-review-phase0-after-doc64.md)
+66. [Phase 1 checkpoints and preflight](docs/65-phase1-checkpoints-and-preflight.md)
+67. [Source-evidence and gate prerequisite rework](docs/66-review-response-doc65-source-evidence-and-gate.md)
+68. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
 ```bash
-python -m unittest discover -s tests -v
-python scripts/validate_preregistration.py --stage schema
-python scripts/validate_preregistration.py --stage data-audit
-python scripts/validate_preregistration.py --stage source-dry-run
-python scripts/validate_preregistration.py --stage analysis-freeze
-python scripts/validate_preregistration.py --stage locked-evaluation
+conda run -n fas python -m unittest discover -s tests -v
+conda run -n fas python scripts/validate_preregistration.py --stage schema
+conda run -n fas python scripts/validate_preregistration.py --stage data-audit
+conda run -n fas python scripts/validate_preregistration.py --stage source-dry-run
+conda run -n fas python scripts/validate_preregistration.py --stage analysis-freeze
+conda run -n fas python scripts/validate_preregistration.py --stage locked-evaluation
 ```
 
 Only `schema` is expected to pass before audited data and source-only evidence exist.
@@ -121,15 +125,17 @@ is the strict source-only design consolidated in
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
-    governance/config migration implemented and validated with synthetic evidence
-- Current work package: [Phase 1 checkpoints and preflight](docs/65-phase1-checkpoints-and-preflight.md);
-    checkpoint 1.0 locally validated, awaiting approval before environment provisioning
+    source-evidence/gate rework locally validated; owner acceptance and fresh CI pending
+- Current work package: [Prerequisite rework](docs/66-review-response-doc65-source-evidence-and-gate.md);
+    Phase 1.1 environment provisioning paused until acceptance
 - Last reviewed: 2026-10-05
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 - Environment preflight: [report](results/phase1/environment-preflight.json)
-    is blocked as expected; the declared model stack is not yet installed or locked
+    is a historical base-interpreter snapshot, blocked as expected. All current
+    execution uses existing conda env `fas`; its Python 3.13.15 is outside the
+    declared range and the model stack is not yet locked
 
 ## Non-claims
 

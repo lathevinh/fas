@@ -135,6 +135,46 @@ class PairingAndLedgerContractTest(unittest.TestCase):
         errors = validate_transaction_ledger([left, right])
         self.assertTrue(any("paired identity" in error for error in errors))
 
+    def test_predicted_attack_requires_no_gate(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        for row in rows:
+            row.update(pad_decision="attack", gate_threshold=None, gate_action=None, final_k1_action="non_accept")
+        self.assertEqual(validate_transaction_ledger(rows), [])
+
+    def test_predicted_attack_rejects_gate_intervention(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        for row in rows:
+            row.update(pad_decision="attack", gate_action="non_accept", final_k1_action="non_accept")
+        self.assertTrue(any("not applied" in error for error in validate_transaction_ledger(rows)))
+
+    def test_predicted_live_final_action_matches_gate(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        rows[0]["final_k1_action"] = "non_accept"
+        self.assertTrue(any("match gate" in error for error in validate_transaction_ledger(rows)))
+
+    def test_predicted_live_can_be_blocked_by_gate(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        for row in rows:
+            row.update(risk_score=0.8, gate_action="non_accept", final_k1_action="non_accept")
+        self.assertEqual(validate_transaction_ledger(rows), [])
+
+    def test_predicted_live_requires_finite_applicable_gate(self) -> None:
+        for threshold in (None, True, float("nan"), float("inf")):
+            with self.subTest(threshold=threshold):
+                rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+                rows[0]["gate_threshold"] = threshold
+                self.assertTrue(any("finite gate_threshold" in error for error in validate_transaction_ledger(rows)))
+        rows[0].update(gate_threshold=0.4, gate_action=None)
+        self.assertTrue(any("typed gate" in error for error in validate_transaction_ledger(rows)))
+
+    def test_predicted_attack_cannot_accept_and_remains_in_risk_view(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        for row in rows:
+            row.update(pad_decision="attack", gate_threshold=None, gate_action=None, final_k1_action="non_accept")
+            self.assertEqual(validate_risk_view([row]), [])
+        rows[0]["final_k1_action"] = "accept"
+        self.assertTrue(any("terminal non-accept" in error for error in validate_transaction_ledger(rows)))
+
     def test_risk_view_rejects_detector_failures(self) -> None:
         rows = [
             {"transaction_id": "t1", "detector_status": "success", "risk_score": 0.2},
