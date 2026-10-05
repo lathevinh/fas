@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "status": "pending",
+  "dataset": "OULU-NPU",
+  "release_id": null,
+  "protocol_id": null,
+  "owner": null,
+  "channel": null,
+  "channel_reference": null,
+  "downloaded_on": null,
+  "permissions": {
+    "redistribution": "unknown",
+    "derived_frames": "unknown",
+    "model_weights": "unknown",
+    "metadata_counts": "unknown"
+  },
+  "evidence": {
+    "channel": {"id": "official-channel", "relpath": "agreements/channel.txt", "sha256": null},
+    "license": {"id": "license", "relpath": "agreements/license.txt", "sha256": null},
+    "access_approval": {"id": "access-approval", "relpath": "agreements/approval.txt", "sha256": null},
+    "release": {"id": "release-document", "relpath": "agreements/release.txt", "sha256": null},
+    "protocol_documentation": {"id": "protocol-guide", "relpath": "agreements/protocol.txt", "sha256": null}
+  },
+  "raw_root": "raw/oulu_npu/RELEASE_ID",
+  "archives": [
+    {"id": "original-archive", "relpath": "downloads/oulu_npu/RELEASE_ID/archive.zip", "sha256": null}
+  ],
+  "protocols": [
+    {"id": "official-list", "relpath": "raw/oulu_npu/RELEASE_ID/official_protocols/list.txt", "sha256": null}
+  ]
+}

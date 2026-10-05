@@ -3,6 +3,19 @@
 Tracked summary files contain only aggregate, non-sensitive counts and SHA-256 values.
 Restricted row-level evidence remains under ignored `manifests/private/`.
 
+## Acquisition receipt
+
+[intake_template_v1.json](intake_template_v1.json) defines the version-1 acquisition
+and protocol-file inventory fields. Its null hashes and pending status intentionally
+block verification. Completed receipts and acquisition evidence must remain in
+authorized private roots outside the repository, not in this directory.
+
+Use `conda run -n fas python scripts/check_intake.py --receipt <private-receipt>
+--data-root <private-root> --out <new-report-outside-data-root>` for a redacted
+immutable report. See [checkpoint 1.2](../docs/70-phase1-step1.2-intake-contract.md)
+for schema, exit codes, permissions and acceptance evidence. This does not parse
+media inventories or populate the existing data-audit summaries below.
+
 ## Per-video metadata
 
 One file per dataset: `<dataset_slug>_metadata.csv`.
@@ -28,5 +41,5 @@ Roles are `train`, `branch_calibration`, `g_domain`, `routing_validation`, and
 `g_attack` applies to SiW-M. The validator recomputes role counts, detects overlap, and
 checks each private file against the tracked summary hash.
 
-Run `python scripts/validate_preregistration.py --stage data-audit` after populating the
+Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.

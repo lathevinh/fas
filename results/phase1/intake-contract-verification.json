@@ -1,0 +1,118 @@
+{
+  "artifact_sha256": {
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "manifests/intake_template_v1.json": "4d627a5bfd709079cf10cd58dca49ed8eb7d8c82e8ef4191ff63c04dada14dba",
+    "scripts/check_intake.py": "d3bec72d617b698540658bcc05091ff8b5a7271fe46c6587959e9fbac8159baf",
+    "src/fas/intake.py": "e43073d71fd7590afc7da02d87280d589d7123d1ef1646e78b2da9e576256c12",
+    "tests/test_intake.py": "85bf5cb773046ffb4fba8b4f6902f8a706ee9bad51ffffeca68d5aedf0108054"
+  },
+  "checkpoint": "1.2",
+  "checks": {
+    "analysis-freeze": {
+      "exit": 1,
+      "expected": 1
+    },
+    "changed_archive_cli": {
+      "exit": 1,
+      "report": {
+        "errors": [
+          "archives[0].sha256 differs from actual file bytes"
+        ],
+        "no_media_decoding": true,
+        "scope": "declared acquisition evidence and hashes only; not media inventory, license interpretation, data audit or extraction authorization",
+        "status": "blocked",
+        "version": 1
+      }
+    },
+    "confirmatory": {
+      "exit": 2,
+      "expected": 2
+    },
+    "data": {
+      "exit": 2,
+      "expected": 2
+    },
+    "data-audit": {
+      "exit": 1,
+      "expected": 1
+    },
+    "environment": {
+      "exit": 0,
+      "result": "ready"
+    },
+    "focused_tests": {
+      "exit": 0,
+      "result": "----------------------------------------------------------------------\nRan 17 tests in 0.665s\n\nOK"
+    },
+    "freeze_writer": {
+      "exit": 1,
+      "record_unchanged": true
+    },
+    "full_tests": {
+      "exit": 0,
+      "result": "----------------------------------------------------------------------\nRan 93 tests in 11.694s\n\nOK"
+    },
+    "locked-evaluation": {
+      "exit": 1,
+      "expected": 1
+    },
+    "pending_template_cli": {
+      "exit": 1,
+      "report": {
+        "errors": [
+          "status must be complete",
+          "release_id must be a nonempty steward-supplied identifier",
+          "protocol_id must be a nonempty steward-supplied identifier",
+          "owner must be a nonempty steward-supplied identifier",
+          "channel_reference must be a nonempty steward-supplied identifier",
+          "downloaded_on must be an ISO calendar date",
+          "channel must be official, owner_designated or owner_confirmed_mirror",
+          "evidence.access_approval.sha256 must be an actual SHA-256",
+          "evidence.channel.sha256 must be an actual SHA-256",
+          "evidence.license.sha256 must be an actual SHA-256",
+          "evidence.protocol_documentation.sha256 must be an actual SHA-256",
+          "evidence.release.sha256 must be an actual SHA-256",
+          "raw_root must be an existing contained private raw directory",
+          "archives[0].sha256 must be an actual SHA-256",
+          "protocols[0].sha256 must be an actual SHA-256"
+        ],
+        "no_media_decoding": true,
+        "scope": "declared acquisition evidence and hashes only; not media inventory, license interpretation, data audit or extraction authorization",
+        "status": "blocked",
+        "version": 1
+      }
+    },
+    "pre-pilot": {
+      "exit": 2,
+      "expected": 2
+    },
+    "schema": {
+      "exit": 0,
+      "expected": 0
+    },
+    "source-dry-run": {
+      "exit": 1,
+      "expected": 1
+    },
+    "synthetic_complete_cli": {
+      "exit": 0,
+      "report": {
+        "errors": [],
+        "no_media_decoding": true,
+        "scope": "declared acquisition evidence and hashes only; not media inventory, license interpretation, data audit or extraction authorization",
+        "status": "verified",
+        "version": 1
+      }
+    }
+  },
+  "python_executable": "/home/lathevinh/miniforge3/envs/fas/bin/python",
+  "python_version": [
+    3,
+    12,
+    14
+  ],
+  "real_dataset_intakes_performed": false,
+  "scope": "synthetic contract/CLI acceptance only; no real dataset release accepted",
+  "status": "pass",
+  "version": 1
+}

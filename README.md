@@ -12,8 +12,9 @@ The research plan, methodology, paper contract, and data-to-experiment implement
 plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
 governance, typed contract, staged-readiness, and immutable-freeze primitives.
 Post-rework source-evidence and gate repairs passed fresh CI and owner approval.
-Phase 1 environment lock is implemented and locally verified in existing conda
-env `fas`; checkpoint 1.1 awaits owner confirmation before dataset intake.
+Phase 1 environment lock is accepted in existing conda env `fas`. Acquisition
+receipt/protocol-file intake contracts are locally verified; checkpoint 1.2 awaits
+owner confirmation before dataset adapters.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -104,7 +105,9 @@ single-branch confidence and a matched same-family ensemble?
 66. [Phase 1 checkpoints and preflight](docs/65-phase1-checkpoints-and-preflight.md)
 67. [Source-evidence and gate prerequisite rework](docs/66-review-response-doc65-source-evidence-and-gate.md)
 68. [Environment lock and CUDA smoke](docs/67-phase1-step1.1-environment-lock.md)
-69. [Reading list](references/reading-list.md)
+69. [Environment-lock acceptance review](docs/69-review-phase1-step1.1-environment-lock.md)
+70. [Intake contract and acceptance evidence](docs/70-phase1-step1.2-intake-contract.md)
+71. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -126,13 +129,16 @@ is the strict source-only design consolidated in
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
-    source-evidence/gate rework approved; environment lock locally verified
-- Current work package: [Checkpoint 1.1](docs/67-phase1-step1.1-environment-lock.md);
-    awaiting owner confirmation before checkpoint 1.2
+    source-evidence/gate rework and environment lock accepted; intake contract locally verified
+- Current work package: [Checkpoint 1.2](docs/70-phase1-step1.2-intake-contract.md);
+    awaiting owner confirmation before checkpoint 1.3
 - Last reviewed: 2026-10-05
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
+- Intake: private acquisition/protocol receipts, read-only hash/path checks and
+    redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
+    passes on synthetic fixtures. No real dataset release has been accepted
 - Environment: existing conda env `fas`, approved Python 3.12.14, exact native/wheel
     locks and upstream commits; [preflight](results/phase1/environment-preflight-locked.json)
     ready, [CUDA smoke](results/phase1/environment-smoke-locked.json) pass and

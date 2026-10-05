@@ -1,7 +1,7 @@
 # Phase 1.1: Environment Lock and Weight-Free CUDA Smoke
 
 Authority: Document 42 and the checkpoint plan in Document 65
-Status: implemented and locally verified; awaiting owner confirmation before 1.2
+Status: accepted in Document 69; checkpoint 1.2 authorized
 
 ## Entry and scope
 
@@ -149,4 +149,5 @@ The first installation was interrupted and the generic installer response was no
 supported by imports in `fas`; neither was counted as a pass. Actual evidence is
 from explicit environment-bound pip, subsequent reconstruction, and runtime checks.
 The entry CI above covers the prerequisite commit, not this checkpoint's new files.
-Owner confirmation and fresh remote CI are separate review checks after push.
+Owner confirmation and successful fresh remote CI for 08d29c0 are recorded in
+[Document 69](69-review-phase1-step1.1-environment-lock.md); checkpoint 1.1 is accepted.
