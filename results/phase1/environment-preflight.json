@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "detail": "expected environment schema version 1",
+      "name": "schema_version",
+      "status": "pass"
+    },
+    {
+      "detail": "observed 3.13.13; required >=3.11,<3.13",
+      "name": "python",
+      "status": "blocked"
+    },
+    {
+      "detail": "observed linux_x86_64; required linux_x86_64",
+      "name": "platform",
+      "status": "pass"
+    },
+    {
+      "detail": "declared status: pending_model_stack_lock",
+      "name": "lock_status",
+      "status": "blocked"
+    },
+    {
+      "detail": "all required model-stack packages must be declared",
+      "name": "package_set",
+      "status": "pass"
+    },
+    {
+      "detail": "installed=None; pinned=None",
+      "name": "package:open_clip_torch",
+      "status": "blocked"
+    },
+    {
+      "detail": "installed=None; pinned=None",
+      "name": "package:scikit_learn",
+      "status": "blocked"
+    },
+    {
+      "detail": "installed=None; pinned=None",
+      "name": "package:torch",
+      "status": "blocked"
+    },
+    {
+      "detail": "installed=None; pinned=None",
+      "name": "package:torchvision",
+      "status": "blocked"
+    },
+    {
+      "detail": "installed=None; pinned=None",
+      "name": "package:transformers",
+      "status": "blocked"
+    },
+    {
+      "detail": "lockfile and its actual SHA-256 are required",
+      "name": "lockfile",
+      "status": "blocked"
+    }
+  ],
+  "python_executable": "/home/lathevinh/miniforge3/bin/python",
+  "scope": "runtime declarations and lock identity only; not model/GPU/data readiness",
+  "status": "blocked",
+  "version": 1
+}

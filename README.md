@@ -11,7 +11,9 @@ Research dossier for a practical and publishable face presentation attack detect
 The research plan, methodology, paper contract, and data-to-experiment implementation
 plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
 governance, typed contract, staged-readiness, and immutable-freeze primitives. Phase 1
-and all dataset-facing execution remain locked pending audited source evidence.
+has started with read-only environment preflight. Further provisioning and
+dataset-facing work await explicit checkpoint approval; training and target
+evaluation remain locked.
 
 ## Scope
 
@@ -120,11 +122,14 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     governance/config migration implemented and validated with synthetic evidence
-- Current work package: [Phase 0 governance migration and validation](docs/61-phase0-governance-migration-and-validation-plan.md)
-- Last reviewed: 2026-09-18
+- Current work package: [Phase 1 checkpoints and preflight](docs/65-phase1-checkpoints-and-preflight.md);
+    checkpoint 1.0 locally validated, awaiting approval before environment provisioning
+- Last reviewed: 2026-10-05
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
+- Environment preflight: [report](results/phase1/environment-preflight.json)
+    is blocked as expected; the declared model stack is not yet installed or locked
 
 ## Non-claims
 

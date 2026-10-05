@@ -28,5 +28,5 @@ Roles are `train`, `branch_calibration`, `g_domain`, `routing_validation`, and
 `g_attack` applies to SiW-M. The validator recomputes role counts, detects overlap, and
 checks each private file against the tracked summary hash.
 
-Run `python scripts/validate_preregistration.py --stage data` after populating the
+Run `python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.
