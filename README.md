@@ -13,8 +13,9 @@ plan are frozen. Phase 0 has replaced the provisional pilot scaffold with final
 governance, typed contract, staged-readiness, and immutable-freeze primitives.
 Post-rework source-evidence and gate repairs passed fresh CI and owner approval.
 Phase 1 environment lock is accepted in existing conda env `fas`. Acquisition
-receipt/protocol-file intake contracts are locally verified; checkpoint 1.2 awaits
-owner confirmation before dataset adapters.
+receipt/protocol-file intake contracts are accepted in checkpoint 1.2. The first
+checkpoint-1.3 adapter, OULU-NPU, is blocked on official schema documentation;
+no adapter or real dataset audit is complete.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -107,7 +108,9 @@ single-branch confidence and a matched same-family ensemble?
 68. [Environment lock and CUDA smoke](docs/67-phase1-step1.1-environment-lock.md)
 69. [Environment-lock acceptance review](docs/69-review-phase1-step1.1-environment-lock.md)
 70. [Intake contract and acceptance evidence](docs/70-phase1-step1.2-intake-contract.md)
-71. [Reading list](references/reading-list.md)
+71. [Intake-contract acceptance review](docs/72-review-phase1-step1.2-intake-contract.md)
+72. [OULU-NPU schema prerequisite and blocker](docs/73-phase1-step1.3-oulu-schema-blocker.md)
+73. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -129,9 +132,9 @@ is the strict source-only design consolidated in
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
-    source-evidence/gate rework and environment lock accepted; intake contract locally verified
-- Current work package: [Checkpoint 1.2](docs/70-phase1-step1.2-intake-contract.md);
-    awaiting owner confirmation before checkpoint 1.3
+    source-evidence/gate rework, environment lock and intake contract accepted
+- Current work package: [Checkpoint 1.3 OULU-NPU](docs/73-phase1-step1.3-oulu-schema-blocker.md);
+    blocked on official schema documentation; no adapter implementation or acceptance
 - Last reviewed: 2026-10-05
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented

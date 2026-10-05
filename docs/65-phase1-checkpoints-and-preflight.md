@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoint 1.1 accepted; checkpoint 1.2 locally verified, awaiting confirmation
+Status: checkpoints 1.1 and 1.2 accepted; checkpoint 1.3 OULU-NPU blocked on official schema documentation
 
 ## Approval boundary
 
@@ -26,8 +26,8 @@ in chat.
 | 0.R Prerequisite rework | Typed source evidence and explicit K=1 gate applicability | Reject empty/false evidence; gate applies only to predicted-live; focused/full suites pass; owner review and fresh CI | Document 66, approved; fresh CI success on 7775937 |
 | 1.0 Preflight | Read-only runtime/lock checker and checkpoint plan | Phase-0 CI verified; positive/negative checker tests pass; real pending environment returns nonzero; no false readiness | JSON report, test counts, CI link, host observations below |
 | 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Document 67 evidence; accepted by Document 69, fresh CI success on 08d29c0 |
-| 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Document 70, receipt template, 17 intake tests / 93 total, redacted CLI evidence; owner confirmation pending |
-| 1.3 Dataset adapters | Official-metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; official partitions preserved; unknown labels and duplicate IDs rejected; fixture counts reconcile | One separately approved checkpoint per OULU-NPU, CASIA-FASD, Replay-Attack and MSU-MFSD adapter |
+| 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Document 70 evidence; accepted by Document 72, fresh CI success on e55641d |
+| 1.3 Dataset adapters | Official-metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; official partitions preserved; unknown labels and duplicate IDs rejected; fixture counts reconcile | One separately approved checkpoint per adapter; OULU-NPU currently blocked on official schema documentation, Document 73 |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
 | 1.5 Core audit | Four MCIO intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
@@ -112,9 +112,11 @@ new locked preflight and CUDA evidence.
 
 ## Next approval
 
-Checkpoint 1.1 is accepted in Document 69. Checkpoint 1.2 now passes its local
-contract criteria in existing `fas` with Python 3.12.14; see Document 70 and the
-new synthetic verification report. Confirm that checkpoint before starting 1.3.
+Checkpoint 1.1 is accepted in Document 69 and checkpoint 1.2 in Document 72.
+Checkpoint 1.3 starts with OULU-NPU but is blocked on official schema documentation;
+see [Document 73](73-phase1-step1.3-oulu-schema-blocker.md) for the observed result,
+required input and future adapter acceptance criteria. No adapter is complete,
+and no other dataset checkpoint is started.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
 large in-tree environment.
