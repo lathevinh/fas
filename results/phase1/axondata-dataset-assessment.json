@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "date": "2026-10-06",
+  "dataset": "AxonData/liveness-detection-dataset",
+  "repository_url": "https://huggingface.co/datasets/AxonData/liveness-detection-dataset",
+  "revision": "c28f25c20328748b77c794853134e009df3b36fa",
+  "readme_sha256": "3a0623e3372f2c1926a9b29bd6b9567353a0dffeec38b1fd45843a1cc328c1ee",
+  "inspection_runtime": "conda env fas",
+  "inspection_scope": "public repository/card/tree and dataset-server schema metadata only",
+  "public_repository": {
+    "gated": false,
+    "license_declared_by_publisher": "cc-by-nc-4.0",
+    "tree_entry_count": 89,
+    "tree_request_limit": 1000,
+    "tree_response_below_request_limit": true,
+    "video_files": {"mp4": 28, "mov": 23},
+    "image_files": {"jpg": 25},
+    "all_file_bytes_including_readme_and_gitattributes": 2240134782,
+    "non_media_files": [".gitattributes", "README.md"],
+    "video_counts_by_directory_group_not_verified_label": {
+      "3D_paper_mask": 18,
+      "Latex_mask": 10,
+      "Silicone_mask": 11,
+      "Textile_3D_Face_Mask_Attack_Sample": 12
+    }
+  },
+  "dataset_server_observation": {
+    "revision_binding": "current server observation; API response does not expose matching source revision",
+    "config": "default",
+    "builder": "videofolder",
+    "features": {"video": {"_type": "Video"}},
+    "splits": {"train": {"num_examples": 51}},
+    "partial": false,
+    "label_field_present": false,
+    "subject_or_session_field_present": false
+  },
+  "publisher_claims_not_verified": {
+    "full_dataset_video_count": "approximately 100000 or more",
+    "attack_coverage": "11+ attack types",
+    "full_dataset_access": "commercial; contact publisher",
+    "modern_capture_devices_and_balanced_demographics": true,
+    "ibeta_level_mapping_and_certification_readiness": true
+  },
+  "limitations": [
+    "Public sample is not the advertised full commercial dataset",
+    "No machine-readable annotation or subject/split manifest found in pinned repository tree",
+    "Directory and filename tokens do not establish label or identity authority",
+    "No labeled bona-fide/print/replay video group observed in public directory metadata",
+    "Paired image/video lineage and original-capture/duplicate groups are unverified",
+    "Publisher provenance, consent and full-version licensing have not been audited",
+    "No media quality, decoding, label accuracy, demographic balance or certification has been verified"
+  ],
+  "decision": {
+    "replace_replay_attack_in_core": false,
+    "activate_optional_dataset": false,
+    "candidate_role_if_later_qualified": "separate external physical-attack stress test after core analysis",
+    "core_mcio_protocol_changed": false,
+    "scientific_readiness": false
+  },
+  "media_downloaded_or_opened": false,
+  "target_predictions_or_performance_inspected": false,
+  "new_dependencies_installed": false
+}

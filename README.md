@@ -119,7 +119,8 @@ single-branch confidence and a matched same-family ensemble?
 77. [CASIA reference-derived metadata adapter and acceptance evidence](docs/78-phase1-step1.3-casia-reference-metadata-adapter.md)
 78. [CASIA reference-derived metadata acceptance review](docs/79-review-phase1-step1.3-casia-reference-metadata-adapter.md)
 79. [Replay-Attack prerequisites and exact owner input](docs/80-phase1-step1.3-replay-attack-prerequisites.md)
-80. [Reading list](references/reading-list.md)
+80. [AxonData assessment and protocol decision](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
+81. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -172,6 +173,11 @@ is the strict source-only design consolidated in
     The provider page's GET DATA link retrieved on 2026-10-06 points to VoicePA,
     not face Replay-Attack. Correct schema/local input is needed before implementation;
     no Replay parser or MSU work has started
+- AxonData alternative: [public metadata assessment](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
+    found 51 public videos, not the advertised full commercial corpus, with no
+    annotation/identity/protocol manifest. Not adopted as a Replay replacement;
+    optional external-candidate use requires further evidence and a frozen separate
+    protocol. MCIO configs, data counts and readiness remain unchanged
 - Environment: existing conda env `fas`, approved Python 3.12.14, exact native/wheel
     locks and upstream commits; [preflight](results/phase1/environment-preflight-locked.json)
     ready, [CUDA smoke](results/phase1/environment-smoke-locked.json) pass and
