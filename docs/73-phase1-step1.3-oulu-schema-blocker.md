@@ -2,7 +2,11 @@
 
 Authority: Document 42 and the checkpoint sequence in Document 65
 Base commit: `a38950b`
-Status: **BLOCKED; OULU-NPU adapter not implemented or accepted**
+Status: **Historical schema blocker; resolved by owner-supplied documentation on 2026-10-06**
+
+Current metadata-adapter results and remaining audit requirements are in
+[Document 74](74-phase1-step1.3-oulu-metadata-adapter.md). The observations below
+describe the earlier blocked snapshot, not current adapter implementation status.
 
 ## Accepted prerequisite
 

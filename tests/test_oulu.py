@@ -1,0 +1,265 @@
+from __future__ import annotations
+
+import hashlib
+import io
+import json
+import subprocess
+import sys
+import tarfile
+import tempfile
+import unittest
+from pathlib import Path
+from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from fas.oulu import LABEL_MAPPING, LABEL_MAPPING_HASH, encode_label, inventory_archives, parse_protocol, parse_video_id
+
+
+class OuluTest(unittest.TestCase):
+    def test_training_polarity_and_documented_identity(self) -> None:
+        records = parse_protocol("+1,1_1_01_1\n-1,1_1_01_2\n-1,1_1_01_4\n", "Protocols/Protocol_1/Train.txt")
+        self.assertEqual([encode_label(row["binary_label"]) for row in records], [0, 1, 1])
+        self.assertEqual([row["attack_family"] for row in records], ["none", "print", "replay"])
+        self.assertEqual(records[0]["subject_id"], "subject-01")
+        self.assertEqual(records[0]["sensor_id"], "phone-1")
+        self.assertEqual(records[0]["session_id"], "session-1")
+        self.assertEqual(records[0]["environment"], "unknown")
+        self.assertEqual(records[1]["instrument"], "printer-1")
+        self.assertEqual(records[2]["instrument"], "display-1")
+        self.assertEqual(records[2]["raw_label_token"], "-1")
+        self.assertEqual(records[2]["label_source"], "Protocols/Protocol_1/Train.txt")
+
+    def test_test_labels_distinguish_print_and_replay(self) -> None:
+        records = parse_protocol("+1,1_3_36_1\n-1,1_3_36_3\n-2,1_3_36_5\n", "Protocols/Protocol_4/Test_1.txt")
+        self.assertEqual([row["raw_label_token"] for row in records], ["+1", "-1", "-2"])
+        self.assertEqual([encode_label(row["binary_label"]) for row in records], [0, 1, 1])
+        self.assertTrue(all(row["official_split"] == "test" and row["protocol_fold"] == 1 for row in records))
+        self.assertEqual(records[1]["instrument"], "printer-2")
+        self.assertEqual(records[2]["instrument"], "display-2")
+
+    def test_unknown_inconsistent_and_malformed_labels_fail(self) -> None:
+        for text in ("0,1_1_01_1", "1,1_1_01_1", "-1,1_1_01_1", "+1,1_1_01_2", "-2,1_1_01_4", "", "\n", "label,video", "+1,1_1_01_1,extra", '"+1,1_1_01_1'):
+            with self.subTest(text=text), self.assertRaises(ValueError):
+                parse_protocol(text, "Protocols/Protocol_1/Train.txt")
+        with self.assertRaises(ValueError):
+            parse_protocol("-1,1_3_36_4", "Protocols/Protocol_1/Test.txt")
+        with self.assertRaises(ValueError):
+            encode_label("unknown")
+
+    def test_duplicate_and_unsafe_identifiers_fail(self) -> None:
+        with self.assertRaises(ValueError):
+            parse_protocol("+1,1_1_01_1\n+1,1_1_01_1", "Protocols/Protocol_1/Train.txt")
+        for value in ("../1_1_01_1", "1_1_01_1.avi", "1_1_1_1", "7_1_01_1", "1_4_01_1", "1_1_00_1", "1_1_56_1", "1_1_01_6", "1_1_01_1\x00"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                parse_video_id(value)
+
+    def test_protocol_membership_and_fold_authority(self) -> None:
+        for text, path in (("+1,1_1_21_1", "Protocols/Protocol_1/Train.txt"), ("+1,1_3_01_1", "Protocols/Protocol_1/Train.txt"), ("-1,1_1_01_3", "Protocols/Protocol_2/Train.txt"), ("+1,1_1_01_1", "Protocols/Protocol_3/Train_1.txt"), ("+1,2_1_36_1", "Protocols/Protocol_3/Test_1.txt"), ("+1,1_1_01_1", "Protocols/Protocol_1/Train_1.txt"), ("+1,1_1_01_1", "Protocols/Protocol_3/Train.txt"), ("+1,1_1_01_1", "../Protocols/Protocol_1/Train.txt")):
+            with self.subTest(path=path, text=text), self.assertRaises(ValueError):
+                parse_protocol(text, path)
+        records = parse_protocol("+1,2_2_21_1", "Protocols/Protocol_3/Dev_1.txt")
+        self.assertEqual(records[0]["official_split"], "development")
+
+    def test_mapping_hash_is_deterministic_and_score_contract(self) -> None:
+        digest = hashlib.sha256(json.dumps(LABEL_MAPPING, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        self.assertEqual(digest, LABEL_MAPPING_HASH)
+        self.assertEqual(parse_video_id("1_1_01_1")["label_mapping_hash"], digest)
+        for binary_label in ("bona_fide", "attack"):
+            truth = encode_label(binary_label)
+            for attack_score in (0.1, 0.9):
+                prediction = int(attack_score >= 0.5)
+                error = int(prediction != truth)
+                self.assertEqual(error, 0 if prediction == truth else 1)
+        self.assertGreater(encode_label("attack"), encode_label("bona_fide"))
+
+
+class OuluInventoryTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name) / "private-input"
+        self.root.mkdir()
+        (self.root / "Readme.pdf").write_bytes(b"synthetic documentation, not a real PDF")
+        self.archives: dict[str, dict[str, bytes]] = {}
+        self.partitions: dict[str, list[str]] = {}
+        for storage, subject, session in (("Train_files", 1, 1), ("Dev_files", 21, 1), ("Test_files", 36, 3)):
+            identifiers = [f"{phone}_{session}_{subject:02d}_1" for phone in range(1, 7)]
+            if storage == "Train_files":
+                identifiers += ["1_1_01_2", "2_1_01_4"]
+            if storage == "Test_files":
+                identifiers += ["1_3_36_3", "2_3_36_5"]
+            self.partitions[storage] = identifiers
+            self.archives[f"{storage}.tar"] = {
+                f"{storage}/{video_id}{suffix}": b"synthetic bytes " + video_id.encode()
+                for video_id in identifiers for suffix in (".avi", ".txt")
+            }
+        protocols: dict[str, bytes] = {}
+        for protocol in range(1, 5):
+            for fold in ((None,) if protocol < 3 else range(1, 7)):
+                for name, storage in (("Train", "Train_files"), ("Dev", "Dev_files"), ("Test", "Test_files")):
+                    rows = []
+                    for video_id in self.partitions[storage]:
+                        phone, session, subject, access = (int(part) for part in video_id.split("_"))
+                        if fold is not None and ((phone == fold) != (name == "Test")):
+                            continue
+                        if protocol in (2, 4) and access not in ((1, 3, 5) if name == "Test" else (1, 2, 4)):
+                            continue
+                        token = "+1" if access == 1 else "-2" if name == "Test" and access >= 4 else "-1"
+                        rows.append(f"{token},{video_id}\n")
+                    suffix = "" if fold is None else f"_{fold}"
+                    protocols[f"Protocols/Protocol_{protocol}/{name}{suffix}.txt"] = "".join(rows).encode()
+        self.archives["Protocols.tar"] = protocols
+        self.write_archives()
+
+    def write_archives(self) -> None:
+        for name, entries in self.archives.items():
+            with tarfile.open(self.root / name, "w") as archive:
+                for relative, payload in entries.items():
+                    member = tarfile.TarInfo(relative)
+                    member.size = len(payload)
+                    archive.addfile(member, io.BytesIO(payload))
+
+    def inventory(self, **options) -> dict:
+        return inventory_archives(self.root, release_id="synthetic-release", protocol_id="synthetic-protocol", **options)
+
+    def test_reconciles_synthetic_media_and_all_protocol_memberships(self) -> None:
+        result = self.inventory()
+        self.assertEqual(len(result["videos"]), 22)
+        self.assertEqual(len(result["protocol_sha256"]), 42)
+        self.assertEqual(result, self.inventory())
+        self.assertFalse(result["scientific_readiness"])
+        self.assertFalse(result["acquisition_verified"])
+        self.assertTrue(all(row["official_split"] and row["protocol_memberships"] for row in result["videos"]))
+        self.assertTrue(all(row["raw_label_token"] and row["label_source"] for row in result["videos"]))
+        replay = next(row for row in result["videos"] if row["video_id"] == "2_3_36_5")
+        self.assertTrue(all(row["raw_label_token"] == "-2" for row in replay["protocol_memberships"]))
+
+    def test_header_only_mode_never_opens_video_payload(self) -> None:
+        original = tarfile.TarFile.extractfile
+        def guarded(archive, member):
+            if member.name.endswith(".avi"):
+                raise AssertionError("header-only inventory opened a video")
+            return original(archive, member)
+        with patch.object(tarfile.TarFile, "extractfile", guarded):
+            result = self.inventory()
+        self.assertTrue(result["no_media_decoding"])
+        self.assertTrue(all(row["media_sha256"] is None and row["decode_status"] == "not_probed" for row in result["videos"]))
+
+    def test_optional_byte_hashes_do_not_imply_decoding(self) -> None:
+        result = self.inventory(hash_media=True)
+        self.assertTrue(result["media_hashes_computed"])
+        for row in result["videos"]:
+            payload = self.archives[row["media_archive"]][row["media_relpath"]]
+            self.assertEqual(row["media_sha256"], hashlib.sha256(payload).hexdigest())
+            self.assertEqual(row["decode_status"], "not_probed")
+        self.assertTrue(all(value is not None for value in result["archive_sha256"].values()))
+
+    def test_protocol_omission_or_missing_media_fails_closed(self) -> None:
+        key = "Protocols/Protocol_1/Train.txt"
+        original = self.archives["Protocols.tar"][key]
+        self.archives["Protocols.tar"][key] = original.split(b"\n", 1)[1]
+        self.write_archives()
+        with self.assertRaisesRegex(ValueError, "membership disagree"):
+            self.inventory()
+        self.archives["Protocols.tar"][key] = original
+        del self.archives["Train_files.tar"]["Train_files/1_1_01_1.avi"]
+        self.write_archives()
+        with self.assertRaises(ValueError):
+            self.inventory()
+
+    def test_missing_protocol_and_incomplete_release_fail_closed(self) -> None:
+        with self.assertRaisesRegex(ValueError, "full release"):
+            self.inventory(require_full_release=True)
+        del self.archives["Protocols.tar"]["Protocols/Protocol_4/Test_6.txt"]
+        self.write_archives()
+        with self.assertRaisesRegex(ValueError, "coverage"):
+            self.inventory()
+
+    def test_unsafe_members_links_and_duplicate_archive_paths_fail(self) -> None:
+        archive = self.root / "Train_files.tar"
+        for name, kind in (("../outside", tarfile.REGTYPE), ("Train_files/1_1_01_1.avi", tarfile.SYMTYPE), ("Train_files/1_1_01_1.avi", tarfile.LNKTYPE), ("Train_files/1_1_01_1.avi", tarfile.REGTYPE)):
+            with self.subTest(name=name, kind=kind):
+                self.write_archives()
+                with tarfile.open(archive, "a") as target:
+                    member = tarfile.TarInfo(name)
+                    member.type = kind
+                    member.size = 1 if kind == tarfile.REGTYPE else 0
+                    member.linkname = "outside"
+                    target.addfile(member, io.BytesIO(b"x") if member.size else None)
+                with self.assertRaises(ValueError):
+                    self.inventory()
+
+    def command(self, output: Path, *extra: str) -> subprocess.CompletedProcess:
+        return subprocess.run([
+            sys.executable, str(ROOT / "scripts" / "inventory_oulu.py"),
+            "--input-root", str(self.root), "--release-id", "synthetic-private-release",
+            "--protocol-id", "synthetic-private-protocol", "--unverified-local",
+            "--out", str(output), *extra,
+        ], capture_output=True, text=True, check=False)
+
+    def test_cli_writes_private_immutable_output_and_redacts_stdout(self) -> None:
+        output = self.root.parent / "inventory.json"
+        result = self.command(output)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        summary = json.loads(result.stdout)
+        self.assertEqual(summary["status"], "metadata_reconciled")
+        self.assertFalse(summary["scientific_readiness"])
+        self.assertFalse(summary["acquisition_verified"])
+        self.assertNotIn("videos", summary)
+        for secret in (str(self.root), "synthetic-private-release", "subject-01", "1_1_01_1"):
+            self.assertNotIn(secret, result.stdout + result.stderr)
+        original = output.read_bytes()
+        self.assertEqual(len(json.loads(original)["videos"]), 22)
+        self.assertEqual(self.command(output).returncode, 2)
+        self.assertEqual(output.read_bytes(), original)
+
+    def test_cli_blocks_reconciliation_failures_and_preserves_inputs(self) -> None:
+        key = "Protocols/Protocol_1/Train.txt"
+        self.archives["Protocols.tar"][key] = b"0,1_1_01_1\n"
+        self.write_archives()
+        output = self.root.parent / "blocked.json"
+        result = self.command(output)
+        self.assertEqual(result.returncode, 1)
+        self.assertFalse(output.exists())
+        self.assertNotIn("1_1_01_1", result.stdout + result.stderr)
+        self.assertNotIn(str(self.root), result.stdout + result.stderr)
+        original = (self.root / "Readme.pdf").read_bytes()
+        self.assertEqual(self.command(self.root / "Readme.pdf").returncode, 2)
+        self.assertEqual((self.root / "Readme.pdf").read_bytes(), original)
+        self.assertEqual(self.command(ROOT / "results" / "refused-oulu.json").returncode, 2)
+
+    def test_cli_full_release_flag_rejects_partial_synthetic_fixture(self) -> None:
+        result = self.command(self.root.parent / "full.json", "--require-full-release")
+        self.assertEqual(result.returncode, 1)
+        self.assertFalse((self.root.parent / "full.json").exists())
+
+    def test_invalid_documentation_symlink_and_corrupt_archive_fail_closed(self) -> None:
+        document = self.root / "Readme.pdf"
+        document.unlink()
+        outside = self.root.parent / "outside.pdf"
+        outside.write_bytes(b"outside documentation")
+        document.symlink_to(outside)
+        with self.assertRaisesRegex(ValueError, "unsafe"):
+            self.inventory()
+        document.unlink()
+        document.write_bytes(b"synthetic documentation")
+        (self.root / "Protocols.tar").write_bytes(b"not a tar archive")
+        result = self.command(self.root.parent / "corrupt.json")
+        self.assertEqual(result.returncode, 1)
+        self.assertNotIn(str(self.root), result.stdout + result.stderr)
+
+    def test_cli_redacts_required_file_symlink_loop(self) -> None:
+        document = self.root / "Readme.pdf"
+        document.unlink()
+        document.symlink_to(document.name)
+        result = self.command(self.root.parent / "loop.json")
+        self.assertEqual(result.returncode, 1)
+        self.assertNotIn(str(self.root), result.stdout + result.stderr)
+        self.assertNotIn("Traceback", result.stdout + result.stderr)
+        self.assertFalse((self.root.parent / "loop.json").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

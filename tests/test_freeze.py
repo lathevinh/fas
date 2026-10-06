@@ -70,7 +70,8 @@ class AnalysisFreezeContractTest(unittest.TestCase):
     def test_validation_rederives_commit_lineage_and_exact_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "repo"
-            shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            shutil.copytree(ROOT, root, ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu"))
+            self.assertFalse((root / "oulu-npu").exists())
             evidence_path = root / "results" / "source-dry-run" / "evidence.json"
             evidence_path.parent.mkdir(parents=True, exist_ok=True)
             evidence = {

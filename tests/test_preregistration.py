@@ -294,7 +294,8 @@ class PreregistrationTest(unittest.TestCase):
     def _copy(self) -> Iterator[Path]:
         with tempfile.TemporaryDirectory() as temporary:
             destination = Path(temporary) / "repo"
-            shutil.copytree(ROOT, destination, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            shutil.copytree(ROOT, destination, ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu"))
+            self.assertFalse((destination / "oulu-npu").exists())
             yield destination
 
     def _write_synthetic_evidence(self, root: Path) -> None:

@@ -14,8 +14,8 @@ governance, typed contract, staged-readiness, and immutable-freeze primitives.
 Post-rework source-evidence and gate repairs passed fresh CI and owner approval.
 Phase 1 environment lock is accepted in existing conda env `fas`. Acquisition
 receipt/protocol-file intake contracts are accepted in checkpoint 1.2. The first
-checkpoint-1.3 adapter, OULU-NPU, is blocked on official schema documentation;
-no adapter or real dataset audit is complete.
+checkpoint-1.3 metadata adapter, OULU-NPU, is locally verified and awaits owner
+approval; no real acquisition/media audit is accepted.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -110,7 +110,8 @@ single-branch confidence and a matched same-family ensemble?
 70. [Intake contract and acceptance evidence](docs/70-phase1-step1.2-intake-contract.md)
 71. [Intake-contract acceptance review](docs/72-review-phase1-step1.2-intake-contract.md)
 72. [OULU-NPU schema prerequisite and blocker](docs/73-phase1-step1.3-oulu-schema-blocker.md)
-73. [Reading list](references/reading-list.md)
+73. [OULU-NPU metadata adapter and acceptance evidence](docs/74-phase1-step1.3-oulu-metadata-adapter.md)
+74. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -133,15 +134,20 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [Checkpoint 1.3 OULU-NPU](docs/73-phase1-step1.3-oulu-schema-blocker.md);
-    blocked on official schema documentation; no adapter implementation or acceptance
-- Last reviewed: 2026-10-05
+- Current work package: [Checkpoint 1.3 OULU-NPU metadata adapter](docs/74-phase1-step1.3-oulu-metadata-adapter.md);
+    locally verified, awaiting owner approval before another adapter; real media audit pending
+- Last reviewed: 2026-10-06
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 - Intake: private acquisition/protocol receipts, read-only hash/path checks and
     redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
     passes on synthetic fixtures. No real dataset release has been accepted
+- OULU-NPU: official metadata parser, versioned label mapping, all protocol/fold
+    memberships and private archive-header reconciliation implemented;
+    [17-test adapter / 110-test regression evidence](results/phase1/oulu-adapter-verification-v2.json).
+    Owner-supplied local metadata reconcile, but receipt identity/permissions,
+    real media hashes and decoding remain unverified; no readiness count is changed
 - Environment: existing conda env `fas`, approved Python 3.12.14, exact native/wheel
     locks and upstream commits; [preflight](results/phase1/environment-preflight-locked.json)
     ready, [CUDA smoke](results/phase1/environment-smoke-locked.json) pass and

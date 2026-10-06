@@ -2,6 +2,7 @@
 data/
 datasets/
 manifests/private/
+/oulu-npu
 
 # Model weights and experiment outputs
 checkpoints/
