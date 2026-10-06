@@ -5,6 +5,12 @@ Authority: Document 42 and staged checkpoints in Document 65
 Base commit: `261a8757d900bc5a2421b7a0b1ea3bc7654f4fd9`
 Status: **Private storage protection verified; CASIA semantic adapter still blocked**
 
+Current update: the blocker below is historical. After source/mapping verification,
+the owner authorized a pinned Bob reference-derived metadata adapter, implemented
+and locally checked in [Document 78](78-phase1-step1.3-casia-reference-metadata-adapter.md).
+This is not CASIA-owner schema certification or acquisition acceptance; CASIA-specific
+review is pending. The storage checks and restrictions below remain applicable.
+
 ## New Input and Actual Finding
 
 The owner supplied a CASIA-FASD RAR archive in `casia-fasd`. Its headers were

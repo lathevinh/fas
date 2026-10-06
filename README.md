@@ -15,8 +15,9 @@ Post-rework source-evidence and gate repairs passed fresh CI and owner approval.
 Phase 1 environment lock is accepted in existing conda env `fas`. Acquisition
 receipt/protocol-file intake contracts are accepted in checkpoint 1.2. The first
 checkpoint-1.3 metadata adapter, OULU-NPU, is accepted. The next adapter,
-CASIA-FASD, is blocked on official schema documentation; no real acquisition/media
-audit is accepted.
+CASIA-FASD, now has an owner-authorized, pinned Bob-reference metadata adapter
+that passed local checks and awaits review. This is not CASIA-owner schema
+certification; no real acquisition/media audit is accepted.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -115,7 +116,8 @@ single-branch confidence and a matched same-family ensemble?
 74. [OULU-NPU metadata-adapter acceptance review](docs/75-review-phase1-step1.3-oulu-metadata-adapter.md)
 75. [CASIA-FASD schema prerequisite and owner action](docs/76-phase1-step1.3-casia-schema-blocker.md)
 76. [CASIA archive inspection, private storage and remaining schema blocker](docs/77-phase1-step1.3-casia-archive-schema-check.md)
-77. [Reading list](references/reading-list.md)
+77. [CASIA reference-derived metadata adapter and acceptance evidence](docs/78-phase1-step1.3-casia-reference-metadata-adapter.md)
+78. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -138,9 +140,9 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [Checkpoint 1.3 CASIA-FASD](docs/77-phase1-step1.3-casia-archive-schema-check.md);
-    video-only archive supplied and privately isolated; semantic adapter blocked on
-    official schema documentation; OULU metadata accepted, real media audit pending
+- Current work package: [Checkpoint 1.3 CASIA-FASD](docs/78-phase1-step1.3-casia-reference-metadata-adapter.md);
+    pinned Bob-reference adapter and private header inventory locally verified,
+    CASIA-specific review pending; OULU metadata accepted, real media audit pending
 - Last reviewed: 2026-10-06
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
@@ -155,10 +157,14 @@ is the strict source-only design consolidated in
     which confirms fresh CI success for the implementation commit.
     Owner-supplied local metadata reconcile, but receipt identity/permissions,
     real media hashes and decoding remain unverified; no readiness count is changed
-- CASIA-FASD: supplied archive headers inspected; no bundled guide/label file.
-    Private-storage/test-clone isolation verified by
-    [36 touched-suite / 110 regression tests](results/phase1/casia-private-storage-verification.json).
-    No label mapping or semantic adapter is certified by this safety check
+- CASIA-FASD: strict twelve-code Bob-reference mapping, disjoint subject namespace,
+    source/reader provenance checks and immutable private header inventory implemented;
+    [17 CASIA / 127 regression tests](results/phase1/casia-adapter-verification.json) pass.
+    Supplied headers reconcile with the complete reference; owner schema certification,
+    acquisition, media hashes/decode and scientific readiness remain unverified.
+    Review is pending; no later adapter has started. Earlier
+    [storage-isolation evidence](results/phase1/casia-private-storage-verification.json)
+    remains a safety check, not semantic or acquisition certification
 - Environment: existing conda env `fas`, approved Python 3.12.14, exact native/wheel
     locks and upstream commits; [preflight](results/phase1/environment-preflight-locked.json)
     ready, [CUDA smoke](results/phase1/environment-smoke-locked.json) pass and

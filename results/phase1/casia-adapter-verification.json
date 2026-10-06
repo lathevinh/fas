@@ -1,0 +1,75 @@
+{
+  "artifact_sha256": {
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "scripts/inventory_casia.py": "1e0f4120476ff2f015b96a1ba22fc9c1c925b3a0024d1ed709820ba38d0c3ad1",
+    "src/fas/casia.py": "2cde152ca3c66a57e63ae0b0181f734d56eccc39c455c79341521ff3f2b47474",
+    "tests/test_casia.py": "de5ffde3c60434c2814b368573708501a648855aeff1909c18089970dbdd9ea8"
+  },
+  "base_commit": "1c2ed74b79211fd6b2e5626624a26cb9328a2033",
+  "bob_reference": {
+    "commit": "5320dac3101de913874242f56c5baa5961d2c13b",
+    "owner_authored": false,
+    "source_sha256": {
+      "bob/db/casia_fasd/__init__.py": "c94996cf187279c2ca2a01eba277a088de92680471ff5edcde5e0ce42026dd1d",
+      "bob/db/casia_fasd/models.py": "270c0933d6d517e4977683f86a50e658954b05baa4967a49c13faa7639fd227a"
+    }
+  },
+  "checkpoint": "1.3 CASIA-FASD reference-derived metadata adapter",
+  "date": "2026-10-06",
+  "environment_exit_code": 0,
+  "freeze_record_unchanged": true,
+  "freeze_writer_exit_code": 1,
+  "fresh_remote_ci": "not yet verified",
+  "label_mapping_hash": "5825abfa8bc6b980b4bae2934b0621b3d500c23281b3dcd48f18499347111cc9",
+  "local_reference_execution": {
+    "acquisition_verified": false,
+    "archive_comments_accessed": false,
+    "bob_cross_validation_adopted": false,
+    "full_reference_membership_reconciled": true,
+    "media_decode_status": "not_probed",
+    "media_hashes_complete": false,
+    "media_payloads_opened": false,
+    "owner_schema_certified": false,
+    "pinned_reader_wheel_and_import_origin_verified": true,
+    "pinned_source_bytes_verified": true,
+    "private_inventory_outside_repo": true,
+    "record_level_metadata_published": false,
+    "release_identifiers": "provisional/unverified; not published",
+    "scientific_readiness": false,
+    "status": "pass"
+  },
+  "rar_reader": {
+    "distribution": "rarfile",
+    "scope": "RAR header utility, not installed into the locked model stack",
+    "version": "4.2",
+    "wheel_sha256": "8757e1e3757e32962e229cab2432efc1f15f210823cc96ccba0f6a39d17370c9"
+  },
+  "readiness_exit_codes": {
+    "analysis-freeze": 1,
+    "confirmatory": 2,
+    "data": 2,
+    "data-audit": 1,
+    "locked-evaluation": 1,
+    "pre-pilot": 2,
+    "schema": 0,
+    "source-dry-run": 1
+  },
+  "runtime": {
+    "environment": "fas",
+    "python": "3.12.14"
+  },
+  "scope": "Pinned Bob/Idiap reference mapping and private RAR header reconciliation; not owner schema certification, acquisition, media audit, manifests, training or target evaluation",
+  "tests": {
+    "casia_focused": {
+      "count": 17,
+      "status": "pass"
+    },
+    "full_regression": {
+      "count": 127,
+      "status": "pass"
+    },
+    "synthetic_full_reference_video_count": 600,
+    "synthetic_partial_inventory_video_count": 24
+  },
+  "version": 1
+}
