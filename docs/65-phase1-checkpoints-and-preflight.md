@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoints 1.1 and 1.2 and the 1.3 OULU-NPU metadata adapter accepted; CASIA reference-derived metadata locally verified, owner review pending
+Status: checkpoints 1.1 and 1.2 and the 1.3 OULU/CASIA metadata adapters accepted; Replay-Attack awaiting local input and controlling metadata
 
 ## Approval boundary
 
@@ -27,7 +27,7 @@ in chat.
 | 1.0 Preflight | Read-only runtime/lock checker and checkpoint plan | Phase-0 CI verified; positive/negative checker tests pass; real pending environment returns nonzero; no false readiness | JSON report, test counts, CI link, host observations below |
 | 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Document 67 evidence; accepted by Document 69, fresh CI success on 08d29c0 |
 | 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Document 70 evidence; accepted by Document 72, fresh CI success on e55641d |
-| 1.3 Dataset adapters | Provenance-explicit metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; original partitions preserved with declared authority; unknown labels and duplicate IDs rejected; fixture counts reconcile | OULU-NPU official metadata accepted by Document 75, fresh CI success on 8797a6f; owner-authorized CASIA Bob-reference metadata locally verified in Document 78, not owner-certified schema, review pending; separate approval per adapter; no real media audit acceptance |
+| 1.3 Dataset adapters | Provenance-explicit metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; original partitions preserved with declared authority; unknown labels and duplicate IDs rejected; fixture counts reconcile | OULU-NPU official metadata accepted by Document 75, fresh CI on 8797a6f; CASIA Bob-reference metadata accepted by Document 79, fresh CI on 33051d2, not owner-certified schema; Replay prerequisites in Document 80; separate approval per adapter; no real media audit acceptance |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
 | 1.5 Core audit | Four MCIO intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
@@ -118,9 +118,13 @@ schema blocker. Its metadata adapter and private archive-header inventory are
 accepted in Document 75. The owner subsequently authorized a pinned Bob reference
 for CASIA-FASD metadata; its parser and private full-reference header inventory
 passed local checks in [Document 78](78-phase1-step1.3-casia-reference-metadata-adapter.md).
-CASIA-specific owner review and fresh CI remain pending. This resolves only the
-reference-derived implementation blocker, not CASIA-owner schema certification.
-Real acquisition/media audit acceptance remains pending; no later adapter is started.
+CASIA-specific owner review in Document 79 accepts that adapter and confirms fresh
+successful CI on exact implementation commit 33051d2. This resolves only the
+reference-derived implementation checkpoint, not CASIA-owner schema certification.
+Replay-Attack is next; [Document 80](80-phase1-step1.3-replay-attack-prerequisites.md)
+records checked locations, the observed provider download-link mismatch and exact
+owner inputs needed before implementation. Real acquisition/media audit acceptance
+remains pending; no Replay parser or MSU adapter is started.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
 large in-tree environment.
