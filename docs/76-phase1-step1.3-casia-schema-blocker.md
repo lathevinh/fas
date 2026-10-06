@@ -5,6 +5,11 @@ Authority: Document 42 and the checkpoint sequence in Document 65
 Base commit: `d332210`
 Status: **BLOCKED; CASIA-FASD adapter not implemented or accepted**
 
+Update: the owner subsequently supplied a video-only archive. Its inspection and
+storage protection are recorded in [Document 77](77-phase1-step1.3-casia-archive-schema-check.md).
+The earlier observations below describe the pre-upload snapshot; official schema
+documentation is still missing, so the semantic adapter remains blocked.
+
 ## Accepted Prerequisite
 
 [Document 75](75-review-phase1-step1.3-oulu-metadata-adapter.md) accepts the

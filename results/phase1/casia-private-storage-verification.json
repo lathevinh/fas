@@ -1,0 +1,56 @@
+{
+  "archive_inspection": {
+    "acquisition_verified": false,
+    "archive_comment_published": false,
+    "archive_comments_not_used_as_schema_or_access_authority": true,
+    "documentation_found": false,
+    "label_mapping_verified": false,
+    "official_partitions_verified": false,
+    "record_level_metadata_published": false,
+    "scientific_readiness": false,
+    "scope": "RAR headers only, no media payload extraction"
+  },
+  "artifact_sha256": {
+    ".gitignore": "1fb965c27cf634bb6e49ce08aa86dfc9157952db6b1a2985b5798a8706a5dc54",
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "tests/test_freeze.py": "3717f4898af795b21eae6053d1ba7aa3fed69d96134c435fca2c4c851b0fd20b",
+    "tests/test_governance.py": "2a2cf07fa2654fb3dbf716a46d2c8a5e6c0b0482e6c4550b0ad5a618b38c6e2f",
+    "tests/test_preregistration.py": "9102778fc0ead69f5d5530a87f683cdb437c563a950e3b666457593ec2af4304"
+  },
+  "base_commit": "261a8757d900bc5a2421b7a0b1ea3bc7654f4fd9",
+  "checkpoint": "1.3 CASIA-FASD storage protection; semantic adapter blocked",
+  "date": "2026-10-06",
+  "environment_exit_code": 0,
+  "fresh_remote_ci": "not yet verified",
+  "media_decoding_performed": false,
+  "runtime": {
+    "environment": "fas",
+    "python": "3.12.14"
+  },
+  "scientific_gates_changed": false,
+  "scope": "storage/clone isolation verification only; not a CASIA label, subject, partition, release or media audit acceptance",
+  "storage": {
+    "archive_outside_repository": true,
+    "original_location_preserved_as_symlink": true,
+    "symlink_ignored_by_git": true,
+    "test_clones_exclude_archive_directory": true
+  },
+  "tests": {
+    "casia_semantic_tests_added": 0,
+    "full_regression": {
+      "count": 110,
+      "status": "pass"
+    },
+    "touched_suites": {
+      "count": 36,
+      "status": "pass",
+      "suite_counts": {
+        "freeze": 4,
+        "governance": 10,
+        "preregistration": 22
+      }
+    }
+  },
+  "training_tensors_created": false,
+  "version": 1
+}
