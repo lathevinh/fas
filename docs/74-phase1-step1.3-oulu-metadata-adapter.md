@@ -3,7 +3,11 @@
 Date: 2026-10-06
 Authority: Document 42; staged approval sequence in Document 65
 Base commit: `cf2f28326967b7e63eb0fc32eea8d8efbdfb2ed3`
-Status: **Metadata adapter locally verified; awaiting owner approval**
+Status: **Metadata adapter accepted in Document 75; acquisition/media audit remains pending**
+
+[Document 75](75-review-phase1-step1.3-oulu-metadata-adapter.md) accepts this
+checkpoint and confirms successful fresh CI for commit `8797a6f`. The local
+implementation evidence below is retained; approval does not widen its scope.
 
 ## Scope and Source
 
@@ -152,8 +156,9 @@ not register a release or authorize extraction/training/publication.
 
 ## Remaining Requirements and Owner Action
 
-Review this metadata checkpoint and confirm its scope/results before another
-adapter is started. Phase 1 and the four-core audit are not complete.
+This metadata checkpoint is accepted. The next adapter, CASIA-FASD, is blocked
+on official schema documentation; see [Document 76](76-phase1-step1.3-casia-schema-blocker.md)
+for the exact owner action needed. Phase 1 and the four-core audit are not complete.
 
 Before real acquisition/media audit acceptance, the owner must supply the private
 intake receipt and real evidence of channel, approval/license, release identity,
