@@ -3,6 +3,9 @@
 Last checked: 2026-09-18. This is a working list, not a systematic review.
 Publisher status and bibliographic metadata must be verified before citation.
 
+Incremental update 2026-10-07: Min et al. below verified against DOI metadata and
+the complete supplied accepted-manuscript PDF; other entries were not re-audited.
+
 ## Foundation models
 
 - DINOv2: <https://arxiv.org/abs/2304.07193>
@@ -36,6 +39,14 @@ Publisher status and bibliographic metadata must be verified before citation.
 
 ## Closest 2026 work
 
+- Min et al., **Analyzing the effect of reasoning-based supervision on face
+  anti-spoofing**, Scientific Reports, first online 2026-03-13:
+  <https://doi.org/10.1038/s41598-026-43800-5>.
+  [Unchanged accepted-manuscript PDF](s41598-026-43800-5_reference.pdf),
+  [full-paper comparison](../docs/82-paper-review-reasoning-supervision-fas.md).
+  CC BY-NC-ND 4.0: <https://creativecommons.org/licenses/by-nc-nd/4.0/>.
+  Reasoning-caption supervision via GPT-4o, joint classification/captioning and
+  LoRA; shared MCIO setting, not the project's domain-OOF failure-risk objective.
 - AIM-FAS, Vision-Language Adaptation with Imbalance Mitigation for Generalizable
   Face Anti-Spoofing, Pattern Recognition 175 (2026), 113101:
   <https://doi.org/10.1016/j.patcog.2026.113101>

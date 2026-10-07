@@ -20,9 +20,15 @@
 | DGPDL, TPAMI 2026 | Domain-guided prompt-distribution learning for generalizable FAS | Domain-conditioned prompt learning is occupied; prompts are fixed in this project |
 | CLIP-SA, TMM 2026 | CLIP-guided semantic alignment for generalizable FAS | Semantic alignment is occupied; this project does not align branch representations or decisions |
 | RPSR-FAS, September 2026 | Organized VLM semantics and reliability-aware FAS | Semantic pools plus reliability substantially overlap the original plan |
+| Min et al., Scientific Reports 2026 | GPT-generated reasoning captions, classification/captioning supervision and MCIO generalization | Reasoning-guided FAS is occupied; unlike this paper, our core studies a separate post-predictive selector learned from source-domain-held-out failures, not caption supervision |
 
 Bibliographic links are maintained in the reading list. Acceptance/publication
 metadata must be checked against publisher pages before manuscript submission.
+
+The supplied Min et al. accepted manuscript was read in full on 2026-10-07;
+[Document 82](82-paper-review-reasoning-supervision-fas.md) records its exact PDF
+hash, page-grounded comparison and version-specific reproduction caveats. This
+literature addition does not amend the frozen methods, protocols or claim gates.
 
 ## Rejected initial formulation
 
