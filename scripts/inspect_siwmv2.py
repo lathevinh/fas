@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from fas.freeze import write_immutable_record
+from fas.contracts import SIWMV2_ATTACK_FAMILIES
 
 REFERENCE_COMMIT = "8667dbcd316b38141729c057adf7517fe0602608"
 REFERENCE_URL = "https://github.com/CHELSEA234/Multi-domain-learning-FAS"
@@ -168,11 +169,75 @@ def inspect_headers(entries: list[zipfile.ZipInfo], sources: dict[str, bytes]) -
     }
 
 
+def build_intersection_record(entries: list[zipfile.ZipInfo], sources: dict[str, bytes]) -> dict:
+    inspected = inspect_headers(entries, sources)
+    if any(row["train_test_video_token_overlap"] for row in inspected["protocol_i_reconciliation"].values()):
+        raise ValueError("overlapping protocol membership cannot define a population")
+    observed = {PurePosixPath(entry.filename).stem for entry in entries
+                if not entry.is_dir() and PurePosixPath(entry.filename).suffix in {".mov", ".mp4", ".avi"}}
+    eligible = []
+    missing = []
+    listed = set()
+    for split in ("train", "test"):
+        for category in ("live", "all"):
+            tokens = set(_tokens(sources[f"pro_3_text/{split}list_{category}.txt"], category == "live"))
+            listed.update(tokens)
+            for token in sorted(tokens):
+                if token not in observed:
+                    missing.append({"video_id": token, "official_split": split, "reason": "listed_missing_from_archive"})
+                    continue
+                attack_type = None if category == "live" else token.rpartition("_")[0]
+                eligible.append({"video_id": token, "official_split": split,
+                                 "binary_label": "bona_fide" if category == "live" else "attack",
+                                 "reference_attack_type": attack_type,
+                                 "attack_family": None if attack_type is None else SIWMV2_ATTACK_FAMILIES[attack_type],
+                                 "subject_id": None, "group_unit": "video", "group_id": token})
+    excluded = [{"video_id": token, "reason": "out_of_protocol",
+                 "reference_attack_type": None if token.startswith("Live_") else token.rpartition("_")[0]}
+                for token in sorted(observed - listed)]
+    return {"version": 1, "population_id": "siwmv2_protocol_i_intersection_v1",
+            "dataset": "SiW-Mv2", "scope": "header/list population definition; not media audit or canonical roles",
+            "reference_commit": REFERENCE_COMMIT, "reference_sha256": inspected["reference_sha256"],
+            "header_inventory_sha256": inspected["header_inventory_sha256"],
+            "mapping_version": "siwmv2_attack_family_v1", "attack_family_mapping": SIWMV2_ATTACK_FAMILIES,
+            "eligible_videos": sorted(eligible, key=lambda row: row["video_id"]),
+            "excluded_videos": excluded, "missing_references": sorted(missing, key=lambda row: row["video_id"])}
+
+
+def intersection_summary(record: dict) -> dict:
+    rows = record["eligible_videos"]
+    coverage = {}
+    for attack_type in SIWMV2_ATTACK_FAMILIES:
+        counts = {split: sum(row["reference_attack_type"] == attack_type and row["official_split"] == split
+                             for row in rows) for split in ("train", "test")}
+        coverage[attack_type] = {**counts, "total": sum(counts.values()),
+                                 "excluded": sum(row["reference_attack_type"] == attack_type
+                                                 for row in record["excluded_videos"])}
+    def token_hash(tokens: list[str]) -> str:
+        return hashlib.sha256(("\n".join(sorted(tokens)) + "\n").encode()).hexdigest()
+    payload = json.dumps(record, indent=2, sort_keys=True) + "\n"
+    return {"version": 1, "population_id": record["population_id"],
+            "private_membership_sha256": hashlib.sha256(payload.encode()).hexdigest(),
+            "reference_commit": record["reference_commit"], "reference_sha256": record["reference_sha256"],
+            "header_inventory_sha256": record["header_inventory_sha256"],
+            "mapping_version": record["mapping_version"], "attack_family_mapping": record["attack_family_mapping"],
+            "partitions": {split: {"bona_fide": sum(row["binary_label"] == "bona_fide" and row["official_split"] == split for row in rows),
+                                    "attack": sum(row["binary_label"] == "attack" and row["official_split"] == split for row in rows),
+                                    "eligible_ids_sha256": token_hash([row["video_id"] for row in rows if row["official_split"] == split])}
+                           for split in ("train", "test")},
+            "eligible_total": len(rows), "excluded_total": len(record["excluded_videos"]),
+            "missing_reference_total": len(record["missing_references"]), "reference_attack_type_coverage": coverage,
+            "all_14_types_in_each_partition": all(row["train"] > 0 and row["test"] > 0 for row in coverage.values()),
+            "no_media_payload_read": True, "no_model_inference_or_training": True,
+            "scientific_readiness": False}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--archive", type=Path, required=True)
     parser.add_argument("--reference-root", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True, help="new immutable redacted JSON report")
+    parser.add_argument("--intersection-private-out", type=Path, help="freeze exact intersection IDs outside Git; does not audit media")
     args = parser.parse_args()
     try:
         archive_path = args.archive.resolve()
@@ -183,14 +248,32 @@ def main() -> int:
             raise ValueError("output overlaps private inputs")
         sources = load_sources(args.reference_root)
         with zipfile.ZipFile(archive_path) as archive:
-            report = inspect_headers(archive.infolist(), sources)
-        report["archive_byte_size"] = archive_path.stat().st_size
+            entries = archive.infolist()
+        report = inspect_headers(entries, sources)
+        if args.intersection_private_out is not None:
+            if not report["readme_header_counts_match"]:
+                raise ValueError("archive differs from reviewed release counts")
+            private_output = args.intersection_private_out.resolve()
+            if (private_output.exists() or private_output == output or private_output.is_relative_to(ROOT)
+                    or private_output.is_relative_to(archive_path.parent)
+                    or private_output.is_relative_to(args.reference_root.resolve())):
+                raise ValueError("intersection IDs must be new and outside Git and input directories")
+            record = build_intersection_record(entries, sources)
+            report = intersection_summary(record)
+            if (report["eligible_total"] != 1680 or report["excluded_total"] != 20
+                    or report["missing_reference_total"] != 11 or not report["all_14_types_in_each_partition"]
+                    or {split: (row["bona_fide"], row["attack"]) for split, row in report["partitions"].items()}
+                    != {"train": (524, 533), "test": (261, 362)}):
+                raise ValueError("population differs from the reviewed intersection")
+            write_immutable_record(private_output, record)
+        else:
+            report["archive_byte_size"] = archive_path.stat().st_size
         write_immutable_record(output, report)
     except (ValueError, OSError, RuntimeError, UnicodeError, KeyError, zipfile.BadZipFile):
         print("SIW-MV2 INSPECTION FAILED: invalid headers, reference provenance or output", file=sys.stderr)
         return 2
     print(json.dumps(report, indent=2, sort_keys=True))
-    return 1
+    return 0 if args.intersection_private_out is not None else 1
 
 
 if __name__ == "__main__":

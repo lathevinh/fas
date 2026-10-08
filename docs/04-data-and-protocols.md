@@ -1,9 +1,11 @@
 # Datasets and Protocols
 
-Update 2026-10-08: owner-supplied SiW-Mv2 is being assessed as a replacement
-candidate, not activated core data. [Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md)
-records the identity/split blockers and conditional amendment. The frozen MCIO
-population below remains current; SiW, SiW-M and SiW-Mv2 are distinct datasets.
+Amendment 2026-10-08: [Document 88](88-phase1-benchmark-amendment-siwmv2.md) defines
+the active OULU-NPU/CASIA-FASD/MSU-MFSD/SiW-Mv2 study. SiW-Mv2 uses the pinned
+1680-video Protocol-I intersection, not ordinary SiW or optional SiW-M. Its complete
+video groups replace subject groups at every boundary, without certifying participant
+disjointness. Historical MCIO literature remains context only; media readiness and
+checkpoint acceptance remain pending.
 
 ## Dataset roles
 
@@ -12,10 +14,10 @@ population below remains current; SiW, SiW-M and SiW-Mv2 are distinct datasets.
 | CelebA-Spoof | Optional extra-data pretraining/analysis | 625,537 images, 10,177 subjects, spoof type, illumination, environment | Excluded from strict MCIO; non-commercial research only |
 | OULU-NPU | MCIO and mobile domain evaluation | Print/replay, protocols for environment/device variation | Preserve official protocols |
 | CASIA-FASD | MCIO source/target | Print, cut-photo, replay and quality variation | Verify redistribution/access terms |
-| Replay-Attack | MCIO source/target | Print/replay and controlled/adverse settings | Preserve official train/dev/test split |
+| Replay-Attack | Historical MCIO context, not active core | Print/replay and controlled/adverse settings | Historical recipe preserved; not silently replaced in MCIO literature claims |
 | MSU-MFSD | MCIO source/target | Print/replay across capture devices | Small dataset; high leakage risk |
 | SiW-M | Main unseen-attack evaluation | 13 diverse attack types and zero-shot protocols | Access and current official protocol must be verified |
-| SiW-Mv2 | Conditional Replay replacement candidate, not activated | Local 785 live / 915 spoof video headers across 14 attack types | Protocol I mismatch and source-subject mapping unresolved; not canonical MCIO or the optional SiW-M track |
+| SiW-Mv2 | Active amended source/target specification, not media-ready | 785 live / 895 eligible spoof videos; 14 reference attack types | Protocol-I intersection, video grouping, unknown participants; not MCIO or optional SiW-M |
 | 3DMAD/HiFiMask | External mask transfer | 3D mask evidence | Sensor/modality and access may not match RGB-only scope |
 | UniAttackData | Later unified physical/digital extension | Diverse physical and digital attacks | Out of first-paper scope unless physical subset is cleanly defined |
 
@@ -25,9 +27,9 @@ and repository during this planning pass.
 
 ## Data available to each model
 
-### Strict MCIO track
+### Primary amended four-domain track
 
-For each target among OULU-NPU, CASIA-FASD, Replay-Attack, and MSU-MFSD:
+For each target among OULU-NPU, CASIA-FASD, MSU-MFSD, and SiW-Mv2:
 
 - DINO uses generic pretrained weights plus labels from the other three source datasets;
 - the VLM uses its generic pretrained weights, immutable core prompts, source
@@ -98,7 +100,9 @@ Each sample should have a non-sensitive metadata row:
 }
 ```
 
-Unknown values remain `unknown`; they must not be guessed from coarse labels.
+Unknown values must not be guessed from coarse labels. SiW-Mv2 `subject_id` specifically
+stays null in JSON and empty in CSV; its video ID is the group key. Preserve
+`reference_attack_type` separately from the versioned broad `attack_family` mapping.
 
 ## Leakage-safe processing
 

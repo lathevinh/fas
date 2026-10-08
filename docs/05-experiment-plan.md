@@ -1,5 +1,10 @@
 # Experiment and Implementation Plan
 
+Amendment 2026-10-08: [Document 88](88-phase1-benchmark-amendment-siwmv2.md) controls
+the active four-domain benchmark and SiW-Mv2 video-group fallback. Historical MCIO
+and subject-disjoint wording below is superseded only for this domain/population and
+grouping change; the frozen method and RQ1/RQ2 decision rules remain unchanged.
+
 ## Stage 0: Audit and infrastructure, weeks 1-2
 
 Tasks:

@@ -2,6 +2,12 @@
 
 Date: 2026-09-18
 
+Amendment 2026-10-08: [Document 88](88-phase1-benchmark-amendment-siwmv2.md) supplies
+the new four-domain study/population and all-boundary SiW-Mv2 video grouping. This
+plan retains dependency order; benchmark amendment acceptance precedes a separate
+SiW-Mv2 adapter checkpoint, then a separate MSU adapter checkpoint. No automatic
+advance past an owner-review boundary is authorized.
+
 ## Authority and boundary
 
 This document supplies dependency order and pull-request slicing for the final

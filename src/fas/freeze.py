@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 
 
-MCIO_DOMAINS = {"OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"}
+from .contracts import CORE_DOMAINS
 
 
 def build_analysis_freeze_record(
@@ -41,8 +41,8 @@ def build_analysis_freeze_record(
         raise ValueError("artifact_sha256 requires named SHA-256 digests")
     if not _hex_digest(source_evidence_sha256) or not _hex_digest(source_policy_sha256):
         raise ValueError("source evidence and policy require SHA-256 digests")
-    if set(outer_targets) != MCIO_DOMAINS or len(outer_targets) != 4:
-        raise ValueError("freeze record requires each MCIO outer target exactly once")
+    if set(outer_targets) != CORE_DOMAINS or len(outer_targets) != 4:
+        raise ValueError("freeze record requires each amended outer target exactly once")
     if len(seeds) != 3 or len(set(seeds)) != 3 or any(
         not isinstance(seed, int) or isinstance(seed, bool) for seed in seeds
     ):

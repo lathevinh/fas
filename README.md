@@ -17,9 +17,11 @@ receipt/protocol-file intake contracts are accepted in checkpoint 1.2. The first
 checkpoint-1.3 metadata adapter, OULU-NPU, is accepted. The next adapter,
 CASIA-FASD, has an accepted owner-authorized, pinned Bob-reference metadata adapter.
 This is not CASIA-owner schema certification; no real acquisition/media audit is
-accepted. Replay-Attack awaits local input and controlling metadata. The owner has
-supplied SiW-Mv2 as a replacement candidate; its prerequisite inspection is complete,
-but subject grouping and Protocol I list discrepancies block core replacement.
+accepted. SiW-Mv2 prerequisites are accepted, and the
+[dated benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) replaces
+Replay-Attack in the active study specification, pending checkpoint review. The
+new core is OULU-NPU/CASIA-FASD/MSU-MFSD/SiW-Mv2 with a frozen 1680-video Protocol-I
+intersection and explicit video grouping for SiW-Mv2. MCIO remains historical context.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -124,7 +126,11 @@ single-branch confidence and a matched same-family ensemble?
 80. [AxonData assessment and protocol decision](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
 81. [Reasoning-supervision paper review](docs/82-paper-review-reasoning-supervision-fas.md)
 82. [SiW-Mv2 prerequisites and conditional replacement decision](docs/83-phase1-siwmv2-prerequisites-and-replacement-decision.md)
-83. [Reading list](references/reading-list.md)
+83. [SiW-Mv2 amendment correction](docs/85-review-response-doc84-siwmv2-amendment.md)
+84. [Eligible-coverage requirement review](docs/86-review-doc85-siwmv2-amendment-response.md)
+85. [Verified eligible attack coverage](docs/87-review-response-doc86-eligible-attack-coverage.md)
+86. [Dated benchmark/config amendment and acceptance criteria](docs/88-phase1-benchmark-amendment-siwmv2.md)
+87. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -141,16 +147,17 @@ Only `schema` is expected to pass before audited data and source-only evidence e
 Every later stage must fail closed with explicit missing-prerequisite errors. These
 commands do not authorize target inspection; the normative implementation authority
 is the strict source-only design consolidated in
-[Document 42](docs/42-data-to-experiment-implementation-plan.md).
+[Document 42](docs/42-data-to-experiment-implementation-plan.md), with the dated
+[Document 88](docs/88-phase1-benchmark-amendment-siwmv2.md) population/grouping amendment.
 
 ## Current status
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [Checkpoint 1.3S SiW-Mv2 prerequisites](docs/83-phase1-siwmv2-prerequisites-and-replacement-decision.md);
-    header/list inspector implemented, pending owner review; core replacement blocked
-    on list reconciliation and participant/source-identity mapping. OULU and CASIA
-    metadata accepted, real media audit pending
+- Current work package: [Checkpoint 1.3A benchmark/config amendment](docs/88-phase1-benchmark-amendment-siwmv2.md),
+    implemented for owner review. Exact private eligible IDs, public coverage/hashes,
+    versioned type/family mapping and video-group policy are frozen. OULU and CASIA
+    metadata accepted; SiW-Mv2/MSU adapters and real media audits remain pending
 - Last reviewed: 2026-10-08
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented

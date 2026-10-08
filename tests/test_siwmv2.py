@@ -63,6 +63,32 @@ class SiWMv2PrerequisitesTest(unittest.TestCase):
         self.assertEqual(inspection.inspect_headers(self.entries(), self.sources()),
                          inspection.inspect_headers(list(reversed(self.entries())), self.sources()))
 
+    def test_intersection_deduplicates_and_preserves_unknown_subjects_and_taxonomy(self) -> None:
+        record = inspection.build_intersection_record(self.entries(), self.sources())
+        self.assertEqual(len(record["eligible_videos"]), 4)
+        self.assertTrue(all(row["subject_id"] is None and row["group_id"] == row["video_id"]
+                            for row in record["eligible_videos"]))
+        paper = next(row for row in record["eligible_videos"] if row["video_id"] == "Paper_1")
+        self.assertEqual((paper["reference_attack_type"], paper["attack_family"]), ("Paper", "print"))
+        summary = inspection.intersection_summary(record)
+        self.assertEqual(summary["partitions"]["train"]["attack"], 1)
+        self.assertFalse(summary["all_14_types_in_each_partition"])
+        self.assertNotIn("Paper_1", json.dumps(summary))
+        self.assertEqual(summary["private_membership_sha256"], hashlib.sha256(
+            (json.dumps(record, indent=2, sort_keys=True) + "\n").encode()).hexdigest())
+        self.assertEqual(record, inspection.build_intersection_record(list(reversed(self.entries())), self.sources()))
+
+    def test_intersection_freezes_explicit_exclusions_and_missing_references(self) -> None:
+        sources = self.sources()
+        sources["pro_3_text/trainlist_live.txt"] = b"Live_1\nLive_3\n"
+        sources["pro_3_text/testlist_all.txt"] = b"Replay_2\n"
+        record = inspection.build_intersection_record(self.entries(), sources)
+        self.assertEqual(record["excluded_videos"], [{"video_id": "Replay_1", "reason": "out_of_protocol", "reference_attack_type": "Replay"}])
+        self.assertEqual({row["video_id"] for row in record["missing_references"]}, {"Live_3", "Replay_2"})
+        sources["pro_3_text/testlist_live.txt"] = b"Live_1\n"
+        with self.assertRaises(ValueError):
+            inspection.build_intersection_record(self.entries(), sources)
+
     def test_unsafe_unknown_and_empty_members_fail_closed(self) -> None:
         for name in ("../outside.mov", "/SiW-Mv2/Live/Live_1.mov", "SiW-Mv2//Live/Live_1.mov",
                      "SiW-Mv2/./Live/Live_1.mov", "SiW-Mv2\\Live\\Live_1.mov",
@@ -139,6 +165,19 @@ class SiWMv2PrerequisitesTest(unittest.TestCase):
             with patch.object(sys, "argv", args), redirect_stderr(io.StringIO()):
                 self.assertEqual(inspection.main(), 2)
             self.assertEqual(output.read_bytes(), original)
+
+    def test_intersection_cli_rejects_private_ids_inside_git(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            archive_path = Path(temporary) / "dataset.zip"
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                for entry in self.entries():
+                    archive.writestr(entry.filename, b"synthetic payload")
+            output = Path(temporary) / "public" / "report.json"
+            args = ["inspect_siwmv2", "--archive", str(archive_path), "--reference-root", str(Path(temporary) / "reference"),
+                    "--out", str(output), "--intersection-private-out", str(ROOT / "manifests" / "private" / "forbidden.json")]
+            with patch.object(sys, "argv", args), patch.object(inspection, "load_sources", return_value=self.sources()), redirect_stderr(io.StringIO()):
+                self.assertEqual(inspection.main(), 2)
+            self.assertFalse(output.exists())
 
 
 if __name__ == "__main__":

@@ -1,0 +1,137 @@
+{
+  "all_14_types_in_each_partition": true,
+  "attack_family_mapping": {
+    "Makeup_Co": "makeup",
+    "Makeup_Im": "makeup",
+    "Makeup_Ob": "makeup",
+    "Mask_Half": "mask",
+    "Mask_Mann": "mask",
+    "Mask_Paper": "mask",
+    "Mask_Silicone": "mask",
+    "Mask_Trans": "mask",
+    "Paper": "print",
+    "Partial_Eye": "partial",
+    "Partial_Funnyeye": "partial",
+    "Partial_Mouth": "partial",
+    "Partial_Paperglass": "partial",
+    "Replay": "replay"
+  },
+  "eligible_total": 1680,
+  "excluded_total": 20,
+  "header_inventory_sha256": "2e08944154d49e531d727bd3320e798690e8b8ba144780153bbab857b5fb4582",
+  "mapping_version": "siwmv2_attack_family_v1",
+  "missing_reference_total": 11,
+  "no_media_payload_read": true,
+  "no_model_inference_or_training": true,
+  "partitions": {
+    "test": {
+      "attack": 362,
+      "bona_fide": 261,
+      "eligible_ids_sha256": "32bc58db1c6c871e57c64392bc21053a7bdbcfe1878349eff016ca12e02edad6"
+    },
+    "train": {
+      "attack": 533,
+      "bona_fide": 524,
+      "eligible_ids_sha256": "1ad6cf790d7258c7e1d3b9e4cadf5217283a6f0a0d65ce7f74d35829efb103f6"
+    }
+  },
+  "population_id": "siwmv2_protocol_i_intersection_v1",
+  "private_membership_sha256": "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+  "reference_attack_type_coverage": {
+    "Makeup_Co": {
+      "excluded": 0,
+      "test": 24,
+      "total": 52,
+      "train": 28
+    },
+    "Makeup_Im": {
+      "excluded": 0,
+      "test": 22,
+      "total": 61,
+      "train": 39
+    },
+    "Makeup_Ob": {
+      "excluded": 0,
+      "test": 10,
+      "total": 22,
+      "train": 12
+    },
+    "Mask_Half": {
+      "excluded": 0,
+      "test": 20,
+      "total": 72,
+      "train": 52
+    },
+    "Mask_Mann": {
+      "excluded": 0,
+      "test": 14,
+      "total": 40,
+      "train": 26
+    },
+    "Mask_Paper": {
+      "excluded": 0,
+      "test": 6,
+      "total": 17,
+      "train": 11
+    },
+    "Mask_Silicone": {
+      "excluded": 0,
+      "test": 8,
+      "total": 17,
+      "train": 9
+    },
+    "Mask_Trans": {
+      "excluded": 1,
+      "test": 35,
+      "total": 59,
+      "train": 24
+    },
+    "Paper": {
+      "excluded": 0,
+      "test": 56,
+      "total": 135,
+      "train": 79
+    },
+    "Partial_Eye": {
+      "excluded": 0,
+      "test": 23,
+      "total": 57,
+      "train": 34
+    },
+    "Partial_Funnyeye": {
+      "excluded": 19,
+      "test": 64,
+      "total": 160,
+      "train": 96
+    },
+    "Partial_Mouth": {
+      "excluded": 0,
+      "test": 12,
+      "total": 29,
+      "train": 17
+    },
+    "Partial_Paperglass": {
+      "excluded": 0,
+      "test": 29,
+      "total": 76,
+      "train": 47
+    },
+    "Replay": {
+      "excluded": 0,
+      "test": 39,
+      "total": 98,
+      "train": 59
+    }
+  },
+  "reference_commit": "8667dbcd316b38141729c057adf7517fe0602608",
+  "reference_sha256": {
+    "README.md": "3168b03e638fe52052de70bbeb221352f6e2418124a2e1bf0af59820b857b5d2",
+    "dataset.py": "0003fcb00cb08da5ea61cec729fcaedc108cc6ffb72ff977f8c8c3a1d3b97f66",
+    "pro_3_text/testlist_all.txt": "87fc74696498173b2a53d3af656650d3fead3f43fc499b09afd4a7d7a956c0c4",
+    "pro_3_text/testlist_live.txt": "6b14040b2be41896e7fad242ec743aab10d5bc073ebcbaa3e1575523eb0d3f23",
+    "pro_3_text/trainlist_all.txt": "ee10b1d1bd092b8383b6e726503499ca44f219b9bd4c92c3b3b2943aef0cf54b",
+    "pro_3_text/trainlist_live.txt": "ab808d5e38c0ccc5b5f547d5d2fc68c8ed6b0ab3d758c71e0e114c8c44998d76"
+  },
+  "scientific_readiness": false,
+  "version": 1
+}

@@ -26,7 +26,7 @@ class StatisticalContractTest(unittest.TestCase):
         deltas = {
             "OULU-NPU": [0.03, 0.00, 0.06],
             "CASIA-FASD": [0.01, 0.02, 0.03],
-            "Replay-Attack": [-0.01, 0.02, 0.02],
+            "SiW-Mv2": [-0.01, 0.02, 0.02],
             "MSU-MFSD": [0.04, 0.04, 0.04],
         }
         target, macro = aggregate_seed_then_target(deltas)
@@ -38,6 +38,10 @@ class StatisticalContractTest(unittest.TestCase):
             aggregate_seed_then_target({"OULU-NPU": [0.1, 0.2]})
         with self.assertRaises(ValueError):
             aggregate_seed_then_target({"OULU-NPU": [0.1, math.nan, 0.2]})
+
+    def test_aggregation_rejects_historical_mcio_population(self) -> None:
+        with self.assertRaises(ValueError):
+            aggregate_seed_then_target({domain: [0.1, 0.2, 0.3] for domain in ("OULU-NPU", "CASIA-FASD", "MSU-MFSD", "Replay-Attack")})
 
     def test_underpowered_seed_remains_estimable_but_not_event_support(self) -> None:
         state = evaluate_rq1_applicability([25, 8, 21], [True, True, True])
@@ -77,6 +81,14 @@ class StatisticalContractTest(unittest.TestCase):
 
 
 class PairingAndLedgerContractTest(unittest.TestCase):
+    def test_siwmv2_ledger_uses_null_subject_not_fabricated_identity(self) -> None:
+        rows = [self._ledger_row(system) for system in ("heterogeneous", "same_family")]
+        for row in rows:
+            row.update(dataset="SiW-Mv2", outer_target="SiW-Mv2", subject_id=None)
+        self.assertEqual(validate_transaction_ledger(rows), [])
+        rows[0]["subject_id"] = rows[0]["video_id"]
+        self.assertTrue(any("null" in error for error in validate_transaction_ledger(rows)))
+
     def test_rq1_requires_identical_ids_predictions_and_errors(self) -> None:
         domain = [
             {"transaction_id": "t1", "prediction": "live", "error": 0},

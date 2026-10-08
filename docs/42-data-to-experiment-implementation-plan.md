@@ -3,12 +3,14 @@
 Date: 2026-09-18
 Status: canonical implementation specification frozen; Phase 0 migration authorized
 
-Implementation update 2026-10-08: the owner's conditional SiW replacement request
-is audited in [Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md).
-The supplied release is SiW-Mv2. Its prerequisite inspector is implemented, but
-Protocol I reconciliation and source-subject identity block replacement activation.
-The four MCIO domains and all executable frozen configs below remain unchanged;
-Document 83 specifies the evidence and separately reviewed amendment needed next.
+Benchmark amendment 2026-10-08: [Document 88](88-phase1-benchmark-amendment-siwmv2.md)
+replaces Replay-Attack with the SiW-Mv2 Protocol-I intersection in the active study,
+preserves historical MCIO identity, and declares complete-video grouping for SiW-Mv2
+at every split/resampling boundary. Throughout the historical specification below,
+read core MCIO domain/fold references as the amended four-domain set and SiW-Mv2
+subject-disjoint requirements as video-group-disjoint, not verified participant
+separation. All unchanged method/claim rules still apply. Checkpoint acceptance and
+acquisition/media readiness are separate; training and target evaluation remain locked.
 
 ## 1. Purpose and authority
 

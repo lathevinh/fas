@@ -1,6 +1,5 @@
-dataset,audit_status,subjects,bona_videos,attack_videos,attack_families,metadata_source,manifest_sha256
-OULU-NPU,not_audited,,,,,,
-CASIA-FASD,not_audited,,,,,,
-Replay-Attack,not_audited,,,,,,
-MSU-MFSD,not_audited,,,,,,
-SiW-M,not_audited,,,,,,
+dataset,audit_status,subjects,group_unit,groups,bona_videos,attack_videos,attack_families,metadata_source,manifest_sha256
+OULU-NPU,not_audited,,subject,,,,,,
+CASIA-FASD,not_audited,,subject,,,,,,
+MSU-MFSD,not_audited,,subject,,,,,,
+SiW-Mv2,not_audited,,video,,,,,,

@@ -1,0 +1,99 @@
+{
+  "actual_intersection_reproduced": true,
+  "actual_private_hash_verified": true,
+  "base_commit": "85c3c38a1ba991ff17d562f8db11a264e124c64b",
+  "checkpoint": "1.3A",
+  "environment": "conda:fas",
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 146
+  },
+  "historical_config_bytes_preserved": true,
+  "method_config_bytes_unchanged": [
+    "claims_v1.yaml",
+    "prompts_core_v1.yaml",
+    "prompts_aux_v1.yaml",
+    "preprocessing_v2.yaml",
+    "seeds_v1.yaml",
+    "source_recipe_v2.yaml",
+    "environment_v1.yaml"
+  ],
+  "no_media_payload_read": true,
+  "no_model_inference_or_training": true,
+  "python_version": "3.12.14",
+  "scientific_readiness": false,
+  "stage_results": {
+    "analysis-freeze": {
+      "exit_code": 1,
+      "expected": 1,
+      "state": "blocked"
+    },
+    "data-audit": {
+      "exit_code": 1,
+      "expected": 1,
+      "state": "blocked"
+    },
+    "locked-evaluation": {
+      "exit_code": 1,
+      "expected": 1,
+      "state": "blocked"
+    },
+    "schema": {
+      "exit_code": 0,
+      "expected": 0,
+      "state": "schema_ready"
+    },
+    "source-dry-run": {
+      "exit_code": 1,
+      "expected": 1,
+      "state": "blocked"
+    }
+  },
+  "test_sha256": {
+    "tests/test_calibration.py": "237bfc29ebccc4ccea961a04a0057a651329f6de763dbc0f562ca8b762cc68d7",
+    "tests/test_casia.py": "de5ffde3c60434c2814b368573708501a648855aeff1909c18089970dbdd9ea8",
+    "tests/test_contracts.py": "72e7b454a41639565dcfccceec8baafe1b097066687b09f77563f93bcf9ab623",
+    "tests/test_environment.py": "f69e5bca930e5bb5d0d1a9666360bc1622228fb5d857ee1839f074c9da870205",
+    "tests/test_freeze.py": "21e81b689fe644c60dcdde3402acd17c6cf797ffd7d0b57e2485eea0c2236d72",
+    "tests/test_governance.py": "9350d043d2798a92a8d6e507b924aa4ed6fba8cec139d7a3b4a6595650165d78",
+    "tests/test_intake.py": "85bf5cb773046ffb4fba8b4f6902f8a706ee9bad51ffffeca68d5aedf0108054",
+    "tests/test_oulu.py": "68772ba3bc91726d0e995792034e9f9184048e672b3d856a401eda3e2e35c6d8",
+    "tests/test_preregistration.py": "34ae63ec16d4bbecea94bb577add0da10257c9793c917ced86a2e0f23c365379",
+    "tests/test_siwmv2.py": "8035a80f2bd4e840ef46610322bb817a5ff403c4bbcdf2bd4cc71f425d682ab7"
+  },
+  "version": 1,
+  "working_tree_artifact_sha256": {
+    "configs/benchmark_amendment_v2.yaml": "fc4021d6454a3a39342d02aa12b26b2f5e16e0e1f311c93a591b453ea63ec489",
+    "configs/claims_v1.yaml": "2f3169a2cc9c6d6bc591bcdca0f5f0a8f58be96901088249f82d5963d3968793",
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "configs/experiment_core_mcio_v1.yaml": "dc636a9bad8c427a83149a7697cc64a1bb38f31752303500cc2eb5b606e998b9",
+    "configs/experiment_core_v1.yaml": "e92a967c10b2f074e08759b7cf84f6dfd72bba868de4cb8c7597796aebaace57",
+    "configs/preprocessing_v2.yaml": "2a9e4cb6ec5fdf665151b5d8a89e941c23674bf51821f7d3665e52bd192a009e",
+    "configs/prompts_aux_v1.yaml": "9594be41b8c7d52201eb218ed5a6962035c175dc34063bf472bcbf643e7066c6",
+    "configs/prompts_core_v1.yaml": "2a08c666659fb1f6ad7f0572e39773d9a49148e47abdb6f9ad9059d785c0596c",
+    "configs/seeds_v1.yaml": "38c544a689488ff7de3a4a306a9c2dd742082948cb9aa024b4c432f1c5aefab2",
+    "configs/source_recipe_v2.yaml": "db39bbc961c19a5aa4f8fe9c87baa7b5ced678d9e8fda47fd016866819b52f09",
+    "manifests/dataset_summary.csv": "cb00e707280e81a7b7fb85a41001fccc59c0eceb5619206ffa93a4480ec92e5f",
+    "manifests/split_summary.csv": "f32f3a587114ea298804fe95b131403ee244b8520f94c10ae57a217f23356ae6",
+    "results/phase1/siwmv2-intersection-v1.json": "7ccbd4b4a10aaa8249efe2b122e149b1f4fe4b3ec8fbd1bf23d2d42a3a734190",
+    "scripts/check_environment.py": "064ee1f1935eb2866877054a760139a20b9279bb387f22124aa05e229b064a77",
+    "scripts/check_intake.py": "d3bec72d617b698540658bcc05091ff8b5a7271fe46c6587959e9fbac8159baf",
+    "scripts/inspect_siwmv2.py": "08afc6259f846b906492d6b76d080dcb13bd8200879cf85f502600672d13f03b",
+    "scripts/inventory_casia.py": "1e0f4120476ff2f015b96a1ba22fc9c1c925b3a0024d1ed709820ba38d0c3ad1",
+    "scripts/inventory_oulu.py": "70362a3177090ea8fa54733e96171bb1f8d8a44b20caf7e3d2f167b6cf471933",
+    "scripts/smoke_environment.py": "b924ad28afbf645cb6247db67192a01f39803445170a2e3e1a28f0d3e7655c2b",
+    "scripts/validate_preregistration.py": "ea220f4abe8d8783bf1d07b83ba98c24c682f02ef76faa125f83dc8985217054",
+    "scripts/write_freeze_record.py": "238f037e8d0ce9accc9973377c62dc6665a00582a869e59b7097ecbfe1684629",
+    "src/fas/__init__.py": "485aef8b02d2d3811bdbbb2c801a16827257f14b775a0c833c9a0838e55019e9",
+    "src/fas/calibration.py": "88f633838daad25b1a0ed885dfa6937bda0939db413753ca290b2c634d63bb93",
+    "src/fas/casia.py": "2cde152ca3c66a57e63ae0b0181f734d56eccc39c455c79341521ff3f2b47474",
+    "src/fas/contracts.py": "1435d35f30b7f5f69c9f54fb03286c32ca43f358edb602b9aaad7214ba13c339",
+    "src/fas/environment.py": "69b76051d0e3959f6774d02c3d98a61fdac4aabdff64b8b2c224d31bb69dd3fb",
+    "src/fas/freeze.py": "55465e0edaf5495f23fbde8693f831efc3f9da0181d8f2c0bbd7c16d4f0c766c",
+    "src/fas/intake.py": "8d912da9c43094f3db7de4e60b83d02ca97821c0ac5025a1ff036721961804c1",
+    "src/fas/oulu.py": "0f98d75678d0997176235ce5fd7e556207010e49ef9bdc0c61d4c0c6d50b5c4e",
+    "src/fas/preregistration.py": "d5b4b5d0becbc739225cb036cb6eacfe096e7c0971bd567f087259cb21e8fa72"
+  }
+}

@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoints 1.1 and 1.2 and the 1.3 OULU/CASIA metadata adapters accepted; SiW-Mv2 replacement prerequisite checkpoint implemented, awaiting review; core amendment blocked
+Status: checkpoints 1.1/1.2 and OULU/CASIA metadata accepted; 1.3S accepted in Document 84; benchmark amendment checkpoint 1.3A implemented for owner review, not data readiness
 
 ## Approval boundary
 
@@ -28,9 +28,10 @@ in chat.
 | 1.1 Environment lock | Existing conda env `fas`, approved Python 3.12 adjustment, exact package/source revisions, dependency lock and updated environment config | Recreate from lock; actual package versions match pins; required imports and CUDA synthetic tensor smoke pass; FFmpeg version recorded; regression and schema pass | Document 67 evidence; accepted by Document 69, fresh CI success on 08d29c0 |
 | 1.2 Intake contract | Acquisition/protocol inventory schema and CLI | Reject missing release/license/protocol identity, changed archive hashes and unsafe paths; synthetic fixtures pass; never infer labels from folders | Document 70 evidence; accepted by Document 72, fresh CI success on e55641d |
 | 1.3 Dataset adapters | Provenance-explicit metadata parser for each core dataset | Explicit label mapping; stable subject/video IDs; original partitions preserved with declared authority; unknown labels and duplicate IDs rejected; fixture counts reconcile | OULU-NPU official metadata accepted by Document 75, fresh CI on 8797a6f; CASIA Bob-reference metadata accepted by Document 79, fresh CI on 33051d2, not owner-certified schema; Replay prerequisites in Document 80; separate approval per adapter; no real media audit acceptance |
-| 1.3S SiW-Mv2 prerequisites | Safe header/list inspector and conditional replacement decision | Pinned source hashes, exact mismatch counts, no guessed subjects/splits, redacted immutable report, regression/schema pass, owner review | Document 83; local release present, but split/subject authority blocks replacement and metadata-adapter acceptance |
+| 1.3S SiW-Mv2 prerequisites | Safe header/list inspector and conditional replacement decision | Pinned source hashes, exact mismatch counts, no guessed subjects/splits, redacted immutable report, regression/schema pass, owner review | Document 83, accepted in Document 84; overstrict list/participant blockers corrected in Documents 85-87 |
+| 1.3A Benchmark amendment | Dated new study/config, immutable exact-ID intersection, coverage and grouping policy | Preserve MCIO history; 1680 eligible videos and all-14 coverage pinned; no fake subjects or repeat weights; schema/full regression pass; later gates blocked; owner review | Document 88, benchmark-amendment-verification.json; stop before separate SiW-Mv2/MSU adapters |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
-| 1.5 Core audit | Four MCIO intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
+| 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
 contract tests do not substitute for official dataset acceptance. If access is
@@ -126,15 +127,16 @@ Replay-Attack access remains blocked as recorded in
 [Document 80](80-phase1-step1.3-replay-attack-prerequisites.md). On 2026-10-08 the
 owner supplied SiW-Mv2 and authorized conditional replacement consideration.
 [Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md) records
-checkpoint 1.3S's implemented prerequisite inspector and actual list/identity blockers.
-Review that checkpoint before amendment activation or a SiW-Mv2 metadata adapter.
-Real acquisition/media audit acceptance remains pending; no Replay parser or MSU
-adapter is started, and no benchmark/config replacement is active.
+checkpoint 1.3S's prerequisite evidence; Document 84 accepts it. Documents 85-87
+permit the prospectively frozen intersection and complete-video fallback rather
+than requiring a participant map. [Document 88](88-phase1-benchmark-amendment-siwmv2.md)
+implements checkpoint 1.3A's benchmark/config amendment for owner review. Real
+acquisition/media audit acceptance remains pending; no SiW-Mv2 or MSU adapter has
+started. Stop for amendment acceptance before either separate adapter checkpoint.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
 large in-tree environment.
 
-The remaining readiness validator currently lists SiW-M among required datasets.
-Before checkpoint 1.5 acceptance, align that gate with Document 42's four-dataset
-core and optional SiW-M scope, with focused negative/positive tests and a dated
-change record before any target results. Do not fabricate optional data evidence.
+Checkpoint 1.3A aligns the readiness validator with the amended four-dataset core;
+optional SiW-M is no longer mandatory. This is recorded and negatively tested in
+Document 88 before any target results. Do not fabricate optional data evidence.

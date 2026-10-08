@@ -10,6 +10,18 @@ from typing import Any
 
 
 MCIO_DOMAINS = {"OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"}
+CORE_DOMAINS = {"OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"}
+SIWMV2_ATTACK_FAMILIES = {
+    "Makeup_Co": "makeup", "Makeup_Im": "makeup", "Makeup_Ob": "makeup",
+    "Mask_Half": "mask", "Mask_Mann": "mask", "Mask_Paper": "mask",
+    "Mask_Silicone": "mask", "Mask_Trans": "mask", "Paper": "print",
+    "Partial_Eye": "partial", "Partial_Funnyeye": "partial",
+    "Partial_Mouth": "partial", "Partial_Paperglass": "partial", "Replay": "replay",
+}
+GROUP_BOUNDARIES = (
+    "permanent_source_roles", "head_inner_validation", "matched_sample_oof",
+    "fold_local_calibration", "derived_frame_crop_ancestry", "target_bootstrap",
+)
 RQ1_DEPENDENCIES = (
     "heterogeneous_complete_competence",
     "dino_anchor_nondegeneracy",
@@ -33,17 +45,17 @@ def _source_records(artifact: Mapping[str, Any], name: str, errors: list[str]) -
             errors.append(f"{name} contents require typed source records")
             continue
         target, seed = record.get("outer_target"), record.get("seed")
-        if not isinstance(target, str) or target not in MCIO_DOMAINS or type(seed) is not int or seed not in PRIMARY_SEEDS:
+        if not isinstance(target, str) or target not in CORE_DOMAINS or type(seed) is not int or seed not in PRIMARY_SEEDS:
             errors.append(f"{name} contents require frozen fold/seed identities")
             continue
         sources = record.get("source_domains")
-        if not isinstance(sources, list) or not all(isinstance(domain, str) for domain in sources) or len(sources) != 3 or set(sources) != MCIO_DOMAINS - {target}:
+        if not isinstance(sources, list) or not all(isinstance(domain, str) for domain in sources) or len(sources) != 3 or set(sources) != CORE_DOMAINS - {target}:
             errors.append(f"{name} contents require exactly the three non-target source domains")
         key = (target, seed)
         if key in indexed:
             errors.append(f"{name} contents contain a duplicate fold/seed")
         indexed[key] = record
-    if set(indexed) != {(target, seed) for target in MCIO_DOMAINS for seed in PRIMARY_SEEDS}:
+    if set(indexed) != {(target, seed) for target in CORE_DOMAINS for seed in PRIMARY_SEEDS}:
         errors.append(f"{name} contents omit a frozen fold/seed")
     return indexed
 
@@ -131,7 +143,7 @@ def validate_source_evidence(
         if application.get("claims") != expected_claims:
             errors.append(f"applicability.json contents disagree with claim-specific competence for {key}")
         events = application.get("source_events")
-        if not isinstance(events, Mapping) or set(events) != MCIO_DOMAINS - {key[0]}:
+        if not isinstance(events, Mapping) or set(events) != CORE_DOMAINS - {key[0]}:
             errors.append(f"applicability.json contents require non-target source event counts for {key}")
             continue
         totals = {"error_count": 0, "correct_count": 0}
@@ -164,9 +176,9 @@ class Applicability:
 def aggregate_seed_then_target(
     deltas: Mapping[str, Sequence[float]],
 ) -> tuple[dict[str, float], float]:
-    """Average exactly three seeds per target, then all four MCIO targets."""
-    if set(deltas) != MCIO_DOMAINS:
-        raise ValueError("deltas must contain exactly the four MCIO targets")
+    """Average exactly three seeds per target, then all four amended targets."""
+    if set(deltas) != CORE_DOMAINS:
+        raise ValueError("deltas must contain exactly the four amended targets")
     target_deltas: dict[str, float] = {}
     for target, seed_deltas in deltas.items():
         if len(seed_deltas) != 3:
@@ -381,11 +393,18 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
         if transaction_id in by_system[system]:
             errors.append(f"duplicate {system} transaction {transaction_id}")
         by_system[system][transaction_id] = row
-        for field in ("sample_id", "dataset", "subject_id", "video_id"):
+        for field in ("sample_id", "dataset", "video_id"):
             if not isinstance(row[field], str) or not row[field]:
                 errors.append(f"transaction {transaction_id} requires nonempty {field}")
-        if row["outer_target"] not in MCIO_DOMAINS:
-            errors.append(f"transaction {transaction_id} requires a frozen MCIO outer target")
+        if row["dataset"] == "SiW-Mv2":
+            if row["subject_id"] is not None:
+                errors.append(f"transaction {transaction_id} requires unknown SiW-Mv2 subject_id as null")
+        elif not isinstance(row["subject_id"], str) or not row["subject_id"]:
+            errors.append(f"transaction {transaction_id} requires nonempty subject_id")
+        if row["outer_target"] not in CORE_DOMAINS:
+            errors.append(f"transaction {transaction_id} requires a frozen amended outer target")
+        if row["dataset"] != row["outer_target"]:
+            errors.append(f"transaction {transaction_id} dataset must match its outer target")
         if row["ground_truth"] not in {"attack", "bona_fide"}:
             errors.append(f"transaction {transaction_id} has invalid ground truth")
         for field in (

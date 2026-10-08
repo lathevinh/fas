@@ -14,7 +14,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from fas.freeze import build_analysis_freeze_record, write_immutable_record
 from fas.preregistration import (
-    MICO_DOMAINS,
+    CORE_DOMAINS,
     _validate_analysis_freeze,
     artifact_hashes,
     load_config,
@@ -29,7 +29,7 @@ class AnalysisFreezeContractTest(unittest.TestCase):
             "artifact_sha256": {"configs/claims_v1.yaml": "b" * 64},
             "source_evidence_sha256": "c" * 64,
             "source_policy_sha256": "d" * 64,
-            "outer_targets": ["OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"],
+            "outer_targets": ["OULU-NPU", "CASIA-FASD", "SiW-Mv2", "MSU-MFSD"],
             "seeds": [20260917, 20260923, 20261001],
             "no_target_selection_input": True,
         }
@@ -45,7 +45,7 @@ class AnalysisFreezeContractTest(unittest.TestCase):
             "artifact_sha256": {"config": "b" * 64},
             "source_evidence_sha256": "c" * 64,
             "source_policy_sha256": "d" * 64,
-            "outer_targets": ["OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"],
+            "outer_targets": ["OULU-NPU", "CASIA-FASD", "SiW-Mv2", "MSU-MFSD"],
             "seeds": [20260917, 20260923, 20261001],
         }
         with self.assertRaises(ValueError):
@@ -66,6 +66,16 @@ class AnalysisFreezeContractTest(unittest.TestCase):
                 write_immutable_record(path, record)
             self.assertEqual(path.read_bytes(), original)
             self.assertEqual(json.loads(path.read_text()), record)
+
+    def test_freeze_rejects_historical_outer_targets(self) -> None:
+        with self.assertRaisesRegex(ValueError, "amended outer target"):
+            build_analysis_freeze_record(
+                created_at_utc="2026-10-08T00:00:00+00:00", created_from_commit="a" * 40,
+                artifact_sha256={"config": "b" * 64}, source_evidence_sha256="c" * 64,
+                source_policy_sha256="d" * 64,
+                outer_targets=["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "Replay-Attack"],
+                seeds=[20260917, 20260923, 20261001], no_target_selection_input=True,
+            )
 
     def test_validation_rederives_commit_lineage_and_exact_artifacts(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -96,7 +106,7 @@ class AnalysisFreezeContractTest(unittest.TestCase):
                 artifact_sha256=artifact_hashes(root),
                 source_evidence_sha256=hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
                 source_policy_sha256=evidence["source_policy_sha256"],
-                outer_targets=sorted(MICO_DOMAINS),
+                outer_targets=sorted(CORE_DOMAINS),
                 seeds=seeds,
                 no_target_selection_input=True,
             )

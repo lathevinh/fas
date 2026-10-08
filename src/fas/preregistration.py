@@ -10,11 +10,12 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from .contracts import validate_source_evidence
+from .contracts import CORE_DOMAINS, GROUP_BOUNDARIES, SIWMV2_ATTACK_FAMILIES, validate_source_evidence
 from .freeze import build_analysis_freeze_record
 
 CONFIG_FILES = (
     "experiment_core_v1.yaml",
+    "benchmark_amendment_v2.yaml",
     "claims_v1.yaml",
     "prompts_core_v1.yaml",
     "prompts_aux_v1.yaml",
@@ -23,8 +24,11 @@ CONFIG_FILES = (
     "source_recipe_v2.yaml",
     "environment_v1.yaml",
 )
-MICO_DOMAINS = {"OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"}
-ALL_DATASETS = MICO_DOMAINS | {"SiW-M"}
+ALL_DATASETS = CORE_DOMAINS
+INTERSECTION_EVIDENCE = "results/phase1/siwmv2-intersection-v1.json"
+INTERSECTION_SHA256 = "7ccbd4b4a10aaa8249efe2b122e149b1f4fe4b3ec8fbd1bf23d2d42a3a734190"
+HISTORICAL_CONFIG = "configs/experiment_core_mcio_v1.yaml"
+HISTORICAL_CONFIG_SHA256 = "dc636a9bad8c427a83149a7697cc64a1bb38f31752303500cc2eb5b606e998b9"
 STAGES = (
     "schema",
     "data-audit",
@@ -33,18 +37,19 @@ STAGES = (
     "locked-evaluation",
 )
 DATASET_COLUMNS = (
-    "dataset", "audit_status", "subjects", "bona_videos", "attack_videos",
+    "dataset", "audit_status", "subjects", "group_unit", "groups", "bona_videos", "attack_videos",
     "attack_families", "metadata_source", "manifest_sha256",
 )
 SPLIT_COLUMNS = (
-    "dataset", "audit_status", "train_subjects", "branch_calibration_subjects",
-    "g_domain_subjects", "routing_validation_subjects", "g_attack_subjects",
+    "dataset", "audit_status", "group_unit", "train_groups", "branch_calibration_groups",
+    "g_domain_groups", "routing_validation_groups", "g_attack_groups",
     "train_attack_videos", "branch_calibration_attack_videos",
     "g_domain_attack_videos", "routing_validation_attack_videos",
     "g_attack_attack_videos", "role_manifest_sha256",
 )
 FAMILY_TERMS = {"print", "printed", "display", "displayed", "replay", "mask", "masked"}
 METADATA_COLUMNS = ("dataset", "subject_id", "video_id", "binary_label", "attack_family", "official_split")
+SIWMV2_METADATA_COLUMNS = METADATA_COLUMNS + ("reference_attack_type", "attack_mapping_version")
 ROLE_COLUMNS = ("dataset", "subject_id", "video_id", "binary_label", "role")
 ROLES = ("train", "branch_calibration", "g_domain", "routing_validation", "g_attack")
 SOURCE_DRY_RUN_ARTIFACTS = {
@@ -83,6 +88,7 @@ def validate_stage(root: Path, stage: str) -> list[str]:
             errors.append(f"invalid config {name}: {exc}")
 
     _validate_config_schema(configs, errors)
+    _validate_benchmark(root, configs.get("benchmark_amendment_v2.yaml", {}), errors)
 
     if STAGES.index(stage) >= STAGES.index("data-audit"):
         _validate_data_evidence(root, errors)
@@ -97,6 +103,7 @@ def validate_stage(root: Path, stage: str) -> list[str]:
 
 def artifact_hashes(root: Path) -> dict[str, str]:
     paths = [root / "configs" / name for name in CONFIG_FILES]
+    paths += [root / INTERSECTION_EVIDENCE, root / HISTORICAL_CONFIG]
     paths += [root / "manifests" / "dataset_summary.csv", root / "manifests" / "split_summary.csv"]
     for directory in (root / "src" / "fas", root / "scripts"):
         paths.extend(sorted(directory.rglob("*.py")))
@@ -105,6 +112,51 @@ def artifact_hashes(root: Path) -> dict[str, str]:
         for path in paths
         if path.exists()
     }
+
+
+def _validate_benchmark(root: Path, benchmark: dict[str, Any], errors: list[str]) -> None:
+    expected = {
+        "version": 2, "amendment_date": "2026-10-08",
+        "study_id": "strict_single_image_ocmsiwmv2_oof_risk_v2",
+        "state": "benchmark_specification_only_not_data_ready",
+        "previous_study": {"study_id": "strict_single_image_mcio_oof_risk_v1",
+                           "config_path": HISTORICAL_CONFIG, "config_sha256": HISTORICAL_CONFIG_SHA256},
+        "track_a": "historical_mcio_context_only", "population_changed": True,
+        "rq1_rq2_formulas_and_pass_rules_changed": False, "optional_siw_m_is_core_dependency": False,
+        "siwmv2_population": {
+            "population_id": "siwmv2_protocol_i_intersection_v1",
+            "wording": "SiW-Mv2 Protocol-I intersection population",
+            "evidence_path": INTERSECTION_EVIDENCE, "evidence_sha256": INTERSECTION_SHA256,
+            "private_membership_filename": "siwmv2_protocol_i_intersection_v1.json",
+            "private_membership_sha256": "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+            "source_partition": "train", "target_partition": "test",
+            "list_repeat_policy": "unique_tokens_no_transaction_or_weight",
+            "spoof_train_balancing_repeat_rows": 867, "excluded_reason": "out_of_protocol",
+            "missing_reference_policy": "inventory_only_not_attempted_transaction",
+        },
+        "grouping": {
+            "dataset_units": {domain: "video" if domain == "SiW-Mv2" else "subject" for domain in CORE_DOMAINS},
+            "boundaries": list(GROUP_BOUNDARIES), "siwmv2_subject_id": "null_json_empty_csv",
+            "siwmv2_participant_disjointness_verified": False, "siwmv2_bootstrap_unit": "video",
+            "role_type_coverage": "report_only_not_all_14_per_role_gate",
+        },
+    }
+    for field, value in expected.items():
+        if json.dumps(benchmark.get(field), sort_keys=True) != json.dumps(value, sort_keys=True):
+            errors.append(f"benchmark amendment {field} does not match the frozen population/grouping contract")
+    for relative, digest in ((HISTORICAL_CONFIG, HISTORICAL_CONFIG_SHA256), (INTERSECTION_EVIDENCE, INTERSECTION_SHA256)):
+        path = root / relative
+        if not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+            errors.append(f"benchmark amendment frozen artifact missing or changed: {relative}")
+    evidence_path = root / INTERSECTION_EVIDENCE
+    if evidence_path.exists():
+        try:
+            evidence = load_config(evidence_path)
+        except (ValueError, json.JSONDecodeError):
+            errors.append("benchmark amendment requires valid intersection evidence")
+            return
+        if evidence.get("attack_family_mapping") != SIWMV2_ATTACK_FAMILIES or evidence.get("all_14_types_in_each_partition") is not True:
+            errors.append("benchmark amendment requires versioned mapping and all-14 eligible coverage")
 
 
 def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
@@ -259,10 +311,13 @@ def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str
         )
     if experiment.get("version") != 1 or not experiment.get("study_id"):
         errors.append("canonical experiment requires version 1 and a study ID")
+    if experiment.get("study_id") != "strict_single_image_ocmsiwmv2_oof_risk_v2":
+        errors.append("canonical experiment requires the amended study identity, not MCIO")
     domains = experiment.get("outer_domains")
-    if not isinstance(domains, list) or set(domains) != MICO_DOMAINS or len(domains) != 4:
-        errors.append("canonical experiment must contain each MCIO outer domain exactly once")
+    if not isinstance(domains, list) or not all(isinstance(domain, str) for domain in domains) or set(domains) != CORE_DOMAINS or len(domains) != 4:
+        errors.append("canonical experiment must contain each amended outer domain exactly once")
     expected_references = {
+        "benchmark_spec": "benchmark_amendment_v2.yaml",
         "claim_spec": "claims_v1.yaml",
         "seed_spec": "seeds_v1.yaml",
         "preprocessing_spec": "preprocessing_v2.yaml",
@@ -467,6 +522,7 @@ def _validate_data_evidence(root: Path, errors: list[str]) -> None:
         return
     metadata_records = _validate_dataset_rows(root, datasets, errors)
     role_records = _validate_split_rows(root, splits, errors)
+    _validate_siwmv2_population(root, metadata_records.get("SiW-Mv2", []), errors)
     for dataset in ALL_DATASETS:
         metadata = {
             (row["subject_id"], row["video_id"]): row["binary_label"]
@@ -476,6 +532,42 @@ def _validate_data_evidence(root: Path, errors: list[str]) -> None:
             key = (row["subject_id"], row["video_id"])
             if key not in metadata or metadata[key] != row["binary_label"]:
                 errors.append(f"{dataset} role record does not match audited metadata: {key}")
+            if dataset == "SiW-Mv2" and not any(item["video_id"] == row["video_id"] and item["official_split"] == "train"
+                                               for item in metadata_records.get(dataset, [])):
+                errors.append("SiW-Mv2 target test video cannot enter source roles")
+
+
+def _validate_siwmv2_population(root: Path, rows: list[dict[str, str]], errors: list[str]) -> None:
+    if not rows:
+        return
+    try:
+        evidence = load_config(root / INTERSECTION_EVIDENCE)
+    except (OSError, ValueError, json.JSONDecodeError):
+        errors.append("SiW-Mv2 metadata requires frozen intersection evidence")
+        return
+    if any(row["official_split"] not in {"train", "test"} for row in rows):
+        errors.append("SiW-Mv2 metadata requires frozen train/test membership")
+    for split in ("train", "test"):
+        partition = [row for row in rows if row["official_split"] == split]
+        tokens = sorted(row["video_id"] for row in partition)
+        digest = hashlib.sha256(("\n".join(tokens) + "\n").encode()).hexdigest()
+        expected = evidence.get("partitions", {}).get(split, {})
+        if digest != expected.get("eligible_ids_sha256"):
+            errors.append(f"SiW-Mv2 {split} IDs do not match the frozen intersection")
+        for label in ("bona_fide", "attack"):
+            if sum(row["binary_label"] == label for row in partition) != expected.get(label):
+                errors.append(f"SiW-Mv2 {split} {label} count does not match the frozen intersection")
+        for attack_type, coverage in evidence.get("reference_attack_type_coverage", {}).items():
+            if sum(row["reference_attack_type"] == attack_type and row["binary_label"] == "attack" for row in partition) != coverage[split]:
+                errors.append(f"SiW-Mv2 {split} type coverage does not match the frozen intersection")
+    for row in rows:
+        attack_type = row["reference_attack_type"]
+        family = SIWMV2_ATTACK_FAMILIES.get(attack_type)
+        if (row["attack_mapping_version"] != "siwmv2_attack_family_v1"
+                or (row["binary_label"] == "attack" and (family is None or row["attack_family"] != family
+                    or row["video_id"].rpartition("_")[0] != attack_type))
+                or (row["binary_label"] == "bona_fide" and (attack_type != "" or row["attack_family"] != ""))):
+            errors.append("SiW-Mv2 metadata type/family mapping does not match its frozen version")
 
 
 def _read_summary(path: Path, columns: tuple[str, ...], errors: list[str]) -> dict[str, dict[str, str]]:
@@ -504,14 +596,22 @@ def _validate_dataset_rows(
     for dataset, row in rows.items():
         if row["audit_status"] != "complete":
             errors.append(f"dataset_summary.csv has unaudited dataset: {dataset}")
-        for column in ("subjects", "bona_videos", "attack_videos", "attack_families"):
+        if row["group_unit"] != ("video" if dataset == "SiW-Mv2" else "subject"):
+            errors.append(f"dataset_summary.csv {dataset} has incorrect group unit")
+        if dataset == "SiW-Mv2":
+            if row["subjects"] != "":
+                errors.append("SiW-Mv2 subject count must remain unknown, not a video count")
+        elif not _nonnegative_integer_string(row["subjects"], positive=True):
+            errors.append(f"dataset_summary.csv {dataset} subjects must be a positive integer")
+        for column in ("groups", "bona_videos", "attack_videos", "attack_families"):
             if not _nonnegative_integer_string(row[column], positive=True):
                 errors.append(f"dataset_summary.csv {dataset} {column} must be a positive integer")
         if not row["metadata_source"]:
             errors.append(f"dataset_summary.csv {dataset} metadata_source is required")
         evidence = root / "manifests" / "private" / f"{_slug(dataset)}_metadata.csv"
         if _validate_evidence_hash(evidence, row["manifest_sha256"], f"{dataset} metadata", errors):
-            records = _read_evidence(evidence, METADATA_COLUMNS, dataset, errors)
+            columns = SIWMV2_METADATA_COLUMNS if dataset == "SiW-Mv2" else METADATA_COLUMNS
+            records = _read_evidence(evidence, columns, dataset, errors)
             if records:
                 evidence_records[dataset] = records
                 _reconcile_dataset_summary(dataset, row, records, errors)
@@ -527,10 +627,12 @@ def _validate_split_rows(
     for dataset, row in rows.items():
         if row["audit_status"] != "complete":
             errors.append(f"split_summary.csv has unaudited dataset: {dataset}")
+        if row["group_unit"] != ("video" if dataset == "SiW-Mv2" else "subject"):
+            errors.append(f"split_summary.csv {dataset} has incorrect group unit")
         required_roles = {"train", "branch_calibration"}
         required_roles.add("g_attack" if dataset == "SiW-M" else "g_domain")
         for role in ROLES:
-            for suffix in ("subjects", "attack_videos"):
+            for suffix in ("groups", "attack_videos"):
                 column = f"{role}_{suffix}"
                 if role in required_roles and not _nonnegative_integer_string(row[column], positive=True):
                     errors.append(f"split_summary.csv {dataset} {column} must be a positive integer")
@@ -577,8 +679,13 @@ def _read_evidence(
         errors.append(f"{path.name} must contain nonempty records only for {dataset}")
         return []
     keys = [(row["subject_id"], row["video_id"]) for row in rows]
-    if any(not subject or not video for subject, video in keys) or len(keys) != len(set(keys)):
+    if any(not video for subject, video in keys) or len(keys) != len(set(keys)):
         errors.append(f"{path.name} requires unique nonempty subject/video keys")
+    if dataset == "SiW-Mv2":
+        if any(row["subject_id"] != "" for row in rows):
+            errors.append(f"{path.name} requires unknown SiW-Mv2 subject_id as empty CSV field")
+    elif any(not row["subject_id"] for row in rows):
+        errors.append(f"{path.name} requires nonempty subject keys")
     if any(row["binary_label"] not in {"bona_fide", "attack"} for row in rows):
         errors.append(f"{path.name} contains invalid binary labels")
     return rows
@@ -592,6 +699,7 @@ def _reconcile_dataset_summary(
 ) -> None:
     expected = {
         "subjects": len({row["subject_id"] for row in records}),
+        "groups": len({row["video_id" if dataset == "SiW-Mv2" else "subject_id"] for row in records}),
         "bona_videos": sum(row["binary_label"] == "bona_fide" for row in records),
         "attack_videos": sum(row["binary_label"] == "attack" for row in records),
         "attack_families": len({row["attack_family"] for row in records if row["binary_label"] == "attack"}),
@@ -607,19 +715,20 @@ def _reconcile_split_summary(
     records: list[dict[str, str]],
     errors: list[str],
 ) -> None:
-    subject_roles: dict[str, set[str]] = {}
+    group_roles: dict[str, set[str]] = {}
+    group_field = "video_id" if dataset == "SiW-Mv2" else "subject_id"
     for row in records:
         if row["role"] not in ROLES:
             errors.append(f"{dataset} role manifest contains invalid role {row['role']!r}")
             continue
-        subject_roles.setdefault(row["subject_id"], set()).add(row["role"])
-    overlap = [subject for subject, roles in subject_roles.items() if len(roles) > 1]
+        group_roles.setdefault(row[group_field], set()).add(row["role"])
+    overlap = [group for group, roles in group_roles.items() if len(roles) > 1]
     if overlap:
-        errors.append(f"{dataset} role manifest assigns subjects to multiple roles")
+        errors.append(f"{dataset} role manifest assigns {group_field} groups to multiple roles")
     for role in ROLES:
         role_rows = [row for row in records if row["role"] == role]
         expected = {
-            f"{role}_subjects": len({row["subject_id"] for row in role_rows}),
+            f"{role}_groups": len({row[group_field] for row in role_rows}),
             f"{role}_attack_videos": sum(row["binary_label"] == "attack" for row in role_rows),
         }
         for column, value in expected.items():

@@ -1,6 +1,5 @@
-dataset,audit_status,train_subjects,branch_calibration_subjects,g_domain_subjects,routing_validation_subjects,g_attack_subjects,train_attack_videos,branch_calibration_attack_videos,g_domain_attack_videos,routing_validation_attack_videos,g_attack_attack_videos,role_manifest_sha256
-OULU-NPU,not_audited,,,,,,,,,,,
-CASIA-FASD,not_audited,,,,,,,,,,,
-Replay-Attack,not_audited,,,,,,,,,,,
-MSU-MFSD,not_audited,,,,,,,,,,,
-SiW-M,not_audited,,,,,,,,,,,
+dataset,audit_status,group_unit,train_groups,branch_calibration_groups,g_domain_groups,routing_validation_groups,g_attack_groups,train_attack_videos,branch_calibration_attack_videos,g_domain_attack_videos,routing_validation_attack_videos,g_attack_attack_videos,role_manifest_sha256
+OULU-NPU,not_audited,subject,,,,,,,,,,,
+CASIA-FASD,not_audited,subject,,,,,,,,,,,
+MSU-MFSD,not_audited,subject,,,,,,,,,,,
+SiW-Mv2,not_audited,video,,,,,,,,,,,

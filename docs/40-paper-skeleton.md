@@ -2,6 +2,13 @@
 
 Date: 2026-09-18
 
+Benchmark amendment 2026-10-08: [Document 88](88-phase1-benchmark-amendment-siwmv2.md)
+controls the primary population. All primary tables use OULU-NPU/CASIA-FASD/MSU-MFSD/
+SiW-Mv2, and paper-facing prose uses "SiW-Mv2 Protocol-I intersection population".
+MCIO tables are historical literature context only, not results of the amended study.
+SiW-Mv2 separation and CI are video-grouped, not verified participant-disjoint or
+participant-clustered. Model, estimand and claim rules below remain unchanged.
+
 ## Working title
 
 **Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation

@@ -1,8 +1,7 @@
 {
   "version": 1,
-  "study_id": "strict_single_image_ocmsiwmv2_oof_risk_v2",
-  "outer_domains": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
-  "benchmark_spec": "benchmark_amendment_v2.yaml",
+  "study_id": "strict_single_image_mcio_oof_risk_v1",
+  "outer_domains": ["OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD"],
   "models": {
     "dino_reg": {
       "library": "torch_hub",

@@ -40,6 +40,42 @@ class GovernanceContractTest(unittest.TestCase):
     def test_canonical_schema_is_valid(self) -> None:
         self.assertEqual(validate_stage(ROOT, "schema"), [])
 
+    def test_schema_rejects_historical_domain_set_and_study_id(self) -> None:
+        with self._copy() as copy:
+            path = copy / "configs" / "experiment_core_v1.yaml"
+            config = json.loads(path.read_text())
+            config["outer_domains"] = ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "Replay-Attack"]
+            config["study_id"] = "strict_single_image_mcio_oof_risk_v1"
+            path.write_text(json.dumps(config), encoding="utf-8")
+            errors = validate_stage(copy, "schema")
+            self.assertTrue(any("amended outer domain" in error for error in errors))
+            self.assertTrue(any("amended study identity" in error for error in errors))
+
+    def test_schema_rejects_population_and_grouping_drift(self) -> None:
+        mutations = (
+            lambda config: config["siwmv2_population"].update(list_repeat_policy="use_balancing_weights"),
+            lambda config: config["siwmv2_population"].update(private_membership_sha256="a" * 64),
+            lambda config: config["grouping"]["boundaries"].remove("matched_sample_oof"),
+            lambda config: config["grouping"].update(siwmv2_participant_disjointness_verified=True),
+            lambda config: config["grouping"]["dataset_units"].update({"SiW-Mv2": "subject"}),
+            lambda config: config.update(track_a="current_mcio_results"),
+            lambda config: config.update(optional_siw_m_is_core_dependency=True),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(index=index), self._copy() as copy:
+                path = copy / "configs" / "benchmark_amendment_v2.yaml"
+                config = json.loads(path.read_text())
+                mutate(config)
+                path.write_text(json.dumps(config), encoding="utf-8")
+                self.assertTrue(any("benchmark amendment" in error for error in validate_stage(copy, "schema")))
+
+    def test_schema_rejects_intersection_evidence_and_historical_snapshot_drift(self) -> None:
+        for relative in ("results/phase1/siwmv2-intersection-v1.json", "configs/experiment_core_mcio_v1.yaml"):
+            with self.subTest(relative=relative), self._copy() as copy:
+                path = copy / relative
+                path.write_text(path.read_text() + "\n", encoding="utf-8")
+                self.assertTrue(any("frozen artifact missing or changed" in error for error in validate_stage(copy, "schema")))
+
     def test_schema_rejects_legacy_fields(self) -> None:
         with self._copy() as copy:
             path = copy / "configs" / "experiment_core_v1.yaml"

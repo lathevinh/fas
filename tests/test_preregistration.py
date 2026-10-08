@@ -10,6 +10,7 @@ import unittest
 from contextlib import contextmanager
 from collections.abc import Iterator
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
@@ -106,6 +107,36 @@ class PreregistrationTest(unittest.TestCase):
             self._update_hash(copy / "manifests" / "split_summary.csv", "OULU-NPU", "role_manifest_sha256", role_path)
             errors = validate_stage(copy, "data-audit")
             self.assertTrue(any("multiple roles" in error for error in errors))
+
+    def test_data_stage_rejects_siwmv2_id_and_type_drift_even_with_new_hash(self) -> None:
+        for field, value, message in (("video_id", "Paper_999999", "IDs do not match"),
+                                      ("reference_attack_type", "Replay", "type coverage"),
+                                      ("subject_id", "invented_subject", "unknown SiW-Mv2 subject_id")):
+            with self.subTest(field=field), self._copy() as copy:
+                self._write_synthetic_evidence(copy)
+                path = copy / "manifests/private/siw_mv2_metadata.csv"
+                with path.open(newline="", encoding="utf-8") as handle:
+                    rows = list(csv.DictReader(handle))
+                changed = next(row for row in rows if row["binary_label"] == "attack") if field == "reference_attack_type" else rows[0]
+                changed[field] = value
+                self._write_csv(path, tuple(rows[0]), rows)
+                self._update_hash(copy / "manifests/dataset_summary.csv", "SiW-Mv2", "manifest_sha256", path)
+                self.assertTrue(any(message in error for error in validate_stage(copy, "data-audit")))
+
+    def test_data_stage_rejects_siwmv2_test_video_in_source_roles(self) -> None:
+        with self._copy() as copy:
+            self._write_synthetic_evidence(copy)
+            metadata_path = copy / "manifests/private/siw_mv2_metadata.csv"
+            role_path = copy / "manifests/private/siw_mv2_roles.csv"
+            with metadata_path.open(newline="", encoding="utf-8") as handle:
+                metadata = list(csv.DictReader(handle))
+            with role_path.open(newline="", encoding="utf-8") as handle:
+                roles = list(csv.DictReader(handle))
+            target = next(row for row in metadata if row["official_split"] == "test")
+            roles[0].update(video_id=target["video_id"], binary_label=target["binary_label"])
+            self._write_csv(role_path, tuple(roles[0]), roles)
+            self._update_hash(copy / "manifests/split_summary.csv", "SiW-Mv2", "role_manifest_sha256", role_path)
+            self.assertTrue(any("target test video" in error for error in validate_stage(copy, "data-audit")))
 
     def test_source_dry_run_reconciles_required_artifacts_and_policy(self) -> None:
         with self._copy() as copy:
@@ -254,7 +285,7 @@ class PreregistrationTest(unittest.TestCase):
                 "version": 2,
                 "created_from_commit": "a" * 40,
                 "artifact_sha256": artifact_hashes(copy),
-                "outer_targets": ["CASIA-FASD", "MSU-MFSD", "OULU-NPU", "Replay-Attack"],
+                "outer_targets": ["CASIA-FASD", "MSU-MFSD", "OULU-NPU", "SiW-Mv2"],
                 "seeds": [20260917, 20260923, 20261001],
             }
             freeze_path.write_text(json.dumps(freeze), encoding="utf-8")
@@ -305,27 +336,63 @@ class PreregistrationTest(unittest.TestCase):
         private.mkdir(parents=True)
         dataset_rows = []
         split_rows = []
-        for dataset in ("OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD", "SiW-M"):
+        for dataset in ("OULU-NPU", "CASIA-FASD", "SiW-Mv2", "MSU-MFSD"):
             roles = ["train", "branch_calibration", "g_attack" if dataset == "SiW-M" else "g_domain"]
             metadata = []
             role_records = []
             for index, role in enumerate(roles):
                 for label in ("attack", "bona_fide"):
-                    subject = f"s{index}_{label}"
+                    subject = "" if dataset == "SiW-Mv2" else f"s{index}_{label}"
                     video = f"v{index}_{label}"
                     metadata.append({"dataset": dataset, "subject_id": subject, "video_id": video, "binary_label": label, "attack_family": "print" if label == "attack" else "", "official_split": "train"})
                     role_records.append({"dataset": dataset, "subject_id": subject, "video_id": video, "binary_label": label, "role": role})
+            if dataset == "SiW-Mv2":
+                public_path = root / "results/phase1/siwmv2-intersection-v1.json"
+                public = json.loads(public_path.read_text())
+                metadata = []
+                role_records = []
+                for split, offset in (("train", 0), ("test", 10000)):
+                    sizes = {"Live": public["partitions"][split]["bona_fide"],
+                             **{name: values[split] for name, values in public["reference_attack_type_coverage"].items()}}
+                    for prefix, count in sizes.items():
+                        for index in range(count):
+                            video = f"{prefix}_{offset + index + 1}"
+                            label = "bona_fide" if prefix == "Live" else "attack"
+                            metadata.append({"dataset": dataset, "subject_id": "", "video_id": video,
+                                             "binary_label": label, "attack_family": "" if prefix == "Live" else public["attack_family_mapping"][prefix],
+                                             "official_split": split, "reference_attack_type": "" if prefix == "Live" else prefix,
+                                             "attack_mapping_version": "siwmv2_attack_family_v1"})
+                            if split == "train":
+                                role_records.append({"dataset": dataset, "subject_id": "", "video_id": video,
+                                                     "binary_label": label, "role": roles[len(role_records) % len(roles)]})
+                    tokens = sorted(row["video_id"] for row in metadata if row["official_split"] == split)
+                    public["partitions"][split]["eligible_ids_sha256"] = hashlib.sha256(("\n".join(tokens) + "\n").encode()).hexdigest()
+                public_path.write_text(json.dumps(public), encoding="utf-8")
+                digest = self._digest(public_path)
+                benchmark_path = root / "configs/benchmark_amendment_v2.yaml"
+                benchmark = json.loads(benchmark_path.read_text())
+                benchmark["siwmv2_population"]["evidence_sha256"] = digest
+                benchmark_path.write_text(json.dumps(benchmark), encoding="utf-8")
+                fixture_pin = patch("fas.preregistration.INTERSECTION_SHA256", digest)
+                fixture_pin.start()
+                self.addCleanup(fixture_pin.stop)
             slug = dataset.lower().replace("-", "_")
             metadata_path = private / f"{slug}_metadata.csv"
             role_path = private / f"{slug}_roles.csv"
             self._write_csv(metadata_path, tuple(metadata[0]), metadata)
             self._write_csv(role_path, tuple(role_records[0]), role_records)
-            dataset_rows.append({"dataset": dataset, "audit_status": "complete", "subjects": "6", "bona_videos": "3", "attack_videos": "3", "attack_families": "1", "metadata_source": "synthetic_test", "manifest_sha256": self._digest(metadata_path)})
-            role_values = {f"{role}_{suffix}": "" for role in ("train", "branch_calibration", "g_domain", "routing_validation", "g_attack") for suffix in ("subjects", "attack_videos")}
+            group_unit = "video" if dataset == "SiW-Mv2" else "subject"
+            dataset_rows.append({"dataset": dataset, "audit_status": "complete", "subjects": "" if dataset == "SiW-Mv2" else "6",
+                                 "group_unit": group_unit, "groups": str(len(metadata)),
+                                 "bona_videos": str(sum(row["binary_label"] == "bona_fide" for row in metadata)),
+                                 "attack_videos": str(sum(row["binary_label"] == "attack" for row in metadata)),
+                                 "attack_families": str(len({row["attack_family"] for row in metadata if row["binary_label"] == "attack"})),
+                                 "metadata_source": "synthetic_test", "manifest_sha256": self._digest(metadata_path)})
+            role_values = {f"{role}_{suffix}": "" for role in ("train", "branch_calibration", "g_domain", "routing_validation", "g_attack") for suffix in ("groups", "attack_videos")}
             for role in roles:
-                role_values[f"{role}_subjects"] = "2"
-                role_values[f"{role}_attack_videos"] = "1"
-            split_rows.append({"dataset": dataset, "audit_status": "complete", **role_values, "role_manifest_sha256": self._digest(role_path)})
+                role_values[f"{role}_groups"] = str(sum(row["role"] == role for row in role_records))
+                role_values[f"{role}_attack_videos"] = str(sum(row["role"] == role and row["binary_label"] == "attack" for row in role_records))
+            split_rows.append({"dataset": dataset, "audit_status": "complete", "group_unit": group_unit, **role_values, "role_manifest_sha256": self._digest(role_path)})
         self._write_csv(root / "manifests" / "dataset_summary.csv", DATASET_COLUMNS, dataset_rows)
         self._write_csv(root / "manifests" / "split_summary.csv", SPLIT_COLUMNS, split_rows)
 
@@ -335,7 +402,7 @@ class PreregistrationTest(unittest.TestCase):
         artifacts = {}
         competence = {"version": 1, "no_target_selection_input": True, "records": []}
         applicability = {"version": 1, "no_target_selection_input": True, "n_error_min": 20, "target_event_support": "not_inspected", "records": []}
-        domains = ("OULU-NPU", "CASIA-FASD", "Replay-Attack", "MSU-MFSD")
+        domains = ("OULU-NPU", "CASIA-FASD", "SiW-Mv2", "MSU-MFSD")
         for target in domains:
             for seed in (20260917, 20260923, 20261001):
                 identity = {"outer_target": target, "seed": seed, "source_domains": [domain for domain in domains if domain != target]}

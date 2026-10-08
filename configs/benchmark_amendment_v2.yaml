@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "amendment_date": "2026-10-08",
+  "study_id": "strict_single_image_ocmsiwmv2_oof_risk_v2",
+  "state": "benchmark_specification_only_not_data_ready",
+  "previous_study": {
+    "study_id": "strict_single_image_mcio_oof_risk_v1",
+    "config_path": "configs/experiment_core_mcio_v1.yaml",
+    "config_sha256": "dc636a9bad8c427a83149a7697cc64a1bb38f31752303500cc2eb5b606e998b9"
+  },
+  "track_a": "historical_mcio_context_only",
+  "siwmv2_population": {
+    "population_id": "siwmv2_protocol_i_intersection_v1",
+    "wording": "SiW-Mv2 Protocol-I intersection population",
+    "evidence_path": "results/phase1/siwmv2-intersection-v1.json",
+    "evidence_sha256": "7ccbd4b4a10aaa8249efe2b122e149b1f4fe4b3ec8fbd1bf23d2d42a3a734190",
+    "private_membership_filename": "siwmv2_protocol_i_intersection_v1.json",
+    "private_membership_sha256": "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+    "source_partition": "train",
+    "target_partition": "test",
+    "list_repeat_policy": "unique_tokens_no_transaction_or_weight",
+    "spoof_train_balancing_repeat_rows": 867,
+    "excluded_reason": "out_of_protocol",
+    "missing_reference_policy": "inventory_only_not_attempted_transaction"
+  },
+  "grouping": {
+    "dataset_units": {"OULU-NPU": "subject", "CASIA-FASD": "subject", "MSU-MFSD": "subject", "SiW-Mv2": "video"},
+    "boundaries": ["permanent_source_roles", "head_inner_validation", "matched_sample_oof", "fold_local_calibration", "derived_frame_crop_ancestry", "target_bootstrap"],
+    "siwmv2_subject_id": "null_json_empty_csv",
+    "siwmv2_participant_disjointness_verified": false,
+    "siwmv2_bootstrap_unit": "video",
+    "role_type_coverage": "report_only_not_all_14_per_role_gate"
+  },
+  "population_changed": true,
+  "rq1_rq2_formulas_and_pass_rules_changed": false,
+  "optional_siw_m_is_core_dependency": false
+}

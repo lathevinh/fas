@@ -8,9 +8,9 @@ from datetime import date
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from .preregistration import MICO_DOMAINS
+from .contracts import CORE_DOMAINS, MCIO_DOMAINS
 
-DATASETS = MICO_DOMAINS | {"SiW-M", "CelebA-Spoof"}
+DATASETS = CORE_DOMAINS | MCIO_DOMAINS | {"SiW-M", "CelebA-Spoof"}
 PERMISSIONS = ("redistribution", "derived_frames", "model_weights", "metadata_counts")
 EVIDENCE = ("channel", "license", "access_approval", "release", "protocol_documentation")
 RECEIPT_FIELDS = {
