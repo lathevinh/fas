@@ -1,0 +1,102 @@
+{
+  "acquisition_verified": false,
+  "archive_byte_size": 20268115012,
+  "archive_sha256_verified": false,
+  "attack_folder_counts": {
+    "Spoof/Makeup_Cosmetic": 52,
+    "Spoof/Makeup_Impersonation": 61,
+    "Spoof/Makeup_Obfuscation": 22,
+    "Spoof/Mannequin": 40,
+    "Spoof/Mask_HalfMask": 72,
+    "Spoof/Mask_PaperMask": 17,
+    "Spoof/Mask_TransparentMask": 60,
+    "Spoof/Paper": 135,
+    "Spoof/Partial_Eye": 57,
+    "Spoof/Partial_FunnyeyeGlasses": 179,
+    "Spoof/Partial_Mouth": 29,
+    "Spoof/Partial_PaperGlasses": 76,
+    "Spoof/Replay": 98,
+    "Spoof/Silicone": 17
+  },
+  "blockers": [
+    "subject/source-identity mapping unavailable; video tokens must not be treated as subjects",
+    "authorized acquisition receipt and archive/media integrity/decode audit remain unverified",
+    "pinned Protocol I lists do not reconcile exactly with archive video tokens"
+  ],
+  "core_replacement_activated": false,
+  "dataset": "SiW-Mv2",
+  "document_headers": 2,
+  "header_inventory_sha256": "2e08944154d49e531d727bd3320e798690e8b8ba144780153bbab857b5fb4582",
+  "header_members": 1719,
+  "live_video_headers": 785,
+  "media_decode_verified": false,
+  "media_extensions": {
+    ".avi": 400,
+    ".mov": 994,
+    ".mp4": 306
+  },
+  "media_integrity_verified": false,
+  "no_media_payload_read": true,
+  "no_model_inference_or_training": true,
+  "protocol_i_exact_match": false,
+  "protocol_i_lists": {
+    "pro_3_text/testlist_all.txt": {
+      "balancing_repeat_rows": 0,
+      "listed_missing_from_archive": 0,
+      "rows": 362,
+      "unique_tokens": 362
+    },
+    "pro_3_text/testlist_live.txt": {
+      "balancing_repeat_rows": 0,
+      "listed_missing_from_archive": 4,
+      "rows": 265,
+      "unique_tokens": 265
+    },
+    "pro_3_text/trainlist_all.txt": {
+      "balancing_repeat_rows": 867,
+      "listed_missing_from_archive": 0,
+      "rows": 1400,
+      "unique_tokens": 533
+    },
+    "pro_3_text/trainlist_live.txt": {
+      "balancing_repeat_rows": 0,
+      "listed_missing_from_archive": 7,
+      "rows": 531,
+      "unique_tokens": 531
+    }
+  },
+  "protocol_i_reconciliation": {
+    "all": {
+      "listed_unobserved": 0,
+      "observed_test": 362,
+      "observed_train": 533,
+      "observed_unlisted": 20,
+      "train_test_video_token_overlap": 0
+    },
+    "live": {
+      "listed_unobserved": 11,
+      "observed_test": 261,
+      "observed_train": 524,
+      "observed_unlisted": 0,
+      "train_test_video_token_overlap": 0
+    }
+  },
+  "readme_header_counts_match": true,
+  "reference_commit": "8667dbcd316b38141729c057adf7517fe0602608",
+  "reference_sha256": {
+    "README.md": "3168b03e638fe52052de70bbeb221352f6e2418124a2e1bf0af59820b857b5d2",
+    "dataset.py": "0003fcb00cb08da5ea61cec729fcaedc108cc6ffb72ff977f8c8c3a1d3b97f66",
+    "pro_3_text/testlist_all.txt": "87fc74696498173b2a53d3af656650d3fead3f43fc499b09afd4a7d7a956c0c4",
+    "pro_3_text/testlist_live.txt": "6b14040b2be41896e7fad242ec743aab10d5bc073ebcbaa3e1575523eb0d3f23",
+    "pro_3_text/trainlist_all.txt": "ee10b1d1bd092b8383b6e726503499ca44f219b9bd4c92c3b3b2943aef0cf54b",
+    "pro_3_text/trainlist_live.txt": "ab808d5e38c0ccc5b5f547d5d2fc68c8ed6b0ab3d758c71e0e114c8c44998d76"
+  },
+  "reference_url": "https://github.com/CHELSEA234/Multi-domain-learning-FAS",
+  "scientific_readiness": false,
+  "scope": "redacted header/partition prerequisites only; not an accepted metadata adapter",
+  "spoof_video_headers": 915,
+  "status": "blocked",
+  "subject_identity_verified": false,
+  "version": 1,
+  "video_headers": 1700
+}

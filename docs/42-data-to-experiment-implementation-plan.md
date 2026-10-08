@@ -3,6 +3,13 @@
 Date: 2026-09-18
 Status: canonical implementation specification frozen; Phase 0 migration authorized
 
+Implementation update 2026-10-08: the owner's conditional SiW replacement request
+is audited in [Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md).
+The supplied release is SiW-Mv2. Its prerequisite inspector is implemented, but
+Protocol I reconciliation and source-subject identity block replacement activation.
+The four MCIO domains and all executable frozen configs below remain unchanged;
+Document 83 specifies the evidence and separately reviewed amendment needed next.
+
 ## 1. Purpose and authority
 
 This document is the canonical implementation specification from dataset access

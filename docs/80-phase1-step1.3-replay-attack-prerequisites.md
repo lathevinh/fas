@@ -5,6 +5,13 @@ Authority: Document 42 and the checkpoint sequence in Document 65
 Base commit: `21e93fe868b40c8accfd13d2ee116c5dbf905f23`
 Status: **BLOCKED on local input and controlling metadata; no Replay parser implemented**
 
+Update 2026-10-08: the owner supplied a SiW-Mv2 archive and authorized considering
+replacement. Current work moves to the prerequisite review in
+[Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md), not a
+Replay parser. Replacement is not activated because Protocol I lists and subject
+grouping remain unresolved. The original Replay access check below is historical
+evidence and its missing-input condition remains unchanged.
+
 ## Accepted Previous Checkpoint
 
 [Review 79](79-review-phase1-step1.3-casia-reference-metadata-adapter.md) accepts

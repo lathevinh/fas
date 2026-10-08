@@ -17,7 +17,9 @@ receipt/protocol-file intake contracts are accepted in checkpoint 1.2. The first
 checkpoint-1.3 metadata adapter, OULU-NPU, is accepted. The next adapter,
 CASIA-FASD, has an accepted owner-authorized, pinned Bob-reference metadata adapter.
 This is not CASIA-owner schema certification; no real acquisition/media audit is
-accepted. The next adapter, Replay-Attack, awaits local input and controlling metadata.
+accepted. Replay-Attack awaits local input and controlling metadata. The owner has
+supplied SiW-Mv2 as a replacement candidate; its prerequisite inspection is complete,
+but subject grouping and Protocol I list discrepancies block core replacement.
 Training and target evaluation remain locked.
 
 ## Scope
@@ -120,7 +122,9 @@ single-branch confidence and a matched same-family ensemble?
 78. [CASIA reference-derived metadata acceptance review](docs/79-review-phase1-step1.3-casia-reference-metadata-adapter.md)
 79. [Replay-Attack prerequisites and exact owner input](docs/80-phase1-step1.3-replay-attack-prerequisites.md)
 80. [AxonData assessment and protocol decision](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
-81. [Reading list](references/reading-list.md)
+81. [Reasoning-supervision paper review](docs/82-paper-review-reasoning-supervision-fas.md)
+82. [SiW-Mv2 prerequisites and conditional replacement decision](docs/83-phase1-siwmv2-prerequisites-and-replacement-decision.md)
+83. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -143,10 +147,11 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [Checkpoint 1.3 Replay-Attack](docs/80-phase1-step1.3-replay-attack-prerequisites.md);
-    local release and controlling metadata needed; OULU and CASIA metadata accepted,
-    real media audit pending
-- Last reviewed: 2026-10-06
+- Current work package: [Checkpoint 1.3S SiW-Mv2 prerequisites](docs/83-phase1-siwmv2-prerequisites-and-replacement-decision.md);
+    header/list inspector implemented, pending owner review; core replacement blocked
+    on list reconciliation and participant/source-identity mapping. OULU and CASIA
+    metadata accepted, real media audit pending
+- Last reviewed: 2026-10-08
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
@@ -173,6 +178,11 @@ is the strict source-only design consolidated in
     The provider page's GET DATA link retrieved on 2026-10-06 points to VoicePA,
     not face Replay-Attack. Correct schema/local input is needed before implementation;
     no Replay parser or MSU work has started
+- SiW-Mv2 candidate: supplied ZIP has 785 live and 915 spoof video headers.
+    Pinned Protocol I lists name 11 absent live tokens and omit 20 observed spoof
+    tokens. No source-subject identity map is established. The
+    [redacted inspection](results/phase1/siwmv2-prerequisites.json) is blocked;
+    no archive payload/inference, core-domain change or scientific readiness is implied
 - AxonData alternative: [public metadata assessment](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
     found 51 public videos, not the advertised full commercial corpus, with no
     annotation/identity/protocol manifest. Not adopted as a Replay replacement;

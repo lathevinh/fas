@@ -1,5 +1,10 @@
 # Datasets and Protocols
 
+Update 2026-10-08: owner-supplied SiW-Mv2 is being assessed as a replacement
+candidate, not activated core data. [Document 83](83-phase1-siwmv2-prerequisites-and-replacement-decision.md)
+records the identity/split blockers and conditional amendment. The frozen MCIO
+population below remains current; SiW, SiW-M and SiW-Mv2 are distinct datasets.
+
 ## Dataset roles
 
 | Dataset | Intended use | Useful labels/properties | Restrictions or caveats |
@@ -10,6 +15,7 @@
 | Replay-Attack | MCIO source/target | Print/replay and controlled/adverse settings | Preserve official train/dev/test split |
 | MSU-MFSD | MCIO source/target | Print/replay across capture devices | Small dataset; high leakage risk |
 | SiW-M | Main unseen-attack evaluation | 13 diverse attack types and zero-shot protocols | Access and current official protocol must be verified |
+| SiW-Mv2 | Conditional Replay replacement candidate, not activated | Local 785 live / 915 spoof video headers across 14 attack types | Protocol I mismatch and source-subject mapping unresolved; not canonical MCIO or the optional SiW-M track |
 | 3DMAD/HiFiMask | External mask transfer | 3D mask evidence | Sensor/modality and access may not match RGB-only scope |
 | UniAttackData | Later unified physical/digital extension | Diverse physical and digital attacks | Out of first-paper scope unless physical subset is cleanly defined |
 

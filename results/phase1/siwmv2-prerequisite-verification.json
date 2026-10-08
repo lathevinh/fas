@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "date": "2026-10-08",
+  "base_commit": "f064a5f5ed27bb0158932af0213046b0b8428beb",
+  "checkpoint": "1.3S SiW-Mv2 header/partition prerequisites",
+  "local_implementation_checks": "passed",
+  "owner_checkpoint_accepted": false,
+  "core_replacement_status": "blocked_not_activated",
+  "execution_environment": "existing conda env fas",
+  "focused_tests": {
+    "command": "conda run -n fas python -m unittest discover -s tests -p test_siwmv2.py -v",
+    "tests": 8,
+    "exit_code": 0
+  },
+  "privacy_copy_tests": {
+    "suites": {"test_freeze.py": 4, "test_governance.py": 10, "test_preregistration.py": 22},
+    "total_tests": 36,
+    "all_passed": true
+  },
+  "regression": {
+    "command": "conda run -n fas python -m unittest discover -s tests -q",
+    "tests": 135,
+    "exit_code": 0
+  },
+  "schema": {
+    "command": "conda run -n fas python scripts/validate_preregistration.py --stage schema",
+    "result": "SCHEMA READY",
+    "exit_code": 0
+  },
+  "real_inspection": {
+    "report": "results/phase1/siwmv2-prerequisites.json",
+    "exit_code": 1,
+    "exit_meaning": "inspection succeeded; scientific prerequisites blocked",
+    "live_video_headers": 785,
+    "spoof_video_headers": 915,
+    "listed_live_tokens_absent": 11,
+    "observed_spoof_tokens_unlisted": 20,
+    "train_test_video_token_overlap": 0,
+    "subject_identity_verified": false,
+    "scientific_readiness": false
+  },
+  "unchanged_scope": {
+    "four_mcio_outer_domains": true,
+    "frozen_configs": true,
+    "models_rqs_claim_gates": true,
+    "canonical_manifest_counts": true,
+    "no_model_inference_or_training": true,
+    "no_media_extraction_or_decoding": true
+  },
+  "remote_ci": "not_claimed"
+}
