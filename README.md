@@ -157,13 +157,16 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [SiW-Mv2 metadata adapter](docs/91-phase1-siwmv2-metadata-adapter.md),
-    implemented and locally verified; owner review pending. The preceding
+- Current work package: [MSU-MFSD prerequisites](docs/92-phase1-msu-mfsd-prerequisites.md),
+    blocked on local release and controlling schema/list evidence after owner
+    authorization to advance. [SiW-Mv2 metadata](docs/91-phase1-siwmv2-metadata-adapter.md)
+    is implemented and locally verified; no formal review document received. The preceding
     [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
     OULU and CASIA metadata accepted; MSU adapter and real media audits remain pending.
-    Stop before MSU implementation, extraction, inference or training
+    Stop for MSU input before adapter implementation, manifests, extraction,
+    inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented

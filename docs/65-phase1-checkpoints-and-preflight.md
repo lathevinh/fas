@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoints 1.1/1.2 and OULU/CASIA metadata accepted; 1.3S accepted in Document 84; benchmark amendment 1.3A accepted in Document 89, not data readiness; SiW-Mv2 adapter permitted as the next separate checkpoint
+Status: checkpoints 1.1/1.2 and OULU/CASIA metadata accepted; benchmark amendment 1.3A accepted in Document 89, not data readiness; SiW-Mv2 metadata implemented in Document 91; owner-authorized MSU prerequisites blocked in Document 92
 
 ## Approval boundary
 
@@ -135,9 +135,12 @@ implements checkpoint 1.3A's benchmark/config amendment, accepted in
 wording is resolved in [Document 90](90-review-response-doc89-population-clarification.md).
 [Document 91](91-phase1-siwmv2-metadata-adapter.md) implements the authorized
 SiW-Mv2 metadata adapter with actual private header reconciliation, redacted evidence,
-27 focused tests and 162 full regression tests. Owner adapter acceptance remains
-pending. Real acquisition/media audit acceptance remains pending; no MSU adapter has
-started. Stop for review before moving to the separate MSU adapter checkpoint.
+27 focused tests and 162 full regression tests. No formal adapter review document
+has been received. The owner authorized the next step on 2026-10-09;
+[Document 92](92-phase1-msu-mfsd-prerequisites.md) records the separate MSU prerequisite
+inspection, blocked on local release and controlling metadata. No MSU adapter has
+started. Stop for the missing input before implementation. Real acquisition/media
+audit acceptance remains pending.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
