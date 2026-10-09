@@ -157,16 +157,16 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [MSU-MFSD native metadata adapter](docs/93-phase1-msu-mfsd-metadata-adapter.md),
-    implemented and locally verified on the owner-supplied package; owner review
-    pending. This resolves the missing-input prerequisite in Document 92.
-    [SiW-Mv2 metadata](docs/91-phase1-siwmv2-metadata-adapter.md)
-    is implemented and locally verified; no formal review document received. The preceding
+- Current work package: metadata adapter checkpoint accepted. [Review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md)
+    accepts MSU without rework and records all four core adapters as implemented/accepted;
+    [response 95](docs/95-review-response-doc94.md) preserves the audit limitations.
+    The next eligible checkpoint is 1.4 immutable manifests / deterministic roles,
+    not started in this review-response turn. The preceding
     [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
-    OULU and CASIA metadata accepted; MSU adapter acceptance and real media audits
-    remain pending. Stop before manifests, role assignment, bulk extraction,
+    Real acquisition/media audits and scientific readiness remain pending.
+    Stop before the next implementation checkpoint; no bulk extraction,
     inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
@@ -194,7 +194,8 @@ is the strict source-only design consolidated in
 - Replay-Attack: prerequisite check only; no local input found in checked locations.
     The provider page's GET DATA link retrieved on 2026-10-06 points to VoicePA,
     not face Replay-Attack. Correct schema/local input is needed before implementation;
-    no Replay parser or MSU work has started
+    no Replay parser was implemented. Replay is historical rather than active core
+    under the accepted benchmark amendment
 - SiW-Mv2: accepted Protocol-I intersection and actual archive headers reconcile;
     [27 focused / 162 regression tests](results/phase1/siwmv2-adapter-verification.json)
     pass. [Metadata inventory](results/phase1/siwmv2-adapter-inventory-v1.json)
@@ -202,14 +203,16 @@ is the strict source-only design consolidated in
     observed exclusions and 11 absent references kept separate. Subject IDs remain
     null and groups are videos; acquisition, media hashes/decode and scientific
     readiness remain unverified. The earlier blocked prerequisite report is historical;
-    adapter owner acceptance is pending
+    aggregate owner acceptance is recorded in review 94's final disposition
 - MSU-MFSD: native inner README and official subject lists are pinned as raw bytes;
     all 16 volumes in the eight supplied ZIPs reconcile to 280 videos / 35 subjects.
     [18 focused / 180 regression tests](results/phase1/msu-adapter-verification.json)
     pass. [Redacted inventory](results/phase1/msu-adapter-inventory-v1.json) preserves
     train 15 subjects / 120 videos and test 20 / 160. No video/sidecar/helper entry
     opened; container seeking may decompress opaque volume bytes. Roles, acquisition,
-    archive/media integrity and scientific readiness remain unverified; owner review pending
+    archive/media integrity and scientific readiness remain unverified. Accepted without
+    rework by [review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md), with fresh
+    exact-commit CI on `9355294` independently verified successful
 - AxonData alternative: [public metadata assessment](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
     found 51 public videos, not the advertised full commercial corpus, with no
     annotation/identity/protocol manifest. Not adopted as a Replay replacement;
