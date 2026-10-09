@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "state": "prospective_model_free_screening",
+  "dataset": "oulu_npu",
+  "temporal_sample_ranks": "floor((decoded_frame_count - 1) * j / 4), j=0..4",
+  "short_video_slots": "repeat_fixed_rank_no_replacement",
+  "fingerprint": "RGB2GRAY_INTER_AREA_32x32_cv2_DCT_top_left_8x8_median_without_DC_DC_bit_zero",
+  "candidate_rule": "any_25_slot_hamming_le_4_OR_at_least_3_aligned_slots_hamming_le_8",
+  "comparison_population": "all_successfully_decoded_OULU_pairs_no_role_label_partition_filter",
+  "failed_video": "retain_unavailable_in_original_coverage_denominator",
+  "threshold_tuning": false,
+  "candidate_is_confirmed_duplicate": false,
+  "candidate_disposition": "private_pairwise_review_required_no_automatic_exclusion",
+  "limitations": ["sparse_temporal_sampling", "cropped_or_overlaid_content", "large_temporal_shifts", "common_background_false_positives", "no_capture_provenance_certification"],
+  "role_or_selector_rewrite": false,
+  "model_execution_authorized": false,
+  "scientific_readiness": false
+}

@@ -20,6 +20,78 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluContentTest(unittest.TestCase):
+    def test_runner_refuses_repository_and_existing_output(self) -> None:
+        import argparse
+        spec = importlib.util.spec_from_file_location("screen_oulu_content", ROOT / "scripts/screen_oulu_content.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            args = argparse.Namespace(input_root=source, audit_root=source, frozen_root=source,
+                                      archive_records=source, out_root=ROOT / "results/refused-content-output", workers=4)
+            with self.assertRaisesRegex(ValueError, "unsafe private output"):
+                module.screen(args)
+            args.out_root = source
+            with self.assertRaisesRegex(ValueError, "existing output"):
+                module.screen(args)
+
+    def test_temporal_ranks_include_frozen_primary(self) -> None:
+        from fas.content import temporal_orders
+        self.assertEqual(temporal_orders(8), [0, 1, 3, 5, 7])
+        self.assertEqual(temporal_orders(1), [0] * 5)
+        for invalid in (0, -1, True, 2.5):
+            with self.assertRaises(ValueError):
+                temporal_orders(invalid)
+
+    def test_phash_deterministic_and_brightness_invariant(self) -> None:
+        import numpy as np
+        from fas.content import perceptual_hash
+        rgb = np.random.default_rng(42).integers(0, 180, (64, 64, 3), dtype=np.uint8)
+        self.assertEqual(perceptual_hash(rgb), perceptual_hash(rgb.copy()))
+        distance = (int(perceptual_hash(rgb), 16) ^ int(perceptual_hash(rgb + 30), 16)).bit_count()
+        self.assertLessEqual(distance, 4)
+        with self.assertRaises(ValueError):
+            perceptual_hash(rgb.astype(float))
+
+    def test_all_pairs_include_cross_role_and_failed_coverage(self) -> None:
+        from fas.content import candidate_pairs
+        def record(identity, value, role):
+            return {"video_id": identity, "role": role, "status": "fingerprinted",
+                    "samples": [{"phash64": value}] * 5}
+        rows = [record("a", "0000000000000000", "train"),
+                record("b", "000000000000000f", "branch_calibration"),
+                record("c", "ffffffffffffffff", "g_domain"),
+                {"video_id": "failed", "status": "unavailable_decode_failure", "samples": []}]
+        pairs = list(candidate_pairs(rows, block_size=1))
+        self.assertEqual([(pair["left"], pair["right"]) for pair in pairs], [("a", "b")])
+        self.assertEqual(pairs[0]["disposition"], "unresolved_candidate_not_confirmed_lineage")
+        with self.assertRaises(ValueError):
+            list(candidate_pairs(rows + rows[:1]))
+        self.assertEqual(list(candidate_pairs([])), [])
+
+    def test_sampled_decode_matches_accepted_hash_and_reencode(self) -> None:
+        from fas.content import fingerprint_video
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "clip.avi"
+            other = Path(directory) / "reencoded.avi"
+            subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=64x48:rate=5",
+                            "-frames:v", "8", "-c:v", "mjpeg", "-threads", "1", str(path)], check=True)
+            subprocess.run(["ffmpeg", "-v", "error", "-i", str(path), "-c:v", "mjpeg", "-q:v", "6",
+                            "-threads", "1", str(other)], check=True)
+            media = probe_video(path)
+            first = fingerprint_video(path, media)
+            second = fingerprint_video(other, probe_video(other))
+            self.assertEqual(len(first["samples"]), 5)
+            from fas.content import candidate_pairs
+            self.assertEqual(len(list(candidate_pairs([dict(first, video_id="a"), dict(second, video_id="b")]))), 1)
+            media["frame_index"][0]["rgb_sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "RGB identity"):
+                fingerprint_video(path, media)
+            failed = fingerprint_video(path, {"decode_status": "failed", "frame_count": 0, "frame_index": []})
+            self.assertEqual(failed["samples"], [])
+
+
 class OuluTransactionTest(unittest.TestCase):
     def test_end_to_end_failure_uses_original_denominators_without_fake_detector(self) -> None:
         from fas.contracts import k1_end_to_end_summary

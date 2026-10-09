@@ -20,6 +20,8 @@ jobs:
         run: |
           sudo -n apt-get update -qq
           sudo -n apt-get install -y ffmpeg
+      - name: Install model-free content screening test dependencies
+        run: python -m pip install numpy==1.26.4 opencv-python-headless==4.11.0.86
       - name: Run synthetic regression suite
         run: python -m unittest discover -s tests -v
       - name: Validate canonical schema

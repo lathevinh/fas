@@ -1,0 +1,91 @@
+{
+  "all_successful_unordered_pairs_compared": 12243826,
+  "base_commit": "4487e95",
+  "candidate_chunk_sha256": [
+    "e51655d16870bd6d23dc89d98592ea6c8cd8996317dec5d6778607863b5ca4fd"
+  ],
+  "candidate_counts": {
+    "candidate_pairs": 6653,
+    "conflicting_label_candidate_pairs": 240,
+    "conflicting_label_unresolved_nonexact_pairs": 240,
+    "cross_partition_candidate_pairs": 466,
+    "cross_partition_unresolved_nonexact_pairs": 466,
+    "cross_role_candidate_pairs": 484,
+    "cross_role_unresolved_nonexact_pairs": 484,
+    "known_exact_pairs": 13,
+    "unresolved_nonexact_pairs": 6640
+  },
+  "candidate_rerun_identical": true,
+  "checkpoint": "1.5F OULU model-free content screening; lineage review pending",
+  "environment": "conda:fas",
+  "existing_output_refused_exit_code": 1,
+  "fingerprint_bundle_sha256": "cd51f63dd887d1d16dc590c54b7d88a2d6f9cc7864e3b97fd0b2ca090ce7734a",
+  "fingerprinted_videos": 4949,
+  "focused_suite": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 36
+  },
+  "frame_pixels_persisted": false,
+  "frozen_artifact_sha256": {
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_roles.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_roles.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_roles.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+    "source_role_freeze.json": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
+  },
+  "frozen_inputs_unchanged": true,
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 223
+  },
+  "implementation_sha256": {
+    "scripts/screen_oulu_content.py": "7c26f032055fc122a3b2b593c226216c836056c7370f9a44582b495434c5e306",
+    "src/fas/content.py": "94a8a40c0a648abb38fef424d39b313a0c22a0a624e7a735d22865817ed7cc85"
+  },
+  "limitations": [
+    "sparse_temporal_sampling",
+    "cropped_or_overlaid_content",
+    "large_temporal_shifts",
+    "common_background_false_positives",
+    "no_capture_provenance_certification"
+  ],
+  "lineage_sha256": "19a4215e6bf1c1a52a04b092aee4ab963e18fe9567c0d378eac7b320c346bf36",
+  "model_execution_authorized": false,
+  "model_or_detector_executed": false,
+  "near_duplicate_lineage_certified": false,
+  "original_population": 4950,
+  "policy_file": "configs/content_screening_v1.yaml",
+  "policy_sha256": "aef0aab06944123ad171f6cc5b002cf1f3d9959101f8a217ab5e5d2941400435",
+  "private_summary_sha256": "f3073d1fa35620bde8eccc764e1f986843fddfd61f875a4222af3654e1aac218",
+  "review_file": "docs/110-review-doc109-transaction-selector-freeze.md",
+  "review_sha256": "3c4f2971c8891b3be9d3206be6cd12648180f103fb9493e69ae89ecba6e932e8",
+  "scalar_candidate_checks": 6653,
+  "scalar_random_pair_checks": 5000,
+  "scientific_readiness": false,
+  "source_roles_or_selector_or_seed_changed": false,
+  "stage_has_blockers": {
+    "analysis-freeze": true,
+    "data-audit": true,
+    "locked-evaluation": true,
+    "schema": false,
+    "source-dry-run": true
+  },
+  "status": "screening_complete_lineage_adjudication_pending",
+  "tools": {
+    "ffmpeg": "ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers",
+    "numpy": "1.26.4",
+    "opencv": "4.11.0"
+  },
+  "unavailable_decode_failures": 1,
+  "version": 1
+}

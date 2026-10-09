@@ -172,7 +172,12 @@ is the strict source-only design consolidated in
     now freezes lower-median selection and scoreless terminal-failure accounting:
     4949 primary identities, calibration denominator 990 / 989 frame-available /
     zero fitted score rows, original/rerun byte-identical, source roles unchanged.
-    Near-duplicate/cross-dataset lineage, other media audits and model applicability
+    [Review 110](docs/110-review-doc109-transaction-selector-freeze.md) accepts that freeze.
+    [OULU content screening](docs/111-review-response-doc110-oulu-content-screening.md)
+    compares 12243826 pairs: 6653 candidates, including 13 known exact pairs and
+    6640 unresolved non-exact pairs (484 cross-role). Screening is not lineage
+    certification; adjudication remains pending and roles/selector are unchanged.
+    Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
     [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts

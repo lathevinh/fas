@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: OULU per-video evidence accepted in Document 108; Document 109 freezes technical-failure accounting and lower-median selector with source roles unchanged; content lineage, other media audits and scientific readiness remain pending
+Status: OULU selector/transaction freeze accepted in Document 110; Document 111 completes model-free content candidate screening, not lineage adjudication; source roles unchanged and scientific readiness pending
 
 ## Approval boundary
 
@@ -45,6 +45,7 @@ Technical integrity/decode/leakage gates and immutable roles remain mandatory.
 | 1.5C OULU archive byte pinning | Complete SHA-256 of three supplied OULU media TARs | All 105116817408 bytes read; sizes and file metadata stable; immutable private records/public aggregate; all frozen/study hashes unchanged; later gates blocked | Document 105; three complete digests, 17 focused tests pass; no individual video payload opened; stop before per-video decode/content audit |
 | 1.5D OULU per-video evidence | Hash all 4950 payloads; strict full decode and frame index; exact duplicate/role reconciliation | Immutable private records, full population/size/role joins, no role or readiness promotion, publish errors/duplicates and unresolved scope | Document 107; 4949 decoded/1 failed, 13 exact duplicate pairs, zero cross-role/partition exact groups; 22 focused/209 full tests; stop for review |
 | 1.5E Technical transactions/selector | Freeze scoreless failure accounting and deterministic single-frame tie rule from accepted OULU index | Original denominator retained; null classifier error; no detector/model or role rewrite; policy/code bound; exact immutable rerun | Document 109; 4949 primary identities/1 terminal failure; calibration 990 original/989 frame-available/0 fitted rows; 4952 byte-identical artifacts; 31 focused/218 full tests; stop for review |
+| 1.5F OULU content candidate screening | Prospective fixed temporal pHash screening, not confirmed lineage | Accepted payload/sampled RGB checks; all successful pairs; failed coverage retained; immutable private candidates; no tuning, role/selector rewrite or readiness promotion | Document 111; 4949 fingerprints/1 unavailable; 12243826 pairs; 6653 candidates including 13 known exact/6640 unresolved (484 cross-role); comparison rerun identical; 36 focused/223 full tests; stop before adjudication/another dataset |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
