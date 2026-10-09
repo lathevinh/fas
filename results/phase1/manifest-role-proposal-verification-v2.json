@@ -1,0 +1,250 @@
+{
+  "active_frozen_configs_and_audit_summary_counts_unchanged": true,
+  "actual_cli_exit": 0,
+  "actual_new_path_rerun_exit": 0,
+  "actual_overwrite_rejected_exit": 2,
+  "actual_rerun_all_artifact_hashes_identical": true,
+  "actual_role_to_canonical_joins_and_group_disjointness_pass": true,
+  "all_v1_artifacts_unchanged_and_v1_allocator_reproduced": true,
+  "base_commit": "ab1733c9da105d7ee119bb47d62e5a2803111ee6",
+  "canonical_json_and_metadata_csv_identical_to_accepted_v1": true,
+  "checkpoint": "1.4A review97 subtype-stratification rework; unapproved v2 proposal",
+  "environment": "conda:fas",
+  "focused_suite": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 17
+  },
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 197
+  },
+  "input_pin_history": {
+    "CASIA-FASD": "existing accepted cache snapshot newly byte-pinned here; accepted adapter mapping verified",
+    "MSU-MFSD": "matches accepted public inventory pin",
+    "OULU-NPU": "existing accepted cache snapshot newly byte-pinned here; accepted adapter mapping verified",
+    "SiW-Mv2": "matches accepted public inventory pin"
+  },
+  "inventory_input_pins": {
+    "CASIA-FASD": "837df47897db58030a8331cea9f46cce7f9308bb4736ec3211d47c5e204ec19f",
+    "MSU-MFSD": "9852d0b712584f3986d0de8fc5811f02ebff12fcbcd7f3921700201647f3e465",
+    "OULU-NPU": "d544dd32681fc799401add449e2eba491bd59b5d714eca668ab9766f0a244f92",
+    "SiW-Mv2": "6d105949c6f626dae750ce1a0f22b0a5bf8a85de8b77a9eec4929b7137761d60"
+  },
+  "mask_paper_actual_role_counts": {
+    "branch_calibration": 2,
+    "g_domain": 2,
+    "train": 7
+  },
+  "policy_approved": false,
+  "policy_file_sha256": "bea506c582800af4b434a3849a6c478b962c06b068aa6fa49541f5c7f0e12c9e",
+  "prediction_event_feasibility_and_media_duplicate_audit": "not_verified",
+  "previous_policy_file_sha256_unchanged": "4d1b30b8daeff4e81df77aceb7137f64e97fb93080d0959e37f6f2e56c1194ab",
+  "private_bundle_artifact_sha256": {
+    "bundle_summary.json": "7fc8c8453ec82cccd4dc2913156a2d384035dc6aabd8aec69e87526319570360",
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_role_proposal.json": "a5a804db2bd32084eed21e1009558857ef6ebf518bb32e688b5074f64d4ba5eb",
+    "casia_fasd_roles_proposed.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_role_proposal.json": "6d70d6796faf160290d36498e5938bfe7a46e2f7cc80ce7897bd7dc527babf7f",
+    "msu_mfsd_roles_proposed.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_role_proposal.json": "63e21eb687e83efe77fd1f6e067a014808884a4026f6dba6ac87e8d7cb3e5b49",
+    "oulu_npu_roles_proposed.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_role_proposal.json": "33e5716922db82b3f2d944c00cc605eefcc929605a42510680f1549e8bd9335d",
+    "siw_mv2_roles_proposed.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7"
+  },
+  "python_version": "3.12.14",
+  "role_reference_attack_type_counts_diagnostic_only": {
+    "CASIA-FASD": {
+      "branch_calibration": {
+        "cut": 30,
+        "none": 30,
+        "video": 30,
+        "warped": 30
+      },
+      "g_domain": {
+        "cut": 30,
+        "none": 30,
+        "video": 30,
+        "warped": 30
+      },
+      "train": {
+        "cut": 90,
+        "none": 90,
+        "video": 90,
+        "warped": 90
+      }
+    },
+    "MSU-MFSD": {
+      "branch_calibration": {
+        "ipad_video": 14,
+        "iphone_video": 14,
+        "none": 14,
+        "printed_photo": 14
+      },
+      "g_domain": {
+        "ipad_video": 14,
+        "iphone_video": 14,
+        "none": 14,
+        "printed_photo": 14
+      },
+      "train": {
+        "ipad_video": 42,
+        "iphone_video": 42,
+        "none": 42,
+        "printed_photo": 42
+      }
+    },
+    "OULU-NPU": {
+      "branch_calibration": {
+        "unknown": 990
+      },
+      "g_domain": {
+        "unknown": 990
+      },
+      "train": {
+        "unknown": 2970
+      }
+    },
+    "SiW-Mv2": {
+      "branch_calibration": {
+        "Makeup_Co": 6,
+        "Makeup_Im": 8,
+        "Makeup_Ob": 3,
+        "Mask_Half": 11,
+        "Mask_Mann": 5,
+        "Mask_Paper": 2,
+        "Mask_Silicone": 2,
+        "Mask_Trans": 5,
+        "Paper": 16,
+        "Partial_Eye": 7,
+        "Partial_Funnyeye": 19,
+        "Partial_Mouth": 4,
+        "Partial_Paperglass": 10,
+        "Replay": 12,
+        "unknown": 105
+      },
+      "g_domain": {
+        "Makeup_Co": 5,
+        "Makeup_Im": 8,
+        "Makeup_Ob": 2,
+        "Mask_Half": 10,
+        "Mask_Mann": 5,
+        "Mask_Paper": 2,
+        "Mask_Silicone": 2,
+        "Mask_Trans": 5,
+        "Paper": 16,
+        "Partial_Eye": 7,
+        "Partial_Funnyeye": 19,
+        "Partial_Mouth": 3,
+        "Partial_Paperglass": 9,
+        "Replay": 12,
+        "unknown": 105
+      },
+      "train": {
+        "Makeup_Co": 17,
+        "Makeup_Im": 23,
+        "Makeup_Ob": 7,
+        "Mask_Half": 31,
+        "Mask_Mann": 16,
+        "Mask_Paper": 7,
+        "Mask_Silicone": 5,
+        "Mask_Trans": 14,
+        "Paper": 47,
+        "Partial_Eye": 20,
+        "Partial_Funnyeye": 58,
+        "Partial_Mouth": 10,
+        "Partial_Paperglass": 28,
+        "Replay": 35,
+        "unknown": 314
+      }
+    }
+  },
+  "roles_frozen_for_execution": false,
+  "same_source_pools_weights_and_split_seed_no_retry": true,
+  "scientific_readiness": false,
+  "stage_results": {
+    "analysis-freeze": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "data-audit": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "locked-evaluation": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "schema": {
+      "exit_code": 0,
+      "expected": 0
+    },
+    "source-dry-run": {
+      "exit_code": 1,
+      "expected": 1
+    }
+  },
+  "test_sha256": {
+    "tests/test_calibration.py": "237bfc29ebccc4ccea961a04a0057a651329f6de763dbc0f562ca8b762cc68d7",
+    "tests/test_casia.py": "de5ffde3c60434c2814b368573708501a648855aeff1909c18089970dbdd9ea8",
+    "tests/test_contracts.py": "72e7b454a41639565dcfccceec8baafe1b097066687b09f77563f93bcf9ab623",
+    "tests/test_environment.py": "f69e5bca930e5bb5d0d1a9666360bc1622228fb5d857ee1839f074c9da870205",
+    "tests/test_freeze.py": "9182d19afe89385b82fdddb27443770fdbfc085d15c9e5e782b71898ec663441",
+    "tests/test_governance.py": "4a40774e9dd90e59e29bc13ffe2c69dad28e6325fef800271cdb4a917982c3c3",
+    "tests/test_intake.py": "85bf5cb773046ffb4fba8b4f6902f8a706ee9bad51ffffeca68d5aedf0108054",
+    "tests/test_manifests.py": "318f887de9e84256d13534a5e2b29922b3c18ab83adf7d3f805a23e377718576",
+    "tests/test_msu.py": "0e3d72ddc2cce7f56ee6b1232a832062836f1d56a78e262d92fbf78f7d951b5a",
+    "tests/test_oulu.py": "68772ba3bc91726d0e995792034e9f9184048e672b3d856a401eda3e2e35c6d8",
+    "tests/test_preregistration.py": "403c394dfca6a21c54e52fab823a8f1e8e15dd06d06e121a0c1cc3a10bab467f",
+    "tests/test_siwmv2.py": "5c71cd09b29707cca39a48dd03e3c88d79340025f715f1841d960057b7f21b1a"
+  },
+  "version": 2,
+  "working_tree_artifact_sha256": {
+    "configs/benchmark_amendment_v2.yaml": "fc4021d6454a3a39342d02aa12b26b2f5e16e0e1f311c93a591b453ea63ec489",
+    "configs/claims_v1.yaml": "2f3169a2cc9c6d6bc591bcdca0f5f0a8f58be96901088249f82d5963d3968793",
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "configs/experiment_core_mcio_v1.yaml": "dc636a9bad8c427a83149a7697cc64a1bb38f31752303500cc2eb5b606e998b9",
+    "configs/experiment_core_v1.yaml": "e92a967c10b2f074e08759b7cf84f6dfd72bba868de4cb8c7597796aebaace57",
+    "configs/preprocessing_v2.yaml": "2a9e4cb6ec5fdf665151b5d8a89e941c23674bf51821f7d3665e52bd192a009e",
+    "configs/prompts_aux_v1.yaml": "9594be41b8c7d52201eb218ed5a6962035c175dc34063bf472bcbf643e7066c6",
+    "configs/prompts_core_v1.yaml": "2a08c666659fb1f6ad7f0572e39773d9a49148e47abdb6f9ad9059d785c0596c",
+    "configs/seeds_v1.yaml": "38c544a689488ff7de3a4a306a9c2dd742082948cb9aa024b4c432f1c5aefab2",
+    "configs/source_recipe_v2.yaml": "db39bbc961c19a5aa4f8fe9c87baa7b5ced678d9e8fda47fd016866819b52f09",
+    "manifests/dataset_summary.csv": "cb00e707280e81a7b7fb85a41001fccc59c0eceb5619206ffa93a4480ec92e5f",
+    "manifests/split_summary.csv": "f32f3a587114ea298804fe95b131403ee244b8520f94c10ae57a217f23356ae6",
+    "results/phase1/siwmv2-intersection-v1.json": "7ccbd4b4a10aaa8249efe2b122e149b1f4fe4b3ec8fbd1bf23d2d42a3a734190",
+    "scripts/build_manifests.py": "eea8f361513b978d1b0522ed1dac164cb66abe3be0e1fa4fb598d0bbdad1492e",
+    "scripts/check_environment.py": "064ee1f1935eb2866877054a760139a20b9279bb387f22124aa05e229b064a77",
+    "scripts/check_intake.py": "d3bec72d617b698540658bcc05091ff8b5a7271fe46c6587959e9fbac8159baf",
+    "scripts/inspect_siwmv2.py": "7ed111f7779beedcc2fe28e40a2da265d82dc24da4c522181f2ce1289f31bc63",
+    "scripts/inventory_casia.py": "1e0f4120476ff2f015b96a1ba22fc9c1c925b3a0024d1ed709820ba38d0c3ad1",
+    "scripts/inventory_msu.py": "0eee7443a501eb433bcced3acc8eabec9d8c33f6189d23fc6c5cf64d672f029b",
+    "scripts/inventory_oulu.py": "70362a3177090ea8fa54733e96171bb1f8d8a44b20caf7e3d2f167b6cf471933",
+    "scripts/inventory_siwmv2.py": "50de3ca9bd8768e0108b2a27095009994c606fc40d464ab6067f4d33a9487657",
+    "scripts/smoke_environment.py": "b924ad28afbf645cb6247db67192a01f39803445170a2e3e1a28f0d3e7655c2b",
+    "scripts/validate_preregistration.py": "ea220f4abe8d8783bf1d07b83ba98c24c682f02ef76faa125f83dc8985217054",
+    "scripts/write_freeze_record.py": "238f037e8d0ce9accc9973377c62dc6665a00582a869e59b7097ecbfe1684629",
+    "src/fas/__init__.py": "485aef8b02d2d3811bdbbb2c801a16827257f14b775a0c833c9a0838e55019e9",
+    "src/fas/calibration.py": "88f633838daad25b1a0ed885dfa6937bda0939db413753ca290b2c634d63bb93",
+    "src/fas/casia.py": "2cde152ca3c66a57e63ae0b0181f734d56eccc39c455c79341521ff3f2b47474",
+    "src/fas/contracts.py": "1435d35f30b7f5f69c9f54fb03286c32ca43f358edb602b9aaad7214ba13c339",
+    "src/fas/environment.py": "69b76051d0e3959f6774d02c3d98a61fdac4aabdff64b8b2c224d31bb69dd3fb",
+    "src/fas/freeze.py": "55465e0edaf5495f23fbde8693f831efc3f9da0181d8f2c0bbd7c16d4f0c766c",
+    "src/fas/intake.py": "8d912da9c43094f3db7de4e60b83d02ca97821c0ac5025a1ff036721961804c1",
+    "src/fas/manifests.py": "8c4e0d6606021d411650ee88fd0a72be36db35a061487b55d636934fc5017505",
+    "src/fas/msu.py": "e18db97851244f5036bfb7b08b991ce5df858bac3199e807bd26ca8bf38f9831",
+    "src/fas/oulu.py": "0f98d75678d0997176235ce5fd7e556207010e49ef9bdc0c61d4c0c6d50b5c4e",
+    "src/fas/preregistration.py": "d5b4b5d0becbc739225cb036cb6eacfe096e7c0971bd567f087259cb21e8fa72",
+    "src/fas/siwmv2.py": "7e694a008636eb77459d105a4f2dd745075f2da625f2b217d02dc35c66be8ad4"
+  }
+}

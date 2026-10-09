@@ -72,5 +72,13 @@ summary rows complete merely because the proposal CLI returns 0. Metadata-class
 feasibility is not fitted-error/gate-event feasibility or media-content duplicate
 verification; all later scientific gates remain blocked.
 
+[Review 97](../docs/97-review-doc96-canonical-manifests-role-policy.md) accepts
+canonical metadata but requires subtype-aware role stratification. The
+[v2 rework](../docs/98-review-response-doc97-role-policy-v2.md) retains v1 artifacts,
+uses the same split seed and source pools, and adds `reference_attack_type` with
+explicit unknown handling. All four proposals are regenerated, with per-role type
+counts reported; no all-types-per-role guarantee or post-hoc repair is imposed.
+V2 is still inactive/unapproved, pending owner review, not audited readiness.
+
 Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.

@@ -73,7 +73,7 @@ def canonicalize_inventory(payload: bytes, expected_sha256: str, dataset: str) -
 def propose_source_roles(canonical: dict[str, Any], policy: dict[str, Any]) -> dict[str, Any]:
     fields = {"version", "state", "track", "split_seed", "initial_role_weights", "source_partitions",
               "minimum_metadata_class_videos_per_role", "stratification_fields"}
-    if set(policy) != fields or type(policy["version"]) is not int or policy["version"] != 1:
+    if set(policy) != fields or type(policy["version"]) is not int or policy["version"] not in (1, 2):
         raise ValueError("invalid role policy fields/version")
     if policy["state"] != "proposal_not_approved" or policy["track"] != "strict_single_image_track_b":
         raise ValueError("this builder only creates unapproved Track-B proposals")
@@ -88,8 +88,10 @@ def propose_source_roles(canonical: dict[str, Any], policy: dict[str, Any]) -> d
     if any(not isinstance(values, list) or not values or any(not isinstance(value, str) or not value for value in values) or len(set(values)) != len(values) for values in partitions.values()):
         raise ValueError("invalid source partition lists")
     strata_fields = ["official_split", "binary_label", "attack_family", "sensor_id", "session_id", "environment"]
+    if policy["version"] == 2:
+        strata_fields.insert(3, "reference_attack_type")
     if policy["stratification_fields"] != strata_fields:
-        raise ValueError("protocol/class/family/device/session/environment priority required")
+        raise ValueError("versioned stratification priority required")
     minimum = policy["minimum_metadata_class_videos_per_role"]
     if type(minimum) is not int or minimum < 1:
         raise ValueError("positive metadata-class minimum required")
@@ -111,7 +113,7 @@ def propose_source_roles(canonical: dict[str, Any], policy: dict[str, Any]) -> d
         raise ValueError("empty source-eligible population")
     strata = defaultdict(list)
     for group, rows in groups.items():
-        signature = tuple(tuple(sorted({str(row[field]) for row in rows})) for field in strata_fields)
+        signature = tuple(tuple(sorted({str(row.get(field) or "unknown") if field == "reference_attack_type" else str(row[field]) for row in rows})) for field in strata_fields)
         strata[signature].append(group)
     roles = ("train", "branch_calibration", "g_domain")
     total_weight = sum(weights.values())

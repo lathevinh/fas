@@ -61,7 +61,7 @@ class CanonicalManifestTest(unittest.TestCase):
 
 class SourceRoleProposalTest(unittest.TestCase):
     def policy(self):
-        return json.loads((ROOT / "configs/role_policy_proposal_v1.yaml").read_text())
+        return json.loads((ROOT / "configs/role_policy_proposal_v2.yaml").read_text())
 
     def canonical(self, dataset="MSU-MFSD", groups=15):
         fixture = CanonicalManifestTest()
@@ -103,6 +103,40 @@ class SourceRoleProposalTest(unittest.TestCase):
         result = propose_source_roles(self.canonical(groups=1), self.policy())
         self.assertFalse(result["metadata_class_feasible"])
         self.assertEqual(len(result["videos"]), 2)
+
+    def test_v2_native_subtype_strata_preserve_prospective_quotas(self):
+        canonical = self.canonical("SiW-Mv2", groups=22)
+        for index, row in enumerate(canonical["videos"]):
+            row["reference_attack_type"] = "bona_fide" if row["binary_label"] == "bona_fide" else ("Mask_Paper" if index // 2 < 11 else "Mask_Silicone")
+        result = propose_source_roles(canonical, self.policy())
+        for subtype in ("Mask_Paper", "Mask_Silicone"):
+            self.assertEqual({role: sum(row["reference_attack_type"] == subtype and row["role"] == role for row in result["videos"]) for role in self.policy()["initial_role_weights"]},
+                             {"train": 7, "branch_calibration": 2, "g_domain": 2})
+        shuffled = deepcopy(canonical)
+        shuffled["videos"].reverse()
+        self.assertEqual(result, propose_source_roles(shuffled, self.policy()))
+
+    def test_missing_native_subtype_is_unknown_not_invented(self):
+        canonical = self.canonical()
+        absent = propose_source_roles(canonical, self.policy())
+        for row in canonical["videos"]:
+            row["reference_attack_type"] = None
+        unknown = propose_source_roles(canonical, self.policy())
+        self.assertEqual([(row["video_id"], row["role"]) for row in absent["videos"]], [(row["video_id"], row["role"]) for row in unknown["videos"]])
+        self.assertTrue(all(row["reference_attack_type"] is None for row in unknown["videos"]))
+
+    def test_v1_signature_retained_and_version_mismatches_rejected(self):
+        policy = json.loads((ROOT / "configs/role_policy_proposal_v1.yaml").read_text())
+        canonical = self.canonical()
+        original = propose_source_roles(canonical, policy)
+        for row in canonical["videos"]:
+            row["reference_attack_type"] = row["video_id"]
+        revised = propose_source_roles(canonical, policy)
+        self.assertEqual(original["role_counts"], revised["role_counts"])
+        self.assertEqual([(row["video_id"], row["role"]) for row in original["videos"]], [(row["video_id"], row["role"]) for row in revised["videos"]])
+        for bad_policy in ({**self.policy(), "version": 1}, {**policy, "version": 2}, {**policy, "version": 3}):
+            with self.assertRaises(ValueError):
+                propose_source_roles(canonical, bad_policy)
 
     def test_no_outer_target_optimization_seed_or_hidden_policy_inputs(self):
         for change in ({"outer_target": "OULU-NPU"}, {"training_seed": 20260917}, {"split_seed": True}, {"state": "approved"}, {"initial_role_weights": {"train": 0}}, {"minimum_metadata_class_videos_per_role": 0}):
@@ -168,7 +202,7 @@ class ManifestCliTest(unittest.TestCase):
 
     def command(self, *extra):
         stdout, stderr = io.StringIO(), io.StringIO()
-        with patch.object(sys, "argv", ["build_manifests", "--inputs", str(self.receipt), "--policy", str(ROOT / "configs/role_policy_proposal_v1.yaml"), "--out", str(self.output), *extra]), patch.dict(manifests.MAPPING_HASHES, self.mapping_hashes), redirect_stdout(stdout), redirect_stderr(stderr):
+        with patch.object(sys, "argv", ["build_manifests", "--inputs", str(self.receipt), "--policy", str(ROOT / "configs/role_policy_proposal_v2.yaml"), "--out", str(self.output), *extra]), patch.dict(manifests.MAPPING_HASHES, self.mapping_hashes), redirect_stdout(stdout), redirect_stderr(stderr):
             status = self.cli.main()
         return status, stdout.getvalue(), stderr.getvalue()
 
@@ -188,6 +222,9 @@ class ManifestCliTest(unittest.TestCase):
         for dataset, row in summary["datasets"].items():
             slug = dataset.lower().replace("-", "_")
             self.assertEqual(row["metadata_csv_sha256"], hashlib.sha256((self.output / f"{slug}_metadata.csv").read_bytes()).hexdigest())
+            for role, counts in row["role_reference_attack_type_counts"].items():
+                self.assertEqual(set(counts), {"unknown"})
+                self.assertEqual(sum(counts.values()), row["role_counts"][role]["bona_fide"] + row["role_counts"][role]["attack"])
 
     def test_immutable_existing_output_and_new_path_identical_rerun(self):
         self.assertEqual(self.command()[0], 0)

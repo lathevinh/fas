@@ -1,0 +1,405 @@
+{
+  "datasets": {
+    "CASIA-FASD": {
+      "canonical_sha256": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+      "content_duplicate_audit": "not_verified_no_media_hashes",
+      "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+      "group_unit": "subject",
+      "groups": 50,
+      "inventory_sha256": "837df47897db58030a8331cea9f46cce7f9308bb4736ec3211d47c5e204ec19f",
+      "label_mapping_hash": "5825abfa8bc6b980b4bae2934b0621b3d500c23281b3dcd48f18499347111cc9",
+      "metadata_class_feasible": true,
+      "metadata_csv_sha256": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+      "partitions": {
+        "test": {
+          "attack": 270,
+          "bona_fide": 90
+        },
+        "train": {
+          "attack": 180,
+          "bona_fide": 60
+        }
+      },
+      "policy_sha256": "ee009b3e8382231af7aabd91fe1efb2fca53a78fc3a0e3c51bf209e1b7929b04",
+      "role_attack_family_coverage": {
+        "branch_calibration": [
+          "print",
+          "replay"
+        ],
+        "g_domain": [
+          "print",
+          "replay"
+        ],
+        "train": [
+          "print",
+          "replay"
+        ]
+      },
+      "role_counts": {
+        "branch_calibration": {
+          "attack": 90,
+          "bona_fide": 30,
+          "groups": 10
+        },
+        "g_domain": {
+          "attack": 90,
+          "bona_fide": 30,
+          "groups": 10
+        },
+        "train": {
+          "attack": 270,
+          "bona_fide": 90,
+          "groups": 30
+        }
+      },
+      "role_proposal_sha256": "a5a804db2bd32084eed21e1009558857ef6ebf518bb32e688b5074f64d4ba5eb",
+      "role_reference_attack_type_counts": {
+        "branch_calibration": {
+          "cut": 30,
+          "none": 30,
+          "video": 30,
+          "warped": 30
+        },
+        "g_domain": {
+          "cut": 30,
+          "none": 30,
+          "video": 30,
+          "warped": 30
+        },
+        "train": {
+          "cut": 90,
+          "none": 90,
+          "video": 90,
+          "warped": 90
+        }
+      },
+      "roles_proposed_csv_sha256": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+      "source_eligible_groups": 50,
+      "source_eligible_videos": 600,
+      "subjects": 50,
+      "videos": 600
+    },
+    "MSU-MFSD": {
+      "canonical_sha256": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+      "content_duplicate_audit": "not_verified_no_media_hashes",
+      "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+      "group_unit": "subject",
+      "groups": 35,
+      "inventory_sha256": "9852d0b712584f3986d0de8fc5811f02ebff12fcbcd7f3921700201647f3e465",
+      "label_mapping_hash": "cc59cdf60575a828ceb8a88c1b0cf0e82b237ded40c0a7492bd64512aab6f9e5",
+      "metadata_class_feasible": true,
+      "metadata_csv_sha256": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+      "partitions": {
+        "test": {
+          "attack": 120,
+          "bona_fide": 40
+        },
+        "train": {
+          "attack": 90,
+          "bona_fide": 30
+        }
+      },
+      "policy_sha256": "ee009b3e8382231af7aabd91fe1efb2fca53a78fc3a0e3c51bf209e1b7929b04",
+      "role_attack_family_coverage": {
+        "branch_calibration": [
+          "print",
+          "replay"
+        ],
+        "g_domain": [
+          "print",
+          "replay"
+        ],
+        "train": [
+          "print",
+          "replay"
+        ]
+      },
+      "role_counts": {
+        "branch_calibration": {
+          "attack": 42,
+          "bona_fide": 14,
+          "groups": 7
+        },
+        "g_domain": {
+          "attack": 42,
+          "bona_fide": 14,
+          "groups": 7
+        },
+        "train": {
+          "attack": 126,
+          "bona_fide": 42,
+          "groups": 21
+        }
+      },
+      "role_proposal_sha256": "6d70d6796faf160290d36498e5938bfe7a46e2f7cc80ce7897bd7dc527babf7f",
+      "role_reference_attack_type_counts": {
+        "branch_calibration": {
+          "ipad_video": 14,
+          "iphone_video": 14,
+          "none": 14,
+          "printed_photo": 14
+        },
+        "g_domain": {
+          "ipad_video": 14,
+          "iphone_video": 14,
+          "none": 14,
+          "printed_photo": 14
+        },
+        "train": {
+          "ipad_video": 42,
+          "iphone_video": 42,
+          "none": 42,
+          "printed_photo": 42
+        }
+      },
+      "roles_proposed_csv_sha256": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+      "source_eligible_groups": 35,
+      "source_eligible_videos": 280,
+      "subjects": 35,
+      "videos": 280
+    },
+    "OULU-NPU": {
+      "canonical_sha256": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+      "content_duplicate_audit": "not_verified_no_media_hashes",
+      "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+      "group_unit": "subject",
+      "groups": 55,
+      "inventory_sha256": "d544dd32681fc799401add449e2eba491bd59b5d714eca668ab9766f0a244f92",
+      "label_mapping_hash": "9f34ae676f93d68dd36e2b0bec7d950cf82ccc4c60396767041ca43e87f36225",
+      "metadata_class_feasible": true,
+      "metadata_csv_sha256": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+      "partitions": {
+        "development": {
+          "attack": 1080,
+          "bona_fide": 270
+        },
+        "test": {
+          "attack": 1440,
+          "bona_fide": 360
+        },
+        "train": {
+          "attack": 1440,
+          "bona_fide": 360
+        }
+      },
+      "policy_sha256": "ee009b3e8382231af7aabd91fe1efb2fca53a78fc3a0e3c51bf209e1b7929b04",
+      "role_attack_family_coverage": {
+        "branch_calibration": [
+          "print",
+          "replay"
+        ],
+        "g_domain": [
+          "print",
+          "replay"
+        ],
+        "train": [
+          "print",
+          "replay"
+        ]
+      },
+      "role_counts": {
+        "branch_calibration": {
+          "attack": 792,
+          "bona_fide": 198,
+          "groups": 11
+        },
+        "g_domain": {
+          "attack": 792,
+          "bona_fide": 198,
+          "groups": 11
+        },
+        "train": {
+          "attack": 2376,
+          "bona_fide": 594,
+          "groups": 33
+        }
+      },
+      "role_proposal_sha256": "63e21eb687e83efe77fd1f6e067a014808884a4026f6dba6ac87e8d7cb3e5b49",
+      "role_reference_attack_type_counts": {
+        "branch_calibration": {
+          "unknown": 990
+        },
+        "g_domain": {
+          "unknown": 990
+        },
+        "train": {
+          "unknown": 2970
+        }
+      },
+      "roles_proposed_csv_sha256": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+      "source_eligible_groups": 55,
+      "source_eligible_videos": 4950,
+      "subjects": 55,
+      "videos": 4950
+    },
+    "SiW-Mv2": {
+      "canonical_sha256": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+      "content_duplicate_audit": "not_verified_no_media_hashes",
+      "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+      "group_unit": "video",
+      "groups": 1680,
+      "inventory_sha256": "6d105949c6f626dae750ce1a0f22b0a5bf8a85de8b77a9eec4929b7137761d60",
+      "label_mapping_hash": "09329456b68587ca2e8bec0ba97247625d024d9ac53a1fb3b80a11a3af0b827f",
+      "metadata_class_feasible": true,
+      "metadata_csv_sha256": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+      "partitions": {
+        "test": {
+          "attack": 362,
+          "bona_fide": 261
+        },
+        "train": {
+          "attack": 533,
+          "bona_fide": 524
+        }
+      },
+      "policy_sha256": "ee009b3e8382231af7aabd91fe1efb2fca53a78fc3a0e3c51bf209e1b7929b04",
+      "role_attack_family_coverage": {
+        "branch_calibration": [
+          "makeup",
+          "mask",
+          "partial",
+          "print",
+          "replay"
+        ],
+        "g_domain": [
+          "makeup",
+          "mask",
+          "partial",
+          "print",
+          "replay"
+        ],
+        "train": [
+          "makeup",
+          "mask",
+          "partial",
+          "print",
+          "replay"
+        ]
+      },
+      "role_counts": {
+        "branch_calibration": {
+          "attack": 110,
+          "bona_fide": 105,
+          "groups": 215
+        },
+        "g_domain": {
+          "attack": 105,
+          "bona_fide": 105,
+          "groups": 210
+        },
+        "train": {
+          "attack": 318,
+          "bona_fide": 314,
+          "groups": 632
+        }
+      },
+      "role_proposal_sha256": "33e5716922db82b3f2d944c00cc605eefcc929605a42510680f1549e8bd9335d",
+      "role_reference_attack_type_counts": {
+        "branch_calibration": {
+          "Makeup_Co": 6,
+          "Makeup_Im": 8,
+          "Makeup_Ob": 3,
+          "Mask_Half": 11,
+          "Mask_Mann": 5,
+          "Mask_Paper": 2,
+          "Mask_Silicone": 2,
+          "Mask_Trans": 5,
+          "Paper": 16,
+          "Partial_Eye": 7,
+          "Partial_Funnyeye": 19,
+          "Partial_Mouth": 4,
+          "Partial_Paperglass": 10,
+          "Replay": 12,
+          "unknown": 105
+        },
+        "g_domain": {
+          "Makeup_Co": 5,
+          "Makeup_Im": 8,
+          "Makeup_Ob": 2,
+          "Mask_Half": 10,
+          "Mask_Mann": 5,
+          "Mask_Paper": 2,
+          "Mask_Silicone": 2,
+          "Mask_Trans": 5,
+          "Paper": 16,
+          "Partial_Eye": 7,
+          "Partial_Funnyeye": 19,
+          "Partial_Mouth": 3,
+          "Partial_Paperglass": 9,
+          "Replay": 12,
+          "unknown": 105
+        },
+        "train": {
+          "Makeup_Co": 17,
+          "Makeup_Im": 23,
+          "Makeup_Ob": 7,
+          "Mask_Half": 31,
+          "Mask_Mann": 16,
+          "Mask_Paper": 7,
+          "Mask_Silicone": 5,
+          "Mask_Trans": 14,
+          "Paper": 47,
+          "Partial_Eye": 20,
+          "Partial_Funnyeye": 58,
+          "Partial_Mouth": 10,
+          "Partial_Paperglass": 28,
+          "Replay": 35,
+          "unknown": 314
+        }
+      },
+      "roles_proposed_csv_sha256": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+      "source_eligible_groups": 1057,
+      "source_eligible_videos": 1057,
+      "subjects": null,
+      "videos": 1680
+    }
+  },
+  "media_audit_verified": false,
+  "metadata_class_feasible_all_sources": true,
+  "no_media_access": true,
+  "no_model_inference_or_training": true,
+  "policy": {
+    "initial_role_weights": {
+      "branch_calibration": 1,
+      "g_domain": 1,
+      "train": 3
+    },
+    "minimum_metadata_class_videos_per_role": 1,
+    "source_partitions": {
+      "CASIA-FASD": [
+        "train",
+        "test"
+      ],
+      "MSU-MFSD": [
+        "train",
+        "test"
+      ],
+      "OULU-NPU": [
+        "train",
+        "development",
+        "test"
+      ],
+      "SiW-Mv2": [
+        "train"
+      ]
+    },
+    "split_seed": 20261009,
+    "state": "proposal_not_approved",
+    "stratification_fields": [
+      "official_split",
+      "binary_label",
+      "attack_family",
+      "reference_attack_type",
+      "sensor_id",
+      "session_id",
+      "environment"
+    ],
+    "track": "strict_single_image_track_b",
+    "version": 2
+  },
+  "policy_approved": false,
+  "roles_frozen_for_execution": false,
+  "scientific_readiness": false,
+  "status": "metadata_complete_role_policy_proposal_only",
+  "version": 1
+}

@@ -65,6 +65,7 @@ def build(receipt: dict, policy: dict, output: Path) -> dict:
             "partitions": {split: {label: sum(row["official_split"] == split and row["binary_label"] == label for row in rows) for label in ("bona_fide", "attack")} for split in sorted({row["official_split"] for row in rows})},
             **{field: proposal[field] for field in ("policy_sha256", "source_eligible_videos", "source_eligible_groups", "role_counts", "metadata_class_feasible", "fitted_error_and_gate_event_feasibility", "content_duplicate_audit")},
             "role_attack_family_coverage": {role: sorted({row["attack_family"] for row in proposal["videos"] if row["role"] == role and row["binary_label"] == "attack"}) for role in policy["initial_role_weights"]},
+            "role_reference_attack_type_counts": {role: {subtype: sum(row["role"] == role and (row.get("reference_attack_type") or "unknown") == subtype for row in proposal["videos"]) for subtype in sorted({row.get("reference_attack_type") or "unknown" for row in proposal["videos"]})} for role in policy["initial_role_weights"]},
         }
     summary = {"version": 1, "status": "metadata_complete_role_policy_proposal_only", "datasets": datasets,
         "policy": policy, "scientific_readiness": False, "media_audit_verified": False,
