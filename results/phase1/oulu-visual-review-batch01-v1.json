@@ -1,0 +1,83 @@
+{
+  "all_RGB_frames_verified": 2624,
+  "all_cross_role_not_yet_visually_reviewed": 474,
+  "all_nonexact_not_yet_visually_reviewed": 6630,
+  "all_original_frames_visually_inspected": false,
+  "base_commit": "6e32106",
+  "capture_provenance_certified": false,
+  "checkpoint": "1.5H OULU AI-assisted private visual review batch01; owner review pending",
+  "confirmed_same_content_or_derived_lineage_proposals": 0,
+  "content_lineage_adjudication_complete": false,
+  "definition_sha256": "9444d6b855c50f9799c484e6560bc5d26b9f266f5b30f9d31437d51e2b12e2ed",
+  "disposition_proposal_counts": {
+    "rejected_false_positive": 9,
+    "uncertain_insufficient_evidence": 1
+  },
+  "environment": "conda:fas",
+  "existing_output_refused_exit_code": 1,
+  "fixed_batch_pairs": 10,
+  "focused_suite": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 46
+  },
+  "frozen_artifact_sha256": {
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_roles.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_roles.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_roles.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+    "source_role_freeze.json": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
+  },
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 233
+  },
+  "highest_risk_not_yet_visually_reviewed": 75,
+  "highest_risk_population": 85,
+  "images_actually_viewed": 30,
+  "implementation_sha256": {
+    "scripts/prepare_oulu_visual_review.py": "6490da3733e4db5d2a879e71b78f0a98c9ed8f74a90f74f0d34d175b3a98f699",
+    "src/fas/visual.py": "c23f289b1cb4311b267da755c9bb6216578288b562ce372d44ac32daaefddf06"
+  },
+  "independent_human_review_claimed": false,
+  "model_execution_authorized": false,
+  "observation_record_bundle_sha256": "54c2bb604d2d8b8fa6dc5d481dc3d410f94bbfb73cadcdfdd2be51aeb51aea1a",
+  "original_rerun_byte_identical": true,
+  "original_rerun_packet_files": 2685,
+  "original_video_denominator": 4950,
+  "packet_lineage_sha256": "76739563dc891d842dfbf97b78e201ba48506e70ebf764dcdf2267abbcde346d",
+  "policy_file": "configs/visual_review_v1.yaml",
+  "policy_sha256": "120ca82b99265b18daba0450b408145bf51cd4fdad48917b7dfefa21ae823f2e",
+  "prior_candidate_dispositions_overwritten": false,
+  "private_packet_summary_sha256": "ecd325365b0017782dde39377f37cc9dcba0757d5d1fd0c357af1042b3f2fc84",
+  "private_review_summary_sha256": "da03065a14026ed12179293d4537723046ca7a5afb080effb933814e0513a6f0",
+  "private_thumbnails_persisted": true,
+  "research_detector_or_model_executed": false,
+  "retained_decode_failures": 1,
+  "review_file": "docs/114-review-doc113-oulu-lineage-exact-evidence.md",
+  "review_sha256": "75666bb79e6406ffff17999ce3a461a2e027cddfb9038896e61f828fee48bcdf",
+  "reviewed_cross_role_pairs": 10,
+  "scientific_readiness": false,
+  "source_roles_or_selector_or_seed_or_screening_changed": false,
+  "stage_has_blockers": {
+    "analysis-freeze": true,
+    "data-audit": true,
+    "locked-evaluation": true,
+    "schema": false,
+    "source-dry-run": true
+  },
+  "status": "AI_visual_batch_reviewed_proposals_pending_owner_review",
+  "temporal_slots_viewed_per_video_in_pair": 17,
+  "unique_videos": 19,
+  "validated_disposition_accuracy_or_interrater_reliability": false,
+  "version": 1
+}

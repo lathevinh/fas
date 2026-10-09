@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: OULU screening accepted in Document 112; Document 113 processes all 6640 unresolved pairs with full-frame exact evidence, not completed content adjudication; source roles unchanged and scientific readiness pending
+Status: OULU exact-evidence slice accepted in Document 114; Document 115 reviews first ten highest-risk pairs with AI-assisted private visual evidence, proposals pending owner review; no content-lineage closure or scientific readiness
 
 ## Approval boundary
 
@@ -47,6 +47,7 @@ Technical integrity/decode/leakage gates and immutable roles remain mandatory.
 | 1.5E Technical transactions/selector | Freeze scoreless failure accounting and deterministic single-frame tie rule from accepted OULU index | Original denominator retained; null classifier error; no detector/model or role rewrite; policy/code bound; exact immutable rerun | Document 109; 4949 primary identities/1 terminal failure; calibration 990 original/989 frame-available/0 fitted rows; 4952 byte-identical artifacts; 31 focused/218 full tests; stop for review |
 | 1.5F OULU content candidate screening | Prospective fixed temporal pHash screening, not confirmed lineage | Accepted payload/sampled RGB checks; all successful pairs; failed coverage retained; immutable private candidates; no tuning, role/selector rewrite or readiness promotion | Document 111; 4949 fingerprints/1 unavailable; 12243826 pairs; 6653 candidates including 13 known exact/6640 unresolved (484 cross-role); comparison rerun identical; 36 focused/223 full tests; stop before adjudication/another dataset |
 | 1.5G OULU exact-evidence slice | Full decoded-frame evidence per unresolved candidate, not visual/re-encoded clearance | All 6640 pairs in priority order; conservative uncertain disposition; accepted evidence pins; byte-identical rerun; no false rejection or frozen rewrite | Document 113; 0 exact RGB overlap across non-exact pairs, all 6640 uncertain; 85/399/185/91/5880 exclusive priority counts; 6642 identical artifacts; 42 focused/229 full tests; stop before stronger content inspection |
+| 1.5H OULU private visual batch01 | First ten cross-role/conflicting-label pairs, AI-assisted observation proposals only | Prospective fixed queue; pinned full RGB verification; actual viewed-image/observation bindings; no identity/provenance claim or gate promotion | Document 115; 19 videos/2624 verified RGB frames; 30 images viewed; 9 screen-rejection proposals/1 uncertain; 2685 packet artifacts identical; 46 focused/233 full tests; stop for owner review before next batch |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic

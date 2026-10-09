@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "state": "prospective_bounded_AI_assisted_private_visual_review",
+  "batch": "first_10_frozen_priority_queue_pairs_cross_role_conflicting_label",
+  "selection": "queue_ranks_0_through_9_no_outcome_cherry_pick",
+  "verified_evidence": "every_RGB_frame_against_accepted_full_index_before_thumbnail_export",
+  "temporal_panels": "17_fixed_ranks_floor((n-1)*j/16),_two_interleaved_panels",
+  "trigger_witness": "earliest_minimum_Hamming_slot_pair_from_accepted_fingerprints",
+  "confirmation": "recognizable_shared_rendered_sequence_or_specific_derivation_with_temporal_correspondence_not_face_identity",
+  "rejection": "clear_content_divergence_explains_screen_trigger_without_recognizable_shared_rendered_sequence",
+  "uncertainty": "retain_when_sampling_resolution_transform_or_provenance_ambiguity_prevents_supported_disposition",
+  "screening_distance_is_equivalence_rule": false,
+  "face_identity_inference": false,
+  "original_capture_provenance_certification": false,
+  "independent_human_review_claimed": false,
+  "confirmed_cross_role_action": "stop_for_prospective_scientific_decision",
+  "canonical_role_selector_seed_or_screen_rewrite": false,
+  "research_detector_or_model_execution_authorized": false,
+  "scientific_readiness": false
+}

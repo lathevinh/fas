@@ -180,6 +180,10 @@ is the strict source-only design consolidated in
     [Full-frame exact-evidence pass](docs/113-review-response-doc112-oulu-lineage-exact-evidence.md)
     processes all 6640 non-exact pairs in risk-priority order; no exact RGB token
     overlap is found, but all 6640 remain uncertain, not cleared false positives.
+    [Private visual batch 01](docs/115-review-response-doc114-oulu-visual-batch01.md)
+    reviews the first 10 highest-risk pairs: 9 screen-rejection proposals and 1
+    uncertain, pending owner review, not capture-provenance clearance. All 2624
+    decoded RGB frames of 19 videos are verified; 30 private images actually viewed.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

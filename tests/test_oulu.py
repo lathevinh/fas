@@ -20,6 +20,57 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluVisualTest(unittest.TestCase):
+    def test_visual_runner_refuses_repository_and_existing_output(self) -> None:
+        import argparse
+        spec = importlib.util.spec_from_file_location("prepare_oulu_visual_review", ROOT / "scripts/prepare_oulu_visual_review.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            args = argparse.Namespace(input_root=source, audit_root=source, exact_root=source, screen_root=source,
+                                      frozen_root=source, archive_records=source, out_root=ROOT / "results/refused-visual-output")
+            with self.assertRaisesRegex(ValueError, "unsafe private output"):
+                module.prepare(args)
+            args.out_root = source
+            with self.assertRaisesRegex(ValueError, "existing output"):
+                module.prepare(args)
+
+    def test_review_ranks_are_fixed_and_include_frozen_primary(self) -> None:
+        from fas.visual import review_orders
+        self.assertEqual(review_orders(1), [0] * 17)
+        self.assertEqual(review_orders(8)[8], 3)
+        self.assertEqual(review_orders(151)[-1], 150)
+        with self.assertRaises(ValueError):
+            review_orders(True)
+
+    def test_full_rgb_redecode_reconciles_accepted_frames(self) -> None:
+        from fas.visual import verified_thumbnails
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "clip.avi"
+            subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=64x48:rate=5",
+                            "-frames:v", "4", "-c:v", "mjpeg", "-threads", "1", str(path)], check=True)
+            media = probe_video(path)
+            frames = verified_thumbnails(path, media)
+            self.assertEqual(len(frames), 4)
+            self.assertEqual(frames[0].shape, (192, 256, 3))
+            media["frame_index"][1]["rgb_sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "RGB identity"):
+                verified_thumbnails(path, media)
+
+    def test_private_png_and_temporal_sheet_geometry(self) -> None:
+        import cv2
+        import numpy as np
+        from fas.visual import pair_sheet, png_bytes
+        frames = [np.full((48, 64, 3), [250, 10, 20], dtype=np.uint8)] * 4
+        sheet = pair_sheet(frames, frames, list(range(0, 17, 2)))
+        self.assertEqual(sheet.shape, (296, 1440, 3))
+        decoded = cv2.imdecode(np.frombuffer(png_bytes(frames[0]), dtype=np.uint8), cv2.IMREAD_COLOR)
+        self.assertTrue(np.array_equal(decoded[0, 0], [20, 10, 250]))
+        with self.assertRaises(ValueError):
+            pair_sheet(frames, frames, [17])
+
+
 class OuluLineageTest(unittest.TestCase):
     def test_evidence_runner_refuses_repository_or_existing_output(self) -> None:
         spec = importlib.util.spec_from_file_location("triage_oulu_lineage", ROOT / "scripts/triage_oulu_lineage.py")
