@@ -114,5 +114,14 @@ is blocked on unstaged steward acquisition evidence. Archive presence and accept
 metadata/role hashes do not establish channel/license/access approval or decode
 readiness, and cannot populate audit summaries.
 
+That Document-102 administrative prerequisite is superseded by the subsequent
+[owner instruction](../docs/103-owner-authorized-technical-audit.md): all supplied
+core datasets are permitted for research, and technical inspection proceeds without
+demanding acquisition receipts/email/license files. Permission basis is owner
+attestation; no independent agreement verification or redistribution permission is
+fabricated. Preserve historical reports and registry bytes. Actual archive/member
+hashes, decoding, content disjointness and frozen-role reconciliation remain technical
+requirements, not waived prerequisites.
+
 Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.

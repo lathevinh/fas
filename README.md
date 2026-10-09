@@ -157,8 +157,13 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [1.5A core-audit prerequisite inspection](docs/102-review-response-doc101-core-audit-prerequisites.md),
-    blocked on unstaged steward acquisition receipts and authorized private receipt/root inputs.
+- Current work package: [owner-authorized technical audit](docs/103-owner-authorized-technical-audit.md).
+    The owner attests all supplied core datasets permitted for research and removes
+    administrative-receipt prerequisites. OULU technical archive/header/protocol
+    [reconciliation passes](results/phase1/oulu-technical-archive-preflight-v1.json):
+    4950 videos / 42 protocol files, 17 focused tests, frozen hashes unchanged.
+    Full media TAR hashes, decode and duplicate-content audit remain pending;
+    no archive migration or new role generation.
     [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts
     1.4B permanent-role freeze without rework; frozen inputs must not be regenerated.
     [Review 99](docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without
@@ -172,9 +177,9 @@ is the strict source-only design consolidated in
     [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
-    Real acquisition/media audits and scientific readiness remain pending.
-    Stop for acquisition inputs/authorization; no media audit, bulk extraction,
-    inference or training
+    Independent acquisition-document verification remains unclaimed, not a blocker
+    to owner-authorized technical inspection. Media/decode/content-duplicate audits
+    and scientific readiness remain pending; no bulk extraction, inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
@@ -193,7 +198,8 @@ is the strict source-only design consolidated in
 - Core audit prerequisites: [bounded private inspection](results/phase1/core-audit-prerequisites-v1.json)
     checked 10 staged JSON files, found zero core acquisition receipt-schema matches,
     and reverified all 13 frozen artifacts. Schema passes; four later stages remain
-    blocked. Missing steward acquisition evidence must not be inferred from archives
+    blocked. This is historical Document-102 evidence; the owner's subsequent
+    research-use attestation supersedes the administrative block without inventing receipts
 - Intake: private acquisition/protocol receipts, read-only hash/path checks and
     redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
     passes on synthetic fixtures. No real dataset release has been accepted

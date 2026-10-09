@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: environment/intake, benchmark amendment, four metadata adapters, canonical metadata, v2 policy and 1.4B role freeze accepted; Document 101 accepts freeze without rework; 1.5A prerequisite inspection in Document 102 blocked on unstaged acquisition evidence; full core/media audit and scientific readiness remain pending
+Status: 1.4B accepted; Document 103 records owner's research-use attestation and removal of administrative receipt prerequisites; OULU technical archive/header inspection proceeds with frozen inputs; full media/content audit and scientific readiness remain pending
 
 ## Approval boundary
 
@@ -19,6 +19,13 @@ weights, and caches stay outside Git. Restricted dataset access requires the own
 authorized local releases; no credentials or protected download links are requested
 in chat.
 
+On 2026-10-09 the owner confirms research permission for all supplied core datasets
+and directs a technical, not administrative, audit workflow. Document 103 supersedes
+Document 102's requirement to stage acquisition receipts before technical inspection.
+Treat this as owner attestation, not independently verified agreement evidence.
+Existing ignored archives may be read in place; do not migrate them automatically.
+Technical integrity/decode/leakage gates and immutable roles remain mandatory.
+
 ## Checkpoint sequence
 
 | Checkpoint | Deliverable | Acceptance criteria | Evidence to review |
@@ -34,6 +41,7 @@ in chat.
 | 1.4A Metadata/proposal slice | Canonical metadata and source-role policy development | Accepted input/mapping pins, whole groups, SiW train-only, metadata-class feasibility, immutable/identical reruns, no audit promotion | Canonical accepted in 97; subtype-policy v2 rework in 98 accepted for freeze in 99; event/content audits pending |
 | 1.4B Permanent role freeze | Owner-approved registry and exact permanent-role bytes | Reviewed v2 policy/role hashes unchanged; freeze before prediction errors; no reallocation; group joins and immutable reruns; no execution/readiness promotion | Document 100 accepted without rework in 101; 24 focused/204 full tests; 6887 frozen source assignments; exact b551 CI success |
 | 1.5A Audit prerequisite inspection | Accepted freeze plus bounded acquisition-input inspection | Reverify exact registry/frozen hashes; missing steward receipts/permissions stay blocked; no placeholder approval or media access | Document 102; 10 staged JSON checked, zero core receipt-schema matches; 13 frozen hashes unchanged; acquisition/root inputs needed, not full audit |
+| 1.5B Owner-authorized technical inspection | Frozen canonical/header/protocol reconciliation, OULU first | Owner-attested research permission; no administrative receipt requirement; exact identities/labels/partitions/roles preserved; no decoded-media readiness inference | Document 103; 4950 videos/42 protocol files and 17 focused tests pass; 105GB media TAR hash attempt stopped, hashes/decode/duplicates pending; stop before another dataset |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
@@ -169,9 +177,13 @@ without rework; exact b551292 CI is independently confirmed successful. The owne
 authorizes the next step. [Document 102](102-review-response-doc101-core-audit-prerequisites.md)
 starts core audit at bounded receipt/input inspection and records a genuine missing-
 steward-evidence blocker. No frozen inputs are regenerated or renamed for the minor
-terminology note. Stop for private acquisition receipts/authorized roots; full
-event/content obligations, real acquisition/media audit acceptance and execution
-authorization remain pending.
+terminology note. That inspection's receipt prerequisite is subsequently superseded
+by the owner's direct research-permission attestation and instruction to skip
+administrative work, recorded in
+[Document 103](103-owner-authorized-technical-audit.md). Continue technical checks
+using the supplied archives and exact frozen inputs, without demanding administrative
+JSON/email/license files or inventing them. Full event/content and decoded-media
+obligations remain pending; this does not authorize model fitting or target evaluation.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
