@@ -104,5 +104,15 @@ readiness, and does not authorize execution. Permanent files are not yet install
 as audited evidence here, and dataset/split summary counts remain unchanged.
 Later audit must reconcile against these exact permanent assignments, not rebuild them.
 
+[Review 101](../docs/101-review-doc100-permanent-source-role-freeze.md) accepts this
+freeze without rework. Interpret the retained `roles_frozen_for_execution` key as
+"roles permanently frozen as the future execution definition", not permission to
+execute; the registry's `execution_authorized=false` remains decisive. Keep the
+accepted registry bytes unchanged rather than renaming a provenance-bound field.
+[Core-audit prerequisite inspection](../docs/102-review-response-doc101-core-audit-prerequisites.md)
+is blocked on unstaged steward acquisition evidence. Archive presence and accepted
+metadata/role hashes do not establish channel/license/access approval or decode
+readiness, and cannot populate audit summaries.
+
 Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.

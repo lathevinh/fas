@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: environment/intake, benchmark amendment, four metadata adapters, 1.4A canonical metadata and v2 source-role policy accepted; Document 99 authorizes freeze, implemented/verified in Document 100 as 1.4B; await checkpoint confirmation before audit; full 1.4 feasibility/content and scientific readiness remain pending
+Status: environment/intake, benchmark amendment, four metadata adapters, canonical metadata, v2 policy and 1.4B role freeze accepted; Document 101 accepts freeze without rework; 1.5A prerequisite inspection in Document 102 blocked on unstaged acquisition evidence; full core/media audit and scientific readiness remain pending
 
 ## Approval boundary
 
@@ -32,7 +32,8 @@ in chat.
 | 1.3A Benchmark amendment | Dated new study/config, immutable exact-ID intersection, coverage and grouping policy | Preserve MCIO history; 1680 eligible videos and all-14 coverage pinned; no fake subjects or repeat weights; schema/full regression pass; later gates blocked; owner review | Document 88 and benchmark-amendment-verification.json; accepted in Document 89, clarification in Document 90; separate SiW-Mv2/MSU adapter checkpoints remain |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
 | 1.4A Metadata/proposal slice | Canonical metadata and source-role policy development | Accepted input/mapping pins, whole groups, SiW train-only, metadata-class feasibility, immutable/identical reruns, no audit promotion | Canonical accepted in 97; subtype-policy v2 rework in 98 accepted for freeze in 99; event/content audits pending |
-| 1.4B Permanent role freeze | Owner-approved registry and exact permanent-role bytes | Reviewed v2 policy/role hashes unchanged; freeze before prediction errors; no reallocation; group joins and immutable reruns; no execution/readiness promotion | Document 100; 24 focused/204 full tests; 6887 frozen source assignments; await checkpoint confirmation before 1.5 |
+| 1.4B Permanent role freeze | Owner-approved registry and exact permanent-role bytes | Reviewed v2 policy/role hashes unchanged; freeze before prediction errors; no reallocation; group joins and immutable reruns; no execution/readiness promotion | Document 100 accepted without rework in 101; 24 focused/204 full tests; 6887 frozen source assignments; exact b551 CI success |
+| 1.5A Audit prerequisite inspection | Accepted freeze plus bounded acquisition-input inspection | Reverify exact registry/frozen hashes; missing steward receipts/permissions stay blocked; no placeholder approval or media access | Document 102; 10 staged JSON checked, zero core receipt-schema matches; 13 frozen hashes unchanged; acquisition/root inputs needed, not full audit |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
@@ -162,8 +163,15 @@ a role-selection criterion. The owner authorizes the next step;
 [Document 100](100-review-response-doc99-permanent-source-role-freeze.md) freezes
 the exact accepted policy/assignments in a separate registry and private permanent
 CSV bundle without reallocation. Stop for freeze checkpoint confirmation before
-core audit; full 1.4 event/content obligations remain pending. Real acquisition/media
-audit acceptance and execution authorization remain pending.
+core audit was that checkpoint's boundary.
+[Review 101](101-review-doc100-permanent-source-role-freeze.md) now accepts 1.4B
+without rework; exact b551292 CI is independently confirmed successful. The owner
+authorizes the next step. [Document 102](102-review-response-doc101-core-audit-prerequisites.md)
+starts core audit at bounded receipt/input inspection and records a genuine missing-
+steward-evidence blocker. No frozen inputs are regenerated or renamed for the minor
+terminology note. Stop for private acquisition receipts/authorized roots; full
+event/content obligations, real acquisition/media audit acceptance and execution
+authorization remain pending.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a

@@ -157,8 +157,10 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [1.4B permanent source-role freeze](docs/100-review-response-doc99-permanent-source-role-freeze.md),
-    implemented/locally verified; checkpoint confirmation pending.
+- Current work package: [1.5A core-audit prerequisite inspection](docs/102-review-response-doc101-core-audit-prerequisites.md),
+    blocked on unstaged steward acquisition receipts and authorized private receipt/root inputs.
+    [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts
+    1.4B permanent-role freeze without rework; frozen inputs must not be regenerated.
     [Review 99](docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without
     further rework. The [permanent registry](configs/role_policy_frozen_v2.yaml)
     locks exact accepted assignments before source prediction errors; execution and
@@ -171,14 +173,15 @@ is the strict source-only design consolidated in
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
     Real acquisition/media audits and scientific readiness remain pending.
-    Stop for freeze checkpoint confirmation; no core audit, bulk extraction,
+    Stop for acquisition inputs/authorization; no media audit, bulk extraction,
     inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
 - Manifests/roles: [24 focused / 204 regression tests](results/phase1/source-role-freeze-verification-v2.json)
-    pass. [Accepted v2 aggregate report](results/phase1/manifest-role-proposal-summary-v2.json)
+    passed at the accepted freeze checkpoint, not rerun in this prerequisite turn.
+    [Accepted v2 aggregate report](results/phase1/manifest-role-proposal-summary-v2.json)
     records 7510 canonical / 6887 source-proposal videos, group-disjoint roles and
     byte-identical reruns. Canonical bytes and all v1 artifacts are preserved;
     prospective native-subtype strata yield Mask_Paper 7/2/2 instead of 11/0/0.
@@ -187,6 +190,10 @@ is the strict source-only design consolidated in
     Prediction-event feasibility and media-content duplicate
     audit remain unverified; original proposal files stay historical, and the separate
     approved registry does not authorize execution or certify audited readiness
+- Core audit prerequisites: [bounded private inspection](results/phase1/core-audit-prerequisites-v1.json)
+    checked 10 staged JSON files, found zero core acquisition receipt-schema matches,
+    and reverified all 13 frozen artifacts. Schema passes; four later stages remain
+    blocked. Missing steward acquisition evidence must not be inferred from archives
 - Intake: private acquisition/protocol receipts, read-only hash/path checks and
     redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
     passes on synthetic fixtures. No real dataset release has been accepted

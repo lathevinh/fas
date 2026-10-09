@@ -1,0 +1,158 @@
+{
+  "actual_acquisition_receipt_cli_run": false,
+  "all_frozen_artifacts_and_approval_pins_verified": true,
+  "allocation_registry_and_all_working_tree_artifact_hashes_unchanged": true,
+  "audit_summary_counts_unchanged": true,
+  "base_commit": "4abc1f293de4391189d03a5c17ac9636c3378a3d",
+  "checkpoint": "1.5A core acquisition prerequisite inspection",
+  "content_duplicate_audit": "not_verified_no_media_hashes",
+  "core_acquisition_receipt_shape_counts": {
+    "CASIA-FASD": 0,
+    "MSU-MFSD": 0,
+    "OULU-NPU": 0,
+    "SiW-Mv2": 0
+  },
+  "datasets": {
+    "CASIA-FASD": {
+      "acquisition_channel_license_and_access_approval": "not_verified",
+      "private_authorized_receipt_and_data_root_required": true,
+      "status": "blocked",
+      "steward_receipt_staged": false
+    },
+    "MSU-MFSD": {
+      "acquisition_channel_license_and_access_approval": "not_verified",
+      "private_authorized_receipt_and_data_root_required": true,
+      "status": "blocked",
+      "steward_receipt_staged": false
+    },
+    "OULU-NPU": {
+      "acquisition_channel_license_and_access_approval": "not_verified",
+      "private_authorized_receipt_and_data_root_required": true,
+      "status": "blocked",
+      "steward_receipt_staged": false
+    },
+    "SiW-Mv2": {
+      "acquisition_channel_license_and_access_approval": "not_verified",
+      "private_authorized_receipt_and_data_root_required": true,
+      "status": "blocked",
+      "steward_receipt_staged": false
+    }
+  },
+  "environment": "conda:fas",
+  "execution_authorized": false,
+  "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+  "frozen_bundle_artifact_sha256": {
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_roles.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_roles.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_roles.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+    "source_role_freeze.json": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
+  },
+  "frozen_source_videos_from_hash_bound_accepted_verification": 6887,
+  "inspected_json_sha256": [
+    "0c3efe8c7cf8107954e1fca1bbb4a85469f5294cfa1d80a0a7fbac6305afabbb",
+    "26c4b9401c721802f3a865f44dcfd39f6b70281295ac76553e262698f966efcd",
+    "2c4998c0432e2e89b330d041041165554f8ab2ffabe5fc76ff65ad68ec8357fa",
+    "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+    "532ad9d51056333ccc45a4ffcad58c74669d2dea6e7fc8e2d59ee1336e0002e0",
+    "6d105949c6f626dae750ce1a0f22b0a5bf8a85de8b77a9eec4929b7137761d60",
+    "837df47897db58030a8331cea9f46cce7f9308bb4736ec3211d47c5e204ec19f",
+    "9852d0b712584f3986d0de8fc5811f02ebff12fcbcd7f3921700201647f3e465",
+    "9ea5d4e4c386149403c1eefb86a2f0074fdaf08d947c5a86dfba2c84f1135023",
+    "d544dd32681fc799401add449e2eba491bd59b5d714eca668ab9766f0a244f92"
+  ],
+  "media_audit_verified": false,
+  "new_code_or_full_regression_run": false,
+  "no_allocator_inference_training_or_target_evaluation": true,
+  "no_archives_or_media_opened_decoded_extracted_or_moved": true,
+  "policy_approved": true,
+  "private_data_top_level_categories": [
+    "downloads"
+  ],
+  "python_version": "3.12.14",
+  "reason_acquisition_cli_not_run": "no staged core acquisition receipt found; no fabricated placeholder receipt used",
+  "review_file": "docs/101-review-doc100-permanent-source-role-freeze.md",
+  "review_sha256": "aac31da55e587ba26279ee41b23731256ab2f5776c71a60783e1e2e942f42dc3",
+  "reviewed_freeze_commit": "b551292d66ee72913b52661fbcbc7e25fa1b666c",
+  "roles_permanently_frozen": true,
+  "scientific_readiness": false,
+  "search_limitations": "no claim of global absence; other roots and archive-internal agreements not searched",
+  "search_scope": [
+    "known private data root JSON",
+    "known private phase1 artifact root JSON"
+  ],
+  "source_role_registry_sha256": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f",
+  "stage_results": {
+    "analysis-freeze": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "data-audit": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "locked-evaluation": {
+      "exit_code": 1,
+      "expected": 1
+    },
+    "schema": {
+      "exit_code": 0,
+      "expected": 0
+    },
+    "source-dry-run": {
+      "exit_code": 1,
+      "expected": 1
+    }
+  },
+  "staged_json_files_checked": 10,
+  "status": "blocked_missing_steward_acquisition_inputs",
+  "version": 1,
+  "working_tree_artifact_sha256": {
+    "configs/benchmark_amendment_v2.yaml": "fc4021d6454a3a39342d02aa12b26b2f5e16e0e1f311c93a591b453ea63ec489",
+    "configs/claims_v1.yaml": "2f3169a2cc9c6d6bc591bcdca0f5f0a8f58be96901088249f82d5963d3968793",
+    "configs/environment_v1.yaml": "686a5020f68096bfaa29e3ab57aedf5355d958d1dbdf5830a98c133bd0321380",
+    "configs/experiment_core_mcio_v1.yaml": "dc636a9bad8c427a83149a7697cc64a1bb38f31752303500cc2eb5b606e998b9",
+    "configs/experiment_core_v1.yaml": "e92a967c10b2f074e08759b7cf84f6dfd72bba868de4cb8c7597796aebaace57",
+    "configs/preprocessing_v2.yaml": "2a9e4cb6ec5fdf665151b5d8a89e941c23674bf51821f7d3665e52bd192a009e",
+    "configs/prompts_aux_v1.yaml": "9594be41b8c7d52201eb218ed5a6962035c175dc34063bf472bcbf643e7066c6",
+    "configs/prompts_core_v1.yaml": "2a08c666659fb1f6ad7f0572e39773d9a49148e47abdb6f9ad9059d785c0596c",
+    "configs/role_policy_frozen_v2.yaml": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f",
+    "configs/role_policy_proposal_v2.yaml": "bea506c582800af4b434a3849a6c478b962c06b068aa6fa49541f5c7f0e12c9e",
+    "configs/seeds_v1.yaml": "38c544a689488ff7de3a4a306a9c2dd742082948cb9aa024b4c432f1c5aefab2",
+    "configs/source_recipe_v2.yaml": "db39bbc961c19a5aa4f8fe9c87baa7b5ced678d9e8fda47fd016866819b52f09",
+    "manifests/dataset_summary.csv": "cb00e707280e81a7b7fb85a41001fccc59c0eceb5619206ffa93a4480ec92e5f",
+    "manifests/split_summary.csv": "f32f3a587114ea298804fe95b131403ee244b8520f94c10ae57a217f23356ae6",
+    "results/phase1/siwmv2-intersection-v1.json": "7ccbd4b4a10aaa8249efe2b122e149b1f4fe4b3ec8fbd1bf23d2d42a3a734190",
+    "scripts/build_manifests.py": "a1ef52b50c8c77204915fcda3c805f60d81c7f7bad1c2dec934491c1427a8ff7",
+    "scripts/check_environment.py": "064ee1f1935eb2866877054a760139a20b9279bb387f22124aa05e229b064a77",
+    "scripts/check_intake.py": "d3bec72d617b698540658bcc05091ff8b5a7271fe46c6587959e9fbac8159baf",
+    "scripts/inspect_siwmv2.py": "7ed111f7779beedcc2fe28e40a2da265d82dc24da4c522181f2ce1289f31bc63",
+    "scripts/inventory_casia.py": "1e0f4120476ff2f015b96a1ba22fc9c1c925b3a0024d1ed709820ba38d0c3ad1",
+    "scripts/inventory_msu.py": "0eee7443a501eb433bcced3acc8eabec9d8c33f6189d23fc6c5cf64d672f029b",
+    "scripts/inventory_oulu.py": "70362a3177090ea8fa54733e96171bb1f8d8a44b20caf7e3d2f167b6cf471933",
+    "scripts/inventory_siwmv2.py": "50de3ca9bd8768e0108b2a27095009994c606fc40d464ab6067f4d33a9487657",
+    "scripts/smoke_environment.py": "b924ad28afbf645cb6247db67192a01f39803445170a2e3e1a28f0d3e7655c2b",
+    "scripts/validate_preregistration.py": "ea220f4abe8d8783bf1d07b83ba98c24c682f02ef76faa125f83dc8985217054",
+    "scripts/write_freeze_record.py": "238f037e8d0ce9accc9973377c62dc6665a00582a869e59b7097ecbfe1684629",
+    "src/fas/__init__.py": "485aef8b02d2d3811bdbbb2c801a16827257f14b775a0c833c9a0838e55019e9",
+    "src/fas/calibration.py": "88f633838daad25b1a0ed885dfa6937bda0939db413753ca290b2c634d63bb93",
+    "src/fas/casia.py": "2cde152ca3c66a57e63ae0b0181f734d56eccc39c455c79341521ff3f2b47474",
+    "src/fas/contracts.py": "1435d35f30b7f5f69c9f54fb03286c32ca43f358edb602b9aaad7214ba13c339",
+    "src/fas/environment.py": "69b76051d0e3959f6774d02c3d98a61fdac4aabdff64b8b2c224d31bb69dd3fb",
+    "src/fas/freeze.py": "55465e0edaf5495f23fbde8693f831efc3f9da0181d8f2c0bbd7c16d4f0c766c",
+    "src/fas/intake.py": "8d912da9c43094f3db7de4e60b83d02ca97821c0ac5025a1ff036721961804c1",
+    "src/fas/manifests.py": "69291a8d9c67efc4a68a4e2abd91d072abf96719c74534804b9bec24fb2922ca",
+    "src/fas/msu.py": "e18db97851244f5036bfb7b08b991ce5df858bac3199e807bd26ca8bf38f9831",
+    "src/fas/oulu.py": "0f98d75678d0997176235ce5fd7e556207010e49ef9bdc0c61d4c0c6d50b5c4e",
+    "src/fas/preregistration.py": "f61c2262c05005b543dcf9c3089d879d28266368109b29c795a1e17ad39270b1",
+    "src/fas/siwmv2.py": "7e694a008636eb77459d105a4f2dd745075f2da625f2b217d02dc35c66be8ad4"
+  }
+}
