@@ -177,6 +177,9 @@ is the strict source-only design consolidated in
     compares 12243826 pairs: 6653 candidates, including 13 known exact pairs and
     6640 unresolved non-exact pairs (484 cross-role). Screening is not lineage
     certification; adjudication remains pending and roles/selector are unchanged.
+    [Full-frame exact-evidence pass](docs/113-review-response-doc112-oulu-lineage-exact-evidence.md)
+    processes all 6640 non-exact pairs in risk-priority order; no exact RGB token
+    overlap is found, but all 6640 remain uncertain, not cleared false positives.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

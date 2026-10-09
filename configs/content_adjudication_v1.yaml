@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "state": "prospective_exact_evidence_triage_not_complete_visual_adjudication",
+  "dataset": "oulu_npu",
+  "population": "all_6640_accepted_unresolved_nonexact_candidates",
+  "priority": ["cross_role_conflicting_label", "cross_role", "cross_partition", "conflicting_label", "remaining"],
+  "evidence": "all_accepted_decoded_frames_dimension_and_RGB_SHA256_ordered_identity",
+  "confirmation": "complete_shorter_sequence_contained_and_at_least_two_distinct_RGB_frames",
+  "confirmation_scope": "same_rendered_content_not_original_capture_provenance",
+  "no_sufficient_exact_evidence": "uncertain_insufficient_evidence_never_rejected_false_positive",
+  "phash_equivalence_threshold_used": false,
+  "visual_review_performed": false,
+  "confirmed_cross_role_action": "stop_for_explicit_prospective_scientific_decision",
+  "role_or_selector_or_seed_rewrite": false,
+  "model_execution_authorized": false,
+  "scientific_readiness": false
+}

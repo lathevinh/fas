@@ -1,0 +1,90 @@
+{
+  "absence_of_exact_overlap_is_not_content_independence": true,
+  "accepted_media_report_sha256": "04f5555da7493d7ca08cbf9e2fc44b00d5b09cc27d5e4ee441e4cec24f17ae0a",
+  "accepted_screening_report_sha256": "1a66bc0dc9bb063db78528a1fb53185234b3d73fdd6dedf09ac0c6950a71e872",
+  "base_commit": "1af05e4",
+  "candidate_pairs": 6653,
+  "capture_provenance_certified": false,
+  "checkpoint": "1.5G OULU exact full-frame evidence slice; visual/re-encoded adjudication pending",
+  "confirmed_cross_role_decoded_content": 0,
+  "disposition_counts": {
+    "confirmed_same_content_or_derived_lineage": 0,
+    "rejected_false_positive": 0,
+    "uncertain_insufficient_evidence": 6640
+  },
+  "environment": "conda:fas",
+  "evidence_counts": {
+    "pairs_with_any_exact_RGB_overlap": 0,
+    "uncertain_insufficient_evidence": 6640
+  },
+  "exclusive_priority_counts": {
+    "conflicting_label": 91,
+    "cross_partition": 185,
+    "cross_role": 399,
+    "cross_role_conflicting_label": 85,
+    "remaining": 5880
+  },
+  "existing_output_refused_exit_code": 1,
+  "focused_suite": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 42
+  },
+  "frozen_artifact_sha256": {
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_roles.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_roles.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_roles.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+    "source_role_freeze.json": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
+  },
+  "frozen_inputs_unchanged": true,
+  "full_frame_indexes_used": true,
+  "full_regression": {
+    "errors": 0,
+    "failures": 0,
+    "tests": 229
+  },
+  "implementation_sha256": {
+    "scripts/triage_oulu_lineage.py": "626cf6e4b9d5a59509898de164399ddd4dce492274cd79881457f8c492f8a073",
+    "src/fas/lineage.py": "f98a404c36a25e71efb97af58c5ee9f7bd570695df0a2988b13b9d53a6a1a2a8"
+  },
+  "independent_exact_overlap_checks": 6640,
+  "independent_random_sequence_checks": 500,
+  "known_exact_pairs_preserved_separately": 13,
+  "lineage_sha256": "78c44797d675bed3579765b804cc465721ff0289705f2e7ff0ad35be9dbb7b4a",
+  "media_reopened": false,
+  "model_execution_authorized": false,
+  "near_duplicate_or_content_lineage_adjudication_complete": false,
+  "nonexact_pairs_examined": 6640,
+  "original_rerun_byte_identical": true,
+  "original_rerun_files": 6642,
+  "original_video_denominator": 4950,
+  "pair_record_bundle_sha256": "55fa115b0e2ff82d12a9ab2be0b87b52c7e30758fcf5076c44e648f3d0a30180",
+  "policy_file": "configs/content_adjudication_v1.yaml",
+  "policy_sha256": "6a3d585c849e296c46ce5a03477ad7c96dc986780d8ab46f605b1441cb931212",
+  "private_summary_sha256": "7b8d21a56e3704f5d65ec5fd4c46890e2697355455efc457de5ce6fca4547f74",
+  "prospective_scientific_decision_required": false,
+  "retained_decode_failures": 1,
+  "review_file": "docs/112-review-doc111-oulu-content-screening.md",
+  "review_sha256": "07c7915bb6f1148e6b4f0b4421cfacbab2c63b2b6939ff13c70fe90d60de688a",
+  "scientific_readiness": false,
+  "source_roles_or_selector_or_seed_changed": false,
+  "stage_has_blockers": {
+    "analysis-freeze": true,
+    "data-audit": true,
+    "locked-evaluation": true,
+    "schema": false,
+    "source-dry-run": true
+  },
+  "status": "exact_evidence_pass_complete_content_adjudication_pending",
+  "version": 1,
+  "visual_review_performed": false
+}

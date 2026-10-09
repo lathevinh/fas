@@ -20,6 +20,72 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluLineageTest(unittest.TestCase):
+    def test_evidence_runner_refuses_repository_or_existing_output(self) -> None:
+        spec = importlib.util.spec_from_file_location("triage_oulu_lineage", ROOT / "scripts/triage_oulu_lineage.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            with self.assertRaisesRegex(ValueError, "unsafe private output"):
+                module.triage(source, source, source, ROOT / "results/refused-lineage-output")
+            with self.assertRaisesRegex(ValueError, "existing output"):
+                module.triage(source, source, source, source)
+
+    def media(self, sequence):
+        return {"decode_status": "decoded", "frame_count": len(sequence),
+                "frame_index": [{"decode_order": order, "decode_success": True,
+                                 "width": 32, "height": 24, "timestamp_seconds": str(order),
+                                 "rgb_sha256": format(value, "064x")} for order, value in enumerate(sequence)]}
+
+    def test_trimmed_full_sequence_is_rendered_content_not_capture_provenance(self) -> None:
+        from fas.lineage import exact_content_evidence
+        result = exact_content_evidence(self.media([1, 2, 3]), self.media([0, 1, 2, 3, 4]))
+        self.assertEqual(result["disposition"], "confirmed_same_content_or_derived_lineage")
+        self.assertEqual(result["longest_exact_contiguous_run"], 3)
+        self.assertEqual(result["right_run_start"], 1)
+        self.assertFalse(result["capture_provenance_confirmed"])
+        reverse = exact_content_evidence(self.media([0, 1, 2, 3, 4]), self.media([1, 2, 3]))
+        self.assertEqual(reverse["longest_exact_contiguous_run"], 3)
+        self.assertEqual(reverse["left_run_start"], 1)
+
+    def test_missing_or_partial_overlap_never_rejects_candidate(self) -> None:
+        from fas.lineage import exact_content_evidence
+        for left, right in (([1, 2, 3], [4, 5, 6]), ([1, 2, 3], [0, 1, 2, 4]),
+                            ([1, 1], [0, 1, 1, 3]), ([1], [1, 2]), ([1, 2, 3], [3, 2, 1])):
+            with self.subTest(left=left, right=right):
+                result = exact_content_evidence(self.media(left), self.media(right))
+                self.assertEqual(result["disposition"], "uncertain_insufficient_evidence")
+                self.assertFalse(result["false_positive_rejection_authorized"])
+
+    def test_repeated_frames_do_not_break_longest_run(self) -> None:
+        from fas.lineage import exact_content_evidence
+        result = exact_content_evidence(self.media([1, 2, 1, 2]), self.media([0, 1, 2, 1, 2, 3]))
+        self.assertEqual(result["longest_exact_contiguous_run"], 4)
+        self.assertEqual(result["right_run_start"], 1)
+
+    def test_invalid_full_frame_evidence_fails_closed(self) -> None:
+        from fas.lineage import exact_content_evidence
+        for key, value in (("rgb_sha256", "bad"), ("decode_order", 7), ("decode_success", False), ("width", True)):
+            media = self.media([1, 2])
+            media["frame_index"][0][key] = value
+            with self.assertRaises(ValueError):
+                exact_content_evidence(media, self.media([1, 2]))
+        with self.assertRaises(ValueError):
+            exact_content_evidence({"decode_status": "failed", "frame_count": 0, "frame_index": []}, self.media([1]))
+
+    def test_priority_is_exclusive_and_no_boundary_is_omitted(self) -> None:
+        from fas.lineage import candidate_priority
+        for pair, expected in (({"cross_role": True, "cross_partition": True, "conflicting_label": True}, 0),
+                               ({"cross_role": True, "cross_partition": True, "conflicting_label": False}, 1),
+                               ({"cross_role": False, "cross_partition": True, "conflicting_label": True}, 2),
+                               ({"cross_role": False, "cross_partition": False, "conflicting_label": True}, 3),
+                               ({"cross_role": False, "cross_partition": False, "conflicting_label": False}, 4)):
+            self.assertEqual(candidate_priority(pair), expected)
+        with self.assertRaises(ValueError):
+            candidate_priority({"cross_role": "true", "cross_partition": False, "conflicting_label": False})
+
+
 class OuluContentTest(unittest.TestCase):
     def test_runner_refuses_repository_and_existing_output(self) -> None:
         import argparse
