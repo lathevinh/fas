@@ -8,6 +8,7 @@ from collections import defaultdict
 from typing import Any
 
 from .contracts import CORE_DOMAINS
+from .freeze import _hex_digest
 from .intake import _relative_path
 from .casia import LABEL_MAPPING_HASH as CASIA_MAPPING_HASH
 from .msu import LABEL_MAPPING_HASH as MSU_MAPPING_HASH
@@ -144,3 +145,52 @@ def propose_source_roles(canonical: dict[str, Any], policy: dict[str, Any]) -> d
             "content_duplicate_audit": "not_verified_no_media_hashes", "scientific_readiness": False,
             "policy_approved": False, "roles_frozen_for_execution": False,
             "videos": sorted(records, key=lambda row: row["video_id"])}
+
+
+def build_source_role_freeze_record(
+    approval: dict[str, Any], policy_payload: bytes, summary_payload: bytes,
+    artifact_sha256: dict[str, str],
+) -> dict[str, Any]:
+    fields = {"review_file", "review_sha256", "reviewed_commit", "allocation_policy_file",
+              "allocation_policy_file_sha256", "accepted_summary_file", "accepted_summary_sha256"}
+    if set(approval) != fields or not _hex_digest(approval["reviewed_commit"], length=40):
+        raise ValueError("explicit owner review and accepted policy/summary pins required")
+    for field in ("review_file", "allocation_policy_file", "accepted_summary_file"):
+        if _relative_path(approval[field]) is None:
+            raise ValueError("safe public approval evidence paths required")
+    for field in ("review_sha256", "allocation_policy_file_sha256", "accepted_summary_sha256"):
+        if not _hex_digest(approval[field]):
+            raise ValueError("approval evidence requires SHA-256 pins")
+    if hashlib.sha256(policy_payload).hexdigest() != approval["allocation_policy_file_sha256"] or hashlib.sha256(summary_payload).hexdigest() != approval["accepted_summary_sha256"]:
+        raise ValueError("changed accepted allocation policy or summary")
+    policy, summary = json.loads(policy_payload), json.loads(summary_payload)
+    if policy.get("version") != 2 or policy.get("state") != "proposal_not_approved" or summary.get("policy") != policy:
+        raise ValueError("freeze the reviewed v2 allocation bytes without changing their state")
+    if set(summary.get("datasets", {})) != CORE_DOMAINS or summary.get("status") != "metadata_complete_role_policy_proposal_only":
+        raise ValueError("all four accepted source proposals required")
+    expected_names = {"bundle_summary.json"}
+    frozen_hashes = {}
+    policy_hash = hashlib.sha256(json.dumps(policy, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    for dataset, details in summary["datasets"].items():
+        slug = dataset.lower().replace("-", "_")
+        for suffix, field in (("canonical.json", "canonical_sha256"), ("metadata.csv", "metadata_csv_sha256"),
+                              ("role_proposal.json", "role_proposal_sha256"), ("roles_proposed.csv", "roles_proposed_csv_sha256")):
+            name = f"{slug}_{suffix}"
+            expected_names.add(name)
+            if not _hex_digest(details.get(field)) or artifact_sha256.get(name) != details[field]:
+                raise ValueError("changed accepted canonical or role artifact")
+            if suffix != "role_proposal.json":
+                frozen_hashes[name.replace("_roles_proposed.csv", "_roles.csv")] = details[field]
+        if details.get("policy_sha256") != policy_hash:
+            raise ValueError("source proposals used another allocation policy")
+    if set(artifact_sha256) != expected_names or artifact_sha256["bundle_summary.json"] != approval["accepted_summary_sha256"]:
+        raise ValueError("complete accepted bundle hashes required")
+    return {"version": 1, "state": "approved_frozen", "scope": "permanent_source_role_definition_only",
+            "approval": approval, "allocation_policy": policy, "allocation_policy_sha256": policy_hash,
+            "accepted_artifact_sha256": dict(sorted(artifact_sha256.items())),
+            "frozen_artifact_sha256": dict(sorted(frozen_hashes.items())),
+            "policy_approved": True, "roles_frozen_for_execution": True,
+            "split_changes_from_model_or_target_results_allowed": False,
+            "execution_authorized": False, "scientific_readiness": False, "media_audit_verified": False,
+            "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+            "content_duplicate_audit": "not_verified_no_media_hashes"}

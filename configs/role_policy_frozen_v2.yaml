@@ -1,0 +1,95 @@
+{
+  "accepted_artifact_sha256": {
+    "bundle_summary.json": "7fc8c8453ec82cccd4dc2913156a2d384035dc6aabd8aec69e87526319570360",
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_role_proposal.json": "a5a804db2bd32084eed21e1009558857ef6ebf518bb32e688b5074f64d4ba5eb",
+    "casia_fasd_roles_proposed.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_role_proposal.json": "6d70d6796faf160290d36498e5938bfe7a46e2f7cc80ce7897bd7dc527babf7f",
+    "msu_mfsd_roles_proposed.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_role_proposal.json": "63e21eb687e83efe77fd1f6e067a014808884a4026f6dba6ac87e8d7cb3e5b49",
+    "oulu_npu_roles_proposed.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_role_proposal.json": "33e5716922db82b3f2d944c00cc605eefcc929605a42510680f1549e8bd9335d",
+    "siw_mv2_roles_proposed.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7"
+  },
+  "allocation_policy": {
+    "initial_role_weights": {
+      "branch_calibration": 1,
+      "g_domain": 1,
+      "train": 3
+    },
+    "minimum_metadata_class_videos_per_role": 1,
+    "source_partitions": {
+      "CASIA-FASD": [
+        "train",
+        "test"
+      ],
+      "MSU-MFSD": [
+        "train",
+        "test"
+      ],
+      "OULU-NPU": [
+        "train",
+        "development",
+        "test"
+      ],
+      "SiW-Mv2": [
+        "train"
+      ]
+    },
+    "split_seed": 20261009,
+    "state": "proposal_not_approved",
+    "stratification_fields": [
+      "official_split",
+      "binary_label",
+      "attack_family",
+      "reference_attack_type",
+      "sensor_id",
+      "session_id",
+      "environment"
+    ],
+    "track": "strict_single_image_track_b",
+    "version": 2
+  },
+  "allocation_policy_sha256": "ee009b3e8382231af7aabd91fe1efb2fca53a78fc3a0e3c51bf209e1b7929b04",
+  "approval": {
+    "accepted_summary_file": "results/phase1/manifest-role-proposal-summary-v2.json",
+    "accepted_summary_sha256": "7fc8c8453ec82cccd4dc2913156a2d384035dc6aabd8aec69e87526319570360",
+    "allocation_policy_file": "configs/role_policy_proposal_v2.yaml",
+    "allocation_policy_file_sha256": "bea506c582800af4b434a3849a6c478b962c06b068aa6fa49541f5c7f0e12c9e",
+    "review_file": "docs/99-review-doc98-role-policy-v2.md",
+    "review_sha256": "34b4f485a19243895985b6aaa732ba5f95d1a71e68351d43546ac855aff3387f",
+    "reviewed_commit": "4918b9de019f8fee70c9542f153f6b7c12e82744"
+  },
+  "content_duplicate_audit": "not_verified_no_media_hashes",
+  "execution_authorized": false,
+  "fitted_error_and_gate_event_feasibility": "not_evaluated_no_source_predictions",
+  "frozen_artifact_sha256": {
+    "casia_fasd_canonical.json": "33007710e49b2e2f9c180521cb21d933cce6c0b08766ce825c2e7ba3864cd4c2",
+    "casia_fasd_metadata.csv": "1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea",
+    "casia_fasd_roles.csv": "289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599",
+    "msu_mfsd_canonical.json": "43d8348c4b020ae692ed2cec8bc14e27d7a8d71aed983cac3fc5f10ad8e94dab",
+    "msu_mfsd_metadata.csv": "6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc",
+    "msu_mfsd_roles.csv": "57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5",
+    "oulu_npu_canonical.json": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "oulu_npu_metadata.csv": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "oulu_npu_roles.csv": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d",
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7"
+  },
+  "media_audit_verified": false,
+  "policy_approved": true,
+  "roles_frozen_for_execution": true,
+  "scientific_readiness": false,
+  "scope": "permanent_source_role_definition_only",
+  "split_changes_from_model_or_target_results_allowed": false,
+  "state": "approved_frozen",
+  "version": 1
+}

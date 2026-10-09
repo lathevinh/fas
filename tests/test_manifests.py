@@ -16,8 +16,9 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from fas.manifests import VIDEO_FIELDS, canonicalize_inventory, propose_source_roles
+from fas.manifests import VIDEO_FIELDS, canonicalize_inventory, propose_source_roles, build_source_role_freeze_record
 from fas import manifests
+from fas.preregistration import artifact_hashes
 
 
 class CanonicalManifestTest(unittest.TestCase):
@@ -271,3 +272,125 @@ class ManifestCliTest(unittest.TestCase):
         self.assertEqual(status, 2)
         self.assertFalse((self.output / "bundle_summary.json").exists())
         self.assertNotIn("private write failure", stdout + stderr)
+
+    def freeze_fixture(self):
+        self.assertEqual(self.command()[0], 0)
+        summary_payload = (self.output / "bundle_summary.json").read_bytes()
+        policy_payload = (ROOT / "configs/role_policy_proposal_v2.yaml").read_bytes()
+        approval = {"review_file": "docs/synthetic-review.md", "review_sha256": hashlib.sha256(b"synthetic acceptance").hexdigest(),
+                    "reviewed_commit": "a" * 40, "allocation_policy_file": "configs/role_policy_proposal_v2.yaml",
+                    "allocation_policy_file_sha256": hashlib.sha256(policy_payload).hexdigest(),
+                    "accepted_summary_file": "results/synthetic-summary.json", "accepted_summary_sha256": hashlib.sha256(summary_payload).hexdigest()}
+        hashes = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in self.output.iterdir()}
+        return approval, policy_payload, summary_payload, hashes
+
+    def test_freeze_receipt_preserves_accepted_hashes_without_allocator(self):
+        approval, policy_payload, summary_payload, hashes = self.freeze_fixture()
+        with patch.object(manifests, "propose_source_roles", side_effect=AssertionError("allocator must not run")):
+            frozen = build_source_role_freeze_record(approval, policy_payload, summary_payload, hashes)
+        self.assertEqual(frozen["accepted_artifact_sha256"], hashes)
+        self.assertEqual(len(frozen["frozen_artifact_sha256"]), 12)
+        for dataset in manifests.CORE_DOMAINS:
+            slug = dataset.lower().replace("-", "_")
+            self.assertEqual(frozen["frozen_artifact_sha256"][f"{slug}_roles.csv"], hashes[f"{slug}_roles_proposed.csv"])
+        self.assertTrue(frozen["policy_approved"])
+        self.assertTrue(frozen["roles_frozen_for_execution"])
+        self.assertFalse(frozen["execution_authorized"])
+        self.assertFalse(frozen["scientific_readiness"])
+
+    def test_freeze_changed_policy_summary_hashes_and_approval_rejected(self):
+        approval, policy_payload, summary_payload, hashes = self.freeze_fixture()
+        for change in ((approval, policy_payload + b"\n", summary_payload, hashes),
+                       (approval, policy_payload, summary_payload + b"\n", hashes),
+                       (approval, policy_payload, summary_payload, {**hashes, "msu_mfsd_roles_proposed.csv": "0" * 64}),
+                       ({**approval, "training_seed": 123}, policy_payload, summary_payload, hashes),
+                       ({**approval, "review_file": "../outside"}, policy_payload, summary_payload, hashes)):
+            with self.assertRaises(ValueError):
+                build_source_role_freeze_record(*change)
+
+    def prepare_freeze(self):
+        approval, policy_payload, summary_payload, hashes = self.freeze_fixture()
+        proposal_home = self.home / "proposals"
+        proposal_home.mkdir()
+        proposal_bundle = proposal_home / "bundle"
+        self.output.rename(proposal_bundle)
+        self.output = proposal_bundle
+        self.public = self.home / "public"
+        for name, payload in ((approval["review_file"], b"synthetic acceptance"),
+                              (approval["allocation_policy_file"], policy_payload),
+                              (approval["accepted_summary_file"], summary_payload)):
+            path = self.public / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(payload)
+        self.registry = self.public / "configs/role_policy_frozen_v2.yaml"
+        self.frozen = build_source_role_freeze_record(approval, policy_payload, summary_payload, hashes)
+        self.registry.write_text(json.dumps(self.frozen), encoding="utf-8")
+        self.freeze_output = self.home / "approved" / "bundle"
+
+    def freeze_command(self, *extra):
+        stdout, stderr = io.StringIO(), io.StringIO()
+        arguments = ["build_manifests", "--freeze-bundle", str(self.output), "--policy", str(self.public / self.frozen["approval"]["allocation_policy_file"]), "--approval", str(self.registry), "--out", str(self.freeze_output), *extra]
+        with patch.object(sys, "argv", arguments), patch.object(self.cli, "ROOT", self.public), redirect_stdout(stdout), redirect_stderr(stderr):
+            status = self.cli.main()
+        return status, stdout.getvalue(), stderr.getvalue()
+
+    def test_freeze_cli_exact_bytes_no_allocator_and_identical_rerun(self):
+        self.prepare_freeze()
+        with patch.object(self.cli, "propose_source_roles", side_effect=AssertionError("allocator must not run")):
+            status, stdout, stderr = self.freeze_command()
+        self.assertEqual(status, 0, stderr)
+        self.assertEqual(json.loads(stdout), self.frozen)
+        self.assertNotIn(str(self.home), stdout + stderr)
+        self.assertEqual(len(list(self.freeze_output.iterdir())), 13)
+        for name, digest in self.frozen["frozen_artifact_sha256"].items():
+            self.assertEqual(hashlib.sha256((self.freeze_output / name).read_bytes()).hexdigest(), digest)
+        self.assertEqual(self.freeze_command()[0], 2)
+        rerun = self.home / "approved" / "rerun"
+        self.assertEqual(self.freeze_command("--out", str(rerun))[0], 0)
+        self.assertEqual({path.name: path.read_bytes() for path in self.freeze_output.iterdir()}, {path.name: path.read_bytes() for path in rerun.iterdir()})
+
+    def test_freeze_cli_changed_artifact_review_and_scope_fail_before_output(self):
+        self.prepare_freeze()
+        artifact = self.output / "msu_mfsd_roles_proposed.csv"
+        original = artifact.read_bytes()
+        artifact.write_bytes(original + b"\n")
+        self.assertEqual(self.freeze_command()[0], 2)
+        self.assertFalse(self.freeze_output.exists())
+        artifact.write_bytes(original)
+        review = self.public / self.frozen["approval"]["review_file"]
+        review.write_bytes(b"changed acceptance")
+        self.assertEqual(self.freeze_command()[0], 2)
+        self.assertFalse(self.freeze_output.exists())
+        review.write_bytes(b"synthetic acceptance")
+        self.registry.write_text(json.dumps({**self.frozen, "scientific_readiness": True}), encoding="utf-8")
+        self.assertEqual(self.freeze_command()[0], 2)
+        self.assertFalse(self.freeze_output.exists())
+
+    def test_freeze_cli_private_boundaries_symlinks_and_missing_approval(self):
+        self.prepare_freeze()
+        for target in (self.public / "private", self.output.parent / "wrong-input-neighbor"):
+            self.assertEqual(self.freeze_command("--out", str(target))[0], 2)
+        role_path = self.output / "msu_mfsd_roles_proposed.csv"
+        saved = self.home / "saved-roles.csv"
+        role_path.rename(saved)
+        role_path.symlink_to(saved)
+        self.assertEqual(self.freeze_command()[0], 2)
+        self.assertFalse(self.freeze_output.exists())
+        self.assertEqual(self.freeze_command("--approval", str(self.home / "absent.json"))[0], 2)
+
+    def test_freeze_cli_partial_write_failure_has_no_completion_marker(self):
+        self.prepare_freeze()
+        with patch.object(self.cli, "write_immutable_record", side_effect=OSError("private write failure")):
+            status, stdout, stderr = self.freeze_command()
+        self.assertEqual(status, 2)
+        self.assertFalse((self.freeze_output / "source_role_freeze.json").exists())
+        self.assertNotIn("private write failure", stdout + stderr)
+
+    def test_future_analysis_lineage_binds_registry_and_allocation_bytes(self):
+        self.prepare_freeze()
+        before = artifact_hashes(self.public)
+        self.assertEqual(before["configs/role_policy_frozen_v2.yaml"], hashlib.sha256(self.registry.read_bytes()).hexdigest())
+        policy = self.public / self.frozen["approval"]["allocation_policy_file"]
+        self.assertEqual(before["configs/role_policy_proposal_v2.yaml"], hashlib.sha256(policy.read_bytes()).hexdigest())
+        self.registry.write_bytes(self.registry.read_bytes() + b"\n")
+        self.assertNotEqual(before["configs/role_policy_frozen_v2.yaml"], artifact_hashes(self.public)["configs/role_policy_frozen_v2.yaml"])

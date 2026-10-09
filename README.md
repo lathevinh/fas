@@ -157,11 +157,13 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [role-policy v2 rework](docs/98-review-response-doc97-role-policy-v2.md),
-    locally verified; owner review pending. [Review 97](docs/97-review-doc96-canonical-manifests-role-policy.md)
-    accepts 1.4A canonical metadata/source pools/seed/weights but requires native-subtype
-    stratification before role approval. Full 1.4 is not complete and proposed roles
-    are not approved/frozen for execution. [Review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md)
+- Current work package: [1.4B permanent source-role freeze](docs/100-review-response-doc99-permanent-source-role-freeze.md),
+    implemented/locally verified; checkpoint confirmation pending.
+    [Review 99](docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without
+    further rework. The [permanent registry](configs/role_policy_frozen_v2.yaml)
+    locks exact accepted assignments before source prediction errors; execution and
+    scientific readiness remain false. Full 1.4 feasibility/content audit is not complete.
+    [Review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md)
     accepts MSU without rework and records all four core adapters as implemented/accepted;
     [response 95](docs/95-review-response-doc94.md) preserves the audit limitations.
     Metadata adapters are accepted. The preceding
@@ -169,19 +171,22 @@ is the strict source-only design consolidated in
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
     Real acquisition/media audits and scientific readiness remain pending.
-    Stop for v2 policy rework review; no core audit, bulk extraction,
+    Stop for freeze checkpoint confirmation; no core audit, bulk extraction,
     inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
-- Manifests/roles: [17 focused / 197 regression tests](results/phase1/manifest-role-proposal-verification-v2.json)
-    pass. [v2 private-bundle aggregate report](results/phase1/manifest-role-proposal-summary-v2.json)
+- Manifests/roles: [24 focused / 204 regression tests](results/phase1/source-role-freeze-verification-v2.json)
+    pass. [Accepted v2 aggregate report](results/phase1/manifest-role-proposal-summary-v2.json)
     records 7510 canonical / 6887 source-proposal videos, group-disjoint roles and
     byte-identical reruns. Canonical bytes and all v1 artifacts are preserved;
     prospective native-subtype strata yield Mask_Paper 7/2/2 instead of 11/0/0.
+    All 6887 source assignments are now permanently frozen without changing their
+    hashes; the 13-file frozen export is byte-identical on rerun.
     Prediction-event feasibility and media-content duplicate
-    audit remain unverified; the explicit role policy is a proposal, not an active config
+    audit remain unverified; original proposal files stay historical, and the separate
+    approved registry does not authorize execution or certify audited readiness
 - Intake: private acquisition/protocol receipts, read-only hash/path checks and
     redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
     passes on synthetic fixtures. No real dataset release has been accepted

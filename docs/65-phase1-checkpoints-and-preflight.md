@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: environment/intake, benchmark amendment, four metadata adapters and 1.4A canonical metadata accepted; Document 97 requires role-policy subtype revision, implemented/verified as v2 in Document 98 awaiting review; full 1.4 and media readiness not complete
+Status: environment/intake, benchmark amendment, four metadata adapters, 1.4A canonical metadata and v2 source-role policy accepted; Document 99 authorizes freeze, implemented/verified in Document 100 as 1.4B; await checkpoint confirmation before audit; full 1.4 feasibility/content and scientific readiness remain pending
 
 ## Approval boundary
 
@@ -31,7 +31,8 @@ in chat.
 | 1.3S SiW-Mv2 prerequisites | Safe header/list inspector and conditional replacement decision | Pinned source hashes, exact mismatch counts, no guessed subjects/splits, redacted immutable report, regression/schema pass, owner review | Document 83, accepted in Document 84; overstrict list/participant blockers corrected in Documents 85-87 |
 | 1.3A Benchmark amendment | Dated new study/config, immutable exact-ID intersection, coverage and grouping policy | Preserve MCIO history; 1680 eligible videos and all-14 coverage pinned; no fake subjects or repeat weights; schema/full regression pass; later gates blocked; owner review | Document 88 and benchmark-amendment-verification.json; accepted in Document 89, clarification in Document 90; separate SiW-Mv2/MSU adapter checkpoints remain |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
-| 1.4A Metadata/proposal slice | Canonical metadata and explicitly unapproved source-role policy | Accepted input/mapping pins, whole groups, SiW train-only, metadata-class feasibility, immutable/identical reruns, no audit promotion | Canonical accepted in 97; subtype-policy v2 rework in 98, 17 focused/197 full tests; review/event/content audits pending, not full 1.4 completion |
+| 1.4A Metadata/proposal slice | Canonical metadata and source-role policy development | Accepted input/mapping pins, whole groups, SiW train-only, metadata-class feasibility, immutable/identical reruns, no audit promotion | Canonical accepted in 97; subtype-policy v2 rework in 98 accepted for freeze in 99; event/content audits pending |
+| 1.4B Permanent role freeze | Owner-approved registry and exact permanent-role bytes | Reviewed v2 policy/role hashes unchanged; freeze before prediction errors; no reallocation; group joins and immutable reruns; no execution/readiness promotion | Document 100; 24 focused/204 full tests; 6887 frozen source assignments; await checkpoint confirmation before 1.5 |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
@@ -155,9 +156,14 @@ construction, source pools, seed and initial weights, but requires native subtyp
 information in prospective strata before policy approval/freeze.
 [Response 98](98-review-response-doc97-role-policy-v2.md) implements inactive v2,
 keeps the seed/pools/weights, regenerates all four proposals and preserves v1.
-Stop for rework review before final role freeze/core audit; full 1.4 still lacks
-policy/event/content audit completion. Real acquisition/media audit acceptance
-remains pending.
+[Review 99](99-review-doc98-role-policy-v2.md) accepts v2 for freeze without further
+rework and clarifies that source prediction-event feasibility is downstream, not
+a role-selection criterion. The owner authorizes the next step;
+[Document 100](100-review-response-doc99-permanent-source-role-freeze.md) freezes
+the exact accepted policy/assignments in a separate registry and private permanent
+CSV bundle without reallocation. Stop for freeze checkpoint confirmation before
+core audit; full 1.4 event/content obligations remain pending. Real acquisition/media
+audit acceptance and execution authorization remain pending.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a

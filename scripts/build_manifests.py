@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from fas.contracts import CORE_DOMAINS
 from fas.freeze import write_immutable_record
-from fas.manifests import canonicalize_inventory, propose_source_roles
+from fas.manifests import canonicalize_inventory, propose_source_roles, build_source_role_freeze_record
 from fas.preregistration import METADATA_COLUMNS, SIWMV2_METADATA_COLUMNS, ROLE_COLUMNS
 
 
@@ -76,21 +76,71 @@ def build(receipt: dict, policy: dict, output: Path) -> dict:
     return summary
 
 
+def freeze_bundle(bundle: Path, policy_path: Path, registry_path: Path, output: Path) -> dict:
+    registry_file = registry_path.resolve()
+    if registry_path.is_symlink() or not registry_file.is_relative_to(ROOT) or not registry_file.is_file():
+        raise ValueError("tracked owner-approved freeze registry required")
+    registry = json.loads(registry_file.read_bytes())
+    approval = registry["approval"]
+    for field, hash_field in (("review_file", "review_sha256"), ("allocation_policy_file", "allocation_policy_file_sha256"),
+                             ("accepted_summary_file", "accepted_summary_sha256")):
+        supplied = ROOT / approval[field]
+        public_path = supplied.resolve()
+        if supplied.is_symlink() or not public_path.is_relative_to(ROOT) or not public_path.is_file() or hashlib.sha256(public_path.read_bytes()).hexdigest() != approval[hash_field]:
+            raise ValueError("changed public approval evidence")
+    if policy_path.is_symlink() or policy_path.resolve() != (ROOT / approval["allocation_policy_file"]).resolve():
+        raise ValueError("use the exact accepted allocation policy")
+    names = {"bundle_summary.json"}
+    for dataset in CORE_DOMAINS:
+        slug = dataset.lower().replace("-", "_")
+        names.update(f"{slug}_{suffix}" for suffix in ("canonical.json", "metadata.csv", "role_proposal.json", "roles_proposed.csv"))
+    if {path.name for path in bundle.iterdir()} != names:
+        raise ValueError("complete accepted proposal bundle required")
+    payloads = {}
+    for name in sorted(names):
+        path = bundle / name
+        if path.is_symlink() or not path.is_file():
+            raise ValueError("regular private proposal artifacts required")
+        payloads[name] = path.read_bytes()
+    hashes = {name: hashlib.sha256(payload).hexdigest() for name, payload in payloads.items()}
+    frozen = build_source_role_freeze_record(approval, policy_path.read_bytes(), payloads["bundle_summary.json"], hashes)
+    if registry != frozen:
+        raise ValueError("freeze registry differs from accepted policy, artifacts or approval scope")
+    output.mkdir(parents=True, exist_ok=False)
+    for name in frozen["frozen_artifact_sha256"]:
+        source_name = name.replace("_roles.csv", "_roles_proposed.csv")
+        with (output / name).open("xb") as handle:
+            handle.write(payloads[source_name])
+    write_immutable_record(output / "source_role_freeze.json", frozen)
+    return frozen
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--inputs", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--inputs", type=Path)
+    source.add_argument("--freeze-bundle", type=Path)
+    parser.add_argument("--approval", type=Path)
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     try:
-        receipt_path, output = args.inputs.resolve(), args.out.resolve()
-        if args.inputs.is_symlink() or receipt_path.is_relative_to(ROOT) or not receipt_path.is_file():
-            raise ValueError("private inventory receipt required")
+        supplied = args.inputs if args.inputs is not None else args.freeze_bundle
+        receipt_path, output = supplied.resolve(), args.out.resolve()
+        if supplied.is_symlink() or receipt_path.is_relative_to(ROOT):
+            raise ValueError("private inventory receipt or proposal bundle required")
         if args.out.exists() or args.out.is_symlink() or output.is_relative_to(ROOT) or output.is_relative_to(receipt_path.parent):
             raise ValueError("new private output separate from receipt required")
-        receipt = json.loads(receipt_path.read_bytes())
-        policy = json.loads(args.policy.read_bytes())
-        summary = build(receipt, policy, output)
+        if args.freeze_bundle is not None:
+            if args.approval is None or not receipt_path.is_dir():
+                raise ValueError("accepted bundle and approval registry required for freeze")
+            summary = freeze_bundle(receipt_path, args.policy, args.approval, output)
+        else:
+            if args.approval is not None or not receipt_path.is_file():
+                raise ValueError("private inventory receipt required for proposal export")
+            receipt = json.loads(receipt_path.read_bytes())
+            policy = json.loads(args.policy.read_bytes())
+            summary = build(receipt, policy, output)
     except (ValueError, OSError, RuntimeError, UnicodeError, KeyError, TypeError):
         print("MANIFEST BUILD FAILED: invalid private inputs, proposal policy or immutable output", file=sys.stderr)
         return 2

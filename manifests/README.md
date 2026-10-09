@@ -78,7 +78,31 @@ canonical metadata but requires subtype-aware role stratification. The
 uses the same split seed and source pools, and adds `reference_attack_type` with
 explicit unknown handling. All four proposals are regenerated, with per-role type
 counts reported; no all-types-per-role guarantee or post-hoc repair is imposed.
-V2 is still inactive/unapproved, pending owner review, not audited readiness.
+At Document 98's checkpoint the proposal was inactive/unapproved.
+
+## Approved Permanent Source Roles
+
+[Review 99](../docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without
+further rework. [Checkpoint 1.4B](../docs/100-review-response-doc99-permanent-source-role-freeze.md)
+promotes the exact accepted assignments through a separate
+[frozen registry](../configs/role_policy_frozen_v2.yaml). Historical proposal bytes
+and their semantic policy hash remain unchanged; changing proposal state and rerunning
+allocation is not the promotion mechanism.
+
+The private frozen bundle contains exact canonical/metadata bytes, permanent
+`*_roles.csv` byte-identical to the accepted proposal CSVs, and a last-written
+`source_role_freeze.json` marker. Freeze mode checks pinned review/policy/summary and
+all accepted artifacts, rejects changed bytes, and does not call the allocator.
+Use `--freeze-bundle`, `--approval`, `--policy` and `--out` with the existing builder.
+Input/output row-level artifacts remain outside Git; future analysis artifact hashes
+include the approved registry and allocation policy.
+
+Roles are frozen before source prediction errors. Later natural-error/gate-event
+applicability cannot be used to retry the seed or select a nicer split. This does
+not verify content duplicates, media integrity, detector adequacy or scientific
+readiness, and does not authorize execution. Permanent files are not yet installed
+as audited evidence here, and dataset/split summary counts remain unchanged.
+Later audit must reconcile against these exact permanent assignments, not rebuild them.
 
 Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.
