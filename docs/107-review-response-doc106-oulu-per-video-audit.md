@@ -45,6 +45,10 @@ Focused OULU tests pass **22/22**; full regression passes **209/209**, with zero
 failures/errors. Coverage includes reproducible full decode, corrupt media,
 timeout, decode-count mismatch and refusal of repository output. The locked
 FFmpeg 4.4.2 uses `-vsync 0` for frame passthrough; no environment change occurred.
+The CI workflow explicitly installs FFmpeg for synthetic media regression; its
+host tools are separate from the pinned `fas` research runtime. The first pushed
+checkpoint's CI failed, and this dependency declaration is a separate follow-up;
+private media evidence and the immutable public report are not rewritten.
 
 ## Actual Result
 
