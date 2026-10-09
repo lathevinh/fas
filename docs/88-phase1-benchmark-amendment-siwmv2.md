@@ -3,7 +3,7 @@
 Date: 2026-10-08
 Checkpoint: 1.3A, benchmark/config amendment only
 Base commit: `85c3c38a1ba991ff17d562f8db11a264e124c64b`
-Status: implemented for owner checkpoint review; not data readiness or evaluation authorization
+Status: checkpoint 1.3A accepted in Document 89; not data readiness or evaluation authorization
 
 ## 1. Authority and exact scope
 
@@ -12,6 +12,8 @@ This is the dated amendment authorized by the owner's replacement direction in
 [Document 85](85-review-response-doc84-siwmv2-amendment.md), accepted with an eligible-coverage
 requirement in [Document 86](86-review-doc85-siwmv2-amendment-response.md), and verified in
 [Document 87](87-review-response-doc86-eligible-attack-coverage.md).
+The amendment is accepted in [Document 89](89-review-doc88-benchmark-amendment.md);
+its required dataset-holdout versus evaluation-population clarification is incorporated below.
 
 For the specific benchmark population and grouping changes below, this amendment
 supersedes the historical MCIO wording in Documents 04, 05, 38, 40 and 42.
@@ -35,6 +37,18 @@ The primary domain set is OULU-NPU / CASIA-FASD / MSU-MFSD / SiW-Mv2:
 | CASIA-FASD | OULU-NPU, MSU-MFSD, SiW-Mv2 |
 | MSU-MFSD | OULU-NPU, CASIA-FASD, SiW-Mv2 |
 | SiW-Mv2 | OULU-NPU, CASIA-FASD, MSU-MFSD |
+
+The design is **cross-dataset held-out evaluation using dataset-specific frozen
+source and evaluation populations**. Holding out a dataset excludes every sample
+from that dataset from fitting and selection for the fold; it does not make the
+entire physical release the evaluation population.
+
+SiW-Mv2 is held out as a dataset in the OCM->S fold, and evaluation is performed on
+its frozen Protocol-I test-intersection population (623 videos). No SiW-Mv2 sample
+enters fitting, calibration, gate selection, or method selection for that fold.
+The 1057 train-intersection videos are not target transactions in this fold; they
+are source-eligible only in the other three outer folds. The combined 1680-video
+benchmark inventory is not the SiW-Mv2 target population.
 
 The previous `strict_single_image_mcio_oof_risk_v1` config is preserved byte-for-byte
 in [experiment_core_mcio_v1.yaml](../configs/experiment_core_mcio_v1.yaml), SHA-256
@@ -133,7 +147,10 @@ subject field or use one shared `unknown` subject group.
 The same declared grouping unit applies to permanent source roles, head inner
 validation, matched sample-OOF, fold-local calibration, all derived frame/crop ancestry
 and target bootstrap. No frame/crop from one video may cross those boundaries.
-Domain-OOF still holds out whole source domains, not videos in place of domains.
+Domain-OOF still excludes a whole source dataset from pseudo-fold fitting and
+calibration, not videos in place of datasets. Its pseudo-target predictions cover
+the prescribed OOF candidate pool inside that dataset's frozen source-eligible
+population, not every video in its physical release or its outer-test partition.
 
 Permanent roles remain independent of outer target and training seed. Only the 1057
 train-intersection videos may receive SiW-Mv2 source roles. Test videos must not be
@@ -229,9 +246,11 @@ is not moved or modified by this checkpoint.
 
 ## 8. Stop boundary
 
-This checkpoint is ready for owner review after its push. Fresh CI on the pushed
-implementation commit must be checked during acceptance; no CI success is inferred
-from earlier commits. After explicit acceptance, the next checkpoint is the SiW-Mv2
-metadata adapter consuming these frozen pins and grouping rules. MSU remains a
-separate later adapter checkpoint. All acquisition/media and model-execution gates
-remain pending.
+Checkpoint 1.3A is accepted by Document 89, which confirms successful CI on the
+exact implementation commit `6ad2d37eabd1388f29844cc51c791e4885ad420b`. The required
+population wording clarification is incorporated here and in the controlling
+implementation plan and paper skeleton; no benchmark redesign or config change is
+required. The next permitted checkpoint is the SiW-Mv2 metadata adapter consuming
+these frozen pins and grouping rules. MSU remains a separate later adapter checkpoint.
+This prose update does not implement either adapter. All acquisition/media and
+model-execution gates remain pending.

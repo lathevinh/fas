@@ -47,7 +47,7 @@ Planned contributions, stated as methods and evaluations rather than results:
    systems.
 3. A strict fold-local target-exclusion evaluation connecting failure ranking to source-selected
    PAD security, usability, class coverage, and K=1 transaction outcomes over four
-   MCIO folds.
+   amended dataset-held-out folds with frozen dataset-specific evaluation populations.
 
 ## 2. Related Work
 
@@ -132,8 +132,18 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
 
 ## 4. Experimental Protocol
 
-- Four pre-specified MCIO outer-domain-held-out folds: three source domains and one
-   excluded target per fold. They are not described as independent external domains.
+- Four pre-specified cross-dataset held-out folds over OULU-NPU, CASIA-FASD,
+   MSU-MFSD and SiW-Mv2: three source datasets and one excluded dataset per fold,
+   using dataset-specific frozen source and evaluation populations. They are not
+   described as independent external domains or evaluations of every video in a release.
+- In OCM->S, SiW-Mv2 is held out as a dataset and evaluation uses its frozen
+   Protocol-I test-intersection population (623 videos). No SiW-Mv2 sample enters
+   fitting, calibration, gate selection, or method selection for that fold. Its 1057
+   train-intersection videos are not target transactions; they are source-eligible
+   only when SiW-Mv2 is a source in another fold. The combined 1680-video inventory
+   is not the target population. RQ1's detector-success and RQ2's common
+   detector-success populations are subsets of the 623 attempted transactions;
+   genuine detector failures remain in end-to-end denominators.
 - No labeled pilot and no target-dependent model, prompt, threshold, feature, or
   analysis selection.
 - Three fixed seeds, per-target reporting, and paired subject/video cluster bootstrap.
@@ -150,8 +160,9 @@ risk-ranking result, and their success cannot rescue a failed primary estimand.
 ### Literature context outside the main tables
 
 Track A is a compact preliminary subsection or supplementary table only. It establishes
-that the classifier is not obviously incompetent relative to historical MCIO work and
-hosts no RQ, novelty claim, controlled superiority claim, or main-table panel. Preserve
+historical MCIO literature context only, not evidence that the amended classifier
+reproduces MCIO competence. It hosts no RQ, novelty claim, controlled superiority
+claim, or main-table panel. Preserve
 its frozen source-only thresholds, detector-conditional population, SSDG/FLIP caveats,
 and two-engineer-day stop rule from Document 42.
 

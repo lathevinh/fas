@@ -19,7 +19,8 @@ CASIA-FASD, has an accepted owner-authorized, pinned Bob-reference metadata adap
 This is not CASIA-owner schema certification; no real acquisition/media audit is
 accepted. SiW-Mv2 prerequisites are accepted, and the
 [dated benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) replaces
-Replay-Attack in the active study specification, pending checkpoint review. The
+Replay-Attack in the active study specification, accepted in
+[review 89](docs/89-review-doc88-benchmark-amendment.md). The
 new core is OULU-NPU/CASIA-FASD/MSU-MFSD/SiW-Mv2 with a frozen 1680-video Protocol-I
 intersection and explicit video grouping for SiW-Mv2. MCIO remains historical context.
 Training and target evaluation remain locked.
@@ -130,7 +131,9 @@ single-branch confidence and a matched same-family ensemble?
 84. [Eligible-coverage requirement review](docs/86-review-doc85-siwmv2-amendment-response.md)
 85. [Verified eligible attack coverage](docs/87-review-response-doc86-eligible-attack-coverage.md)
 86. [Dated benchmark/config amendment and acceptance criteria](docs/88-phase1-benchmark-amendment-siwmv2.md)
-87. [Reading list](references/reading-list.md)
+87. [Benchmark amendment acceptance review](docs/89-review-doc88-benchmark-amendment.md)
+88. [Dataset holdout and evaluation-population clarification](docs/90-review-response-doc89-population-clarification.md)
+89. [Reading list](references/reading-list.md)
 
 ## Readiness validation
 
@@ -155,10 +158,12 @@ is the strict source-only design consolidated in
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
 - Current work package: [Checkpoint 1.3A benchmark/config amendment](docs/88-phase1-benchmark-amendment-siwmv2.md),
-    implemented for owner review. Exact private eligible IDs, public coverage/hashes,
+    accepted by [review 89](docs/89-review-doc88-benchmark-amendment.md), with
+    [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
+    Exact private eligible IDs, public coverage/hashes,
     versioned type/family mapping and video-group policy are frozen. OULU and CASIA
     metadata accepted; SiW-Mv2/MSU adapters and real media audits remain pending
-- Last reviewed: 2026-10-08
+- Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings

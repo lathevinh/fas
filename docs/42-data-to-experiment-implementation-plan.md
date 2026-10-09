@@ -11,6 +11,9 @@ read core MCIO domain/fold references as the amended four-domain set and SiW-Mv2
 subject-disjoint requirements as video-group-disjoint, not verified participant
 separation. All unchanged method/claim rules still apply. Checkpoint acceptance and
 acquisition/media readiness are separate; training and target evaluation remain locked.
+Acceptance update 2026-10-09: [Document 89](89-review-doc88-benchmark-amendment.md)
+accepts checkpoint 1.3A. The required distinction between dataset holdout and frozen
+evaluation population is incorporated in Sections 1 and 6.1 below.
 
 ## 1. Purpose and authority
 
@@ -24,20 +27,29 @@ this document, this document controls. Earlier review responses preserve rationa
 do not override the final rules consolidated here.
 
 This plan does not authorize target-driven debugging. Implementation proceeds through
-synthetic tests, source-only audits, and source-only dry runs. MCIO is a pre-specified
-leave-one-domain-out evaluation: researchers may know a dataset's labels when it is a
+synthetic tests, source-only audits, and source-only dry runs. The active study uses
+cross-dataset held-out evaluation with dataset-specific frozen source and evaluation
+populations, replacing historical MCIO. Researchers may know a dataset's labels when it is a
 source in other folds, but for outer target $T$, no $T$ sample, label, statistic, or
 result may influence any fitted artifact or global method choice for that fold.
 
-The core track is four-fold MCIO using OULU-NPU, CASIA-FASD, Replay-Attack, and
-MSU-MFSD. SiW-M, CelebA-Spoof, LoRA, routing, and cue analysis are optional work after
+The core track has four dataset-held-out folds over OULU-NPU, CASIA-FASD, MSU-MFSD
+and SiW-Mv2, with three source datasets per fold. Historical MCIO is literature
+context only. SiW-M, CelebA-Spoof, LoRA, routing, and cue analysis are optional work after
 the core RQ1 analysis.
+
+In OCM->S, SiW-Mv2 is held out as a dataset and evaluation uses its frozen Protocol-I
+test-intersection population (623 videos). No SiW-Mv2 sample enters fitting,
+calibration, gate selection, or method selection for that fold. Its 1057
+train-intersection videos are not target transactions; they are source-eligible only
+in other outer folds. The combined 1680-video benchmark inventory is not the target
+population, and dataset exclusion must not be described as evaluating an entire release.
 
 ### 1.1 Final freeze boundary
 
 The specification is frozen before Phase 0 implementation. The following may not
 change after target inspection: two-RQ scope, model identities and preprocessing,
-four MCIO outer folds, three seeds, feature variants, OOF comparators, competence
+four amended outer dataset folds, three seeds, feature variants, OOF comparators, competence
 dependencies, event applicability, estimands, aggregation order, bootstrap unit,
 effect thresholds, harm tolerances, source gate-selection algorithms, K=1 semantics,
 and four main-table roles.
@@ -253,6 +265,14 @@ Every dataset adapter exposes official roles without rewriting them. A versioned
 dataset policy then declares which official partitions are eligible when the dataset
 acts as a source and which official evaluation partition is used when it acts as the
 outer target.
+
+For SiW-Mv2 under the accepted amendment, source eligibility is the frozen
+1057-video Protocol-I train intersection, while evaluation in OCM->S uses only the
+623-video test intersection. Dataset-level exclusion removes all SiW-Mv2 samples
+from fitting and selection in that fold, not just the evaluated test videos.
+It does not add the unused train videos to target transactions. Domain-OOF similarly
+excludes the complete pseudo-target dataset from fitting while scoring only the
+prescribed candidate pool inside its source-eligible population.
 
 The project keeps two visible evaluation tracks because literature comparability and
 the strict single-image selective estimand require different data views.
