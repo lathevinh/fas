@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: 1.4B accepted; Document 103 records owner's research-use attestation and removal of administrative receipt prerequisites; OULU technical archive/header inspection proceeds with frozen inputs; full media/content audit and scientific readiness remain pending
+Status: 1.4B accepted; OULU header/protocol preflight accepted in Document 104; Document 105 completes three-TAR byte pinning under owner authorization; per-video media/content audit and scientific readiness remain pending
 
 ## Approval boundary
 
@@ -42,6 +42,7 @@ Technical integrity/decode/leakage gates and immutable roles remain mandatory.
 | 1.4B Permanent role freeze | Owner-approved registry and exact permanent-role bytes | Reviewed v2 policy/role hashes unchanged; freeze before prediction errors; no reallocation; group joins and immutable reruns; no execution/readiness promotion | Document 100 accepted without rework in 101; 24 focused/204 full tests; 6887 frozen source assignments; exact b551 CI success |
 | 1.5A Audit prerequisite inspection | Accepted freeze plus bounded acquisition-input inspection | Reverify exact registry/frozen hashes; missing steward receipts/permissions stay blocked; no placeholder approval or media access | Document 102; 10 staged JSON checked, zero core receipt-schema matches; 13 frozen hashes unchanged; acquisition/root inputs needed, not full audit |
 | 1.5B Owner-authorized technical inspection | Frozen canonical/header/protocol reconciliation, OULU first | Owner-attested research permission; no administrative receipt requirement; exact identities/labels/partitions/roles preserved; no decoded-media readiness inference | Document 103; 4950 videos/42 protocol files and 17 focused tests pass; 105GB media TAR hash attempt stopped, hashes/decode/duplicates pending; stop before another dataset |
+| 1.5C OULU archive byte pinning | Complete SHA-256 of three supplied OULU media TARs | All 105116817408 bytes read; sizes and file metadata stable; immutable private records/public aggregate; all frozen/study hashes unchanged; later gates blocked | Document 105; three complete digests, 17 focused tests pass; no individual video payload opened; stop before per-video decode/content audit |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic

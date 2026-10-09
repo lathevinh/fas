@@ -162,8 +162,12 @@ is the strict source-only design consolidated in
     administrative-receipt prerequisites. OULU technical archive/header/protocol
     [reconciliation passes](results/phase1/oulu-technical-archive-preflight-v1.json):
     4950 videos / 42 protocol files, 17 focused tests, frozen hashes unchanged.
-    Full media TAR hashes, decode and duplicate-content audit remain pending;
-    no archive migration or new role generation.
+    [Review 104](docs/104-review-doc103-oulu-technical-preflight.md) accepts that
+    bounded preflight without rework. [Whole-archive byte pinning](docs/105-review-response-doc104-oulu-archive-hashes.md)
+    now completes SHA-256 of all three OULU media TARs (105116817408 bytes),
+    with immutable records and frozen hashes unchanged. Per-video hashes, decode
+    and duplicate-content audit remain pending; no archive migration or new role
+    generation. Stop for checkpoint review before decoded-media work.
     [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts
     1.4B permanent-role freeze without rework; frozen inputs must not be regenerated.
     [Review 99](docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without
