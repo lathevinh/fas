@@ -165,9 +165,12 @@ is the strict source-only design consolidated in
     [Review 104](docs/104-review-doc103-oulu-technical-preflight.md) accepts that
     bounded preflight without rework. [Whole-archive byte pinning](docs/105-review-response-doc104-oulu-archive-hashes.md)
     now completes SHA-256 of all three OULU media TARs (105116817408 bytes),
-    with immutable records and frozen hashes unchanged. Per-video hashes, decode
-    and duplicate-content audit remain pending; no archive migration or new role
-    generation. Stop for checkpoint review before decoded-media work.
+    with immutable records and frozen hashes unchanged. [Per-video audit](docs/107-review-response-doc106-oulu-per-video-audit.md)
+    now pins all 4950 payloads: 4949 strict full-decode passes, 1 MJPEG failure,
+    13 exact duplicate pairs and no exact cross-role/partition duplicates.
+    Near-duplicate/cross-dataset lineage and transaction/applicability handling
+    remain pending; no archive migration, role regeneration or model execution.
+    Stop for checkpoint review before further media/model work.
     [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts
     1.4B permanent-role freeze without rework; frozen inputs must not be regenerated.
     [Review 99](docs/99-review-doc98-role-policy-v2.md) accepts v2 for freeze without

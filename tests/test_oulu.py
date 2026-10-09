@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import io
 import json
 import subprocess
@@ -15,6 +16,70 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from fas.oulu import LABEL_MAPPING, LABEL_MAPPING_HASH, encode_label, inventory_archives, parse_protocol, parse_video_id
+from fas.media import probe_video
+
+
+class OuluMediaTest(unittest.TestCase):
+    def test_decode_count_mismatch_fails_closed(self) -> None:
+        probe = {"streams": [{"codec_name": "rawvideo", "avg_frame_rate": "4/1"}],
+                 "format": {"format_name": "avi", "duration": "1"},
+                 "frames": [{"best_effort_timestamp_time": "0", "width": 32, "height": 24, "key_frame": 1}]}
+        responses = [subprocess.CompletedProcess([], 0, json.dumps(probe), ""),
+                     subprocess.CompletedProcess([], 0, "# empty decoded output\n", "")]
+        with patch("fas.media.subprocess.run", side_effect=responses):
+            result = probe_video(Path("never-opened.avi"))
+        self.assertEqual(result["decode_status"], "failed")
+        self.assertEqual(result["middle_decoded_candidates"], [])
+
+    def test_runner_refuses_new_output_inside_repository(self) -> None:
+        spec = importlib.util.spec_from_file_location("audit_oulu_media", ROOT / "scripts/audit_oulu_media.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            inputs = Path(directory) / "input"
+            frozen = Path(directory) / "frozen"
+            inputs.mkdir()
+            frozen.mkdir()
+            output = ROOT / "results" / "refused-private-media-test-output"
+            args = module.argparse.Namespace(input_root=inputs, frozen_root=frozen, out_root=output, workers=1)
+            with self.assertRaisesRegex(ValueError, "unsafe output"):
+                module.audit(args)
+            self.assertFalse(output.exists())
+
+    def test_probe_rejects_corrupt_video_without_leaking_path(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "private-corrupt.avi"
+            path.write_bytes(b"not a video")
+            result = probe_video(path)
+        self.assertEqual(result["decode_status"], "failed")
+        self.assertIsNone(result["decoded_rgb_sequence_sha256"])
+        self.assertEqual(result["middle_decoded_candidates"], [])
+        self.assertNotIn("private-corrupt", json.dumps(result))
+
+    def test_full_decode_count_middle_and_reproducible_rgb_hash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "synthetic.avi"
+            subprocess.run([
+                "ffmpeg", "-nostdin", "-v", "error", "-f", "lavfi", "-i",
+                "testsrc=size=32x24:rate=4", "-frames:v", "8", "-c:v",
+                "rawvideo", "-pix_fmt", "bgr24", "-threads", "1", str(path),
+            ], check=True, capture_output=True)
+            result = probe_video(path)
+            self.assertEqual(result, probe_video(path))
+        self.assertEqual(result["decode_status"], "decoded")
+        self.assertEqual(result["frame_count"], 8)
+        self.assertEqual(result["fps"], "4")
+        self.assertEqual(result["duration_ms"], 2000)
+        self.assertEqual(result["middle_decoded_candidates"], [3, 4])
+        self.assertEqual(len(result["frame_index"]), 8)
+        self.assertEqual(result["frame_index"][4]["timestamp_seconds"], "1")
+
+    def test_timeout_is_terminal_not_a_frame_replacement(self) -> None:
+        with patch("fas.media.subprocess.run", side_effect=subprocess.TimeoutExpired("ffprobe", 1)):
+            result = probe_video(Path("never-opened.avi"), timeout_seconds=1)
+        self.assertEqual(result["failure_reason"], "timeout")
+        self.assertEqual(result["decode_status"], "failed")
+        self.assertEqual(result["middle_decoded_candidates"], [])
 
 
 class OuluTest(unittest.TestCase):
