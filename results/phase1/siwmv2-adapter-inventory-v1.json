@@ -1,0 +1,148 @@
+{
+  "acquisition_verified": false,
+  "archive_sha256_verified": false,
+  "dataset": "SiW-Mv2",
+  "eligible_videos": 1680,
+  "header_inventory_sha256": "2e08944154d49e531d727bd3320e798690e8b8ba144780153bbab857b5fb4582",
+  "inventory_sha256": "6d105949c6f626dae750ce1a0f22b0a5bf8a85de8b77a9eec4929b7137761d60",
+  "label_mapping": {
+    "attack_family_mapping": {
+      "Makeup_Co": "makeup",
+      "Makeup_Im": "makeup",
+      "Makeup_Ob": "makeup",
+      "Mask_Half": "mask",
+      "Mask_Mann": "mask",
+      "Mask_Paper": "mask",
+      "Mask_Silicone": "mask",
+      "Mask_Trans": "mask",
+      "Paper": "print",
+      "Partial_Eye": "partial",
+      "Partial_Funnyeye": "partial",
+      "Partial_Mouth": "partial",
+      "Partial_Paperglass": "partial",
+      "Replay": "replay"
+    },
+    "attack_mapping_version": "siwmv2_attack_family_v1",
+    "authority": "pinned reference lists plus accepted project intersection policy",
+    "group_unit": "video",
+    "id": "siwmv2-protocol-i-intersection",
+    "list_repeats": "unique_tokens_no_transaction_or_weight",
+    "membership_sha256": "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+    "model_boundary": {
+      "attack": 1,
+      "bona_fide": 0
+    },
+    "population_id": "siwmv2_protocol_i_intersection_v1",
+    "provider_family_ontology_claimed": false,
+    "reference_commit": "8667dbcd316b38141729c057adf7517fe0602608",
+    "reference_url": "https://github.com/CHELSEA234/Multi-domain-learning-FAS",
+    "source_partition": "train",
+    "source_sha256": {
+      "README.md": "3168b03e638fe52052de70bbeb221352f6e2418124a2e1bf0af59820b857b5d2",
+      "dataset.py": "0003fcb00cb08da5ea61cec729fcaedc108cc6ffb72ff977f8c8c3a1d3b97f66",
+      "pro_3_text/testlist_all.txt": "87fc74696498173b2a53d3af656650d3fead3f43fc499b09afd4a7d7a956c0c4",
+      "pro_3_text/testlist_live.txt": "6b14040b2be41896e7fad242ec743aab10d5bc073ebcbaa3e1575523eb0d3f23",
+      "pro_3_text/trainlist_all.txt": "ee10b1d1bd092b8383b6e726503499ca44f219b9bd4c92c3b3b2943aef0cf54b",
+      "pro_3_text/trainlist_live.txt": "ab808d5e38c0ccc5b5f547d5d2fc68c8ed6b0ab3d758c71e0e114c8c44998d76"
+    },
+    "target_partition": "test",
+    "version": 1
+  },
+  "label_mapping_hash": "09329456b68587ca2e8bec0ba97247625d024d9ac53a1fb3b80a11a3af0b827f",
+  "media_decode_verified": false,
+  "media_integrity_verified": false,
+  "metadata_authority": "pinned-reference-protocol-i-intersection",
+  "missing_references": 11,
+  "no_media_payload_read": true,
+  "no_model_inference_or_training": true,
+  "out_of_protocol_videos": 20,
+  "participant_identity_verified": false,
+  "partitions": {
+    "test": {
+      "attack": 362,
+      "bona_fide": 261
+    },
+    "train": {
+      "attack": 533,
+      "bona_fide": 524
+    }
+  },
+  "population_id": "siwmv2_protocol_i_intersection_v1",
+  "population_sha256_verified": "47ca2bb8896d5937ff7ea735242dd410f83f8a65e6b5655a6709ef2b4e1fb3ae",
+  "reader_provenance": {
+    "library": "zipfile",
+    "python_version": "3.12.14",
+    "scope": "central_directory_headers_only"
+  },
+  "reference_attack_type_coverage": {
+    "Makeup_Co": {
+      "test": 24,
+      "train": 28
+    },
+    "Makeup_Im": {
+      "test": 22,
+      "train": 39
+    },
+    "Makeup_Ob": {
+      "test": 10,
+      "train": 12
+    },
+    "Mask_Half": {
+      "test": 20,
+      "train": 52
+    },
+    "Mask_Mann": {
+      "test": 14,
+      "train": 26
+    },
+    "Mask_Paper": {
+      "test": 6,
+      "train": 11
+    },
+    "Mask_Silicone": {
+      "test": 8,
+      "train": 9
+    },
+    "Mask_Trans": {
+      "test": 35,
+      "train": 24
+    },
+    "Paper": {
+      "test": 56,
+      "train": 79
+    },
+    "Partial_Eye": {
+      "test": 23,
+      "train": 34
+    },
+    "Partial_Funnyeye": {
+      "test": 64,
+      "train": 96
+    },
+    "Partial_Mouth": {
+      "test": 12,
+      "train": 17
+    },
+    "Partial_Paperglass": {
+      "test": 29,
+      "train": 47
+    },
+    "Replay": {
+      "test": 39,
+      "train": 59
+    }
+  },
+  "reference_sha256_verified": {
+    "README.md": "3168b03e638fe52052de70bbeb221352f6e2418124a2e1bf0af59820b857b5d2",
+    "dataset.py": "0003fcb00cb08da5ea61cec729fcaedc108cc6ffb72ff977f8c8c3a1d3b97f66",
+    "pro_3_text/testlist_all.txt": "87fc74696498173b2a53d3af656650d3fead3f43fc499b09afd4a7d7a956c0c4",
+    "pro_3_text/testlist_live.txt": "6b14040b2be41896e7fad242ec743aab10d5bc073ebcbaa3e1575523eb0d3f23",
+    "pro_3_text/trainlist_all.txt": "ee10b1d1bd092b8383b6e726503499ca44f219b9bd4c92c3b3b2943aef0cf54b",
+    "pro_3_text/trainlist_live.txt": "ab808d5e38c0ccc5b5f547d5d2fc68c8ed6b0ab3d758c71e0e114c8c44998d76"
+  },
+  "roles_assigned": false,
+  "scientific_readiness": false,
+  "scope": "reference-derived metadata only; not acquisition, media audit, roles or scientific readiness",
+  "status": "reference_metadata_reconciled",
+  "version": 1
+}

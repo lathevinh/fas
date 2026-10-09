@@ -133,11 +133,12 @@ than requiring a participant map. [Document 88](88-phase1-benchmark-amendment-si
 implements checkpoint 1.3A's benchmark/config amendment, accepted in
 [Document 89](89-review-doc88-benchmark-amendment.md). Its required evaluation-population
 wording is resolved in [Document 90](90-review-response-doc89-population-clarification.md).
-Real
-acquisition/media audit acceptance remains pending; no SiW-Mv2 or MSU adapter has
-started. The next permitted implementation checkpoint is the SiW-Mv2 metadata
-adapter; publish its evidence and stop for review before moving to the separate MSU
-adapter checkpoint. Amendment acceptance does not certify either adapter or media.
+[Document 91](91-phase1-siwmv2-metadata-adapter.md) implements the authorized
+SiW-Mv2 metadata adapter with actual private header reconciliation, redacted evidence,
+27 focused tests and 162 full regression tests. Owner adapter acceptance remains
+pending. Real acquisition/media audit acceptance remains pending; no MSU adapter has
+started. Stop for review before moving to the separate MSU adapter checkpoint.
+Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
 large in-tree environment.

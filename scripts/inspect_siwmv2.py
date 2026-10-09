@@ -18,27 +18,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from fas.freeze import write_immutable_record
 from fas.contracts import SIWMV2_ATTACK_FAMILIES
-
-REFERENCE_COMMIT = "8667dbcd316b38141729c057adf7517fe0602608"
-REFERENCE_URL = "https://github.com/CHELSEA234/Multi-domain-learning-FAS"
-SOURCE_SHA256 = {
-    "README.md": "3168b03e638fe52052de70bbeb221352f6e2418124a2e1bf0af59820b857b5d2",
-    "dataset.py": "0003fcb00cb08da5ea61cec729fcaedc108cc6ffb72ff977f8c8c3a1d3b97f66",
-    "pro_3_text/trainlist_live.txt": "ab808d5e38c0ccc5b5f547d5d2fc68c8ed6b0ab3d758c71e0e114c8c44998d76",
-    "pro_3_text/testlist_live.txt": "6b14040b2be41896e7fad242ec743aab10d5bc073ebcbaa3e1575523eb0d3f23",
-    "pro_3_text/trainlist_all.txt": "ee10b1d1bd092b8383b6e726503499ca44f219b9bd4c92c3b3b2943aef0cf54b",
-    "pro_3_text/testlist_all.txt": "87fc74696498173b2a53d3af656650d3fead3f43fc499b09afd4a7d7a956c0c4",
-}
-PREFIX_BY_FOLDER = {
-    "Live": "Live", "Spoof/Makeup_Cosmetic": "Makeup_Co",
-    "Spoof/Makeup_Impersonation": "Makeup_Im", "Spoof/Makeup_Obfuscation": "Makeup_Ob",
-    "Spoof/Mannequin": "Mask_Mann", "Spoof/Silicone": "Mask_Silicone",
-    "Spoof/Paper": "Paper", "Spoof/Replay": "Replay",
-    "Spoof/Partial_FunnyeyeGlasses": "Partial_Funnyeye",
-    "Spoof/Partial_PaperGlasses": "Partial_Paperglass", "Spoof/Partial_Eye": "Partial_Eye",
-    "Spoof/Partial_Mouth": "Partial_Mouth", "Spoof/Mask_HalfMask": "Mask_Half",
-    "Spoof/Mask_PaperMask": "Mask_Paper", "Spoof/Mask_TransparentMask": "Mask_Trans",
-}
+from fas.siwmv2 import PREFIX_BY_FOLDER, REFERENCE_COMMIT, REFERENCE_URL, SOURCE_SHA256
 
 
 def load_sources(root: Path) -> dict[str, bytes]:

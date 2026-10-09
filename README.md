@@ -157,12 +157,13 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [Checkpoint 1.3A benchmark/config amendment](docs/88-phase1-benchmark-amendment-siwmv2.md),
-    accepted by [review 89](docs/89-review-doc88-benchmark-amendment.md), with
+- Current work package: [SiW-Mv2 metadata adapter](docs/91-phase1-siwmv2-metadata-adapter.md),
+    implemented and locally verified; owner review pending. The preceding
+    [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
+    [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
-    Exact private eligible IDs, public coverage/hashes,
-    versioned type/family mapping and video-group policy are frozen. OULU and CASIA
-    metadata accepted; SiW-Mv2/MSU adapters and real media audits remain pending
+    OULU and CASIA metadata accepted; MSU adapter and real media audits remain pending.
+    Stop before MSU implementation, extraction, inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
@@ -190,11 +191,14 @@ is the strict source-only design consolidated in
     The provider page's GET DATA link retrieved on 2026-10-06 points to VoicePA,
     not face Replay-Attack. Correct schema/local input is needed before implementation;
     no Replay parser or MSU work has started
-- SiW-Mv2 candidate: supplied ZIP has 785 live and 915 spoof video headers.
-    Pinned Protocol I lists name 11 absent live tokens and omit 20 observed spoof
-    tokens. No source-subject identity map is established. The
-    [redacted inspection](results/phase1/siwmv2-prerequisites.json) is blocked;
-    no archive payload/inference, core-domain change or scientific readiness is implied
+- SiW-Mv2: accepted Protocol-I intersection and actual archive headers reconcile;
+    [27 focused / 162 regression tests](results/phase1/siwmv2-adapter-verification.json)
+    pass. [Metadata inventory](results/phase1/siwmv2-adapter-inventory-v1.json)
+    contains 1680 eligible videos (1057 source-train; 623 target-test), with 20
+    observed exclusions and 11 absent references kept separate. Subject IDs remain
+    null and groups are videos; acquisition, media hashes/decode and scientific
+    readiness remain unverified. The earlier blocked prerequisite report is historical;
+    adapter owner acceptance is pending
 - AxonData alternative: [public metadata assessment](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
     found 51 public videos, not the advertised full commercial corpus, with no
     annotation/identity/protocol manifest. Not adopted as a Replay replacement;
