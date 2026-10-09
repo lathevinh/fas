@@ -325,7 +325,7 @@ class PreregistrationTest(unittest.TestCase):
     def _copy(self) -> Iterator[Path]:
         with tempfile.TemporaryDirectory() as temporary:
             destination = Path(temporary) / "repo"
-            shutil.copytree(ROOT, destination, ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu", "casia-fasd", "SiW"))
+            shutil.copytree(ROOT, destination, ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu", "casia-fasd", "SiW", "MSU"))
             self.assertFalse((destination / "oulu-npu").exists())
             self.assertFalse((destination / "casia-fasd").exists())
             self.assertFalse((destination / "SiW").exists())

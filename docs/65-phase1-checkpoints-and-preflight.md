@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: checkpoints 1.1/1.2 and OULU/CASIA metadata accepted; benchmark amendment 1.3A accepted in Document 89, not data readiness; SiW-Mv2 metadata implemented in Document 91; owner-authorized MSU prerequisites blocked in Document 92
+Status: checkpoints 1.1/1.2 and OULU/CASIA metadata accepted; benchmark amendment 1.3A accepted in Document 89, not data readiness; SiW-Mv2/MSU metadata implemented in Documents 91/93; MSU adapter owner acceptance pending
 
 ## Approval boundary
 
@@ -138,9 +138,12 @@ SiW-Mv2 metadata adapter with actual private header reconciliation, redacted evi
 27 focused tests and 162 full regression tests. No formal adapter review document
 has been received. The owner authorized the next step on 2026-10-09;
 [Document 92](92-phase1-msu-mfsd-prerequisites.md) records the separate MSU prerequisite
-inspection, blocked on local release and controlling metadata. No MSU adapter has
-started. Stop for the missing input before implementation. Real acquisition/media
-audit acceptance remains pending.
+inspection, initially blocked on local release and controlling metadata. The owner
+then supplied eight ZIPs and authorized continuation;
+[Document 93](93-phase1-msu-mfsd-metadata-adapter.md) implements native metadata
+reconciliation with 18 focused / 180 full tests and private/redacted inventory.
+Stop for MSU adapter review before manifests, roles or bulk extraction. Real
+acquisition/media audit acceptance remains pending.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a

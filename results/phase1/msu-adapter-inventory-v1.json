@@ -1,0 +1,89 @@
+{
+  "acquisition_verified": false,
+  "archive_integrity_verified": false,
+  "attack_type_counts": {
+    "ipad_video": 70,
+    "iphone_video": 70,
+    "none": 70,
+    "printed_photo": 70
+  },
+  "dataset": "MSU-MFSD",
+  "eligible_videos": 280,
+  "face_annotations_used": false,
+  "full_native_universe_checked": true,
+  "header_inventory_sha256": "5c6ae90fc3b4cee4b6d6203ae10cee0fae0c2ef73dd21a2bf58afb9a7a6f6d92",
+  "inventory_sha256": "9852d0b712584f3986d0de8fc5811f02ebff12fcbcd7f3921700201647f3e465",
+  "label_mapping": {
+    "attack_families": {
+      "ipad_video": "replay",
+      "iphone_video": "replay",
+      "printed_photo": "print"
+    },
+    "authority": "supplied release README and official subject lists; acquisition unverified",
+    "binary_classes": {
+      "attack": "attack",
+      "real": "bona_fide"
+    },
+    "group_unit": "subject",
+    "id": "msu-mfsd-native-readme",
+    "metadata_sha256": {
+      "README.txt": "6e0f2f1ce5d8601fee4f3096e6b300929d0ec259dd947fcf1e08f75080c14497",
+      "test_sub_list.txt": "87ee61282553af3ed61a4fba9afea5eb7cb7883368bb6fadfe608528d01885bd",
+      "train_sub_list.txt": "08d55993685dd1bf0a7161a10ce18cf991559358c2c062466fba1f52363436f2"
+    },
+    "model_boundary": {
+      "attack": 1,
+      "bona_fide": 0
+    },
+    "partitions": [
+      "train",
+      "test"
+    ],
+    "subject_namespace": "native client ID, three-digit canonical form, no split offset",
+    "version": 1
+  },
+  "label_mapping_hash": "cc59cdf60575a828ceb8a88c1b0cf0e82b237ded40c0a7492bd64512aab6f9e5",
+  "media_decode_verified": false,
+  "media_integrity_verified": false,
+  "metadata_authority": "supplied-release-readme-and-official-lists",
+  "metadata_sha256_verified": {
+    "README.txt": "6e0f2f1ce5d8601fee4f3096e6b300929d0ec259dd947fcf1e08f75080c14497",
+    "test_sub_list.txt": "87ee61282553af3ed61a4fba9afea5eb7cb7883368bb6fadfe608528d01885bd",
+    "train_sub_list.txt": "08d55993685dd1bf0a7161a10ce18cf991559358c2c062466fba1f52363436f2"
+  },
+  "no_model_inference_or_training": true,
+  "no_video_entry_opened": true,
+  "participant_identity_verified": false,
+  "partitions": {
+    "test": {
+      "attack": 120,
+      "bona_fide": 40,
+      "subjects": 20
+    },
+    "train": {
+      "attack": 90,
+      "bona_fide": 30,
+      "subjects": 15
+    }
+  },
+  "reader_provenance": {
+    "library": "zipfile",
+    "no_video_entry_opened": true,
+    "outer_archive_bytes": 11095264656,
+    "outer_archives": 8,
+    "outer_header_inventory_sha256": "e87fc2536f05d0979be048ab96d80ddfbb825d155510dd1244276e4067331856",
+    "outer_readme_sha256_verified": "e48d19e415ace32796d7cc242cbd6caed0de488447188587066f070851b65b24",
+    "outer_volume_integrity_fully_verified": false,
+    "python_version": "3.12.14",
+    "readme_copies_identical": false,
+    "schema_authority": "inner native README plus official subject lists",
+    "scope": "outer volume streams, inner central directory and three bounded native text files",
+    "volume_payload_seek_may_decompress_container_bytes": true,
+    "volumes": 16
+  },
+  "roles_assigned": false,
+  "scientific_readiness": false,
+  "status": "native_metadata_reconciled",
+  "subjects": 35,
+  "version": 1
+}

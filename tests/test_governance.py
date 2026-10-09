@@ -171,7 +171,7 @@ class GovernanceContractTest(unittest.TestCase):
             shutil.copytree(
                 ROOT,
                 destination,
-                ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu", "casia-fasd", "SiW"),
+                ignore=shutil.ignore_patterns(".git", "__pycache__", "oulu-npu", "casia-fasd", "SiW", "MSU"),
             )
             self.assertFalse((destination / "oulu-npu").exists())
             self.assertFalse((destination / "casia-fasd").exists())

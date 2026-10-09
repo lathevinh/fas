@@ -5,6 +5,11 @@ Authority: Document 42, amended by Document 88, and checkpoint sequence in Docum
 Base commit: `10c16093ca6343a2309c05f5a43167cb60b7535b`
 Status: **BLOCKED on local release and controlling metadata; no MSU adapter implemented**
 
+Update 2026-10-09: the owner supplied all eight MSU ZIPs and authorized continuation.
+[Document 93](93-phase1-msu-mfsd-metadata-adapter.md) records the native metadata
+adapter and resolves this prerequisite blocker. The original checks below are
+historical, not the current input status; media/acquisition readiness is unchanged.
+
 ## Transition And Checks
 
 The owner's "next step" authorizes moving from the completed

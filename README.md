@@ -157,15 +157,16 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: [MSU-MFSD prerequisites](docs/92-phase1-msu-mfsd-prerequisites.md),
-    blocked on local release and controlling schema/list evidence after owner
-    authorization to advance. [SiW-Mv2 metadata](docs/91-phase1-siwmv2-metadata-adapter.md)
+- Current work package: [MSU-MFSD native metadata adapter](docs/93-phase1-msu-mfsd-metadata-adapter.md),
+    implemented and locally verified on the owner-supplied package; owner review
+    pending. This resolves the missing-input prerequisite in Document 92.
+    [SiW-Mv2 metadata](docs/91-phase1-siwmv2-metadata-adapter.md)
     is implemented and locally verified; no formal review document received. The preceding
     [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
-    OULU and CASIA metadata accepted; MSU adapter and real media audits remain pending.
-    Stop for MSU input before adapter implementation, manifests, extraction,
+    OULU and CASIA metadata accepted; MSU adapter acceptance and real media audits
+    remain pending. Stop before manifests, role assignment, bulk extraction,
     inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
@@ -202,6 +203,13 @@ is the strict source-only design consolidated in
     null and groups are videos; acquisition, media hashes/decode and scientific
     readiness remain unverified. The earlier blocked prerequisite report is historical;
     adapter owner acceptance is pending
+- MSU-MFSD: native inner README and official subject lists are pinned as raw bytes;
+    all 16 volumes in the eight supplied ZIPs reconcile to 280 videos / 35 subjects.
+    [18 focused / 180 regression tests](results/phase1/msu-adapter-verification.json)
+    pass. [Redacted inventory](results/phase1/msu-adapter-inventory-v1.json) preserves
+    train 15 subjects / 120 videos and test 20 / 160. No video/sidecar/helper entry
+    opened; container seeking may decompress opaque volume bytes. Roles, acquisition,
+    archive/media integrity and scientific readiness remain unverified; owner review pending
 - AxonData alternative: [public metadata assessment](docs/81-axondata-dataset-assessment-and-protocol-decision.md)
     found 51 public videos, not the advertised full commercial corpus, with no
     annotation/identity/protocol manifest. Not adopted as a Replay replacement;

@@ -5,6 +5,7 @@ manifests/private/
 /oulu-npu
 /casia-fasd
 /SiW
+/MSU
 
 # Model weights and experiment outputs
 checkpoints/
