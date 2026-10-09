@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "state": "proposal_not_approved",
+  "track": "strict_single_image_track_b",
+  "split_seed": 20261009,
+  "initial_role_weights": {"train": 3, "branch_calibration": 1, "g_domain": 1},
+  "source_partitions": {
+    "OULU-NPU": ["train", "development", "test"],
+    "CASIA-FASD": ["train", "test"],
+    "MSU-MFSD": ["train", "test"],
+    "SiW-Mv2": ["train"]
+  },
+  "minimum_metadata_class_videos_per_role": 1,
+  "stratification_fields": ["official_split", "binary_label", "attack_family", "sensor_id", "session_id", "environment"]
+}

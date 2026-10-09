@@ -61,5 +61,16 @@ SiW-Mv2 source roles may contain only its 1057 reference-train intersection vide
 never its reference-test videos. Group fallback applies at every boundary listed in
 the amendment, not just this permanent-role manifest.
 
+## Metadata-Only Proposal Export
+
+[Checkpoint 1.4A](../docs/96-phase1-canonical-manifests-and-role-proposal.md) provides
+rich canonical JSON and exact metadata CSV projections outside Git. Its separate
+`*_roles_proposed.csv` files are unapproved proposals, not the active audited
+`*_roles.csv` evidence above. The explicit proposed policy is not referenced by the
+active experiment config. Do not copy these files into readiness evidence or mark
+summary rows complete merely because the proposal CLI returns 0. Metadata-class
+feasibility is not fitted-error/gate-event feasibility or media-content duplicate
+verification; all later scientific gates remain blocked.
+
 Run `conda run -n fas python scripts/validate_preregistration.py --stage data-audit` after populating the
 private files. Images and biometric data must never be committed.

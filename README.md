@@ -157,21 +157,27 @@ is the strict source-only design consolidated in
 
 - Status: research plan and canonical implementation specification frozen; Phase 0
     source-evidence/gate rework, environment lock and intake contract accepted
-- Current work package: metadata adapter checkpoint accepted. [Review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md)
+- Current work package: [1.4A canonical metadata and source-role proposal](docs/96-phase1-canonical-manifests-and-role-proposal.md),
+    locally verified; owner policy/review pending. Full 1.4 is not complete and
+    proposed roles are not approved/frozen for execution. [Review 94](docs/94-review-doc93-msu-mfsd-metadata-adapter.md)
     accepts MSU without rework and records all four core adapters as implemented/accepted;
     [response 95](docs/95-review-response-doc94.md) preserves the audit limitations.
-    The next eligible checkpoint is 1.4 immutable manifests / deterministic roles,
-    not started in this review-response turn. The preceding
+    Metadata adapters are accepted. The preceding
     [benchmark amendment](docs/88-phase1-benchmark-amendment-siwmv2.md) is accepted by
     [review 89](docs/89-review-doc88-benchmark-amendment.md), with
     [population wording clarified](docs/90-review-response-doc89-population-clarification.md).
     Real acquisition/media audits and scientific readiness remain pending.
-    Stop before the next implementation checkpoint; no bulk extraction,
+    Stop for 1.4A policy review; no core audit, bulk extraction,
     inference or training
 - Last reviewed: 2026-10-09
 - Code: final staged validator, typed synthetic contracts, immutable analysis-freeze
     primitive, and monotone calibration primitive implemented
 - Results: none; all expected outcomes are hypotheses, not findings
+- Manifests/roles: [14 focused / 194 regression tests](results/phase1/manifest-role-proposal-verification.json)
+    pass. [Private-bundle aggregate report](results/phase1/manifest-role-proposal-summary-v1.json)
+    records 7510 canonical / 6887 source-proposal videos, group-disjoint roles and
+    byte-identical reruns. Prediction-event feasibility and media-content duplicate
+    audit remain unverified; the explicit role policy is a proposal, not an active config
 - Intake: private acquisition/protocol receipts, read-only hash/path checks and
     redacted immutable CLI reports; [17-test intake / 93-test regression evidence](results/phase1/intake-contract-verification.json)
     passes on synthetic fixtures. No real dataset release has been accepted

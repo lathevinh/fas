@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: environment/intake, benchmark amendment and four core metadata adapters accepted; Document 94 accepts MSU without rework; next eligible checkpoint 1.4 manifests/roles, not media readiness
+Status: environment/intake, benchmark amendment and four core metadata adapters accepted; 1.4A canonical metadata/role proposal verified in Document 96, awaiting owner policy review; full 1.4 and media readiness not complete
 
 ## Approval boundary
 
@@ -31,6 +31,7 @@ in chat.
 | 1.3S SiW-Mv2 prerequisites | Safe header/list inspector and conditional replacement decision | Pinned source hashes, exact mismatch counts, no guessed subjects/splits, redacted immutable report, regression/schema pass, owner review | Document 83, accepted in Document 84; overstrict list/participant blockers corrected in Documents 85-87 |
 | 1.3A Benchmark amendment | Dated new study/config, immutable exact-ID intersection, coverage and grouping policy | Preserve MCIO history; 1680 eligible videos and all-14 coverage pinned; no fake subjects or repeat weights; schema/full regression pass; later gates blocked; owner review | Document 88 and benchmark-amendment-verification.json; accepted in Document 89, clarification in Document 90; separate SiW-Mv2/MSU adapter checkpoints remain |
 | 1.4 Immutable manifests/roles | Canonical manifests, source-only feasibility report and deterministic group-role builder | No subject/video/duplicate overlap; assignment independent of outer target and training seed; roles feasible; optional routing not required; rerun preserves hashes | Private local manifests, public counts/hashes, negative tests, role-policy version |
+| 1.4A Metadata/proposal slice | Canonical metadata and explicitly unapproved source-role policy | Accepted input/mapping pins, whole groups, SiW train-only, metadata-class feasibility, immutable/identical reruns, no audit promotion | Document 96; 14 focused/194 full tests; policy/event/content audits pending, not full 1.4 completion |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic
@@ -146,9 +147,12 @@ reconciliation with 18 focused / 180 full tests and private/redacted inventory.
 [Document 94](94-review-doc93-msu-mfsd-metadata-adapter.md) accepts MSU without
 rework; exact implementation commit 9355294 CI is independently verified successful.
 [Document 95](95-review-response-doc94.md) records acceptance and retained limitations.
-The next eligible checkpoint is 1.4 canonical manifests/source-only feasibility/roles,
-not started in the review-response turn. Stop before that implementation; real
-acquisition/media audit acceptance remains pending.
+The owner then authorized checkpoint 1.4 implementation.
+[Document 96](96-phase1-canonical-manifests-and-role-proposal.md) records the bounded
+1.4A canonical metadata and source-role proposal slice. No existing split policy/seed
+was preregistered, so the new policy remains unapproved and inactive. Stop for
+review before final role freeze/core audit; full 1.4 still lacks policy/event/content
+audit completion. Real acquisition/media audit acceptance remains pending.
 Amendment acceptance and successful metadata reconciliation do not certify media.
 The existing `fas` environment remains outside this repository.
 Existing temporary-repository tests copy the working tree, so do not introduce a
