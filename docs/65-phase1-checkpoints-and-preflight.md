@@ -2,7 +2,7 @@
 
 Date: 2026-10-05
 Authority: Document 42, with Document 38 supplying dependency order
-Status: 1.4B accepted; three-TAR byte pinning accepted in Document 106; Document 107 completes OULU per-video evidence collection (4949 strict decode passes, 1 failure, 13 exact duplicate pairs); unresolved content/transaction handling and scientific readiness remain pending
+Status: OULU per-video evidence accepted in Document 108; Document 109 freezes technical-failure accounting and lower-median selector with source roles unchanged; content lineage, other media audits and scientific readiness remain pending
 
 ## Approval boundary
 
@@ -44,6 +44,7 @@ Technical integrity/decode/leakage gates and immutable roles remain mandatory.
 | 1.5B Owner-authorized technical inspection | Frozen canonical/header/protocol reconciliation, OULU first | Owner-attested research permission; no administrative receipt requirement; exact identities/labels/partitions/roles preserved; no decoded-media readiness inference | Document 103; 4950 videos/42 protocol files and 17 focused tests pass; 105GB media TAR hash attempt stopped, hashes/decode/duplicates pending; stop before another dataset |
 | 1.5C OULU archive byte pinning | Complete SHA-256 of three supplied OULU media TARs | All 105116817408 bytes read; sizes and file metadata stable; immutable private records/public aggregate; all frozen/study hashes unchanged; later gates blocked | Document 105; three complete digests, 17 focused tests pass; no individual video payload opened; stop before per-video decode/content audit |
 | 1.5D OULU per-video evidence | Hash all 4950 payloads; strict full decode and frame index; exact duplicate/role reconciliation | Immutable private records, full population/size/role joins, no role or readiness promotion, publish errors/duplicates and unresolved scope | Document 107; 4949 decoded/1 failed, 13 exact duplicate pairs, zero cross-role/partition exact groups; 22 focused/209 full tests; stop for review |
+| 1.5E Technical transactions/selector | Freeze scoreless failure accounting and deterministic single-frame tie rule from accepted OULU index | Original denominator retained; null classifier error; no detector/model or role rewrite; policy/code bound; exact immutable rerun | Document 109; 4949 primary identities/1 terminal failure; calibration 990 original/989 frame-available/0 fitted rows; 4952 byte-identical artifacts; 31 focused/218 full tests; stop for review |
 | 1.5 Core audit | Four amended-domain intake/audit evidence bundles | Real official-release hashes and lineage verified; all four core datasets reconcile under Document 88; optional SiW-M not a core gate; no target output inspected | Public summaries, leakage audit, data-audit exit 0, full regression |
 
 Model weights and real-data execution are not part of checkpoint 1.0. Synthetic

@@ -17,6 +17,115 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from fas.oulu import LABEL_MAPPING, LABEL_MAPPING_HASH, encode_label, inventory_archives, parse_protocol, parse_video_id
 from fas.media import probe_video
+from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
+
+
+class OuluTransactionTest(unittest.TestCase):
+    def test_end_to_end_failure_uses_original_denominators_without_fake_detector(self) -> None:
+        from fas.contracts import k1_end_to_end_summary
+        rows = [{"label": "attack", "detector_status": "success", "final_k1_action": "non_accept"},
+                {"label": "bona_fide", "detector_status": "success", "final_k1_action": "accept"},
+                {"label": "bona_fide", "detector_status": "not_run", "technical_status": "terminal_failure",
+                 "final_k1_action": "non_accept", "model_score": None, "classifier_error": None}]
+        result = k1_end_to_end_summary(rows)
+        self.assertEqual(result["bona_fide_total"], 2)
+        self.assertEqual(result["bfnr_end2end"], 0.5)
+        self.assertEqual(result["bona_fide_detector_coverage"], 0.5)
+        rows[-1]["model_score"] = 0.1
+        with self.assertRaises(ValueError):
+            k1_end_to_end_summary(rows)
+
+    def test_transaction_export_refuses_repository_output(self) -> None:
+        spec = importlib.util.spec_from_file_location("freeze_oulu_transactions", ROOT / "scripts/freeze_oulu_transactions.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "source"
+            frozen = Path(directory) / "frozen"
+            source.mkdir()
+            frozen.mkdir()
+            output = ROOT / "results" / "refused-transaction-test-output"
+            with self.assertRaisesRegex(ValueError, "unsafe private output"):
+                module.export(source, frozen, output)
+            self.assertFalse(output.exists())
+
+    def test_policy_bytes_bound_and_semantic_drift_rejected(self) -> None:
+        from fas.preregistration import artifact_hashes
+        path = ROOT / "configs/transaction_policy_v1.yaml"
+        policy = json.loads(path.read_bytes())
+        validate_transaction_policy(policy)
+        self.assertEqual(artifact_hashes(ROOT)["configs/transaction_policy_v1.yaml"], hashlib.sha256(path.read_bytes()).hexdigest())
+        policy["primary_frame"]["even_length_tie"] = "later_decoded_frame"
+        with self.assertRaises(ValueError):
+            validate_transaction_policy(policy)
+
+    def test_population_denominators_do_not_drop_failed_bona_fide(self) -> None:
+        good = technical_transaction(self.media(5))
+        media = self.media(0)
+        media.update(video_id="failed-id", decode_status="failed")
+        failed = technical_transaction(media)
+        result = technical_population_counts([good, failed])[0]
+        self.assertEqual(result["original_denominator"], 2)
+        self.assertEqual(result["primary_frame_available"], 1)
+        self.assertEqual(result["terminal_technical_failures"], 1)
+        self.assertEqual(result["forced_bfnr_numerator"], 1)
+        failed["retain_original_denominator"] = False
+        with self.assertRaises(ValueError):
+            technical_population_counts([good, failed])
+
+    def media(self, count: int) -> dict:
+        return {"video_id": "synthetic-id", "binary_label": "bona_fide", "role": "branch_calibration",
+                "decode_status": "decoded", "frame_count": count,
+                "frame_index": [{"decode_order": order, "timestamp_seconds": str(order),
+                                 "width": 32, "height": 24, "decode_success": True,
+                                 "rgb_sha256": "a" * 64} for order in range(count)]}
+
+    def test_odd_even_and_single_frame_primary(self) -> None:
+        for count, expected in ((1, 0), (5, 2), (8, 3)):
+            with self.subTest(count=count):
+                self.assertEqual(select_primary_frame(self.media(count))["decode_order"], expected)
+
+    def test_inclusive_interval_and_no_replacement(self) -> None:
+        media = self.media(8)
+        self.assertEqual(select_primary_frame(media, interval=("2", "5"))["decode_order"], 3)
+        self.assertIsNone(select_primary_frame(media, interval=("10", "11")))
+        self.assertEqual(technical_transaction(media, interval=("10", "11"))["final_k1_action"], "non_accept")
+        with self.assertRaises(ValueError):
+            select_primary_frame(media, interval=("5", "2"))
+
+    def test_failed_calibration_transaction_retains_denominator_without_error(self) -> None:
+        media = self.media(0)
+        media["decode_status"] = "failed"
+        transaction = technical_transaction(media)
+        self.assertTrue(transaction["retain_original_denominator"])
+        self.assertEqual(transaction["final_k1_action"], "non_accept")
+        self.assertEqual(transaction["detector_status"], "not_run")
+        self.assertIsNone(transaction["classifier_error"])
+        self.assertEqual(calibration_fit_rows([transaction]), [])
+        transaction["model_score"] = 0.1
+        with self.assertRaises(ValueError):
+            calibration_fit_rows([transaction])
+
+    def test_successful_frame_is_not_a_model_score(self) -> None:
+        transaction = technical_transaction(self.media(5))
+        self.assertEqual(calibration_fit_rows([transaction]), [])
+        transaction.update(model_score=0.2, detector_status="success")
+        self.assertEqual(calibration_fit_rows([transaction]), [transaction])
+        transaction["model_score"] = float("nan")
+        with self.assertRaises(ValueError):
+            calibration_fit_rows([transaction])
+
+    def test_bad_index_unknown_decode_and_duplicate_ids_fail_closed(self) -> None:
+        media = self.media(3)
+        media["frame_index"][1]["decode_order"] = 0
+        with self.assertRaises(ValueError):
+            select_primary_frame(media)
+        media["decode_status"] = "not_probed"
+        with self.assertRaises(ValueError):
+            select_primary_frame(media)
+        transaction = technical_transaction(self.media(3))
+        with self.assertRaises(ValueError):
+            calibration_fit_rows([transaction, transaction])
 
 
 class OuluMediaTest(unittest.TestCase):

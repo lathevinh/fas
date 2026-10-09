@@ -104,7 +104,7 @@ def validate_stage(root: Path, stage: str) -> list[str]:
 def artifact_hashes(root: Path) -> dict[str, str]:
     paths = [root / "configs" / name for name in CONFIG_FILES]
     paths += [root / INTERSECTION_EVIDENCE, root / HISTORICAL_CONFIG]
-    paths += [root / "configs" / "role_policy_frozen_v2.yaml", root / "configs" / "role_policy_proposal_v2.yaml"]
+    paths += [root / "configs" / "role_policy_frozen_v2.yaml", root / "configs" / "role_policy_proposal_v2.yaml", root / "configs" / "transaction_policy_v1.yaml"]
     paths += [root / "manifests" / "dataset_summary.csv", root / "manifests" / "split_summary.csv"]
     for directory in (root / "src" / "fas", root / "scripts"):
         paths.extend(sorted(directory.rglob("*.py")))

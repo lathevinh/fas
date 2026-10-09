@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "state": "frozen_before_model_execution",
+  "primary_frame": {
+    "position": "middle_successfully_decoded_frame_in_valid_interval",
+    "zero_based_rank": "floor((eligible_frame_count - 1) / 2)",
+    "even_length_tie": "earlier_decoded_frame",
+    "interval_boundary": "inclusive",
+    "oulu_interval": "whole_supplied_video_no_temporal_bounds_in_accepted_metadata",
+    "detector_success_replacement": false
+  },
+  "technical_failure": {
+    "action": "terminal_non_accept",
+    "retain_canonical_id_and_role": true,
+    "include_original_class_denominators": true,
+    "include_technical_coverage_denominators": true,
+    "exclude_score_dependent_fit_and_metrics": true,
+    "calibration_fit_requires_valid_model_score": true,
+    "model_score": null,
+    "classifier_error": null,
+    "detector_status": "not_run"
+  },
+  "canonical_or_role_rewrite_allowed": false,
+  "split_or_seed_retry_allowed": false,
+  "model_execution_authorized": false,
+  "scientific_readiness": false
+}

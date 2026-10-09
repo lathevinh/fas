@@ -263,11 +263,18 @@ def k1_end_to_end_summary(rows: Sequence[Mapping[str, Any]]) -> dict[str, float 
     if not attack_rows or not bona_rows:
         raise ValueError("K=1 summary requires both classes")
     for row in rows:
-        if row.get("detector_status") not in {"success", "failure"}:
+        if row.get("detector_status") not in {"success", "failure", "not_run"}:
             raise ValueError("K=1 rows require valid detector status")
+        if row["detector_status"] == "not_run" and row.get("technical_status") != "terminal_failure":
+            raise ValueError("unexecuted detector requires terminal technical failure")
+        if row.get("technical_status") == "terminal_failure" and (
+            row["detector_status"] != "not_run" or row.get("model_score") is not None
+            or row.get("classifier_error") is not None
+        ):
+            raise ValueError("pre-detector failure cannot fabricate detector or classifier evidence")
         if row.get("final_k1_action") not in {"accept", "non_accept"}:
             raise ValueError("K=1 rows require accept or non_accept actions")
-        if row["detector_status"] == "failure" and row["final_k1_action"] != "non_accept":
+        if row["detector_status"] in {"failure", "not_run"} and row["final_k1_action"] != "non_accept":
             raise ValueError("detector failure must be terminal non-accept")
     return {
         "attack_total": len(attack_rows),

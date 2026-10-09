@@ -168,7 +168,11 @@ is the strict source-only design consolidated in
     with immutable records and frozen hashes unchanged. [Per-video audit](docs/107-review-response-doc106-oulu-per-video-audit.md)
     now pins all 4950 payloads: 4949 strict full-decode passes, 1 MJPEG failure,
     13 exact duplicate pairs and no exact cross-role/partition duplicates.
-    Near-duplicate/cross-dataset lineage and transaction/applicability handling
+    [Transaction/selector definition](docs/109-review-response-doc108-transaction-selector-freeze.md)
+    now freezes lower-median selection and scoreless terminal-failure accounting:
+    4949 primary identities, calibration denominator 990 / 989 frame-available /
+    zero fitted score rows, original/rerun byte-identical, source roles unchanged.
+    Near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
     [Review 101](docs/101-review-doc100-permanent-source-role-freeze.md) accepts
