@@ -201,6 +201,11 @@ is the strict source-only design consolidated in
     now accepts that scoped Pair-5 rejection separately. Activation/closure still
     waits for exact proposal CI run 38015159060, observed in progress at FFmpeg
     installation; the original ledger is unchanged and the next 75 remain paused.
+    [Additive batch-01 activation](docs/125-review-response-doc124-oulu-batch01-activation.md)
+    now binds both successful exact CI runs and the existing owner acceptance.
+    Current batch01 closes at 10 screen-level rejections, 0 uncertain; historical
+    records stay unchanged. Thirteen files replay byte-identically. The next75
+    remain paused until review of this activation checkpoint; scientific gates stay blocked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
