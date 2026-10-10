@@ -193,6 +193,10 @@ is the strict source-only design consolidated in
     disagreement (Pair 5), whose effective disposition stays uncertain pending
     reconciliation. Twelve human-ledger files replay byte-identically; the next
     75 are not started and the original evidence/AI ledgers remain unchanged.
+    [Pair-5 reconciliation proposal](docs/121-review-response-doc120-oulu-pair5-reconciliation.md)
+    inspects six bound full-resolution frames and proposes a scoped screen-level
+    rejection with frame-specific rationale. Acceptance is pending; the original
+    effective ledger remains 9 rejected / 1 uncertain and no next batch is started.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
