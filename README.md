@@ -197,6 +197,10 @@ is the strict source-only design consolidated in
     inspects six bound full-resolution frames and proposes a scoped screen-level
     rejection with frame-specific rationale. Acceptance is pending; the original
     effective ledger remains 9 rejected / 1 uncertain and no next batch is started.
+    [Explicit owner acceptance](docs/123-review-response-doc122-oulu-batch01-owner-acceptance.md)
+    now accepts that scoped Pair-5 rejection separately. Activation/closure still
+    waits for exact proposal CI run 38015159060, observed in progress at FFmpeg
+    installation; the original ledger is unchanged and the next 75 remain paused.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
