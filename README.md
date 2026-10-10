@@ -184,6 +184,10 @@ is the strict source-only design consolidated in
     reviews the first 10 highest-risk pairs: 9 screen-rejection proposals and 1
     uncertain, pending owner review, not capture-provenance clearance. All 2624
     decoded RGB frames of 19 videos are verified; 30 private images actually viewed.
+    [Bound human-review handoff](docs/117-review-response-doc116-oulu-human-review-handoff.md)
+    prepares the same ten packets plus 34 full-resolution temporal frames for the
+    uncertain pair; 67 private files reproduce byte-identically. Actual human
+    reviews remain 0/10, browser usability unverified; the next 75 are not started.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

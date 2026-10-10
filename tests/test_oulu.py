@@ -20,6 +20,91 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluHumanReviewTest(unittest.TestCase):
+    def test_handoff_private_output_refused_and_definition_escaped(self) -> None:
+        spec = importlib.util.spec_from_file_location("prepare_oulu_owner_review", ROOT / "scripts/prepare_oulu_owner_review.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            with self.assertRaises(ValueError):
+                module.private_output(ROOT / "results/refused-human-output", [source])
+            with self.assertRaises(ValueError):
+                module.private_output(source, [source])
+        page = module.render_page({"pairs": [], "text": "</script><script>bad</script>"}, "a" * 64)
+        self.assertNotIn("</script><script>bad", page)
+        self.assertIn("\\u003c", page)
+
+    def fixture(self):
+        definition = {"sha256": "a" * 64, "pairs": [{"packet_sha256": format(rank, "064x"),
+                      "required_assets_sha256": {"temporal": "b" * 64, **({"full_resolution": "c" * 64} if rank == 4 else {})},
+                      "ai_disposition": "uncertain_insufficient_evidence" if rank == 4 else "rejected_false_positive"} for rank in range(10)]}
+        record = {"version": 1, "reviewer": {"kind": "owner_human", "id": "synthetic-reviewer", "personally_inspected_bound_evidence": True},
+                  "review_definition_sha256": definition["sha256"], "reviewed_at_utc": "2026-10-10T00:00:00+00:00",
+                  "pairs": [{"queue_rank": rank, "packet_sha256": pair["packet_sha256"],
+                             "reviewed_assets_sha256": dict(pair["required_assets_sha256"]), "personally_reviewed": True,
+                             "disposition": pair["ai_disposition"], "rationale": "Synthetic fixture only", "capture_provenance_certified": False}
+                            for rank, pair in enumerate(definition["pairs"])]}
+        return record, definition
+
+    def test_human_attestation_required_not_ai_or_blank_template(self) -> None:
+        from fas.human_review import validate_human_review
+        record, definition = self.fixture()
+        self.assertEqual(len(validate_human_review(record, definition)), 10)
+        record["reviewer"]["kind"] = "AI"
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+        record["reviewer"]["kind"] = "owner_human"
+        record["reviewer"]["personally_inspected_bound_evidence"] = False
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+
+    def test_incomplete_or_duplicate_pair_review_is_rejected(self) -> None:
+        from fas.human_review import validate_human_review
+        record, definition = self.fixture()
+        record["pairs"].pop()
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+        record["pairs"].append(record["pairs"][0])
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+
+    def test_full_resolution_hash_and_rationale_are_required(self) -> None:
+        from fas.human_review import validate_human_review
+        record, definition = self.fixture()
+        record["pairs"][4]["reviewed_assets_sha256"].pop("full_resolution")
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+        record, definition = self.fixture()
+        record["pairs"][0]["rationale"] = " "
+        with self.assertRaises(ValueError):
+            validate_human_review(record, definition)
+
+    def test_disagreement_is_preserved_and_confirmation_stops_execution(self) -> None:
+        from fas.human_review import validate_human_review
+        record, definition = self.fixture()
+        record["pairs"][0]["disposition"] = "confirmed_same_content_or_derived_lineage"
+        result = validate_human_review(record, definition)[0]
+        self.assertTrue(result["disagreement"])
+        self.assertTrue(result["stop_for_prospective_scientific_decision"])
+        self.assertEqual(result["effective_disposition"], "uncertain_insufficient_evidence")
+        self.assertFalse(result["model_execution_authorized"])
+
+    def test_full_resolution_export_preserves_accepted_rgb_identity(self) -> None:
+        from fas.human_review import full_resolution_frames
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "clip.avi"
+            subprocess.run(["ffmpeg", "-v", "error", "-f", "lavfi", "-i", "testsrc2=size=64x48:rate=5",
+                            "-frames:v", "4", "-c:v", "mjpeg", "-threads", "1", str(path)], check=True)
+            media = probe_video(path)
+            frames = full_resolution_frames(path, media, [0, 2, 3])
+            self.assertEqual(frames[2].shape, (48, 64, 3))
+            self.assertEqual(hashlib.sha256(frames[2].tobytes()).hexdigest(), media["frame_index"][2]["rgb_sha256"])
+            media["frame_index"][2]["rgb_sha256"] = "0" * 64
+            with self.assertRaises(ValueError):
+                full_resolution_frames(path, media, [2])
+
+
 class OuluVisualTest(unittest.TestCase):
     def test_visual_runner_refuses_repository_and_existing_output(self) -> None:
         import argparse
