@@ -186,8 +186,13 @@ is the strict source-only design consolidated in
     decoded RGB frames of 19 videos are verified; 30 private images actually viewed.
     [Bound human-review handoff](docs/117-review-response-doc116-oulu-human-review-handoff.md)
     prepares the same ten packets plus 34 full-resolution temporal frames for the
-    uncertain pair; 67 private files reproduce byte-identically. Actual human
-    reviews remain 0/10, browser usability unverified; the next 75 are not started.
+    uncertain pair; 67 private files reproduce byte-identically. At preparation,
+    human reviews were 0/10 and browser usability was unverified.
+    [Owner human-review import](docs/119-review-response-doc118-oulu-human-review-import.md)
+    now records 10 owner-submitted rejections: 9 AI/human agreements and 1
+    disagreement (Pair 5), whose effective disposition stays uncertain pending
+    reconciliation. Twelve human-ledger files replay byte-identically; the next
+    75 are not started and the original evidence/AI ledgers remain unchanged.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
