@@ -214,6 +214,14 @@ is the strict source-only design consolidated in
     all75 highest-risk remaining pairs are still unreviewed,10 prepared and65
     not yet prepared.53 focused /240 full regression tests pass. Stop for this
     preparation checkpoint review before adjudication; scientific gates stay blocked.
+    [Review128](docs/128-review-doc127-oulu-batch02-packets.md) accepts preparation.
+    [Batch02 AI visual proposals](docs/129-review-response-doc128-oulu-batch02-ai-review.md)
+    now inspect30 bound images for ranks10..19 and record10 scoped rejection
+    proposals,0 uncertain/confirmed, with zero human/effective dispositions.
+    Twelve ledger files serialize byte-identically; prior evidence/frozen inputs
+    stay unchanged.53 focused tests pass;240 full tests were not rerun here.
+    Batch02 is not closed;65 highest-risk pairs still lack AI review. Stop for
+    this checkpoint review before genuine human handoff or any further batch.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
