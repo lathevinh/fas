@@ -205,7 +205,15 @@ is the strict source-only design consolidated in
     now binds both successful exact CI runs and the existing owner acceptance.
     Current batch01 closes at 10 screen-level rejections, 0 uncertain; historical
     records stay unchanged. Thirteen files replay byte-identically. The next75
-    remain paused until review of this activation checkpoint; scientific gates stay blocked.
+    remained paused at publication until review of activation.
+    [Review126](docs/126-review-doc125-oulu-batch01-activation.md) now accepts closure.
+    [Next fixed batch02 packets](docs/127-review-response-doc126-oulu-batch02-packets.md)
+    prepare exactly queue ranks10..19:15 videos,2135 verified RGB frames,2192
+    private files; independent redecode/reexport is byte-identical. The accepted
+    batch01 evidence/code remain unchanged. No new visual/human dispositions:
+    all75 highest-risk remaining pairs are still unreviewed,10 prepared and65
+    not yet prepared.53 focused /240 full regression tests pass. Stop for this
+    preparation checkpoint review before adjudication; scientific gates stay blocked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

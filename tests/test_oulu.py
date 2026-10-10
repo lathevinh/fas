@@ -21,6 +21,32 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_next_visual_batch_requires_closed_prior_and_exact_order(self) -> None:
+        spec = importlib.util.spec_from_file_location("prepare_oulu_visual_batch02", ROOT / "scripts/prepare_oulu_visual_batch02.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(20)]
+        prior = {"batch01_accepted_reconciled_disposition_state": True, "current_effective_disposition_counts": {"rejected_false_positive": 10}}
+        self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior)], list(range(10, 20)))
+        with self.assertRaises(ValueError):
+            module.fixed_next_records(records, {**prior, "batch01_accepted_reconciled_disposition_state": False})
+        with self.assertRaises(ValueError):
+            module.fixed_next_records(records[:19], prior)
+        records[10], records[11] = records[11], records[10]
+        with self.assertRaises(ValueError):
+            module.fixed_next_records(records, prior)
+        from argparse import Namespace
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory)
+            arguments = Namespace(out_root=ROOT / "results/refused-batch02", input_root=source,
+                                  audit_root=source, exact_root=source, screen_root=source,
+                                  frozen_root=source, archive_records=source, activation_root=source)
+            with self.assertRaises(ValueError):
+                module.prepare(arguments)
+            arguments.out_root = source
+            with self.assertRaises(ValueError):
+                module.prepare(arguments)
+
     def test_handoff_private_output_refused_and_definition_escaped(self) -> None:
         spec = importlib.util.spec_from_file_location("prepare_oulu_owner_review", ROOT / "scripts/prepare_oulu_owner_review.py")
         module = importlib.util.module_from_spec(spec)
