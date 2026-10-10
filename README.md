@@ -222,6 +222,14 @@ is the strict source-only design consolidated in
     stay unchanged.53 focused tests pass;240 full tests were not rerun here.
     Batch02 is not closed;65 highest-risk pairs still lack AI review. Stop for
     this checkpoint review before genuine human handoff or any further batch.
+    [Review130](docs/130-review-doc129-oulu-batch02-ai-review.md) accepts AI-proposal scope.
+    [Batch02 bound human handoff](docs/131-review-response-doc130-oulu-batch02-human-handoff.md)
+    now prepares30 same bound images with blank human answers for original ranks10..19;
+    AI proposals are initially collapsed.33 private files reproduce byte-identically,
+    54 focused /241 full tests pass. Integrated browser still refuses the private
+    folder (403), so actual UI/export interaction is unverified. Human reviews/effective
+    dispositions remain0/0. Stop for handoff checkpoint review before separate bound
+    human import; the batch01 importer must not be used directly for batch02.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

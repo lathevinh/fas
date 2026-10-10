@@ -21,6 +21,25 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch02_handoff_exports_original_queue_ranks_and_blank_answers(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_owner_batch02 as module
+            definition = {"pairs": [{"queue_rank": rank} for rank in range(10, 20)]}
+            page = module.render_batch02(definition, "digest")
+            self.assertIn("queue_rank:pair.queue_rank,packet_sha256", page)
+            self.assertNotIn("queue_rank:rank,packet_sha256", page)
+            self.assertIn("disposition:'',rationale:''", page)
+            self.assertIn("oulu-batch02-human-review.json", page)
+            self.assertIn("'Queue '+pair.queue_rank", page)
+            self.assertNotIn("Batch 01", page)
+            with self.assertRaises(ValueError):
+                module.render_batch02({"pairs": [{"queue_rank": rank} for rank in range(10)]}, "digest")
+            escaped = module.render_batch02({**definition, "text": "</script>"}, "digest")
+            self.assertIn("\\u003c/script>", escaped)
+        finally:
+            sys.path.pop(0)
+
     def test_next_visual_batch_requires_closed_prior_and_exact_order(self) -> None:
         spec = importlib.util.spec_from_file_location("prepare_oulu_visual_batch02", ROOT / "scripts/prepare_oulu_visual_batch02.py")
         module = importlib.util.module_from_spec(spec)
