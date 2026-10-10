@@ -230,6 +230,14 @@ is the strict source-only design consolidated in
     folder (403), so actual UI/export interaction is unverified. Human reviews/effective
     dispositions remain0/0. Stop for handoff checkpoint review before separate bound
     human import; the batch01 importer must not be used directly for batch02.
+    [Owner batch02 human import](docs/132-oulu-batch02-human-review-import.md)
+    now records the owner's supplied10 rejections, with10 AI/human agreements,
+    0 disagreements and0 effective activations. Original ranks10..19 and submitted
+    answers are preserved; all10 rationale texts are identical/general, disclosed
+    without AI rewriting.13 private files independently reimport byte-identically;
+    55 focused /242 full tests pass. Direct owner continuation authorizes import,
+    not scientific closure. Stop for review before separate additive activation
+    or ranks20+; source/frozen evidence and scientific gates remain unchanged.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
