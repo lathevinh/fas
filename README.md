@@ -273,6 +273,15 @@ is the strict source-only design consolidated in
     browser interaction remains unverified(file403), not claimed from static tests.
     No human/effective outcomes. Stop for checkpoint review and genuine human input;
     separate batch03 rank-adapter import is required, no ranks30+ or model execution.
+    [Batch03 human import](docs/141-oulu-batch03-human-review-import.md) now records
+    the owner's actual JSON:10 rejections,10 AI agreements,0 disagreement and0
+    effective activation.13-file independent reimport is byte-identical;
+    58 focused /245 full tests pass;16 protected roots/frozen13 unchanged.
+    Original answers/JSON preserved; all10 generic rationales share one text,
+    disclosed without AI rewriting or independent-accuracy/authorship claims.
+    Exact2fb3246 handoff CI success observed via Actions web. Comparison states
+    are not current activation; stop for import checkpoint review before separate
+    additive activation or ranks30+. No repeat human JSON/review is requested.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
