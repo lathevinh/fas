@@ -238,6 +238,14 @@ is the strict source-only design consolidated in
     55 focused /242 full tests pass. Direct owner continuation authorizes import,
     not scientific closure. Stop for review before separate additive activation
     or ranks20+; source/frozen evidence and scientific gates remain unchanged.
+    [Review133](docs/133-review-doc132-oulu-batch02-human-import.md) accepts import
+    and authorizes scoped activation without repeat human review.
+    [Additive batch02 activation](docs/134-review-response-doc133-oulu-batch02-activation.md)
+    now creates a separate current ledger:10 screen-level rejections,0 uncertain,
+    0 confirmed. Historical import activation=false and all prior records remain
+    unchanged.13 files serialize byte-identically;55 focused tests pass; full242
+    was not rerun here. Generic human rationales/non-blinded review remain disclosed.
+    Ranks20+ stay paused for activation checkpoint review; scientific gates remain blocked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
