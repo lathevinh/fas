@@ -263,6 +263,16 @@ is the strict source-only design consolidated in
     roots/frozen13 unchanged. Reused foregrounds are correlated evidence, not
     independent accuracy/rater measurements. AI coverage30/85 leaves55 unreviewed.
     Stop for AI checkpoint review before human handoff or ranks30+; models remain locked.
+    [Review139](docs/139-review-doc138-oulu-batch03-ai-review.md) accepts AI-proposal
+    scope and requires genuine human handoff only20..29.
+    [Batch03 human handoff](docs/140-review-response-doc139-oulu-batch03-human-handoff.md)
+    preserves30 bound images, blank answers, collapsed AI notes and original ranks
+    in download.33 private files independently reexport byte-identically;
+    57 focused /244 full tests pass;15 protected roots/frozen13 unchanged.
+    Exact77d3e7b CI success observed via Actions web after REST403; actual private
+    browser interaction remains unverified(file403), not claimed from static tests.
+    No human/effective outcomes. Stop for checkpoint review and genuine human input;
+    separate batch03 rank-adapter import is required, no ranks30+ or model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

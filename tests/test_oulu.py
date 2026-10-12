@@ -21,6 +21,31 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch03_handoff_preserves_original_ranks_and_blank_answers(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_owner_batch03 as module
+            definition = {"pairs": [{"queue_rank": rank, "ai_observations": ["</script>observed"]} for rank in range(20, 30)]}
+            original = json.dumps(definition, sort_keys=True)
+            page = module.render_batch03(definition, "bound")
+            self.assertEqual(json.dumps(definition, sort_keys=True), original)
+            self.assertIn("Batch 03", page)
+            self.assertIn("oulu-batch03-human-review.json", page)
+            self.assertIn("queue_rank:pair.queue_rank,packet_sha256", page)
+            self.assertNotIn("queue_rank:rank,packet_sha256", page)
+            self.assertIn("disposition:''", page)
+            self.assertIn("rationale:''", page)
+            self.assertIn("personally_reviewed:false", page)
+            self.assertIn("document.createElement('details')", page)
+            self.assertNotIn("details.open", page)
+            self.assertIn("\\u003c/script>", page)
+            self.assertIn("review_definition_sha256:DATA.sha256", page)
+            for pairs in (definition["pairs"][:9], list(reversed(definition["pairs"])), [{"queue_rank": rank} for rank in range(10, 20)]):
+                with self.assertRaises(ValueError):
+                    module.render_batch03({"pairs": pairs}, "bound")
+        finally:
+            sys.path.pop(0)
+
     def test_batch03_packet_selection_requires_closed_batch02_and_exact_queue(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
