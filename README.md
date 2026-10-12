@@ -254,6 +254,15 @@ is the strict source-only design consolidated in
     56 focused /243 full tests pass;13 protected roots/frozen artifacts unchanged.
     Zero new visual/human/effective outcomes;20 prior screen rejections remain current.
     Stop for preparation review before AI inspection or ranks30+; scientific gates remain blocked.
+    [Review137](docs/137-review-doc136-oulu-batch03-packets.md) accepts preparation
+    and authorizes AI inspection only20..29.
+    [Batch03 AI proposals](docs/138-review-response-doc137-oulu-batch03-ai-review.md)
+    actually inspect30 bound panels/triggers and record10 pair-specific rejections,
+    0 uncertain/confirmed,0 human/effective dispositions; batch03 is not closed.
+    12 ledger files replay byte-identically;56 focused tests pass;14 protected
+    roots/frozen13 unchanged. Reused foregrounds are correlated evidence, not
+    independent accuracy/rater measurements. AI coverage30/85 leaves55 unreviewed.
+    Stop for AI checkpoint review before human handoff or ranks30+; models remain locked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
