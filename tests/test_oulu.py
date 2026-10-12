@@ -21,6 +21,39 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch03_packet_selection_requires_closed_batch02_and_exact_queue(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch03 as module
+            records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(30)]
+            prior = {"batch02_accepted_reconciled_disposition_state": True, "effective_dispositions_activated": 10,
+                     "current_effective_disposition_counts": {"rejected_false_positive": 10}}
+            self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior)], list(range(20, 30)))
+            for altered in ({**prior, "batch02_accepted_reconciled_disposition_state": False}, {**prior, "effective_dispositions_activated": 0}, {**prior, "current_effective_disposition_counts": {"rejected_false_positive": 9}}):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, altered)
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records[:29], prior)
+            records[20], records[21] = records[21], records[20]
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records, prior)
+            records[20], records[21] = records[21], records[20]
+            records[20]["priority"] = "cross_role"
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records, prior)
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                args = Namespace(activation_root=root, out_root=ROOT / "results/refused-batch03", input_root=root, audit_root=root,
+                                 exact_root=root, screen_root=root, frozen_root=root, archive_records=root)
+                with self.assertRaises(ValueError):
+                    module.prepare(args)
+                args.out_root = root
+                with self.assertRaises(ValueError):
+                    module.prepare(args)
+        finally:
+            sys.path.pop(0)
+
     def test_batch02_human_rank_adapter_preserves_disagreement_and_hard_stop(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

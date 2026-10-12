@@ -246,6 +246,14 @@ is the strict source-only design consolidated in
     unchanged.13 files serialize byte-identically;55 focused tests pass; full242
     was not rerun here. Generic human rationales/non-blinded review remain disclosed.
     Ranks20+ stay paused for activation checkpoint review; scientific gates remain blocked.
+    [Review135](docs/135-review-doc134-oulu-batch02-activation.md) accepts activation
+    without rework and authorizes the next frozen queue preparation.
+    [Batch03 packets](docs/136-review-response-doc135-oulu-batch03-packets.md)
+    prepare exactly20..29:17 videos,2417 verified RGB frames,30 panels/triggers;
+    2476 private files independently redecode/reexport byte-identically.
+    56 focused /243 full tests pass;13 protected roots/frozen artifacts unchanged.
+    Zero new visual/human/effective outcomes;20 prior screen rejections remain current.
+    Stop for preparation review before AI inspection or ranks30+; scientific gates remain blocked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
