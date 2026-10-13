@@ -348,6 +348,14 @@ is the strict source-only design consolidated in
     sufficiency or new human resolution is claimed. Original10-pair JSON and30..37
     remain untouched. Stop for152 review and genuine separate2-pair resolution JSON,
     before targeted import, activation, ranks40+, other-dataset or model work.
+    [Targeted human import153](docs/153-oulu-batch04-targeted-human-import.md)
+    now preserves the genuine separate38..39 JSON:2 rejects/0 disagreement,
+    0 activation;5/5 independent immutable import files match.63 focused/250 full
+    tests pass;30 protected roots/frozen13 unchanged. Both structure descriptions
+    and brief background-only rationales repeat; semantic scrutiny sufficiency
+    remains pending, not manufactured by AI. New input exists; no whole-batch
+    repeat or original JSON replacement is requested. Stop for153 review before
+    clarification/reconciliation, separate activation, ranks40+ or model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
