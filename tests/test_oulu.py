@@ -86,6 +86,41 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch04_packet_selection_requires_closed_batch03_and_exact_queue(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch04 as module
+            records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(40)]
+            prior = {"batch03_accepted_reconciled_disposition_state": True, "effective_dispositions_activated": 10,
+                     "current_effective_disposition_counts": {"rejected_false_positive": 10}}
+            original = json.dumps(records, sort_keys=True)
+            self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior)], list(range(30, 40)))
+            self.assertEqual(json.dumps(records, sort_keys=True), original)
+            for altered in ({**prior, "batch03_accepted_reconciled_disposition_state": False}, {**prior, "effective_dispositions_activated": 0}, {**prior, "current_effective_disposition_counts": {"rejected_false_positive": 9}}):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, altered)
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records[:39], prior)
+            records[30], records[31] = records[31], records[30]
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records, prior)
+            records[30], records[31] = records[31], records[30]
+            records[30]["priority"] = "cross_role"
+            with self.assertRaises(ValueError):
+                module.fixed_next_records(records, prior)
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                args = Namespace(activation_root=root, out_root=ROOT / "results/refused-batch04", input_root=root, audit_root=root,
+                                 exact_root=root, screen_root=root, frozen_root=root, archive_records=root)
+                with self.assertRaises(ValueError):
+                    module.prepare(args)
+                args.out_root = root
+                with self.assertRaises(ValueError):
+                    module.prepare(args)
+        finally:
+            sys.path.pop(0)
+
     def test_batch03_packet_selection_requires_closed_batch02_and_exact_queue(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

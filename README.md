@@ -292,6 +292,16 @@ is the strict source-only design consolidated in
     Generic/non-blinded/correlated evidence limitations remain. Total30 resolved
     screen relationships are not global lineage clearance;55 highest-risk remain
     unreviewed. Stop for activation checkpoint review before ranks30+ or models.
+    [Review144](docs/144-review-doc143-oulu-batch03-activation.md) accepts batch03
+    closure without rework and permits preparation beginning at rank30.
+    [Batch04 packets](docs/145-review-response-doc144-oulu-batch04-packets.md)
+    prepare exactly30..39:15 videos,1690 accepted RGB frames,30 panels/triggers;
+    1747 private files independently redecode/reexport byte-identically.
+    59 focused /246 full tests pass;20 protected roots/frozen13 unchanged.
+    Exactec244d2 activation CI success observed via Actions web;0 new AI/human/
+    effective outcomes. Highest-risk AI coverage remains30/85,55 unreviewed
+    (10 prepared/45 not yet prepared). Stop for packet review before actual AI
+    inspection or ranks40+; research models and scientific gates remain locked.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
