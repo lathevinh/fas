@@ -326,6 +326,17 @@ is the strict source-only design consolidated in
     inspection.0 human/effective outcomes; a separate bound30..39 importer and
     genuine human JSON are required later. Stop for handoff checkpoint review
     before import, activation, ranks40+, other-dataset or model work.
+    [Batch04 human import](docs/150-oulu-batch04-human-review-import.md) now records
+    the owner's actual exported JSON:10 rejects,10 AI agreements,0 disagreements
+    and0 effective activation. Original30..39/raw JSON/answers preserved;
+    13/13 independent reimport byte-identical,61 focused /248 full tests pass,
+    26 protected roots/frozen13 unchanged. Exact5ec33a8 handoff CI Success observed.
+    All10 human rationales share one generic text, preserved without AI rewriting;
+    heightened-scrutiny reasoning for38..39 remains unresolved, not certified by
+    agreement. No missing-human-JSON blocker or repeat whole-review request.
+    Comparison states are not current activation; prior30 outcomes remain current.
+    Stop for import-checkpoint review before separate scrutiny resolution,
+    reconciliation, activation, ranks40+ or research-model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

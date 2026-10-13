@@ -21,6 +21,45 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch04_human_rank_adapter_preserves_answers_and_conservative_rules(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_human_batch04 as module
+            pairs = [{"queue_rank": rank, "packet_sha256": str(rank), "required_assets_sha256": {"image": str(rank)},
+                      "ai_disposition": "rejected_false_positive"} for rank in range(30, 40)]
+            definition = {"sha256": "bound", "pairs": pairs}
+            human = {"version": 1, "reviewer": {"kind": "owner_human", "id": "owner", "personally_inspected_bound_evidence": True},
+                     "review_definition_sha256": "bound", "reviewed_at_utc": "2026-10-13T02:16:39.495Z",
+                     "pairs": [{"queue_rank": pair["queue_rank"], "packet_sha256": pair["packet_sha256"],
+                                "reviewed_assets_sha256": pair["required_assets_sha256"], "personally_reviewed": True,
+                                "disposition": "rejected_false_positive", "rationale": "Original owner rationale", "capture_provenance_certified": False} for pair in pairs]}
+            original = json.dumps([human, definition], sort_keys=True)
+            rows = module.validate_batch04(human, definition)
+            self.assertEqual([row["queue_rank"] for row in rows], list(range(30, 40)))
+            self.assertTrue(all(not row["disagreement"] and not row["effective_disposition_activated"] for row in rows))
+            self.assertTrue(all(row["rationale"] == "Original owner rationale" for row in rows))
+            self.assertEqual(json.dumps([human, definition], sort_keys=True), original)
+            human["pairs"][8]["disposition"] = "uncertain_insufficient_evidence"
+            human["pairs"][9]["disposition"] = "confirmed_same_content_or_derived_lineage"
+            rows = module.validate_batch04(human, definition)
+            self.assertTrue(rows[8]["disagreement"])
+            self.assertEqual(rows[8]["effective_disposition"], "uncertain_insufficient_evidence")
+            self.assertTrue(rows[9]["stop_for_prospective_scientific_decision"])
+            self.assertEqual(rows[9]["effective_disposition"], "uncertain_insufficient_evidence")
+            self.assertTrue(all(not row["effective_disposition_activated"] for row in rows))
+            for key, value in (("queue_rank", 0), ("queue_rank", True), ("queue_rank", 30.0), ("queue_rank", 31),
+                               ("rationale", ""), ("packet_sha256", "drift"), ("personally_reviewed", False), ("reviewed_assets_sha256", {})):
+                with self.assertRaises(ValueError):
+                    module.validate_batch04({**human, "pairs": [{**human["pairs"][0], key: value}, *human["pairs"][1:]]}, definition)
+            for altered in ({**human, "pairs": human["pairs"][:-1]}, {**human, "review_definition_sha256": "drift"},
+                            {**human, "reviewer": {**human["reviewer"], "personally_inspected_bound_evidence": False}}):
+                with self.assertRaises(ValueError):
+                    module.validate_batch04(altered, definition)
+            with self.assertRaises(ValueError):
+                module.validate_batch04(human, {**definition, "pairs": list(reversed(pairs))})
+        finally:
+            sys.path.pop(0)
+
     def test_batch04_handoff_preserves_blank_answers_and_visible_scrutiny(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
