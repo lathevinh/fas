@@ -393,6 +393,17 @@ is the strict source-only design consolidated in
     Zero new AI/human/effective dispositions;40/85 AI reviewed,45 still unreviewed
     (10 prepared/35 not prepared). Stop for160 review and exact CI before AI visual
     inspection40..49, human handoff, ranks50+, other datasets or research models.
+    [Review161](docs/161-review-doc160-oulu-batch05-packets.md) accepts160 and
+    authorizes AI-only visual inspection of the30 bound assets for40..49.
+    [Batch05 AI proposals162](docs/162-review-response-doc161-oulu-batch05-ai-review.md)
+    records10 rejection proposals/0 uncertain/0 confirmed after30 actual image views;
+    zero human/effective dispositions, accepted current total remains40.
+    AI coverage50/85 leaves35 unreviewed;12/12 serialization replay matches,
+    40 protected roots/frozen13 unchanged,66 focused tests pass; full253 is the
+    accepted160 baseline, not rerun locally. Correlation and veil/dark-detail
+    limitations remain; proposals are not capture independence or global clearance.
+    Stop for162 review and exact CI before human handoff/import/activation,
+    ranks50+, other datasets or research-model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
