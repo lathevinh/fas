@@ -337,6 +337,17 @@ is the strict source-only design consolidated in
     Comparison states are not current activation; prior30 outcomes remain current.
     Stop for import-checkpoint review before separate scrutiny resolution,
     reconciliation, activation, ranks40+ or research-model work.
+    [Review151](docs/151-review-doc150-oulu-batch04-human-import.md) accepts import
+    without rework, forbids activation and requires targeted human reasoning38..39.
+    [Targeted scrutiny handoff](docs/152-review-response-doc151-oulu-targeted-scrutiny-handoff.md)
+    now prepares only2 pairs/6 existing bound assets, blank structure/sufficiency/
+    disposition/rationale/attestation fields, original-row references and collapsed
+    AI notes.9/9 independent export byte-identical;62 focused /249 full tests pass;
+    28 protected roots/frozen13 unchanged. Exact1532e80 import CI Success observed.
+    Private browser interaction remains unverified(file403); no semantic reasoning
+    sufficiency or new human resolution is claimed. Original10-pair JSON and30..37
+    remain untouched. Stop for152 review and genuine separate2-pair resolution JSON,
+    before targeted import, activation, ranks40+, other-dataset or model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

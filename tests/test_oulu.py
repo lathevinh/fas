@@ -21,6 +21,41 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch04_targeted_scrutiny_blank_fields_and_two_original_ranks(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_scrutiny_batch04 as module
+            pairs = [{"queue_rank": rank, "imported_human_record_sha256": str(rank), "ai_observations": ["</script>note"]} for rank in (38, 39)]
+            definition = {"pairs": pairs, "scrutiny_notice": module.NOTICE}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_scrutiny(definition, "bound")
+            self.assertEqual(json.dumps(definition, sort_keys=True), before)
+            data, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(data, {"definition": definition, "sha256": "bound"})
+            for fragment in ("visible_rendered_structure:''", "remaining_evidence_sufficient:null", "disposition:''", "rationale:''",
+                             "personally_reviewed:false", "count!==pairs.length", "queue_rank:pair.queue_rank", "imported_human_record_sha256:pair.imported_human_record_sha256",
+                             "remaining_evidence_sufficient:state[rank].remaining_evidence_sufficient", "item.visible_rendered_structure.trim()",
+                             "item.remaining_evidence_sufficient===false", "item.remaining_evidence_sufficient===true", "item.rationale.trim()",
+                             "item.personally_reviewed", "Object.keys(pair.required_assets_sha256)", "review_definition_sha256:DATA.sha256",
+                             "oulu-batch04-scrutiny-resolution.json", "targeted_human_scrutiny_resolution", "stop_for_prospective_scientific_decision",
+                             "document.createElement('details')", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            self.assertNotIn("count!==10", page)
+            self.assertNotIn("queue_rank:rank,", page)
+            self.assertNotIn("details.open", page)
+            for altered in (pairs[:1], list(reversed(pairs)), [{**pairs[0], "queue_rank": 38.0}, pairs[1]],
+                            [{**pairs[0], "imported_human_record_sha256": ""}, pairs[1]], [{**pair, "queue_rank": pair["queue_rank"] - 30} for pair in pairs]):
+                with self.assertRaises(ValueError):
+                    module.render_scrutiny({"pairs": altered}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (ROOT / "results/refused-scrutiny", root):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(import_root=root, review_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch04_human_rank_adapter_preserves_answers_and_conservative_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
