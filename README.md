@@ -374,6 +374,15 @@ is the strict source-only design consolidated in
     No validation-only field persists. Genuine clarification is present; semantic
     acceptance is a separate review, not a uniqueness check. Stop for156 review,
     before reconciliation, separate activation, ranks40+, other datasets or models.
+    [Review157](docs/157-review-doc156-oulu-batch04-pair-specific-clarification.md)
+    accepts156 and semantic scrutiny38..39, permitting a separate activation ledger.
+    [Batch04 activation158](docs/158-review-response-doc157-oulu-batch04-activation.md)
+    now materializes10 rejection rows30..39 in a new review-pending ledger;
+    accepted current total remains30, prospective40 only after158 acceptance.
+    13/13 serialization replay matches;30 image hashes/36 roots/frozen13 unchanged;
+    65 existing focused tests pass. No code/test change; accepted full252 baseline
+    is not locally rerun. Prior human/AI/import flags and source JSONs remain intact.
+    Stop for158 review before any queue40+, other datasets or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
