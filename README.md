@@ -282,6 +282,16 @@ is the strict source-only design consolidated in
     Exact2fb3246 handoff CI success observed via Actions web. Comparison states
     are not current activation; stop for import checkpoint review before separate
     additive activation or ranks30+. No repeat human JSON/review is requested.
+    [Review142](docs/142-review-doc141-oulu-batch03-human-import.md) accepts import
+    without rework and authorizes separate additive activation only20..29.
+    [Batch03 activation](docs/143-review-response-doc142-oulu-batch03-activation.md)
+    now adds10 current screen-level rejections,0 uncertain/confirmed; historical
+    import remains0 activated/accepted-state=false.13-file serialization replay
+    is byte-identical;58 focused tests pass;18 protected roots/frozen13 unchanged.
+    Exactede6e12 import CI success observed via Actions web; full245 not rerun here.
+    Generic/non-blinded/correlated evidence limitations remain. Total30 resolved
+    screen relationships are not global lineage clearance;55 highest-risk remain
+    unreviewed. Stop for activation checkpoint review before ranks30+ or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
