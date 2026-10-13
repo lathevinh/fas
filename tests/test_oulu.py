@@ -327,6 +327,39 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch05_packet_selection_requires_additive_acceptance_and_unchanged_history(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch05 as module
+            records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(50)]
+            prior = {"activation_checkpoint_review_pending": True, "batch04_accepted_reconciled_disposition_state": False,
+                     "accepted_batch04_current_effective_dispositions": 0, "effective_dispositions_activated": 10,
+                     "current_materialized_disposition_counts": {"rejected_false_positive": 10},
+                     "accepted_current_total": 30, "prospective_total_after_acceptance": 40}
+            acceptance = {"batch04_activation_checkpoint_accepted": True, "accepted_current_total": 40,
+                          "accepted_batch04_disposition_counts": {"rejected_false_positive": 10}}
+            original = json.dumps([records, prior, acceptance], sort_keys=True)
+            self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior, acceptance)], list(range(40, 50)))
+            self.assertEqual(json.dumps([records, prior, acceptance], sort_keys=True), original)
+            for key, value in (("batch04_activation_checkpoint_accepted", False), ("accepted_current_total", 30), ("accepted_batch04_disposition_counts", {"rejected_false_positive": 9})):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, prior, {**acceptance, key: value})
+            for key, value in (("activation_checkpoint_review_pending", False), ("batch04_accepted_reconciled_disposition_state", True), ("accepted_batch04_current_effective_dispositions", 10), ("effective_dispositions_activated", 0), ("current_materialized_disposition_counts", {}), ("accepted_current_total", 40), ("prospective_total_after_acceptance", 30)):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, {**prior, key: value}, acceptance)
+            for altered in (records[:-1], list(reversed(records)), [*records[:40], {**records[40], "queue_rank": 40.0}, *records[41:]], [*records[:40], {**records[40], "priority": "other"}, *records[41:]]):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(altered, prior, acceptance)
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (ROOT / "results/refused-visual-batch05", root):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(input_root=root, audit_root=root, exact_root=root, screen_root=root,
+                                                 frozen_root=root, archive_records=root, activation_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch04_packet_selection_requires_closed_batch03_and_exact_queue(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

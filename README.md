@@ -383,6 +383,16 @@ is the strict source-only design consolidated in
     65 existing focused tests pass. No code/test change; accepted full252 baseline
     is not locally rerun. Prior human/AI/import flags and source JSONs remain intact.
     Stop for158 review before any queue40+, other datasets or models.
+    [Review159](docs/159-review-doc158-oulu-batch04-activation.md) accepts158,
+    closes batch04 and supplies additive authority for40 accepted screen-level
+    relationships, leaving all historical158/import pending flags unchanged.
+    [Batch05 preparation160](docs/160-review-response-doc159-oulu-batch05-packets.md)
+    prepares only frozen40..49:16 videos/1956 RGB frames,2014 private files;
+    independent redecode/reexport2014/2014 matches and all1986 PNGs verified.
+    66 focused/253 full tests pass;38 protected roots/frozen13 remain unchanged.
+    Zero new AI/human/effective dispositions;40/85 AI reviewed,45 still unreviewed
+    (10 prepared/35 not prepared). Stop for160 review and exact CI before AI visual
+    inspection40..49, human handoff, ranks50+, other datasets or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
