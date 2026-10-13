@@ -21,6 +21,40 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_pair_specific_clarification_blank_foreground_fields_and_bindings(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_clarification_batch04 as module
+            pairs = [{"queue_rank": rank, "imported_human_record_sha256": str(rank), "imported_scrutiny_record_sha256": "bound",
+                      "ai_observations": ["</script>visible_rendered_structure:'',targeted_human_scrutiny_resolution"]} for rank in (38, 39)]
+            definition = {"pairs": pairs, "scrutiny_notice": module.NOTICE}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_clarification(definition, "definition")
+            data, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(data, {"definition": definition, "sha256": "definition"})
+            self.assertEqual(json.dumps(definition, sort_keys=True), before)
+            for fragment in ("left_visible_foreground_structure:''", "right_visible_foreground_structure:''", "haze_veil_limitation:''",
+                             "item.left_visible_foreground_structure.trim()", "item.right_visible_foreground_structure.trim()", "item.haze_veil_limitation.trim()",
+                             "disposition:''", "rationale:''", "remaining_evidence_sufficient:null", "personally_reviewed:false",
+                             "count!==pairs.length", "queue_rank:pair.queue_rank", "imported_scrutiny_record_sha256:pair.imported_scrutiny_record_sha256",
+                             "item.remaining_evidence_sufficient===false", "item.remaining_evidence_sufficient===true", "item.rationale.trim()",
+                             "Object.keys(pair.required_assets_sha256)", "human_pair_specific_clarification", "stop_for_prospective_scientific_decision",
+                             "oulu-batch04-pair-specific-clarification.json", "temporal panels and trigger", "document.createElement('details')", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            self.assertNotIn("details.open", page)
+            for altered in (pairs[:1], list(reversed(pairs)), [{**pairs[0], "queue_rank": 38.0}, pairs[1]],
+                            [{**pairs[0], "imported_human_record_sha256": ""}, pairs[1]], [{**pairs[0], "imported_scrutiny_record_sha256": ""}, pairs[1]]):
+                with self.assertRaises(ValueError):
+                    module.render_clarification({"pairs": altered}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-clarification"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(scrutiny_root=root, review_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_targeted_scrutiny_import_preserves_two_answers_and_stop_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

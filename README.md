@@ -356,6 +356,16 @@ is the strict source-only design consolidated in
     remains pending, not manufactured by AI. New input exists; no whole-batch
     repeat or original JSON replacement is requested. Stop for153 review before
     clarification/reconciliation, separate activation, ranks40+ or model work.
+    [Review154](docs/154-review-doc153-oulu-batch04-targeted-human-import.md)
+    accepts153 import without rework but rejects semantic scrutiny resolution.
+    [Additive clarification handoff155](docs/155-review-response-doc154-oulu-clarification-handoff.md)
+    now prepares38..39 only: blank left/right foreground, temporal/trigger reasoning,
+    haze limitation and sufficiency/disposition/attestation, with dual old human-row
+    and153 scrutiny-row bindings.9/9 independent export byte-identical;64 focused/
+    251 full tests pass;32 roots/frozen13 unchanged. Actual private browser remains
+    file403/unverified.0 new clarification/0 activation; both old JSONs stay intact.
+    Stop for155 review and new separate pair-specific clarification JSON, before
+    its import/review, activation, ranks40+, other datasets or model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
