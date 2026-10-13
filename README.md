@@ -314,6 +314,18 @@ is the strict source-only design consolidated in
     is40/85,45 unreviewed; prior30 accepted screen relationships remain current.
     Batch04 is not closed. Stop for AI-checkpoint review before separate human
     handoff, ranks40+, activation or research-model execution.
+    [Review148](docs/148-review-doc147-oulu-batch04-ai-review.md) accepts AI proposals
+    without rework and requires a separate human handoff only30..39.
+    [Batch04 human handoff](docs/149-review-response-doc148-oulu-batch04-human-handoff.md)
+    now supplies blank answers, collapsed AI notes and a neutral heightened-scrutiny
+    notice for38..39 outside those notes, with no prescribed disposition.
+    Same30 bound images;33/33 independent reexport byte-identical.60 focused /
+    247 full tests pass;24 protected roots/frozen13 and prior AI records unchanged.
+    Exacta9f1e78 AI CI Success observed via Actions web. Actual private browser
+    interaction remains unverified(file403); static/readback checks are not human
+    inspection.0 human/effective outcomes; a separate bound30..39 importer and
+    genuine human JSON are required later. Stop for handoff checkpoint review
+    before import, activation, ranks40+, other-dataset or model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

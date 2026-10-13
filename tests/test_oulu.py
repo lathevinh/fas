@@ -21,6 +21,42 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch04_handoff_preserves_blank_answers_and_visible_scrutiny(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_owner_batch04 as module
+            pairs = [{"queue_rank": rank, "ai_observations": ["</script>observed"],
+                      "human_review_notice": module.HEIGHTENED_SCRUTINY_NOTICE if rank in (38, 39) else ""} for rank in range(30, 40)]
+            definition = {"pairs": pairs}
+            original = json.dumps(definition, sort_keys=True)
+            page = module.render_batch04(definition, "bound")
+            self.assertEqual(json.dumps(definition, sort_keys=True), original)
+            embedded, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(embedded, {"definition": definition, "sha256": "bound"})
+            self.assertIn("Batch 04", page)
+            self.assertIn("oulu-batch04-human-review.json", page)
+            self.assertIn("queue_rank:pair.queue_rank,packet_sha256", page)
+            self.assertNotIn("queue_rank:rank,packet_sha256", page)
+            for text in ("disposition:''", "rationale:''", "personally_reviewed:false", "['','Select disposition']",
+                         "item.disposition&&item.rationale.trim()&&item.personally_reviewed", "Object.keys(pair.required_assets_sha256)",
+                         "document.createElement('details')", "review_definition_sha256:DATA.sha256", "\\u003c/script>"):
+                self.assertIn(text, page)
+            self.assertNotIn("details.open", page)
+            self.assertIn("notice.textContent=pair.human_review_notice", page)
+            self.assertLess(page.index("notice.textContent"), page.index("document.createElement('details')"))
+            for altered in (pairs[:9], list(reversed(pairs)), [{**pair, "queue_rank": pair["queue_rank"] - 10} for pair in pairs],
+                            [{**pairs[0], "queue_rank": 30.0}, *pairs[1:]], [*pairs[:8], {**pairs[8], "human_review_notice": ""}, pairs[9]]):
+                with self.assertRaises(ValueError):
+                    module.render_batch04({"pairs": altered}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (ROOT / "results/refused-owner-batch04", root):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(ai_root=root, packet_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch03_human_rank_adapter_preserves_attestations_and_conservative_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
