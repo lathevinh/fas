@@ -21,6 +21,55 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_clarification_import_preserves_foreground_and_dual_bindings(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_clarification_batch04 as module
+            pairs = [{"queue_rank": rank, "imported_human_record_sha256": str(rank), "imported_scrutiny_record_sha256": "scrutiny",
+                      "packet_sha256": str(rank), "required_assets_sha256": {"image": str(rank)}, "ai_disposition": "rejected_false_positive"} for rank in (38, 39)]
+            definition = {"sha256": "bound", "pairs": pairs}
+            human = {"version": 1, "record_type": "human_pair_specific_clarification", "stop_for_prospective_scientific_decision": False,
+                     "reviewer": {"kind": "owner_human", "id": "owner", "personally_inspected_bound_evidence": True},
+                     "review_definition_sha256": "bound", "reviewed_at_utc": "2026-10-13T03:54:29.393Z",
+                     "pairs": [{"queue_rank": pair["queue_rank"], "imported_human_record_sha256": pair["imported_human_record_sha256"],
+                                "imported_scrutiny_record_sha256": "scrutiny", "packet_sha256": pair["packet_sha256"],
+                                "reviewed_assets_sha256": pair["required_assets_sha256"], "left_visible_foreground_structure": "Owner left",
+                                "right_visible_foreground_structure": "Owner right", "haze_veil_limitation": "Owner limitation",
+                                "remaining_evidence_sufficient": True, "personally_reviewed": True, "disposition": "rejected_false_positive",
+                                "rationale": "Owner comparison", "capture_provenance_certified": False} for pair in pairs]}
+            before = json.dumps([human, definition], sort_keys=True)
+            outcomes = module.validate_clarification(human, definition)
+            self.assertEqual(json.dumps([human, definition], sort_keys=True), before)
+            for original, row in zip(human["pairs"], outcomes, strict=True):
+                self.assertTrue(all(row[field] == value for field, value in original.items()))
+                self.assertNotIn("visible_rendered_structure", row)
+                self.assertFalse(row["effective_disposition_activated"])
+                self.assertFalse(row["pair_specific_reasoning_semantically_verified"])
+            for field, value in (("queue_rank", 38.0), ("queue_rank", 39), ("imported_human_record_sha256", "drift"),
+                                 ("imported_scrutiny_record_sha256", "drift"), ("packet_sha256", "drift"), ("reviewed_assets_sha256", {}),
+                                 ("left_visible_foreground_structure", ""), ("right_visible_foreground_structure", " "),
+                                 ("haze_veil_limitation", None), ("remaining_evidence_sufficient", 1), ("personally_reviewed", False)):
+                with self.assertRaises(ValueError):
+                    module.validate_clarification({**human, "pairs": [{**human["pairs"][0], field: value}, human["pairs"][1]]}, definition)
+            with self.assertRaises(ValueError):
+                module.validate_clarification({**human, "record_type": "targeted_human_scrutiny_resolution"}, definition)
+            human["pairs"][0].update(disposition="uncertain_insufficient_evidence", remaining_evidence_sufficient=False)
+            human["pairs"][1]["disposition"] = "confirmed_same_content_or_derived_lineage"
+            with self.assertRaises(ValueError):
+                module.validate_clarification(human, definition)
+            human["stop_for_prospective_scientific_decision"] = True
+            outcomes = module.validate_clarification(human, definition)
+            self.assertTrue(outcomes[1]["stop_for_prospective_scientific_decision"])
+            self.assertTrue(all(row["comparison_disposition"] == "uncertain_insufficient_evidence" for row in outcomes))
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-clarification-import"):
+                    with self.assertRaises(ValueError):
+                        module.import_review(Namespace(review_root=root, human_input=root / "input.json", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_pair_specific_clarification_blank_foreground_fields_and_bindings(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

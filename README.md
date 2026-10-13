@@ -366,6 +366,14 @@ is the strict source-only design consolidated in
     file403/unverified.0 new clarification/0 activation; both old JSONs stay intact.
     Stop for155 review and new separate pair-specific clarification JSON, before
     its import/review, activation, ranks40+, other datasets or model execution.
+    [Genuine clarification import156](docs/156-oulu-batch04-pair-specific-clarification-import.md)
+    now binds the new owner38..39 JSON:2 rejects/0 disagreement/0 activation,
+    distinct left/right foreground, haze and rationale text;5/5 independent immutable
+    import files match.65 focused/252 full tests pass;34 roots/frozen13 and all three
+    source JSONs unchanged. Fresh exact155 REST CI Success resolves stale web status.
+    No validation-only field persists. Genuine clarification is present; semantic
+    acceptance is a separate review, not a uniqueness check. Stop for156 review,
+    before reconciliation, separate activation, ranks40+, other datasets or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
