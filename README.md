@@ -302,6 +302,18 @@ is the strict source-only design consolidated in
     effective outcomes. Highest-risk AI coverage remains30/85,55 unreviewed
     (10 prepared/45 not yet prepared). Stop for packet review before actual AI
     inspection or ranks40+; research models and scientific gates remain locked.
+    [Review146](docs/146-review-doc145-oulu-batch04-packets.md) accepts preparation
+    without rework and authorizes AI review only30..39.
+    [Batch04 AI proposals](docs/147-review-response-doc146-oulu-batch04-ai-review.md)
+    now record actual30 bound image views and10 pair-specific rejection proposals,
+    0 uncertain/confirmed,0 human/effective outcomes.12-file serialization replay
+    is byte-identical;59 focused tests pass;22 protected roots/frozen13 unchanged.
+    Exactd13904f preparation CI Success is observed via Actions web; full246
+    not rerun here. Sparse/correlated and haze-detail limitations remain disclosed,
+    not capture certification or independent accuracy. Highest-risk AI coverage
+    is40/85,45 unreviewed; prior30 accepted screen relationships remain current.
+    Batch04 is not closed. Stop for AI-checkpoint review before separate human
+    handoff, ranks40+, activation or research-model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
