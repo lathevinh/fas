@@ -404,6 +404,19 @@ is the strict source-only design consolidated in
     limitations remain; proposals are not capture independence or global clearance.
     Stop for162 review and exact CI before human handoff/import/activation,
     ranks50+, other datasets or research-model execution.
+    [Review163](docs/163-review-doc162-oulu-batch05-ai-review.md) accepts162 and
+    authorizes genuine human handoff for40..49 only, not activation or rank50+.
+    [Batch05 human handoff164](docs/164-review-response-doc163-oulu-batch05-human-handoff.md)
+    prepares blank disposition/visible-structure/rationale and false attestation,
+    with neutral visibility warnings40..43/49 and collapsed AI notes; no quota.
+    Original ranks/30 bound images are retained;33/33 reexport files match.
+    Zero human/effective dispositions; current accepted40, AI50/85,35 unreviewed.
+    67 focused/254 full tests pass;42 protected roots/frozen13 unchanged.
+    Pure JS completion8 synthetic cases pass, not actual UI/human review:
+    integrated private HTML is403; desktop/mobile interaction remains unverified.
+    No private-asset bypass, extra decode or packages. Stop for164 review, then
+    genuine human input and separate rank40..49/structure-aware import; no activation,
+    ranks50+, other datasets or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

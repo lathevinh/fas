@@ -226,6 +226,43 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch05_handoff_requires_blank_pair_specific_structure_and_neutral_visibility(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_owner_batch05 as module
+            pairs = [{"queue_rank": rank, "ai_observations": ["</script>queue_rank:rank,packet_sha256"],
+                      "human_review_notice": module.VISIBILITY_LIMITS[rank] + module.SCRUTINY_NOTICE if rank in module.HEIGHTENED_SCRUTINY_RANKS else ""} for rank in range(40, 50)]
+            definition = {"pairs": pairs}
+            original = json.dumps(definition, sort_keys=True)
+            page = module.render_batch05(definition, "bound")
+            embedded, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(embedded, {"definition": definition, "sha256": "bound"})
+            self.assertEqual(json.dumps(definition, sort_keys=True), original)
+            for text in ("Batch 05", "oulu-batch05-human-review.json", "disposition:''", "visible_rendered_structure:''", "rationale:''", "personally_reviewed:false",
+                         "item.visible_rendered_structure.trim()&&item.rationale.trim()", "Object.keys(pair.required_assets_sha256)",
+                         "visibleText.value=item.visible_rendered_structure", "visible_rendered_structure:state[rank].visible_rendered_structure",
+                         "queue_rank:pair.queue_rank", "batch05_human_review_with_pair_specific_structure", "review_definition_sha256:DATA.sha256",
+                         "['','Select disposition']", "['confirmed_same_content_or_derived_lineage'", "['rejected_false_positive'", "['uncertain_insufficient_evidence'",
+                         "stop_for_prospective_scientific_decision:state.some", "document.createElement('details')", "\\u003c/script>"):
+                self.assertIn(text, page)
+            self.assertNotIn("details.open", page)
+            self.assertIn("notice.textContent=pair.human_review_notice", page)
+            self.assertLess(page.index("notice.textContent"), page.index("document.createElement('details')"))
+            self.assertEqual(module.HEIGHTENED_SCRUTINY_RANKS, (40, 41, 42, 43, 49))
+            for altered in (pairs[:-1], list(reversed(pairs)), [{**pair, "queue_rank": pair["queue_rank"] - 10} for pair in pairs],
+                            [{**pairs[0], "queue_rank": 40.0}, *pairs[1:]], [{**pairs[0], "human_review_notice": ""}, *pairs[1:]],
+                            [*pairs[:4], {**pairs[4], "human_review_notice": "Reject"}, *pairs[5:]]):
+                with self.assertRaises(ValueError):
+                    module.render_batch05({"pairs": altered}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (ROOT / "results/refused-owner-batch05", root):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(ai_root=root, packet_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch04_handoff_preserves_blank_answers_and_visible_scrutiny(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
