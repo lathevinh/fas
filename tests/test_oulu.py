@@ -146,6 +146,47 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch05_categorical_handoff_removes_prose_and_preserves_scope(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_categorical_batch05 as module
+            pairs = [{"queue_rank": rank, "imported_human_record_sha256": str(rank), "ai_observations": ["</script>"],
+                      "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": name for name in ("temporal_a", "temporal_b", "trigger")},
+                      "human_review_notice": module.IDENTICAL_EVIDENCE_NOTICE if rank == 48 else module.VISIBILITY_LIMITS[rank] + module.NOTICE,
+                      "bound_images_identical_to_rank47": rank == 48} for rank in module.TARGET_RANKS]
+            definition = {"pairs": pairs, "governance_sha256": "governance", "review168_sha256": "review", "categorical_rules": module.CATEGORICAL_RULES}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_categorical(definition, "bound")
+            embedded, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(embedded, {"definition": definition, "sha256": "bound"})
+            self.assertEqual(json.dumps(definition, sort_keys=True), before)
+            for fragment in ("evidence_sufficient:null", "same_or_derived_content:null", "personal_inspection_attested:null", "owner_decision_attested:null",
+                             "submitted:false", "rule.evidence_sufficient===item.evidence_sufficient", "rule.same_or_derived_content===item.same_or_derived_content",
+                             "item.personal_inspection_attested===true", "item.owner_decision_attested===true", "names.length===3", "names.every",
+                             "if(item.evidence_sufficient===true)", "state[current].same_or_derived_content=null", "state[current].submitted=false",
+                             "details.hidden=true", "state[current].submitted!==true", "if(!exportReady())return", "queue_rank:pair.queue_rank",
+                             "capture_provenance_certified:false", "stop_for_prospective_scientific_decision", "rows.some", "bound_images_identical_to_rank47",
+                             "batch05_targeted_categorical_review", "oulu-batch05-categorical-review.json", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            for fragment in ("createElement('textarea')", "rationale:", "wording_assistance_disclosure", "left_visible_foreground_structure", "Select disposition", "count!==10"):
+                self.assertNotIn(fragment, page)
+            for changes in ({"governance_sha256": ""}, {"review168_sha256": ""}, {"categorical_rules": []},
+                            {"categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]},
+                            {"pairs": pairs[:-1]}, {"pairs": list(reversed(pairs))}, {"pairs": [{**pairs[0], "queue_rank": 40.0}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "human_review_notice": "Reject"}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "required_assets_sha256": {}}, *pairs[1:]]},
+                            {"pairs": [*pairs[:4], {**pairs[4], "bound_images_identical_to_rank47": False}, pairs[5]]}):
+                with self.assertRaises(ValueError):
+                    module.render_categorical({**definition, **changes}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-categorical"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(review_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_targeted_scrutiny_import_preserves_two_answers_and_stop_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

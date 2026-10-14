@@ -443,6 +443,21 @@ is the strict source-only design consolidated in
     desktop/mobile/render/export unverified. No privacy/package/server bypass.
     Restore formal167 review before new human input/import; stop for that review
     before semantic follow-up/reconciliation/activation, ranks50+ or research models.
+    [Review168](docs/168-review-doc167-oulu-batch05-clarification-handoff.md)
+    accepts167 governance/scope/provenance but requires categorical-only UX before
+    human use. [Categorical handoff169](docs/169-review-response-doc168-oulu-batch05-categorical-handoff.md)
+    replaces typed descriptions/rationale/wording disclosure with sufficiency,
+    conditional same/derived and personal-inspection/own-decision Yes/No choices.
+    Earlier AI context stays hidden until pair submission; edits invalidate it.
+    Old167 form and already supplied JSON are retained unimported, not converted.
+    Exact6 ranks/18 old PNGs/21 files;21/21 reexport,48 prior roots/frozen13/config17
+    unchanged;70 focused/257 full tests and32 pure JS synthetic cases pass.
+    Actual private UI403; desktop/mobile/render/interaction/export unverified.
+    No new categorical answers, machine narrative, activation, decode or AI views;
+    accepted current40. All future manual checks are categorical, not required prose.
+    Publish with fresh exact CI and stop for169 formal review BEFOREnew owner
+    decisions and separately reviewed categorical import/semantic follow-up.
+    No reconciliation/activation, ranks50+, other datasets or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
