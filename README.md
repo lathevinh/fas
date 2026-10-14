@@ -428,6 +428,21 @@ is the strict source-only design consolidated in
     original33 main handoff files unchanged plus only the pinned owner JSON.
     Stop for165 review and semantic follow-up before clarification/reconciliation/
     activation, ranks50+, other datasets or research models.
+    [Review166](docs/166-review-doc165-oulu-batch05-human-import.md) accepts165 for
+    mechanical/provenance import only, retrospectively accepts164 technically,
+    and blocks semantic clearance/activation pending additive follow-up.
+    [Governance/clarification handoff167](docs/167-review-response-doc166-oulu-batch05-clarification-handoff.md)
+    records the process-order deviation and scopes importer nonmutation separately
+    from AI-assisted wording; no independent blinded rationale authorship claimed.
+    Only40/41/42/43/48/49 prepared,18 old assets/21 files;21/21 reexport matches.
+    All human fields blank, including own-choice and wording-assistance disclosure;
+    rank48 binds identical47 evidence without copying answers or forcing reinspection.
+    No clean44..47 reopening, new clarification or activation; accepted current40.
+    69 focused/256 full tests pass;46 roots/frozen13/config17 unchanged.
+    Pure JS21 synthetic gate cases pass, not private UI verification; browser403,
+    desktop/mobile/render/export unverified. No privacy/package/server bypass.
+    Restore formal167 review before new human input/import; stop for that review
+    before semantic follow-up/reconciliation/activation, ranks50+ or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

@@ -104,6 +104,48 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch05_targeted_clarification_requires_blank_fields_and_provenance(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_clarification_batch05 as module
+            pairs = [{"queue_rank": rank, "imported_human_record_sha256": str(rank), "ai_observations": ["</script>disposition:''"],
+                      "human_review_notice": module.IDENTICAL_EVIDENCE_NOTICE if rank == 48 else module.VISIBILITY_LIMITS[rank] + module.SCRUTINY_NOTICE,
+                      "bound_images_identical_to_rank47": rank == 48} for rank in module.TARGET_RANKS]
+            definition = {"pairs": pairs, "governance_sha256": "governance"}
+            original = json.dumps(definition, sort_keys=True)
+            page = module.render_clarification(definition, "bound")
+            embedded, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(embedded, {"definition": definition, "sha256": "bound"})
+            self.assertEqual(json.dumps(definition, sort_keys=True), original)
+            self.assertEqual(module.TARGET_RANKS, (40, 41, 42, 43, 48, 49))
+            for fragment in ("left_visible_foreground_structure:''", "right_visible_foreground_structure:''", "visibility_limitation:''",
+                             "remaining_evidence_sufficient:null", "owner_disposition_is_own_decision:false", "wording_assistance_disclosure:''", "disposition:''", "rationale:''", "personally_reviewed:false",
+                             "item.left_visible_foreground_structure.trim()", "item.right_visible_foreground_structure.trim()", "item.visibility_limitation.trim()",
+                             "item.owner_disposition_is_own_decision&&item.wording_assistance_disclosure", "item.remaining_evidence_sufficient===false", "item.remaining_evidence_sufficient===true",
+                             "count!==pairs.length", "queue_rank:pair.queue_rank", "imported_human_record_sha256:pair.imported_human_record_sha256", "wording_assistance_disclosure:state[rank].wording_assistance_disclosure",
+                             "bound_images_identical_to_rank47:pair.bound_images_identical_to_rank47", "identical_evidence_reference_rank:pair.bound_images_identical_to_rank47?47:null",
+                             "governance_sha256:DATA.definition.governance_sha256", "batch05_targeted_semantic_clarification", "stop_for_prospective_scientific_decision",
+                             "oulu-batch05-targeted-clarification.json", "['','Select disposition']", "['AI_assisted'", "['cannot_exclude'", "document.createElement('details')", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            self.assertNotIn("details.open", page)
+            self.assertNotIn("count!==10", page)
+            self.assertLess(page.index("notice.textContent"), page.index("document.createElement('details')"))
+            for altered in (pairs[:-1], list(reversed(pairs)), [{**pairs[0], "queue_rank": 40.0}, *pairs[1:]],
+                            [{**pairs[0], "imported_human_record_sha256": ""}, *pairs[1:]], [{**pairs[0], "human_review_notice": "Reject"}, *pairs[1:]],
+                            [*pairs[:4], {**pairs[4], "bound_images_identical_to_rank47": False}, pairs[5]], [{**pairs[0], "bound_images_identical_to_rank47": 0}, *pairs[1:]]):
+                with self.assertRaises(ValueError):
+                    module.render_clarification({**definition, "pairs": altered}, "bound")
+            with self.assertRaises(ValueError):
+                module.render_clarification({**definition, "governance_sha256": ""}, "bound")
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-batch05-clarification"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(import_root=root, review_root=root, out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_targeted_scrutiny_import_preserves_two_answers_and_stop_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
