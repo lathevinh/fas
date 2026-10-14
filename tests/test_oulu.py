@@ -299,6 +299,47 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch05_human_rank_adapter_preserves_structure_and_pending_semantics(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_human_batch05 as module
+            pairs = [{"queue_rank": rank, "packet_sha256": str(rank), "required_assets_sha256": {"image": str(rank)},
+                      "ai_disposition": "rejected_false_positive"} for rank in range(40, 50)]
+            definition = {"sha256": "bound", "pairs": pairs}
+            human = {"version": 1, "record_type": "batch05_human_review_with_pair_specific_structure", "stop_for_prospective_scientific_decision": False,
+                     "reviewer": {"kind": "owner_human", "id": "owner", "personally_inspected_bound_evidence": True},
+                     "review_definition_sha256": "bound", "reviewed_at_utc": "2026-10-14T09:47:25Z",
+                     "pairs": [{"queue_rank": pair["queue_rank"], "packet_sha256": pair["packet_sha256"],
+                                "reviewed_assets_sha256": pair["required_assets_sha256"], "personally_reviewed": True,
+                                "disposition": "rejected_false_positive", "visible_rendered_structure": "Observed structure",
+                                "rationale": "Observed evidence", "capture_provenance_certified": False} for pair in pairs]}
+            original = json.dumps([human, definition], sort_keys=True)
+            rows = module.validate_batch05(human, definition)
+            self.assertEqual([row["queue_rank"] for row in rows], list(range(40, 50)))
+            self.assertEqual(json.dumps([human, definition], sort_keys=True), original)
+            self.assertTrue(all(row["visible_rendered_structure"] == "Observed structure" and not row["effective_disposition_activated"] and row["pair_specific_semantic_review_pending"] for row in rows))
+            human["pairs"][0]["disposition"] = "uncertain_insufficient_evidence"
+            human["pairs"][1]["disposition"] = "confirmed_same_content_or_derived_lineage"
+            human["stop_for_prospective_scientific_decision"] = True
+            human["pairs"][2]["rationale"] = "Same with previous queue"
+            rows = module.validate_batch05(human, definition)
+            self.assertTrue(rows[0]["disagreement"])
+            self.assertEqual(rows[0]["effective_disposition"], "uncertain_insufficient_evidence")
+            self.assertTrue(rows[1]["stop_for_prospective_scientific_decision"])
+            self.assertEqual(rows[1]["effective_disposition"], "uncertain_insufficient_evidence")
+            self.assertTrue(rows[2]["reference_only_marker_in_human_text"])
+            self.assertEqual(rows[2]["rationale"], "Same with previous queue")
+            for key, value in (("queue_rank", 0), ("queue_rank", True), ("queue_rank", 40.0), ("queue_rank", 41), ("visible_rendered_structure", " "), ("visible_rendered_structure", None), ("rationale", ""), ("packet_sha256", "drift"), ("personally_reviewed", False), ("reviewed_assets_sha256", {}), ("capture_provenance_certified", True)):
+                with self.assertRaises(ValueError):
+                    module.validate_batch05({**human, "pairs": [{**human["pairs"][0], key: value}, *human["pairs"][1:]]}, definition)
+            for altered in ({**human, "pairs": human["pairs"][:-1]}, {**human, "record_type": "wrong"}, {**human, "stop_for_prospective_scientific_decision": False}, {**human, "stop_for_prospective_scientific_decision": 1}, {**human, "review_definition_sha256": "drift"}, {**human, "reviewer": {**human["reviewer"], "personally_inspected_bound_evidence": False}}):
+                with self.assertRaises(ValueError):
+                    module.validate_batch05(altered, definition)
+            with self.assertRaises(ValueError):
+                module.validate_batch05(human, {**definition, "pairs": list(reversed(pairs))})
+        finally:
+            sys.path.pop(0)
+
     def test_batch03_human_rank_adapter_preserves_attestations_and_conservative_rules(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

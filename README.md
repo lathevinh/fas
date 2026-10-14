@@ -417,6 +417,17 @@ is the strict source-only design consolidated in
     No private-asset bypass, extra decode or packages. Stop for164 review, then
     genuine human input and separate rank40..49/structure-aware import; no activation,
     ranks50+, other datasets or research models.
+    The owner's exported JSON supplies scoped continuation for
+    [Batch05 human import165](docs/165-oulu-batch05-human-import.md), with no new
+    formal external review of164 claimed. Ten genuine rejection answers imported;
+    zero disagreement/activation, accepted current total40. Original bytes and
+    every human field preserved;13/13 serialization replay is not another review.
+    Reference-only42/43/48/49 and duplicate-text groups are recorded neutrally;
+    all pair-specific semantic review remains pending, with no answer override/quota.
+    68 focused/255 full tests pass;44 protected roots/frozen13/config17 unchanged;
+    original33 main handoff files unchanged plus only the pinned owner JSON.
+    Stop for165 review and semantic follow-up before clarification/reconciliation/
+    activation, ranks50+, other datasets or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
