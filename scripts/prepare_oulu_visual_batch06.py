@@ -72,6 +72,28 @@ def verified_archive_identities(input_root: Path, archive_records: Path, recover
     return identities
 
 
+def verified_packet_authority(preflight: dict) -> dict:
+    authority = preflight.get("guard_acceptance")
+    if not isinstance(authority, dict) or authority.get("accepted_by_Review180") is not True or authority.get("packet_preparation_checkpoint") != "181":
+        raise ValueError("explicit additive Review180 packet authority required")
+    review = ROOT / "docs/180-review-doc179-oulu-recovery-aware-guard.md"
+    report_path = ROOT / "results/phase1/oulu-recovery-aware-guard-v1.json"
+    if _sha256(review) != authority["review180_sha256"] or _sha256(report_path) != authority["accepted179_report_sha256"]:
+        raise ValueError("Review180 or accepted179 authority drift")
+    report = json.loads(report_path.read_bytes())
+    if authority["accepted179_runner_sha256"] != "4996ee828d1a159184616669033e324b1dadf3335a480402cb2ad62e8e9fd62b" or report["runner_sha256"] != authority["accepted179_runner_sha256"] or report["guard_integration_checkpoint_review_pending"] is not True or report["packet_preparation_authorized"] is not False:
+        raise ValueError("accepted179 historical guard binding drift")
+    check = authority["publication_CI"]
+    if check["head_sha"] != "63505d1c1b2f940fa077398127ef29a49ede95ef" or check["run_id"] != 38676766354 or check["job_id"] != 116232038205 or check["status"] != "completed" or check["conclusion"] != "success" or check["job_status"] != "completed" or check["job_conclusion"] != "success":
+        raise ValueError("exact successful179 publication CI required")
+    if preflight.get("packet_preparation_authorized") is not True or preflight.get("queue_ranks") != list(range(50, 60)):
+        raise ValueError("checkpoint181 fixed packet scope required")
+    for field, source in (("binding_sha256", "accepted_environment_binding_sha256"), ("accepted177_report_sha256", "accepted177_report_sha256"), ("archive_pin_report_sha256", "archive_pin_report_sha256"), ("review178_sha256", "review178_sha256")):
+        if preflight["accepted_recovery"][field] != report[source]:
+            raise ValueError("accepted179 recovery lineage drift")
+    return authority
+
+
 def fixed_next_records(records: list[dict], prior: dict, acceptance: dict) -> list[dict]:
     if acceptance.get("batch05_activation_checkpoint_accepted") is not True or acceptance.get("accepted_current_total") != 50 or acceptance.get("accepted_batch05_disposition_counts") != {"rejected_false_positive": 10}:
         raise ValueError("additive Review174 batch05 acceptance required")
@@ -96,6 +118,8 @@ def prepare(args: argparse.Namespace) -> dict:
         raise ValueError("explicit fresh preflight requires accepted archive recovery")
     if explicit_preflight is not None and not guard_only and preflight.get("packet_preparation_authorized") is not True:
         raise ValueError("guard checkpoint requires review before packet preparation")
+    if explicit_preflight is not None and not guard_only:
+        verified_packet_authority(preflight)
     if recovery is not None:
         private_output(args.out_root, [Path(recovery["binding_path"]).parent])
     check = preflight["activation_CI"]
@@ -174,6 +198,8 @@ def prepare(args: argparse.Namespace) -> dict:
                "runner_sha256": _sha256(Path(__file__)), "frozen_artifact_sha256": frozen, "ffmpeg": version, "no_prior_artifacts_overwritten": True}
     if recovery is not None:
         lineage["accepted_archive_recovery"] = recovery
+    if explicit_preflight is not None:
+        lineage["guard_acceptance"] = preflight["guard_acceptance"]
     output = args.out_root.resolve()
     write_immutable_record(output / "lineage.json", lineage)
     ids = sorted({row["candidate"][side] for row in records for side in ("left", "right")})

@@ -1132,6 +1132,62 @@ class OuluTransactionTest(unittest.TestCase):
 
 
 class OuluMediaTest(unittest.TestCase):
+    def test_batch06_packet_retry_requires_review180_and_exact179_CI(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch06 as module
+            from argparse import Namespace
+            from fas.freeze import write_immutable_record
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                repo = root / "repo"
+                review = repo / "docs/180-review-doc179-oulu-recovery-aware-guard.md"
+                review.parent.mkdir(parents=True)
+                review.write_text("synthetic Review180 acceptance", encoding="ascii")
+                recovery = {"binding_sha256": "a" * 64, "accepted177_report_sha256": "b" * 64,
+                            "archive_pin_report_sha256": "c" * 64, "review178_sha256": "d" * 64}
+                report = repo / "results/phase1/oulu-recovery-aware-guard-v1.json"
+                runner = "4996ee828d1a159184616669033e324b1dadf3335a480402cb2ad62e8e9fd62b"
+                write_immutable_record(report, {"runner_sha256": runner, "guard_integration_checkpoint_review_pending": True,
+                    "packet_preparation_authorized": False, "accepted_environment_binding_sha256": recovery["binding_sha256"],
+                    **{field: recovery[field] for field in ("accepted177_report_sha256", "archive_pin_report_sha256", "review178_sha256")}})
+                check = {"head_sha": "63505d1c1b2f940fa077398127ef29a49ede95ef", "run_id": 38676766354,
+                         "job_id": 116232038205, "status": "completed", "conclusion": "success",
+                         "job_status": "completed", "job_conclusion": "success"}
+                authority = {"accepted_by_Review180": True, "packet_preparation_checkpoint": "181",
+                    "review180_sha256": module._sha256(review), "accepted179_report_sha256": module._sha256(report),
+                    "accepted179_runner_sha256": runner, "publication_CI": check}
+                preflight = {"guard_acceptance": authority, "packet_preparation_authorized": True,
+                             "queue_ranks": list(range(50, 60)), "accepted_recovery": recovery, "protected_snapshots": {}}
+                before = json.dumps(preflight, sort_keys=True)
+                with patch.object(module, "ROOT", repo):
+                    self.assertEqual(module.verified_packet_authority(preflight), authority)
+                    invalid = [{**preflight, "guard_acceptance": None}, {**preflight, "packet_preparation_authorized": False},
+                               {**preflight, "queue_ranks": list(range(60, 70))}]
+                    for field, value in (("accepted_by_Review180", False), ("packet_preparation_checkpoint", "179"),
+                                         ("review180_sha256", "0" * 64), ("accepted179_report_sha256", "0" * 64),
+                                         ("accepted179_runner_sha256", "0" * 64)):
+                        invalid.append({**preflight, "guard_acceptance": {**authority, field: value}})
+                    for field, value in (("head_sha", "0" * 40), ("run_id", 38673838230), ("job_id", 116222822739),
+                                         ("status", "in_progress"), ("conclusion", "failure"), ("job_status", "queued"), ("job_conclusion", "failure")):
+                        invalid.append({**preflight, "guard_acceptance": {**authority, "publication_CI": {**check, field: value}}})
+                    for field in recovery:
+                        invalid.append({**preflight, "accepted_recovery": {**recovery, field: "0" * 64}})
+                    for index, bad in enumerate(invalid):
+                        with self.assertRaises(ValueError):
+                            module.verified_packet_authority(bad)
+                        path = root / f"bad-{index}.json"
+                        write_immutable_record(path, bad)
+                        args = Namespace(input_root=root / "source", audit_root=root / "audit", exact_root=root / "exact",
+                            screen_root=root / "screen", frozen_root=root / "frozen", archive_records=root / "pins",
+                            activation_root=root / "activation", preflight=path, guard_only=False, out_root=root / "never-created")
+                        with self.assertRaises(ValueError):
+                            module.prepare(args)
+                        self.assertFalse(args.out_root.exists())
+                    self.assertEqual(json.dumps(preflight, sort_keys=True), before)
+        finally:
+            sys.path.pop(0)
+
     def test_recovery_aware_fast_guard_binds_authority_and_rejects_every_stat_drift(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

@@ -518,6 +518,18 @@ is the strict source-only design consolidated in
     the explicit runner/test source transitions. Current50,0 packets/decode/review.
     Publish179 with fresh exact CI and stop for guard review before packet retry;
     the new immutable179 preflight explicitly forbids packet execution.
+    [Review180](docs/180-review-doc179-oulu-recovery-aware-guard.md) accepts179
+    additively and authorizes a fresh packet-preparation preflight for50..59.
+    [Packet retry181](docs/181-review-response-doc180-oulu-batch06-packet-retry.md)
+    explicitly validates Review180/exact179 CI in the runner and creates10 packets
+    with16 videos/2126 accepted RGB frames per independent export. Main/sibling
+    match2184/2184 files; all2156 PNGs per root read back and panels/triggers
+    reconstruct exactly.75 focused/262 full tests pass;55 prior roots/frozen13/
+    config17 and historical175/177/179 records remain unchanged, apart from the
+    explicit runner/test source transitions. No new AI/human/effective decisions:
+    accepted50, AI50/85,35 unreviewed. Publish181 with fresh exact CI, then stop for
+    formal packet review before AI/human adjudication, rank60+ or model execution.
+    No owner/license/admin/visual repeat is needed now.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
