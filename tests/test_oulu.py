@@ -21,6 +21,62 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch06_categorical_handoff_exact_authority_blank_answers_and_notices(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_categorical_batch06 as module
+            digest = "a" * 64
+            pairs = [{"queue_rank": rank, "packet_sha256": digest, "ai_record_sha256": digest, "exact_pair_record_sha256": digest,
+                      "ai_observations": ["</script>"], "human_review_notice": module.human_notice(rank),
+                      "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": digest for name in ("temporal_a", "temporal_b", "trigger")}} for rank in module.TARGET_RANKS]
+            definition = {"pairs": pairs, "review184_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                          "preflight_sha256": digest, "categorical_rules": module.CATEGORICAL_RULES}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_categorical(definition, digest)
+            data, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(data, {"definition": definition, "sha256": digest})
+            self.assertEqual(json.dumps(definition, sort_keys=True), before)
+            for fragment in ("evidence_sufficient:null", "same_or_derived_content:null", "personal_inspection_attested:null", "owner_decision_attested:null",
+                             "submitted:false", "item.personal_inspection_attested===true", "item.owner_decision_attested===true", "names.length===3", "names.every",
+                             "state[current].same_or_derived_content=null", "state[current].submitted=false", "details.hidden=true", "state[current].submitted!==true",
+                             "if(!exportReady())return", "ai_record_sha256:pair.ai_record_sha256", "exact_pair_record_sha256:pair.exact_pair_record_sha256",
+                             "review184_sha256:DATA.definition.review184_sha256", "batch06_categorical_review", "oulu-batch06-categorical-review.json", "rows.some", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            for fragment in ("createElement('textarea')", "rationale:", "imported_human_record", "governance_sha256", "review168", "rank47", "batch05_targeted"):
+                self.assertNotIn(fragment, page)
+            for changes in ({"review184_sha256": digest}, {"accepted_AI_report_sha256": digest}, {"preflight_sha256": ""}, {"categorical_rules": []},
+                            {"categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]},
+                            {"pairs": pairs[:-1]}, {"pairs": list(reversed(pairs))}, {"pairs": [{**pairs[0], "queue_rank": 50.0}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "human_review_notice": "Reject"}, *pairs[1:]]}, {"pairs": [{**pairs[0], "ai_record_sha256": ""}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "required_assets_sha256": {}}, *pairs[1:]]}):
+                with self.assertRaises(ValueError):
+                    module.render_categorical({**definition, **changes}, digest)
+            check = {"head_sha": "38e0263c0e20d0d3a27df431142a6550335d8db6", "run_id": 38683111522, "job_id": 116251844389,
+                     "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success"}
+            authority = {"checkpoint": 185, "review184_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                         "queue_ranks": list(module.TARGET_RANKS), "source183_CI": check,
+                         **{field: False for field in ("human_input_collection_authorized", "import_authorized", "effective_activation_authorized", "model_execution_authorized", "scientific_readiness")}}
+            module.verify_authority(authority)
+            for changes in ({"checkpoint": 183}, {"queue_ranks": list(range(60, 70))}, {"queue_ranks": [50.0, *range(51, 60)]},
+                            {"human_input_collection_authorized": True}, {"import_authorized": True}, {"effective_activation_authorized": True},
+                            {"model_execution_authorized": True}, {"scientific_readiness": True}, {"review184_sha256": digest},
+                            *({"source183_CI": {**check, field: "drift"}} for field in check)):
+                with self.assertRaises(ValueError):
+                    module.verify_authority({**authority, **changes})
+            self.assertIn("Haze", module.human_notice(54))
+            for rank in (56, 58, 59):
+                self.assertIn("lower garment", module.human_notice(rank))
+            for rank in range(56, 60):
+                self.assertIn("correlated", module.human_notice(rank))
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-batch06-categorical", root / "source/overlap"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(preflight=root / "preflight.json", packet_root=root / "source", ai_root=root / "ai", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch05_categorical_import_strict_mapping_bindings_and_preservation(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
