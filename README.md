@@ -602,6 +602,15 @@ is the strict source-only design consolidated in
     full266 pass, plus50 synthetic JS checks. Private browser403 leaves actual
     rendering/interaction/export unverified, without bypass. Publish195 with exact
     new CI and STOP for handoff review BEFORE owner answers/import/activation/rank70+.
+    [Review196](docs/196-review-doc195-oulu-batch07-categorical-handoff.md) accepts195
+    and authorizes genuine owner form use. [Import197](docs/197-oulu-batch07-categorical-import.md)
+    receives the actual export:10 human rejections versus AI9reject/1uncertain.
+    One disagreement remains reconciliation-pending with comparison uncertainty;
+    both original results and every owner field/raw byte are preserved. No override,
+    semantic acceptance or activation occurs. Main/sibling match13/13 files;
+    71 prior roots/frozen13/config17 remain unchanged. Focused80/full267 pass.
+    Publish197 with exact new CI and STOP for formal import/reconciliation review;
+    accepted effective60, AI70/85, no closure/rank70+/models or further owner prose.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

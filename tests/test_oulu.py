@@ -21,6 +21,86 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch07_categorical_import_strict_answers_and_preserved_AI_uncertainty(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_categorical_batch07 as module
+            digest = "a" * 64
+            pairs = [{"queue_rank": rank, "packet_sha256": digest, "ai_record_sha256": digest, "exact_pair_record_sha256": digest,
+                      "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": digest for name in ("temporal_a", "temporal_b", "trigger")},
+                      "ai_disposition": "uncertain_insufficient_evidence" if rank == 66 else "rejected_false_positive"} for rank in module.TARGET_RANKS]
+            definition = {"sha256": digest, "review194_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                          "categorical_rules": module.CATEGORICAL_RULES, "pairs": pairs}
+            human = {"version": 1, "record_type": "batch07_categorical_review", "review_definition_sha256": digest,
+                     "review194_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                     "reviewer": {"kind": "owner_human", "id": "synthetic", "personally_inspected_bound_evidence": True},
+                     "reviewed_at_utc": "2026-10-15T10:00:00Z", "stop_for_prospective_scientific_decision": False, "owner_extra": {"preserve": [1, False, None]},
+                     "pairs": [{"queue_rank": pair["queue_rank"], "packet_sha256": digest, "ai_record_sha256": digest, "exact_pair_record_sha256": digest,
+                                "reviewed_assets_sha256": pair["required_assets_sha256"], "evidence_sufficient": True, "same_or_derived_content": False,
+                                "personal_inspection_attested": True, "owner_decision_attested": True, "capture_provenance_certified": False,
+                                "disposition": "rejected_false_positive", "stop_for_prospective_scientific_decision": False, "owner_extra": {"preserve": [True, None]}} for pair in pairs]}
+            before = json.dumps([human, definition], sort_keys=True)
+            rows = module.validate_categorical(human, definition)
+            self.assertEqual(json.dumps([human, definition], sort_keys=True), before)
+            self.assertEqual(sum(row["disagreement_with_AI"] for row in rows), 1)
+            self.assertEqual(rows[6]["ai_disposition"], "uncertain_insufficient_evidence")
+            self.assertEqual(rows[6]["comparison_disposition"], "uncertain_insufficient_evidence")
+            self.assertEqual(rows[6]["disposition"], "rejected_false_positive")
+            for original, row in zip(human["pairs"], rows, strict=True):
+                self.assertTrue(all(row[field] == value for field, value in original.items()))
+                self.assertFalse(row["effective_disposition_activated"] or row["counts_as_accepted_current_effective_disposition"])
+                self.assertTrue(row["semantic_acceptance_pending"])
+                self.assertNotIn("rationale", row)
+            for field, value in (("queue_rank", 60.0), ("queue_rank", True), ("queue_rank", 61), ("packet_sha256", "drift"), ("ai_record_sha256", "drift"),
+                                 ("exact_pair_record_sha256", "drift"), ("reviewed_assets_sha256", {}), ("evidence_sufficient", 1), ("same_or_derived_content", 0),
+                                 ("same_or_derived_content", None), ("personal_inspection_attested", 1), ("owner_decision_attested", False), ("capture_provenance_certified", 0),
+                                 ("disposition", "uncertain_insufficient_evidence"), ("stop_for_prospective_scientific_decision", 0), ("effective_disposition_activated", False),
+                                 ("ai_disposition", "rejected_false_positive"), ("semantic_acceptance_pending", True)):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, "pairs": [{**human["pairs"][0], field: value}, *human["pairs"][1:]]}, definition)
+            for changes in ({"version": True}, {"version": 1.0}, {"record_type": "batch06_categorical_review"}, {"review_definition_sha256": "drift"},
+                            {"review194_sha256": "drift"}, {"accepted_AI_report_sha256": "drift"}, {"reviewed_at_utc": "2026-10-15T10:00:00"},
+                            {"reviewed_at_utc": "2026-10-15T10:00:00+01:00"}, {"reviewer": {**human["reviewer"], "personally_inspected_bound_evidence": False}},
+                            {"reviewer": {**human["reviewer"], "id": " "}}, {"pairs": human["pairs"][:-1]}, {"stop_for_prospective_scientific_decision": True}):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, **changes}, definition)
+            for changes in ({"pairs": pairs[:-1]}, {"pairs": list(reversed(pairs))}, {"pairs": [{**pairs[0], "queue_rank": 60.0}, *pairs[1:]]},
+                            {"categorical_rules": []}, {"categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]},
+                            {"review194_sha256": "drift"}, {"accepted_AI_report_sha256": "drift"}):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical(human, {**definition, **changes})
+            for rule in module.CATEGORICAL_RULES:
+                stop = rule["same_or_derived_content"] is True
+                changed = {**human["pairs"][6], **rule, "stop_for_prospective_scientific_decision": stop}
+                result = module.validate_categorical({**human, "pairs": [*human["pairs"][:6], changed, *human["pairs"][7:]], "stop_for_prospective_scientific_decision": stop}, definition)[6]
+                self.assertEqual(result["validated_disposition"], rule["disposition"])
+                self.assertEqual(result["stop_for_prospective_scientific_decision"], stop)
+                self.assertEqual(result["reconciliation_required"], rule["disposition"] != "uncertain_insufficient_evidence")
+                self.assertEqual(result["comparison_disposition"], "uncertain_insufficient_evidence")
+                self.assertEqual(result["disposition"], rule["disposition"])
+            for same in (True, False, 0, "false"):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, "pairs": [{**human["pairs"][0], "evidence_sufficient": False, "same_or_derived_content": same}, *human["pairs"][1:]]}, definition)
+            self.assertEqual(len(module.validate_categorical({**human, "pairs": list(reversed(human["pairs"]))}, definition)), 10)
+            check = {"head_sha": "3f648377a7d273fc1f35202d101692423e4d9d40", "run_id": 38710625142, "job_id": 116340807019,
+                     "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success"}
+            authority = {"checkpoint": 197, "review196_sha256": module.REVIEW196_SHA256, "import_authority": module.IMPORT_AUTHORITY,
+                         "handoff195_CI": check, "activation_authorized": False, "model_execution_authorized": False, "scientific_readiness": False}
+            module.verify_authority(authority)
+            for changes in ({"checkpoint": 197.0}, {"review196_sha256": "drift"}, {"import_authority": "prepare_only"}, {"activation_authorized": True},
+                            {"model_execution_authorized": True}, {"scientific_readiness": True}, {"handoff195_CI": {**check, "run_id": float(check["run_id"])}},
+                            *({"handoff195_CI": {**check, field: "drift"}} for field in check)):
+                with self.assertRaises(ValueError):
+                    module.verify_authority({**authority, **changes})
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-batch07-import", root / "review/overlap"):
+                    with self.assertRaises(ValueError):
+                        module.import_review(Namespace(preflight=root / "preflight.json", review_root=root / "review", human_input=root / "review/input.json", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch07_categorical_handoff_authority_blank_answers_and_uncertainty(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
