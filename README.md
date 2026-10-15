@@ -530,6 +530,18 @@ is the strict source-only design consolidated in
     accepted50, AI50/85,35 unreviewed. Publish181 with fresh exact CI, then stop for
     formal packet review before AI/human adjudication, rank60+ or model execution.
     No owner/license/admin/visual repeat is needed now.
+    [Review182](docs/182-review-doc181-oulu-batch06-packet-retry.md) accepts181
+    additively and authorizes AI proposals only for50..59.
+    [AI screening183](docs/183-review-response-doc182-oulu-batch06-ai-proposals.md)
+    actually opens30 fixed panel/trigger assets and records10 proposed false-positive
+    rejections,0 confirmed/uncertain, with private pair-specific rationales and
+    visibility/correlation limits. AI coverage including pending183 is60/85,25
+    remain unreviewed; accepted current total stays50, human/activation0.13/13
+    sibling records match serialization, not independent adjudication.57 prior
+    roots/frozen13/config17 and all accepted source/policy/owner records remain
+    unchanged;75 focused tests pass, accepted181262 full baseline not locally rerun.
+    Publish183 with fresh exact CI and stop for AI checkpoint review before any
+    separate categorical human handoff, activation, rank60+ or model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
