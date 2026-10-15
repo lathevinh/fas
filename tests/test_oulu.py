@@ -1132,6 +1132,92 @@ class OuluTransactionTest(unittest.TestCase):
 
 
 class OuluMediaTest(unittest.TestCase):
+    def test_archive_identity_recovery_requires_full_hash_and_stable_device_only_drift(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import recover_oulu_archive_identity as module
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                path = root / "synthetic.tar"
+                payload = b"synthetic archive container, not a decoded video"
+                path.write_bytes(payload)
+                old = {**module.file_identity(path.stat()), "device": path.stat().st_dev + 1}
+                expected = {"sha256": hashlib.sha256(payload).hexdigest(), "byte_size": len(payload)}
+                before = json.dumps([expected, old], sort_keys=True)
+                row = module.rehash_archive(path, expected, old)
+                self.assertEqual(row["current_sha256"], expected["sha256"])
+                self.assertEqual(row["changed_fields"], ["device"])
+                self.assertTrue(row["whole_file_read"] and row["stat_identity_stable_during_hash"])
+                self.assertEqual(json.dumps([expected, old], sort_keys=True), before)
+                for wrong in ({**expected, "sha256": "0" * 64}, {**expected, "byte_size": len(payload) + 1}):
+                    with self.assertRaises(ValueError):
+                        module.rehash_archive(path, wrong, old)
+                for wrong in ({**old, "device": path.stat().st_dev}, {**old, "inode": old["inode"] + 1}):
+                    with self.assertRaises(ValueError):
+                        module.rehash_archive(path, expected, wrong)
+                original = module.hashlib.file_digest
+
+                def mutate(source, algorithm):
+                    digest = original(source, algorithm)
+                    path.write_bytes(payload + b"changed during read")
+                    return digest
+
+                with patch.object(module.hashlib, "file_digest", side_effect=mutate):
+                    with self.assertRaisesRegex(ValueError, "changed during hash"):
+                        module.rehash_archive(path, expected, old)
+                path.write_bytes(payload)
+                link = root / "link.tar"
+                link.symlink_to(path)
+                with self.assertRaises(ValueError):
+                    module.rehash_archive(link, expected, old)
+                from argparse import Namespace
+                for output in (ROOT / "results/refused-recovery", root, root / "source/refused"):
+                    with self.assertRaises(ValueError):
+                        module.recover(Namespace(input_root=root / "source", archive_records=root / "pins",
+                                                 preflight=root / "preflight.json", out_root=output))
+                source_root, pin_root, repo = root / "source", root / "pins", root / "repo"
+                source_root.mkdir()
+                pin_root.mkdir()
+                anchors = {name: expected["sha256"] for name in module.ANCHORS}
+                pins = {}
+                for name, digest in anchors.items():
+                    archive = source_root / name
+                    archive.write_bytes(payload)
+                    record = pin_root / (name + ".sha256.json")
+                    module.write_immutable_record(record, {"file_identity": {**module.file_identity(archive.stat()), "device": archive.stat().st_dev + 1}})
+                    pins[name] = {"sha256": digest, "byte_size": len(payload), "private_record_sha256": module._sha256(record)}
+                report = repo / "results/phase1/oulu-archive-byte-pinning-v1.json"
+                review = repo / "docs/176-review-doc175-oulu-batch06-archive-device-blocker.md"
+                module.write_immutable_record(report, {"media_archives": pins})
+                review.parent.mkdir(parents=True)
+                review.write_text("synthetic recovery authority", encoding="ascii")
+                preflight = root / "preflight.json"
+                module.write_immutable_record(preflight, {
+                    "protected_snapshots": {str(pin_root): {item.name: module._sha256(item) for item in pin_root.iterdir()}},
+                    "pinned_file_sha256": {}, "frozen_file_sha256": {}, "study_config_sha256": {},
+                    "recovery_code_sha256": module._sha256(Path(module.__file__)), "review176_sha256": module._sha256(review),
+                    "archive_anchor_sha256": anchors, "archive_pin_report_sha256": module._sha256(report),
+                    "source175_CI": {"head_sha": "d54f6723f3852bd1a0ef2d8d1862f1799639a0cb", "run_id": 38669499099,
+                                     "job_id": 116209003838, "status": "completed", "conclusion": "success"}})
+                with patch.object(module, "ROOT", repo), patch.object(module, "ANCHORS", anchors):
+                    output = root / "success"
+                    binding = module.recover(Namespace(input_root=source_root, archive_records=pin_root, preflight=preflight, out_root=output))
+                    self.assertEqual(len(binding["archives"]), 3)
+                    self.assertEqual(binding["total_bytes_hashed"], 3 * len(payload))
+                    self.assertTrue(binding["recovery_checkpoint_review_pending"])
+                    self.assertFalse(binding["packet_preparation_authorized_by_this_record"])
+                    with self.assertRaises(ValueError):
+                        module.recover(Namespace(input_root=source_root, archive_records=pin_root, preflight=preflight, out_root=output))
+                    (source_root / "Test_files.tar").write_bytes(payload.replace(b"synthetic", b"different"))
+                    refused = root / "mismatch"
+                    with self.assertRaisesRegex(ValueError, "SHA-256 differs"):
+                        module.recover(Namespace(input_root=source_root, archive_records=pin_root, preflight=preflight, out_root=refused))
+                    self.assertTrue((refused / "Dev_files.tar.rehash.json").is_file())
+                    self.assertFalse((refused / "environment_binding.json").exists())
+                    self.assertFalse((refused / "Train_files.tar.rehash.json").exists())
+        finally:
+            sys.path.pop(0)
+
     def test_decode_count_mismatch_fails_closed(self) -> None:
         probe = {"streams": [{"codec_name": "rawvideo", "avg_frame_rate": "4/1"}],
                  "format": {"format_name": "avi", "duration": "1"},

@@ -494,6 +494,18 @@ is the strict source-only design consolidated in
     Stop for175 technical-blocker review and fresh exact publication CI; no AI/
     human handoff, later queue, other dataset or model work. Recovery needs an
     authorized additive technical identity check, not repeated owner/license review.
+    [Review176](docs/176-review-doc175-oulu-batch06-archive-device-blocker.md)
+    accepts175 as a blocker record and authorizes separate full-archive recovery.
+    [Recovery177](docs/177-review-response-doc176-oulu-archive-identity-recovery.md)
+    rehashes all105116817408 bytes: all3 whole-file SHA values equal the original
+    frozen authority. New immutable observations and an additive environment binding
+    record device-only drift; no remount cause is independently established.
+    Old pins/guards/history,54 prior roots/frozen13/config17 remain unchanged;
+    73 focused/260 full tests and immutable readback/refusal checks pass.
+    Binding is review-pending, not a guard bypass or permission to retry packets:
+    current50, AI50/85,0 new packets/decode/judgments. Publish177 with fresh exact
+    CI, then stop for recovery review before a separate batch06 preparation retry.
+    No repeated owner, license, administrative or human visual input is required.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
