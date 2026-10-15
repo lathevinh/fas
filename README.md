@@ -584,6 +584,15 @@ is the strict source-only design consolidated in
     AI60/85 and25 unreviewed stay unchanged; packets are not visual adjudications.
     Fresh source189 CI is bound but distinct from required new191 CI. Publish191
     and stop for packet review before AI proposals, human handoff or rank70+.
+    [Review192](docs/192-review-doc191-oulu-batch07-packets.md) accepts191 and
+    authorizes exact60..69 AI proposals only. [AI checkpoint193](docs/193-review-response-doc192-oulu-batch07-ai-proposals.md)
+    actually opens30 bound assets:9 rejection proposals,1 uncertain,0 confirmed;
+    uncertainty is retained, with no human decision or effective activation.
+    Replay matches13/13 files;67 prior roots/frozen13/config17 stay unchanged.
+    Existing78 focused tests pass; full265 remains the accepted191 baseline.
+    Accepted effective60 and prior accepted AI60/85 stay distinct from70/85 AI
+    coverage including this pending checkpoint,15 not yet screened. Publish193
+    with fresh exact CI and stop for AI review before human handoff or rank70+.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
