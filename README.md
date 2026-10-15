@@ -574,6 +574,16 @@ is the strict source-only design consolidated in
     total stays50, prospective60 only after189 acceptance; batch06 remains open.
     Fresh source187 CI is verified but distinct from required new189 CI. Publish
     and stop for formal189 activation review before rank60+, datasets or models.
+    [Review190](docs/190-review-doc189-oulu-batch06-activation.md) accepts189
+    additively, closes batch06 and advances accepted current effective total to60.
+    [Packet preparation191](docs/191-review-response-doc190-oulu-batch07-packets.md)
+    prepares exact frozen60..69 only:19 videos/2464 verified RGB frames per export,
+    2525/2525 independently exported files byte-identical, all4988 PNG readbacks
+    and temporal/earliest-trigger reconstructions pass.65 prior roots/frozen13/
+    config17 are preserved;78 focused/265 full tests pass. Accepted effective60,
+    AI60/85 and25 unreviewed stay unchanged; packets are not visual adjudications.
+    Fresh source189 CI is bound but distinct from required new191 CI. Publish191
+    and stop for packet review before AI proposals, human handoff or rank70+.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

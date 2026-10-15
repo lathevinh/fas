@@ -670,6 +670,85 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch07_packet_authority_selection_and_unchanged_history(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch07 as module
+            from argparse import Namespace
+            from fas.freeze import write_immutable_record
+            records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(70)]
+            prior = {"activation_checkpoint_review_pending": True, "batch06_accepted_reconciled_disposition_state": False,
+                     "accepted_batch06_current_effective_dispositions": 0, "effective_dispositions_activated": 10,
+                     "current_materialized_disposition_counts": {"rejected_false_positive": 10},
+                     "accepted_current_total": 50, "prospective_total_after_acceptance": 60, "batch06_closed": False,
+                     "stop_for_prospective_scientific_decision": False}
+            acceptance = {"batch06_activation_checkpoint_accepted": True, "batch06_screen_level_review_closed": True,
+                          "accepted_current_total": 60, "accepted_batch06_disposition_counts": {"rejected_false_positive": 10}}
+            before = json.dumps([records, prior, acceptance], sort_keys=True)
+            self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior, acceptance)], list(range(60, 70)))
+            for key, value in (("batch06_activation_checkpoint_accepted", False), ("batch06_screen_level_review_closed", False),
+                               ("accepted_current_total", 60.0), ("accepted_batch06_disposition_counts", {"rejected_false_positive": 9})):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, prior, {**acceptance, key: value})
+            for key, value in (("activation_checkpoint_review_pending", False), ("batch06_accepted_reconciled_disposition_state", True),
+                               ("accepted_batch06_current_effective_dispositions", 10), ("effective_dispositions_activated", 0),
+                               ("current_materialized_disposition_counts", {}), ("accepted_current_total", 60),
+                               ("prospective_total_after_acceptance", 50), ("batch06_closed", True), ("stop_for_prospective_scientific_decision", True)):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, {**prior, key: value}, acceptance)
+            for altered in (records[:-1], list(reversed(records)), [*records[:60], {**records[60], "queue_rank": 60.0}, *records[61:]],
+                            [*records[:60], {**records[60], "queue_rank": True}, *records[61:]], [*records[:60], {**records[60], "priority": "other"}, *records[61:]]):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(altered, prior, acceptance)
+            self.assertEqual(json.dumps([records, prior, acceptance], sort_keys=True), before)
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                repo = root / "repo"
+                review = repo / "docs/190-review-doc189-oulu-batch06-activation.md"
+                review.parent.mkdir(parents=True)
+                review.write_text("synthetic Review190 acceptance", encoding="ascii")
+                report = repo / "results/phase1/oulu-batch06-activation-v1.json"
+                write_immutable_record(report, prior)
+                check = {"head_sha": "a81bd9259478a8a49ad0783fdb777329791a99d5", "run_id": 38696814671,
+                         "job_id": 116295204960, "status": "completed", "conclusion": "success",
+                         "job_status": "completed", "job_conclusion": "success"}
+                authority = {**acceptance, "review190_sha256": module._sha256(review)}
+                preflight = {"checkpoint": 191, "acceptance": authority, "activation_CI": check,
+                             "packet_preparation_authorized": True, "queue_ranks": list(range(60, 70)),
+                             "accepted_prior_report_sha256": module._sha256(report),
+                             "accepted_recovery": {"accepted_by_Review178": True}, "protected_snapshots": {}}
+                original = json.dumps(preflight, sort_keys=True)
+                with patch.object(module, "ROOT", repo), patch.object(module, "REVIEW190_SHA256", module._sha256(review)), patch.object(module, "ACCEPTED189_REPORT_SHA256", module._sha256(report)):
+                    self.assertEqual(module.verified_packet_authority(preflight), authority)
+                    invalid = [{**preflight, "acceptance": None}, {**preflight, "acceptance": {**authority, "review190_sha256": "0" * 64}},
+                               {**preflight, "checkpoint": 191.0}, {**preflight, "packet_preparation_authorized": False},
+                               {**preflight, "queue_ranks": list(range(50, 60))}, {**preflight, "queue_ranks": [60.0, *range(61, 70)]},
+                               {**preflight, "accepted_prior_report_sha256": "0" * 64}, {**preflight, "activation_CI": None},
+                               {**preflight, "accepted_recovery": None}, {**preflight, "accepted_recovery": {"accepted_by_Review178": False}}]
+                    for key, value in (("head_sha", "0" * 40), ("run_id", 38694502603), ("run_id", float(check["run_id"])),
+                                       ("job_id", 116287801095), ("status", "in_progress"), ("conclusion", "failure"),
+                                       ("job_status", "queued"), ("job_conclusion", "failure")):
+                        invalid.append({**preflight, "activation_CI": {**check, key: value}})
+                    for index, bad in enumerate(invalid):
+                        with self.assertRaises(ValueError):
+                            module.verified_packet_authority(bad)
+                        path = root / f"bad-{index}.json"
+                        write_immutable_record(path, bad)
+                        args = Namespace(input_root=root / "source", audit_root=root / "audit", exact_root=root / "exact",
+                            screen_root=root / "screen", frozen_root=root / "frozen", archive_records=root / "pins",
+                            activation_root=root / "activation", preflight=path, out_root=root / "never-created")
+                        with patch.object(module, "verified_archive_identities", side_effect=AssertionError("must not reach archives")):
+                            with self.assertRaises(ValueError):
+                                module.prepare(args)
+                        self.assertFalse(args.out_root.exists())
+                    for output in (ROOT / "results/refused-visual-batch07", root, root / "source/refused"):
+                        with self.assertRaises(ValueError):
+                            module.prepare(Namespace(input_root=root, audit_root=root, exact_root=root, screen_root=root,
+                                frozen_root=root, archive_records=root, activation_root=root, preflight=root / "missing", out_root=output))
+                self.assertEqual(json.dumps(preflight, sort_keys=True), original)
+        finally:
+            sys.path.pop(0)
+
     def test_batch06_packet_selection_requires_additive_acceptance_and_unchanged_history(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
