@@ -470,6 +470,18 @@ is the strict source-only design consolidated in
     activation0/current40, batch05 open and semantic acceptance pending.
     Stop for171 review after fresh publication CI before semantic follow-up,
     reconciliation/activation, ranks50+, other datasets or research models.
+    [Review172](docs/172-review-doc171-oulu-batch05-categorical-import.md)
+    accepts171 and clears all six semantic blockers without more owner input.
+    [Separate activation173](docs/173-review-response-doc172-oulu-batch05-activation.md)
+    materializes10 batch05 screen-level rejects in a new review-pending ledger:
+    six accepted categorical bindings plus four clean prior rows, no reconciliation
+    or hard stop.13/13 serialization replay,30 image-hash bindings and52 prior
+    roots/frozen13/config17 preservation pass;71 focused tests pass, accepted171
+    full258 baseline is not locally rerun. No production code/test/policy changes,
+    new judgments, images, decode or model work. New rows are not yet counted as
+    accepted: current40, prospective50 after173 acceptance only; batch05 open.
+    Source171 CI is successful but distinct from required fresh173 publication CI.
+    Stop for173 activation review before ranks50+, other datasets or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
