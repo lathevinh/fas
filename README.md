@@ -482,6 +482,18 @@ is the strict source-only design consolidated in
     accepted: current40, prospective50 after173 acceptance only; batch05 open.
     Source171 CI is successful but distinct from required fresh173 publication CI.
     Stop for173 activation review before ranks50+, other datasets or models.
+    [Review174](docs/174-review-doc173-oulu-batch05-activation.md) accepts173,
+    closes batch05 and advances accepted screen-level total to50 additively,
+    without rewriting historical flags or requiring more owner input for40..49.
+    [Batch06 preparation175](docs/175-review-response-doc174-oulu-batch06-packets.md)
+    targets fixed50..59 but is BLOCKED before selected payload access: all3 archive
+    stat identities differ only in device ID. Other stat fields match; current
+    archive bytes were not rehashed, so unchanged content is not inferred.
+    Strict guard retained;0 packets/PNGs/decode, no output roots or replay claim.
+    72 focused/259 full tests pass;54 prior roots/frozen13/config17 unchanged.
+    Stop for175 technical-blocker review and fresh exact publication CI; no AI/
+    human handoff, later queue, other dataset or model work. Recovery needs an
+    authorized additive technical identity check, not repeated owner/license review.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
