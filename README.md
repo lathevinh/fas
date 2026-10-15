@@ -554,6 +554,16 @@ is the strict source-only design consolidated in
     remains unverified after trusted-folder403; no bypass or public server.
     Publish185 with fresh exact CI, then stop for formal handoff review before
     owner answers, import/reconciliation, activation, rank60+ or model execution.
+    [Review186](docs/186-review-doc185-oulu-batch06-categorical-handoff.md)
+    accepts185 for genuine categorical owner use. The owner supplies the new
+    export; [import187](docs/187-oulu-batch06-categorical-import.md) validates
+    and imports all10 decisions:10 rejections,0 AI disagreements, no hard stop.
+    Original owner bytes/fields remain unchanged; main/sibling match13/13 files,
+    not independent adjudication.61 prior roots/frozen13/config17 are preserved;
+    one added test leaves accepted test ASTs unchanged,77 focused/264 full pass.
+    Imported decisions remain pending formal review, activation0/effective50,
+    AI60/85 with25 unreviewed. Publish187 with fresh exact CI and stop for import
+    review before separate additive activation, rank60+ or model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
