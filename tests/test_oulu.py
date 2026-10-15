@@ -21,6 +21,57 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_batch05_categorical_import_strict_mapping_bindings_and_preservation(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_categorical_batch05 as module
+            pairs = [{"queue_rank": rank, "packet_sha256": str(rank), "imported_human_record_sha256": "prior",
+                      "required_assets_sha256": {"image": str(rank)}, "ai_disposition": "rejected_false_positive",
+                      "prior_human_disposition": "rejected_false_positive", "bound_images_identical_to_rank47": rank == 48} for rank in module.TARGET_RANKS]
+            definition = {"sha256": "definition", "governance_sha256": "governance", "review168_sha256": "review", "categorical_rules": module.CATEGORICAL_RULES, "pairs": pairs}
+            human = {"version": 1, "record_type": "batch05_targeted_categorical_review", "review_definition_sha256": "definition", "governance_sha256": "governance", "review168_sha256": "review",
+                     "reviewer": {"kind": "owner_human", "id": "synthetic", "personally_inspected_bound_evidence": True}, "reviewed_at_utc": "2026-10-15T00:52:21.261Z", "stop_for_prospective_scientific_decision": False,
+                     "pairs": [{"queue_rank": pair["queue_rank"], "packet_sha256": pair["packet_sha256"], "imported_human_record_sha256": "prior", "reviewed_assets_sha256": pair["required_assets_sha256"],
+                                "evidence_sufficient": True, "same_or_derived_content": False, "personal_inspection_attested": True, "owner_decision_attested": True,
+                                "disposition": "rejected_false_positive", "stop_for_prospective_scientific_decision": False, "capture_provenance_certified": False,
+                                "bound_images_identical_to_rank47": pair["queue_rank"] == 48, "identical_evidence_reference_rank": 47 if pair["queue_rank"] == 48 else None, "owner_extra": "preserve"} for pair in pairs]}
+            before = json.dumps([human, definition], sort_keys=True)
+            rows = module.validate_categorical(human, definition)
+            self.assertEqual(json.dumps([human, definition], sort_keys=True), before)
+            for original, row in zip(human["pairs"], rows, strict=True):
+                self.assertTrue(all(row[field] == value for field, value in original.items()))
+                self.assertNotIn("rationale", row)
+                self.assertFalse(row["effective_disposition_activated"] or row["reconciliation_required"])
+            for field, value in (("queue_rank", 40.0), ("queue_rank", 41), ("evidence_sufficient", 1), ("same_or_derived_content", 0), ("same_or_derived_content", None),
+                                 ("personal_inspection_attested", 1), ("owner_decision_attested", False), ("packet_sha256", "drift"), ("imported_human_record_sha256", "drift"),
+                                 ("reviewed_assets_sha256", {}), ("capture_provenance_certified", True), ("bound_images_identical_to_rank47", 0), ("identical_evidence_reference_rank", 47),
+                                 ("disposition", "uncertain_insufficient_evidence"), ("stop_for_prospective_scientific_decision", 0), ("effective_disposition_activated", True)):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, "pairs": [{**human["pairs"][0], field: value}, *human["pairs"][1:]]}, definition)
+            for changes in ({"version": True}, {"version": 1.0}, {"record_type": "batch05_targeted_semantic_clarification"}, {"review_definition_sha256": "drift"},
+                            {"governance_sha256": "drift"}, {"review168_sha256": "drift"}, {"reviewed_at_utc": "2026-10-15T00:52:21"}, {"stop_for_prospective_scientific_decision": True},
+                            {"reviewer": {**human["reviewer"], "personally_inspected_bound_evidence": False}}, {"pairs": human["pairs"][:-1]}):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, **changes}, definition)
+            for rule in module.CATEGORICAL_RULES:
+                row = {**human["pairs"][0], **rule, "stop_for_prospective_scientific_decision": rule["same_or_derived_content"] is True}
+                candidate = {**human, "pairs": [row, *human["pairs"][1:]], "stop_for_prospective_scientific_decision": row["stop_for_prospective_scientific_decision"]}
+                outcome = module.validate_categorical(candidate, definition)[0]
+                self.assertEqual(outcome["validated_disposition"], rule["disposition"])
+                self.assertEqual(outcome["stop_for_prospective_scientific_decision"], rule["same_or_derived_content"] is True)
+                self.assertEqual(outcome["reconciliation_required"], rule["disposition"] != "rejected_false_positive")
+            for same in (True, False, 0, "false"):
+                with self.assertRaises(ValueError):
+                    module.validate_categorical({**human, "pairs": [{**human["pairs"][0], "evidence_sufficient": False, "same_or_derived_content": same}, *human["pairs"][1:]]}, definition)
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                folder = Path(directory)
+                for output in (folder, ROOT / "results/refused-categorical-import"):
+                    with self.assertRaises(ValueError):
+                        module.import_review(Namespace(review_root=folder, human_input=folder / "input.json", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_clarification_import_preserves_foreground_and_dual_bindings(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

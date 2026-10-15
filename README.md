@@ -458,6 +458,18 @@ is the strict source-only design consolidated in
     Publish with fresh exact CI and stop for169 formal review BEFOREnew owner
     decisions and separately reviewed categorical import/semantic follow-up.
     No reconciliation/activation, ranks50+, other datasets or research models.
+    [Review170](docs/170-review-doc169-oulu-batch05-categorical-handoff.md)
+    accepts169 without rework and authorizes owner categorical use. The new JSON
+    is now recorded by [categorical import171](docs/171-oulu-batch05-categorical-import.md):
+    exact6 target ranks,6 reject answers,0 AI disagreement/prior-human changes,
+    no scientific stop; every supplied field and raw source bytes preserved.
+    Old167 JSON is not converted; original10 human records and historical flags
+    remain unchanged.9/9 serialization replay is not another human adjudication.
+    71 focused/258 full tests pass;50 prior roots/frozen13/config17 unchanged.
+    No prose, new images/decode/AI views or machine narrative; categorical6,
+    activation0/current40, batch05 open and semantic acceptance pending.
+    Stop for171 review after fresh publication CI before semantic follow-up,
+    reconciliation/activation, ranks50+, other datasets or research models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
