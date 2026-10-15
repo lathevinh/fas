@@ -506,6 +506,18 @@ is the strict source-only design consolidated in
     current50, AI50/85,0 new packets/decode/judgments. Publish177 with fresh exact
     CI, then stop for recovery review before a separate batch06 preparation retry.
     No repeated owner, license, administrative or human visual input is required.
+    [Review178](docs/178-review-doc177-oulu-archive-identity-recovery.md)
+    accepts177 and the additive environment binding; the archive-content blocker
+    is resolved without rewriting historical pending flags.
+    [Guard integration179](docs/179-review-response-doc178-oulu-recovery-aware-guard.md)
+    binds the accepted177 identity directly in the batch06 runner, retaining
+    original SHA+size authority and all5 stat fields. Live guard-only CLI passes
+    for3 archives without opening archive bytes; legacy/future-drift/authority/
+    preservation failures are rejected without output.74 focused/261 full tests
+    pass;55 prior roots/frozen13/config17 and old records remain unchanged except
+    the explicit runner/test source transitions. Current50,0 packets/decode/review.
+    Publish179 with fresh exact CI and stop for guard review before packet retry;
+    the new immutable179 preflight explicitly forbids packet execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

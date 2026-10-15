@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import stat
 import subprocess
 import sys
 import tarfile
@@ -22,6 +23,53 @@ from fas.oulu import _sha256
 from fas.visual import pair_sheet, png_bytes, review_orders, verified_thumbnails
 from prepare_oulu_owner_review import private_output
 from prepare_oulu_visual_batch05 import bundle
+from recover_oulu_archive_identity import ANCHORS, file_identity
+
+
+def verified_archive_identities(input_root: Path, archive_records: Path, recovery: dict | None = None) -> dict:
+    public_path = ROOT / "results/phase1/oulu-archive-byte-pinning-v1.json"
+    pins = json.loads(public_path.read_bytes())["media_archives"]
+    bound = None
+    if recovery is not None:
+        if recovery.get("accepted_by_Review178") is not True or _sha256(ROOT / "docs/178-review-doc177-oulu-archive-identity-recovery.md") != recovery["review178_sha256"]:
+            raise ValueError("additive Review178 recovery acceptance required")
+        report_path = ROOT / "results/phase1/oulu-archive-identity-recovery-v1.json"
+        if _sha256(report_path) != recovery["accepted177_report_sha256"] or _sha256(public_path) != recovery["archive_pin_report_sha256"]:
+            raise ValueError("accepted recovery or archive-pin authority drift")
+        report = json.loads(report_path.read_bytes())
+        binding_path = Path(recovery["binding_path"])
+        if _sha256(binding_path) != recovery["binding_sha256"] or recovery["binding_sha256"] != report["private_environment_binding_sha256"] or report["archive_pin_report_sha256"] != recovery["archive_pin_report_sha256"]:
+            raise ValueError("accepted environment binding SHA mismatch")
+        binding = json.loads(binding_path.read_bytes())
+        if binding["recovery_checkpoint_review_pending"] is not True or binding["old_archive_pins_unchanged"] is not True or binding["archive_pin_report_sha256"] != recovery["archive_pin_report_sha256"]:
+            raise ValueError("historical recovery binding drift")
+        if set(binding["archives"]) != set(ANCHORS) or {name: pin["sha256"] for name, pin in pins.items()} != ANCHORS:
+            raise ValueError("frozen content anchors drift")
+        bound = binding["archives"]
+        for name, row in bound.items():
+            path = binding_path.parent / (name + ".rehash.json")
+            if _sha256(path) != report["archive_results"][name]["rehash_record_sha256"] or json.loads(path.read_bytes()) != row:
+                raise ValueError("accepted whole-file recovery observation drift")
+    identities = {}
+    for name, pin in pins.items():
+        record_path = archive_records / (name + ".sha256.json")
+        if _sha256(record_path) != pin["private_record_sha256"]:
+            raise ValueError("archive pin drift")
+        old = json.loads(record_path.read_bytes())["file_identity"]
+        expected = {**old, "byte_size": pin["byte_size"]}
+        if bound is not None:
+            row = bound[name]
+            if row["old_private_record_sha256"] != pin["private_record_sha256"] or row["old_file_identity"] != old or row["current_sha256"] != pin["sha256"] or row["frozen_sha256"] != pin["sha256"] or row["byte_size"] != pin["byte_size"] or row["whole_file_read"] is not True or row["content_hash_matches_frozen"] is not True or row["stat_identity_stable_during_hash"] is not True or row["changed_fields"] != ["device"]:
+                raise ValueError("frozen content authority or recovery evidence drift")
+            current = row["current_file_identity"]
+            if set(current) != set(expected) or sorted(key for key in expected if expected[key] != current[key]) != ["device"]:
+                raise ValueError("accepted device-only recovery identity required")
+            expected = current
+        path = input_root / name
+        if path.is_symlink() or not stat.S_ISREG(path.stat().st_mode) or file_identity(path.stat()) != expected:
+            raise ValueError("archive identity drift; separate recovery required")
+        identities[name] = tuple(expected[key] for key in ("device", "inode", "byte_size", "mtime_ns", "ctime_ns"))
+    return identities
 
 
 def fixed_next_records(records: list[dict], prior: dict, acceptance: dict) -> list[dict]:
@@ -37,10 +85,19 @@ def fixed_next_records(records: list[dict], prior: dict, acceptance: dict) -> li
 
 def prepare(args: argparse.Namespace) -> dict:
     phase = args.activation_root.parent
-    preflight_path = phase / "oulu_batch06_preparation_preflight_v1.json"
+    explicit_preflight = getattr(args, "preflight", None)
+    guard_only = getattr(args, "guard_only", False)
+    preflight_path = explicit_preflight or phase / "oulu_batch06_preparation_preflight_v1.json"
     private_output(args.out_root, [args.input_root, args.audit_root, args.exact_root, args.screen_root, args.frozen_root, args.archive_records, args.activation_root, preflight_path])
     preflight = json.loads(preflight_path.read_bytes())
     private_output(args.out_root, [Path(name) for name in preflight["protected_snapshots"]])
+    recovery = preflight.get("accepted_recovery")
+    if explicit_preflight is not None and recovery is None:
+        raise ValueError("explicit fresh preflight requires accepted archive recovery")
+    if explicit_preflight is not None and not guard_only and preflight.get("packet_preparation_authorized") is not True:
+        raise ValueError("guard checkpoint requires review before packet preparation")
+    if recovery is not None:
+        private_output(args.out_root, [Path(recovery["binding_path"]).parent])
     check = preflight["activation_CI"]
     if check["head_sha"] != "226943f77710a938b54581ccb03381e69c0d7fba" or check["run_id"] != 38666749697 or check["job_id"] != 116200334607 or check["status"] != "completed" or check["conclusion"] != "success":
         raise ValueError("exact successful batch05 activation CI required")
@@ -58,6 +115,14 @@ def prepare(args: argparse.Namespace) -> dict:
                 raise ValueError("accepted authority/source/config pin drift")
 
     verify_protected()
+    identities = verified_archive_identities(args.input_root, args.archive_records, recovery)
+    if guard_only:
+        if recovery is None:
+            raise ValueError("guard-only check requires accepted recovery")
+        return {"status": "recovery_aware_archive_guard_passed_no_packet_preparation", "archives_verified": len(identities),
+                "preflight_sha256": _sha256(preflight_path), "binding_sha256": recovery["binding_sha256"],
+                "review178_sha256": recovery["review178_sha256"], "actual_pair_packets": 0,
+                "selected_payloads_opened": False, "accepted_current_total": 50, "scientific_readiness": False}
     review_path = ROOT / "docs/174-review-doc173-oulu-batch05-activation.md"
     acceptance = preflight["acceptance"]
     if _sha256(review_path) != acceptance["review174_sha256"]:
@@ -96,18 +161,8 @@ def prepare(args: argparse.Namespace) -> dict:
         files = sorted(folder.glob("*.json"))
         if len(files) != 4950 or bundle(files, True) != json.loads((ROOT / "results/phase1" / report).read_bytes())[field]:
             raise ValueError("accepted media/fingerprint bundle drift")
-    pins = json.loads((ROOT / "results/phase1/oulu-archive-byte-pinning-v1.json").read_bytes())
-    identities = {}
-    for name, pin in pins["media_archives"].items():
-        path = args.archive_records / (name + ".sha256.json")
-        if _sha256(path) != pin["private_record_sha256"]:
-            raise ValueError("archive pin drift")
-        identity = json.loads(path.read_bytes())["file_identity"]
-        stat = (args.input_root / name).stat()
-        current = (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
-        if current != (identity["device"], identity["inode"], pin["byte_size"], identity["mtime_ns"], identity["ctime_ns"]):
-            raise ValueError("archive identity drift")
-        identities[name] = current
+    if verified_archive_identities(args.input_root, args.archive_records, recovery) != identities:
+        raise ValueError("archive identity changed before payload access")
     version = subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, check=True).stdout.splitlines()[0]
     if version != json.loads((ROOT / "configs/environment_v1.yaml").read_bytes())["host_tools"]["ffmpeg_version_line"]:
         raise ValueError("research FFmpeg mismatch")
@@ -117,6 +172,8 @@ def prepare(args: argparse.Namespace) -> dict:
                "accepted_exact_report_sha256": _sha256(exact_path), "exact_pair_bundle_sha256": exact["pair_record_bundle_sha256"],
                "accepted_visual_evidence_policy_sha256": visual["policy_sha256"], "visual_code_sha256": _sha256(ROOT / "src/fas/visual.py"),
                "runner_sha256": _sha256(Path(__file__)), "frozen_artifact_sha256": frozen, "ffmpeg": version, "no_prior_artifacts_overwritten": True}
+    if recovery is not None:
+        lineage["accepted_archive_recovery"] = recovery
     output = args.out_root.resolve()
     write_immutable_record(output / "lineage.json", lineage)
     ids = sorted({row["candidate"][side] for row in records for side in ("left", "right")})
@@ -180,6 +237,8 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     for name in ("input-root", "audit-root", "exact-root", "screen-root", "frozen-root", "archive-records", "activation-root", "out-root"):
         parser.add_argument("--" + name, type=Path, required=True)
+    parser.add_argument("--preflight", type=Path)
+    parser.add_argument("--guard-only", action="store_true")
     try:
         print(json.dumps(prepare(parser.parse_args()), sort_keys=True), flush=True)
     except (OSError, ValueError, KeyError, TypeError, RuntimeError, subprocess.SubprocessError, tarfile.TarError):
