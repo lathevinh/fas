@@ -564,6 +564,16 @@ is the strict source-only design consolidated in
     Imported decisions remain pending formal review, activation0/effective50,
     AI60/85 with25 unreviewed. Publish187 with fresh exact CI and stop for import
     review before separate additive activation, rank60+ or model execution.
+    [Review188](docs/188-review-doc187-oulu-batch06-categorical-import.md)
+    accepts all10 owner decisions semantically, with no further human input.
+    [Separate activation189](docs/189-review-response-doc188-oulu-batch06-activation.md)
+    materializes10 rejection rows only in a new ledger; original import pending
+    flags and owner fields stay unchanged. Main/sibling match13/13 files;63 prior
+    roots/frozen13/config17 are preserved.77 existing focused tests pass; full264
+    remains the accepted187 baseline, not a new local full rerun. Accepted current
+    total stays50, prospective60 only after189 acceptance; batch06 remains open.
+    Fresh source187 CI is verified but distinct from required new189 CI. Publish
+    and stop for formal189 activation review before rank60+, datasets or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
