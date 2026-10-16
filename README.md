@@ -620,6 +620,16 @@ is the strict source-only design consolidated in
     full267 remains the accepted197 baseline. Accepted current total60, prospective70
     only after formal activation review; batch07 remains open. Publish199 with exact
     new CI and STOP for review, without rank70+/models or further human input/prose.
+    [Review200](docs/200-review-doc199-oulu-batch07-activation.md) accepts199, closes
+    batch07 and advances accepted effective total70; AI coverage remains70/85 with15
+    not yet screened. Historical disagreement1/unresolved0 and all199 pending fields
+    remain immutable. [Packets201](docs/201-review-response-doc200-oulu-batch08-packets.md)
+    prepares only frozen70..79:20 videos/2840 RGB frames,2902 private files per
+    independently exported root. All2902 files match byte-for-byte,5740 PNG readbacks and60
+    panel/trigger reconstructions pass;75 roots/frozen13/config17 stay unchanged.
+    New test1/focused81/full268 pass. Publish201 with exact new CI and STOP for
+    packet review BEFORE AI proposals, human handoff, rank80+, other datasets/models;
+    effective70/AI70 remain unchanged and no further owner input for60..69 is needed.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

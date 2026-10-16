@@ -807,6 +807,113 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch08_packet_authority_selection_and_preserved_disagreement(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_visual_batch08 as module
+            from argparse import Namespace
+            from fas.freeze import write_immutable_record
+            records = [{"queue_rank": rank, "priority": "cross_role_conflicting_label"} for rank in range(80)]
+            prior = {"activation_checkpoint_review_pending": True, "accepted_batch07_current_effective_dispositions": 0,
+                     "effective_dispositions_activated": 10, "current_materialized_disposition_counts": {"rejected_false_positive": 10},
+                     "accepted_current_total": 60, "prospective_total_after_acceptance": 70, "batch07_closed": False,
+                     "stop_for_prospective_scientific_decision": False, "historical_disagreements_with_AI": 1,
+                     "unresolved_reconciliation_blockers_after_Review198": 0, "AI_uncertainty_and_disagreement_history_preserved": True,
+                     "private_activation_sha256": "a" * 64}
+            acceptance = {"batch07_activation_checkpoint_accepted": True, "batch07_screen_level_review_closed": True,
+                          "accepted_current_total": 70, "accepted_batch07_disposition_counts": {"rejected_false_positive": 10},
+                          "historical_disagreements_with_AI": 1, "unresolved_reconciliation_blockers": 0}
+            before = json.dumps([records, prior, acceptance], sort_keys=True)
+            self.assertEqual([row["queue_rank"] for row in module.fixed_next_records(records, prior, acceptance)], list(range(70, 80)))
+            for key, value in (("batch07_activation_checkpoint_accepted", False), ("batch07_screen_level_review_closed", False),
+                               ("accepted_current_total", 70.0), ("historical_disagreements_with_AI", 0),
+                               ("unresolved_reconciliation_blockers", True), ("accepted_batch07_disposition_counts", {})):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, prior, {**acceptance, key: value})
+            for key, value in (("activation_checkpoint_review_pending", False), ("accepted_batch07_current_effective_dispositions", 10),
+                               ("effective_dispositions_activated", 0), ("current_materialized_disposition_counts", {}),
+                               ("accepted_current_total", 70), ("prospective_total_after_acceptance", 60), ("batch07_closed", True),
+                               ("stop_for_prospective_scientific_decision", True), ("historical_disagreements_with_AI", 0),
+                               ("unresolved_reconciliation_blockers_after_Review198", 1), ("AI_uncertainty_and_disagreement_history_preserved", False)):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(records, {**prior, key: value}, acceptance)
+            for altered in (records[:-1], list(reversed(records)), [*records[:70], {**records[70], "queue_rank": 70.0}, *records[71:]],
+                            [*records[:70], {**records[70], "queue_rank": True}, *records[71:]], [*records[:70], {**records[70], "priority": "other"}, *records[71:]]):
+                with self.assertRaises(ValueError):
+                    module.fixed_next_records(altered, prior, acceptance)
+            self.assertEqual(json.dumps([records, prior, acceptance], sort_keys=True), before)
+            rows = [{"queue_rank": rank, "effective_disposition": "rejected_false_positive", "owner_disposition": "rejected_false_positive",
+                     "effective_disposition_activated": True, "activation_checkpoint_review_pending": True,
+                     "counts_as_accepted_current_effective_disposition": False, "activation_sha256": prior["private_activation_sha256"],
+                     "screen_semantic_acceptance_source": "Review198", "stop_for_prospective_scientific_decision": False,
+                     "reconciliation_required": False, "AI_disposition_rewritten": False, "ai_disposition": "rejected_false_positive",
+                     "disagreement_with_AI": False, "historical_import_reconciliation_required": False,
+                     "historical_import_comparison_disposition": "rejected_false_positive", "governance_reconciliation_source": "not_required_AI_owner_agreement"}
+                    for rank in range(60, 70)]
+            rows[6].update(ai_disposition="uncertain_insufficient_evidence", disagreement_with_AI=True,
+                           historical_import_reconciliation_required=True, historical_import_comparison_disposition="uncertain_insufficient_evidence",
+                           governance_reconciliation_source="Review198")
+            snapshot = json.dumps(rows, sort_keys=True)
+            self.assertIsNone(module.verified_prior_rows(rows, prior))
+            for key, value in (("queue_rank", 66.0), ("disagreement_with_AI", False), ("ai_disposition", "rejected_false_positive"),
+                               ("historical_import_reconciliation_required", False), ("historical_import_comparison_disposition", "rejected_false_positive"),
+                               ("reconciliation_required", True), ("governance_reconciliation_source", "owner_override"),
+                               ("AI_disposition_rewritten", True), ("counts_as_accepted_current_effective_disposition", True),
+                               ("activation_checkpoint_review_pending", False), ("screen_semantic_acceptance_source", "Review200")):
+                with self.assertRaises(ValueError):
+                    module.verified_prior_rows([*rows[:6], {**rows[6], key: value}, *rows[7:]], prior)
+            for altered in (rows[:-1], list(reversed(rows)), [{**row, "ai_disposition": "rejected_false_positive", "disagreement_with_AI": False,
+                              "historical_import_reconciliation_required": False, "historical_import_comparison_disposition": "rejected_false_positive",
+                              "governance_reconciliation_source": "not_required_AI_owner_agreement"} for row in rows]):
+                with self.assertRaises(ValueError):
+                    module.verified_prior_rows(altered, prior)
+            self.assertEqual(json.dumps(rows, sort_keys=True), snapshot)
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                repo = root / "repo"
+                review = repo / "docs/200-review-doc199-oulu-batch07-activation.md"
+                review.parent.mkdir(parents=True)
+                review.write_text("synthetic Review200 acceptance", encoding="ascii")
+                report = repo / "results/phase1/oulu-batch07-activation-v1.json"
+                write_immutable_record(report, prior)
+                check = {"head_sha": "4ab5d05b6b85faa4f849361224653d41dacc19e6", "run_id": 38844328951,
+                         "job_id": 116791294915, "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success"}
+                authority = {**acceptance, "review200_sha256": module._sha256(review)}
+                preflight = {"checkpoint": 201, "acceptance": authority, "activation_CI": check, "packet_preparation_authorized": True,
+                             "queue_ranks": list(range(70, 80)), "accepted_prior_report_sha256": module._sha256(report),
+                             "accepted_recovery": {"accepted_by_Review178": True}, "protected_snapshots": {}}
+                original = json.dumps(preflight, sort_keys=True)
+                with patch.object(module, "ROOT", repo), patch.object(module, "REVIEW200_SHA256", module._sha256(review)), patch.object(module, "ACCEPTED199_REPORT_SHA256", module._sha256(report)):
+                    self.assertEqual(module.verified_packet_authority(preflight), authority)
+                    invalid = [{**preflight, "acceptance": None}, {**preflight, "acceptance": {**authority, "review200_sha256": "0" * 64}},
+                               {**preflight, "checkpoint": 201.0}, {**preflight, "packet_preparation_authorized": False},
+                               {**preflight, "queue_ranks": list(range(80, 90))}, {**preflight, "queue_ranks": [70.0, *range(71, 80)]},
+                               {**preflight, "accepted_prior_report_sha256": "0" * 64}, {**preflight, "activation_CI": None},
+                               {**preflight, "accepted_recovery": None}, {**preflight, "accepted_recovery": {"accepted_by_Review178": False}}]
+                    for key, value in (("head_sha", "0" * 40), ("run_id", 38719866755), ("run_id", float(check["run_id"])),
+                                       ("job_id", 116371485847), ("status", "in_progress"), ("conclusion", "failure"),
+                                       ("job_status", "queued"), ("job_conclusion", "failure")):
+                        invalid.append({**preflight, "activation_CI": {**check, key: value}})
+                    for index, bad in enumerate(invalid):
+                        with self.assertRaises(ValueError):
+                            module.verified_packet_authority(bad)
+                        path = root / f"bad-{index}.json"
+                        write_immutable_record(path, bad)
+                        args = Namespace(input_root=root / "source", audit_root=root / "audit", exact_root=root / "exact",
+                            screen_root=root / "screen", frozen_root=root / "frozen", archive_records=root / "pins",
+                            activation_root=root / "activation", preflight=path, out_root=root / "never-created")
+                        with patch.object(module, "verified_archive_identities", side_effect=AssertionError("must not reach archives")):
+                            with self.assertRaises(ValueError):
+                                module.prepare(args)
+                        self.assertFalse(args.out_root.exists())
+                    for output in (ROOT / "results/refused-visual-batch08", root, root / "source/refused"):
+                        with self.assertRaises(ValueError):
+                            module.prepare(Namespace(input_root=root, audit_root=root, exact_root=root, screen_root=root,
+                                frozen_root=root, archive_records=root, activation_root=root, preflight=root / "missing", out_root=output))
+                self.assertEqual(json.dumps(preflight, sort_keys=True), original)
+        finally:
+            sys.path.pop(0)
+
     def test_batch07_packet_authority_selection_and_unchanged_history(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
