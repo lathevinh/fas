@@ -640,6 +640,17 @@ is the strict source-only design consolidated in
     tests pass, full268 remains accepted201 baseline. Publish203 with exact new CI
     and STOP for formal AI checkpoint review BEFORE human handoff/import/activation,
     rank80+, other datasets/models; no human input or prose is required now.
+    [Review204](docs/204-review-doc203-oulu-batch08-ai-proposals.md) passes public
+    governance/exact203 CI but leaves visual acceptance pending private verification.
+    [Follow-up205](docs/205-review-response-doc204-oulu-batch08-private-evidence-verification.md)
+    verifies original bindings and reopens30 unique existing assets to assess all10
+    rationales, with bounded local AI support only. Separate-workspace reviewer
+    access and acceptance remain unverified; garment/scene differences do not exclude
+    arbitrary partial reuse.79 roots/frozen13/config17 and original203 records stay
+    unchanged;13/13 follow-up serialization files match,81 focused tests pass.
+    Effective70/accepted AI70 and reported80 including pending203 remain unchanged.
+    Publish205 with exact new CI and STOP for private-evidence review, without human
+    handoff/input/prose, rank80+ or scientific/model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
