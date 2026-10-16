@@ -664,6 +664,19 @@ is the strict source-only design consolidated in
     accepted AI70 stay unchanged, with no new coverage/human/activation authority.
     Publish207, verify exact new CI completed/success, then STOP for checkpoint
     approval before human handoff, rank80+, other datasets or models.
+    [Review208](docs/208-review-doc207-oulu-batch08-formal-private-review.md)
+    accepts207 and original203's ten bounded AI proposals on recorded formal-review
+    attestation, not independent Windows private inspection or human adjudication.
+    Accepted AI coverage is now80/85; effective70 and historical flags stay unchanged.
+    [Handoff209](docs/209-review-response-doc208-oulu-batch08-categorical-handoff.md)
+    prepares exact70..79 with null categorical answers and AI context revealed only
+    after pair submission, without required/generated human prose. Main/sibling33/33
+    files match;84 roots/frozen13/config17 are preserved; focused82/full269 and98
+    synthetic browser checks pass. Real private browser checks remain unavailable
+    after trusted-folder403; no bypass/hosting/installation. Do not fill the form yet.
+    Publish209, verify exact new CI completed/success, then STOP for formal handoff
+    review BEFORE collecting owner answers/import/reconciliation/activation, rank80+,
+    other datasets or research models. Human0/effectiveactivation0/readinessfalse.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

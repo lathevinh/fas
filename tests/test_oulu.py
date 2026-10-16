@@ -101,6 +101,64 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch08_categorical_handoff_acceptance_authority_and_blank_controls(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_categorical_batch08 as module
+            digest = "a" * 64
+            pairs = [{"queue_rank": rank, "packet_sha256": digest, "ai_record_sha256": digest, "formal_review_record_sha256": digest,
+                      "exact_pair_record_sha256": digest, "ai_disposition": "rejected_false_positive", "ai_observations": ["</script>"],
+                      "human_review_notice": module.human_notice(rank),
+                      "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": digest for name in ("temporal_a", "temporal_b", "trigger")}} for rank in module.TARGET_RANKS]
+            definition = {"pairs": pairs, "review208_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                          "accepted_formal_report_sha256": module.FORMAL_REPORT_SHA256, "preflight_sha256": digest, "categorical_rules": module.CATEGORICAL_RULES}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_categorical(definition, digest)
+            data, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(data, {"definition": definition, "sha256": digest})
+            self.assertEqual(json.dumps(definition, sort_keys=True), before)
+            for fragment in ("evidence_sufficient:null", "same_or_derived_content:null", "personal_inspection_attested:null", "owner_decision_attested:null",
+                             "submitted:false", "item.personal_inspection_attested===true", "item.owner_decision_attested===true", "names.length===3", "names.every",
+                             "state[current].same_or_derived_content=null", "state[current].submitted=false", "details.hidden=true", "state[current].submitted!==true",
+                             "if(!exportReady())return", "ai_record_sha256:pair.ai_record_sha256", "formal_review_record_sha256:pair.formal_review_record_sha256",
+                             "exact_pair_record_sha256:pair.exact_pair_record_sha256", "review208_sha256:DATA.definition.review208_sha256",
+                             "accepted_formal_report_sha256:DATA.definition.accepted_formal_report_sha256", "batch08_categorical_review",
+                             "oulu-batch08-categorical-review.json", "rows.some", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            for fragment in ("createElement('textarea')", "rationale:", "imported_human_record", "review194", "batch07_categorical_review"):
+                self.assertNotIn(fragment, page)
+            for changes in ({"review208_sha256": digest}, {"accepted_AI_report_sha256": digest}, {"accepted_formal_report_sha256": digest},
+                            {"preflight_sha256": ""}, {"categorical_rules": []}, {"categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]},
+                            {"pairs": pairs[:-1]}, {"pairs": list(reversed(pairs))}, {"pairs": [{**pairs[0], "queue_rank": 70.0}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "human_review_notice": "Reject"}, *pairs[1:]]}, {"pairs": [{**pairs[0], "formal_review_record_sha256": ""}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "required_assets_sha256": {}}, *pairs[1:]]}, {"pairs": [{**pairs[0], "ai_disposition": "clear"}, *pairs[1:]]}):
+                with self.assertRaises(ValueError):
+                    module.render_categorical({**definition, **changes}, digest)
+            check = {"head_sha": "aca26b2be9be330811401a5a6e861fbca2667bf1", "run_id": 38865644147, "job_id": 116857727094,
+                     "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success"}
+            authority = {"checkpoint": 209, "review208_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                         "accepted_formal_report_sha256": module.FORMAL_REPORT_SHA256, "queue_ranks": list(module.TARGET_RANKS), "source207_CI": check,
+                         **{field: False for field in ("human_input_collection_authorized", "import_authorized", "effective_activation_authorized", "model_execution_authorized", "scientific_readiness")}}
+            module.verify_authority(authority)
+            for changes in ({"checkpoint": 209.0}, {"queue_ranks": list(range(80, 85))}, {"queue_ranks": [70.0, *range(71, 80)]},
+                            {"human_input_collection_authorized": True}, {"import_authorized": True}, {"effective_activation_authorized": True},
+                            {"model_execution_authorized": True}, {"scientific_readiness": True}, {"review208_sha256": digest},
+                            {"accepted_formal_report_sha256": digest}, {"source207_CI": {**check, "run_id": float(check["run_id"])}},
+                            *({"source207_CI": {**check, field: "drift"}} for field in check)):
+                with self.assertRaises(ValueError):
+                    module.verify_authority({**authority, **changes})
+            self.assertIn("Underexposure", module.human_notice(73))
+            for rank in (70, 71, 72, 73, 74, 79):
+                self.assertIn("correlated", module.human_notice(rank))
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-batch08-categorical", root / "source/overlap"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(preflight=root / "preflight.json", packet_root=root / "source", ai_root=root / "ai", formal_root=root / "formal", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch07_categorical_handoff_authority_blank_answers_and_uncertainty(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
