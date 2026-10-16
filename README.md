@@ -611,6 +611,15 @@ is the strict source-only design consolidated in
     71 prior roots/frozen13/config17 remain unchanged. Focused80/full267 pass.
     Publish197 with exact new CI and STOP for formal import/reconciliation review;
     accepted effective60, AI70/85, no closure/rank70+/models or further owner prose.
+    [Review198](docs/198-review-doc197-oulu-batch07-categorical-import.md) accepts197
+    and all10 owner rejections, reconciling the historical AI uncertainty without
+    another owner pass. [Activation199](docs/199-review-response-doc198-oulu-batch07-activation.md)
+    materializes a separate additive13-file ledger/sibling:10 rejections, historical
+    disagreement1/unresolved0. AI uncertainty and all197 pending/comparison flags
+    stay immutable.73 roots/frozen13/config17 remain unchanged;80 focused tests pass,
+    full267 remains the accepted197 baseline. Accepted current total60, prospective70
+    only after formal activation review; batch07 remains open. Publish199 with exact
+    new CI and STOP for review, without rank70+/models or further human input/prose.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
