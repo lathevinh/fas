@@ -651,6 +651,19 @@ is the strict source-only design consolidated in
     Effective70/accepted AI70 and reported80 including pending203 remain unchanged.
     Publish205 with exact new CI and STOP for private-evidence review, without human
     handoff/input/prose, rank80+ or scientific/model work.
+    [Review206](docs/206-review-doc205-oulu-batch08-private-evidence-verification.md)
+    requests formal review where private evidence is actually accessible.
+    [Formal review207](docs/207-formal-review-oulu-batch08-private-evidence.md)
+    completes that authorized-environment route:30 actual existing-asset views and
+    ten original/follow-up assessments yield ten recommendations to accept bounded
+    AI rejections, zero insufficient-support and zero credible same/derived findings.
+    External Windows access, independent/human review and exhaustive partial-reuse
+    exclusion are not claimed.82 roots/frozen13/config17 remain unchanged;13/13
+    serialization records match,81 focused tests pass;268 is accepted201 baseline.
+    Favorable formal recommendations await207 checkpoint approval: effective70 and
+    accepted AI70 stay unchanged, with no new coverage/human/activation authority.
+    Publish207, verify exact new CI completed/success, then STOP for checkpoint
+    approval before human handoff, rank80+, other datasets or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
