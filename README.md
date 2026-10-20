@@ -714,6 +714,18 @@ is the strict source-only design consolidated in
     acceptance. Semantic-owner/AI coverage80, five unviewed, history1/unresolved0,
     batch08open/readinessfalse. Publish215, verify exact new CI success, then STOP
     for formal activation review; no rank80+, new owner judgments/prose or models.
+    [Review216](docs/216-review-doc215-oulu-batch08-activation.md) later accepts215,
+    closes batch08 and counts current effective80/85; semantic-owner/AI80/85 remain
+    distinct, historical213/215 creation-time flags unchanged. Only final-five
+    packets80..84 are authorized, without new dispositions or coverage.
+    [Checkpoint217](docs/217-review-response-doc216-oulu-batch09-packets.md) adds a
+    separate final-five runner and one test; prior test ASTs/export rules unchanged,
+    focused84/full271 PASS. Actual archive guard blocks before preparation preflight
+    or payload access: all three archives have device-only stat drift. No packets,
+    export CLI/decode/replay, rehash/bypass or binding rewrite. Immutable blocker,
+    90 roots/frozen13/config17/raw11681 preserved; current/AI80, five unviewed.
+    Publish217, verify exact NEW CI and STOP for blocker review/separate recovery
+    authority before retry; no AI/human handoff, other datasets or scientific work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
