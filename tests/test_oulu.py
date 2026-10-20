@@ -1986,6 +1986,123 @@ class OuluMediaTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch09_recovery_uses_latest_accepted_identity_and_current_authority(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import recover_oulu_archive_identity_batch09 as module
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                source, pin_root, repo, previous = (root / name for name in ("source", "pins", "repo", "accepted177"))
+                source.mkdir()
+                payload = b"synthetic219 whole archive, not video payload"
+                anchors, pins, rows, observations = {}, {}, {}, {}
+                for name in module.ANCHORS:
+                    archive = source / name
+                    archive.write_bytes(payload)
+                    current = module.file_identity(archive.stat())
+                    latest = {**current, "device": current["device"] + 1}
+                    original = {key: value for key, value in {**current, "device": current["device"] + 2}.items() if key != "byte_size"}
+                    expected = {"sha256": hashlib.sha256(payload).hexdigest(), "byte_size": len(payload)}
+                    before = json.dumps([expected, latest, current], sort_keys=True)
+                    row = module.rehash_current_archive(archive, expected, latest, current)
+                    self.assertEqual(row["old_file_identity"], latest)
+                    self.assertNotEqual(row["old_file_identity"], original)
+                    self.assertFalse(row["proposed_binding_accepted"])
+                    self.assertEqual(json.dumps([expected, latest, current], sort_keys=True), before)
+                    for wrong in ({**latest, "device": current["device"]}, {**latest, "inode": latest["inode"] + 1},
+                                  {**latest, "byte_size": True}, {**latest, "ctime_ns": latest["ctime_ns"] + 1}):
+                        with patch.object(module, "rehash_archive", side_effect=AssertionError("must refuse before full hash")):
+                            with self.assertRaises(ValueError):
+                                module.rehash_current_archive(archive, expected, wrong, current)
+                    with self.assertRaises(ValueError):
+                        module.rehash_current_archive(archive, {**expected, "sha256": "0" * 64}, latest, current)
+                    with self.assertRaises(ValueError):
+                        module.rehash_current_archive(archive, expected, latest, {**current, "device": current["device"] + 3})
+                    link = root / (name + ".link")
+                    link.symlink_to(archive)
+                    with self.assertRaises(ValueError):
+                        module.rehash_current_archive(link, expected, latest, current)
+                    pin_path = pin_root / (name + ".sha256.json")
+                    module.write_immutable_record(pin_path, {"file_identity": original})
+                    anchors[name] = expected["sha256"]
+                    pins[name] = {**expected, "private_record_sha256": module._sha256(pin_path)}
+                    rows[name] = {"old_file_identity": original, "old_private_record_sha256": module._sha256(pin_path),
+                                  "current_file_identity": latest, "current_sha256": expected["sha256"], "frozen_sha256": expected["sha256"],
+                                  "byte_size": len(payload), "whole_file_read": True, "content_hash_matches_frozen": True,
+                                  "stat_identity_stable_during_hash": True, "changed_fields": ["device"]}
+                    module.write_immutable_record(previous / (name + ".rehash.json"), rows[name])
+                    observations[name] = {"observed_file_identity": current}
+                pin_report = repo / "results/phase1/oulu-archive-byte-pinning-v1.json"
+                module.write_immutable_record(pin_report, {"media_archives": pins})
+                binding_path = previous / "environment_binding.json"
+                module.write_immutable_record(binding_path, {"archive_pin_report_sha256": module._sha256(pin_report), "archives": rows,
+                    "recovery_checkpoint_review_pending": True, "old_archive_pins_unchanged": True})
+                old_report = repo / "results/phase1/oulu-archive-identity-recovery-v1.json"
+                module.write_immutable_record(old_report, {"private_environment_binding_sha256": module._sha256(binding_path),
+                    "archive_pin_report_sha256": module._sha256(pin_report), "archive_results": {name: {"rehash_record_sha256": module._sha256(previous / (name + ".rehash.json"))} for name in anchors}})
+                old_review = repo / "docs/178-review-doc177-oulu-archive-identity-recovery.md"
+                old_review.parent.mkdir(parents=True)
+                old_review.write_text("synthetic accepted177", encoding="ascii")
+                recovery = {"accepted_by_Review178": True, "review178_sha256": module._sha256(old_review),
+                    "archive_pin_report_sha256": module._sha256(pin_report), "accepted177_report_sha256": module._sha256(old_report),
+                    "binding_path": str(binding_path), "binding_sha256": module._sha256(binding_path)}
+                blocker_path = root / "blocker217.json"
+                module.write_immutable_record(blocker_path, {"accepted_recovery": recovery, "archive_observations": observations})
+                report = repo / "results/phase1/oulu-batch09-packet-preparation-blocker-v1.json"
+                module.write_immutable_record(report, {"private_blocker_sha256": module._sha256(blocker_path)})
+                review = repo / "docs/218-review-doc217-oulu-batch09-archive-device-blocker.md"
+                review.write_text("synthetic bounded Review218", encoding="ascii")
+                document = repo / "docs/217-review-response-doc216-oulu-batch09-packets.md"
+                document.write_text("synthetic217 blocker", encoding="ascii")
+                preflight = {"checkpoint": 219, "recovery_authorized": True, "packet_retry_authorized": False, "guard_integration_authorized": False,
+                    "review218_sha256": module._sha256(review), "accepted217_document_sha256": module._sha256(document),
+                    "accepted217_report_sha256": module._sha256(report), "accepted217_blocker_sha256": module._sha256(blocker_path),
+                    "blocker_path": str(blocker_path), "accepted_recovery": recovery, "archive_anchor_sha256": anchors,
+                    "archive_pin_report_sha256": module._sha256(pin_report), "latest_accepted_archive_identity": {name: row["current_file_identity"] for name, row in rows.items()},
+                    "observed_archive_identity": {name: row["observed_file_identity"] for name, row in observations.items()},
+                    "source217_CI": {"head_sha": "9082585c811ee3b1636b33145e5748876083ef30", "run_id": 39354730481,
+                        "job_id": 118406801611, "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success",
+                        "listed_successful_steps": 12, "all_steps_success": True},
+                    "protected_snapshots": {}, "pinned_file_sha256": {}, "frozen_file_sha256": {}, "study_config_sha256": {},
+                    "recovery_code_sha256": module._sha256(Path(module.__file__))}
+                original = json.dumps(preflight, sort_keys=True)
+                preflight_path = root / "preflight219.json"
+                module.write_immutable_record(preflight_path, preflight)
+                args = Namespace(input_root=source, archive_records=pin_root, preflight=preflight_path, out_root=root / "recovery219")
+                with patch.object(module, "ROOT", repo), patch.object(module, "ANCHORS", anchors), patch.object(module, "REVIEW218_SHA256", module._sha256(review)), patch.object(module, "ACCEPTED217_DOCUMENT_SHA256", module._sha256(document)), patch.object(module, "ACCEPTED217_REPORT_SHA256", module._sha256(report)), patch.object(module, "ACCEPTED217_BLOCKER_SHA256", module._sha256(blocker_path)):
+                    result = module.recover(args)
+                    self.assertEqual(result["total_bytes_hashed"], len(payload) * 3)
+                    self.assertTrue(result["recovery_checkpoint_review_pending"])
+                    for key in ("proposed_binding_accepted", "packet_runner_guard_changed", "packet_preparation_authorized_by_this_record", "archive_identity_blocker_closed", "individual_video_payloads_opened", "media_decoding_or_extraction_performed"):
+                        self.assertFalse(result[key])
+                    self.assertEqual(len(list(args.out_root.iterdir())), 4)
+                    for name, row in result["archives"].items():
+                        self.assertEqual(row["old_file_identity"], rows[name]["current_file_identity"])
+                        self.assertEqual(row["original_frozen_pin_file_identity"], rows[name]["old_file_identity"])
+                    invalid = [{**preflight, key: value} for key, value in (("checkpoint", 219.0), ("recovery_authorized", False),
+                        ("packet_retry_authorized", True), ("guard_integration_authorized", True), ("review218_sha256", "0" * 64),
+                        ("accepted217_document_sha256", "0" * 64), ("accepted217_report_sha256", "0" * 64),
+                        ("accepted217_blocker_sha256", "0" * 64), ("archive_anchor_sha256", {}), ("recovery_code_sha256", "0" * 64))]
+                    for key, value in (("head_sha", "0" * 40), ("run_id", 39353105356), ("run_id", float(preflight["source217_CI"]["run_id"])),
+                                       ("job_id", 118401642331), ("status", "in_progress"), ("conclusion", "failure"),
+                                       ("job_status", "queued"), ("job_conclusion", "failure"), ("listed_successful_steps", 11), ("all_steps_success", False)):
+                        invalid.append({**preflight, "source217_CI": {**preflight["source217_CI"], key: value}})
+                    for index, bad in enumerate(invalid):
+                        bad_path = root / f"bad219-{index}.json"
+                        module.write_immutable_record(bad_path, bad)
+                        rejected = Namespace(**{**vars(args), "preflight": bad_path, "out_root": root / "never-created"})
+                        with patch.object(module, "rehash_archive", side_effect=AssertionError("must not hash")):
+                            with self.assertRaises(ValueError):
+                                module.recover(rejected)
+                        self.assertFalse(rejected.out_root.exists())
+                    for output in (args.out_root, ROOT / "results/refused-recovery219", source / "refused", root):
+                        with self.assertRaises(ValueError):
+                            module.recover(Namespace(**{**vars(args), "out_root": output}))
+                self.assertEqual(json.dumps(preflight, sort_keys=True), original)
+        finally:
+            sys.path.pop(0)
+
     def test_archive_identity_recovery_requires_full_hash_and_stable_device_only_drift(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

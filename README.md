@@ -726,6 +726,19 @@ is the strict source-only design consolidated in
     90 roots/frozen13/config17/raw11681 preserved; current/AI80, five unviewed.
     Publish217, verify exact NEW CI and STOP for blocker review/separate recovery
     authority before retry; no AI/human handoff, other datasets or scientific work.
+    [Review218](docs/218-review-doc217-oulu-batch09-archive-device-blocker.md)
+    accepts217 fail-closed reporting and authorizes only separate read-only full-byte
+    recovery of the three frozen archives; packet retry/guard integration remain
+    unauthorized. [Recovery219](docs/219-review-response-doc218-oulu-archive-identity-recovery.md)
+    binds latest accepted177 identity separately from original pins, with a new
+    recovery runner and one test; focused85/full272 PASS. Actual full-byte CLI
+    rehashed105116817408 bytes across3 archives, all frozen SHA/size matches;
+    hash1251.989s/wholeCLI2094.668s. Four new immutable recovery files and verification,
+    90 roots/frozen13/config17/raw11681 preserved; actual CLI refusals5+4 and three
+    distinct immutable overwrite targets refused. Proposed binding remains pending,
+    old guard still refuses; no binding acceptance, guard integration or packet retry.
+    Current/semantic-owner/AI80, five unviewed, history1/unresolved0/readinessfalse.
+    Publish219/verify exact NEW CI then STOP for formal recovery review, not retry.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
