@@ -2273,6 +2273,98 @@ class OuluMediaTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch09_retry223_binds_review222_guard_context_and_test_transition(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import ast
+            import copy
+            import prepare_oulu_visual_batch09_retry223 as module
+            from argparse import Namespace
+            from contextlib import ExitStack
+            from fas.freeze import write_immutable_record
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                repo = root / "repo"
+                for filename in module.AUTHORITY_BINDINGS:
+                    path = repo / filename
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("synthetic authority " + filename, encoding="ascii")
+                test_path = repo / "tests/test_oulu.py"
+                test_path.parent.mkdir()
+                baseline = "class SyntheticTests:\n    def test_existing(self):\n        pass\n"
+                test_path.write_text(baseline + f"    def {module.NEW_TEST_METHOD}(self):\n        pass\n", encoding="ascii")
+                old_test_sha = hashlib.sha256(baseline.encode()).hexdigest()
+                old = {"checkpoint": 221, "packet_preparation_authorized": False, "packet_retry_authorized": False,
+                    "guard_integration_authorized": True, "guard_code_sha256": module._sha256(repo / "scripts/verify_oulu_archive_guard_batch09.py"),
+                    "protected_snapshots": {str(root / "protected"): {"prior.json": "1" * 64}},
+                    "pinned_file_sha256": {str(test_path): old_test_sha}, "frozen_file_sha256": {}, "study_config_sha256": {}}
+                old_path = root / "accepted/preflight221.json"
+                result_path = root / "accepted/guard/guard_validation.json"
+                verification_path = root / "accepted/verification221.json"
+                write_immutable_record(old_path, old)
+                write_immutable_record(result_path, {"guard_integration_checkpoint_review_pending": True,
+                    "packet_preparation_authorized": False, "packet_retry_authorized": False, "archives_verified": 3})
+                write_immutable_record(verification_path, {"synthetic": True})
+                report = {"guard_code_sha256": old["guard_code_sha256"], "test_file_sha256": old_test_sha,
+                    "private_preflight_sha256": module._sha256(old_path), "private_guard_result_sha256": module._sha256(result_path),
+                    "private_verification_sha256": module._sha256(verification_path)}
+                report_path = repo / "results/phase1/oulu-recovery219-aware-guard-v1.json"
+                report_path.unlink()
+                write_immutable_record(report_path, report)
+                authority = {filename: module._sha256(repo / filename) for filename in module.AUTHORITY_BINDINGS}
+                context = copy.deepcopy(old)
+                context["pinned_file_sha256"][str(test_path)] = module._sha256(test_path)
+                context["protected_snapshots"][str(result_path.parent)] = {"guard_validation.json": module._sha256(result_path)}
+                preflight = {"checkpoint": 223, "accepted_by_Review222": True, "packet_preparation_authorized": True,
+                    "packet_retry_authorized": True, "visual_review_authorized": False, "queue_ranks": list(range(80, 85)),
+                    "authority_sha256": authority, "source221_CI": module.SOURCE221_CI.copy(), "guard_context": context,
+                    "test_pin_transition": {"old_sha256": old_test_sha, "new_sha256": module._sha256(test_path),
+                        "only_added_method": module.NEW_TEST_METHOD, "all_prior_test_ASTs_unchanged": True},
+                    "accepted221_preflight_path": str(old_path), "accepted221_result_path": str(result_path),
+                    "accepted221_verification_path": str(verification_path), "accepted_prior_report_sha256": module.ACCEPTED215_REPORT_SHA256,
+                    "accepted_prior_document_sha256": module.ACCEPTED215_DOCUMENT_SHA256,
+                    "acceptance": {"review216_sha256": module.REVIEW216_SHA256},
+                    "preparation_code_sha256": module._sha256(Path(module.__file__)),
+                    **{field: context[field] for field in ("protected_snapshots", "pinned_file_sha256", "frozen_file_sha256", "study_config_sha256")}}
+                before = json.dumps(preflight, sort_keys=True)
+                with ExitStack() as stack:
+                    for key, value in (("ROOT", repo), ("AUTHORITY_BINDINGS", authority), ("OLD_TEST_SHA256", old_test_sha),
+                                       ("OLD_TEST_AST_SHA256", hashlib.sha256(ast.dump(ast.parse(baseline)).encode()).hexdigest())):
+                        stack.enter_context(patch.object(module, key, value))
+                    stack.enter_context(patch.object(module.tarfile, "open", side_effect=AssertionError("no payload access before accepted guard")))
+                    self.assertEqual(module.verified_retry_authority(preflight), context)
+                    invalid = [{**preflight, key: value} for key, value in (("checkpoint", 223.0), ("accepted_by_Review222", False),
+                        ("packet_preparation_authorized", False), ("packet_retry_authorized", False), ("visual_review_authorized", True),
+                        ("queue_ranks", list(range(80, 90))), ("queue_ranks", [80.0, 81, 82, 83, 84]),
+                        ("authority_sha256", {}), ("accepted_prior_report_sha256", "0" * 64))]
+                    for key, value in (("head_sha", "0" * 40), ("run_id", 39359791576), ("run_id", float(module.SOURCE221_CI["run_id"])),
+                                       ("job_id", 118423022731), ("status", "queued"), ("conclusion", "failure"),
+                                       ("job_status", "in_progress"), ("job_conclusion", "failure"), ("listed_successful_steps", 11), ("all_steps_success", False)):
+                        invalid.append({**preflight, "source221_CI": {**preflight["source221_CI"], key: value}})
+                    for field, value in (("packet_preparation_authorized", True), ("packet_retry_authorized", True),
+                                         ("protected_snapshots", {}), ("pinned_file_sha256", {})):
+                        invalid.append({**preflight, "guard_context": {**context, field: value}})
+                    invalid.append({**preflight, "test_pin_transition": {**preflight["test_pin_transition"], "new_sha256": "0" * 64}})
+                    for bad in invalid:
+                        with self.assertRaises(ValueError):
+                            module.verified_retry_authority(bad)
+                    path = root / "preflight223.json"
+                    write_immutable_record(path, preflight)
+                    args = Namespace(**{name: root / name for name in ("input_root", "audit_root", "exact_root", "screen_root", "frozen_root", "archive_records", "activation_root")},
+                                     preflight=path, out_root=root / "never-created")
+                    with patch.object(module, "verified_archive_identities", side_effect=ValueError("synthetic accepted219 identity drift")) as guard:
+                        with self.assertRaisesRegex(ValueError, "identity drift"):
+                            module.prepare(args)
+                        guard.assert_called_once_with(args.input_root, args.archive_records, context)
+                    self.assertFalse(args.out_root.exists())
+                    test_path.write_text(test_path.read_text().replace("def test_existing(self):", "def changed_existing(self):"), encoding="ascii")
+                    changed = {**preflight, "test_pin_transition": {**preflight["test_pin_transition"], "new_sha256": module._sha256(test_path)}}
+                    with self.assertRaisesRegex(ValueError, "prior test AST drift"):
+                        module.verified_retry_authority(changed)
+                self.assertEqual(json.dumps(preflight, sort_keys=True), before)
+        finally:
+            sys.path.pop(0)
+
     def test_archive_identity_recovery_requires_full_hash_and_stable_device_only_drift(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

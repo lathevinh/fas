@@ -749,6 +749,16 @@ is the strict source-only design consolidated in
         access/decode/packets. Integration remains pending, retry unauthorized/current80,
         five unviewed/history1-unresolved0/readinessfalse. Publish/verify exact NEW CI
         then STOP for formal221 guard review before separately authorized retry80..84.
+    - [Review222](docs/222-review-doc221-oulu-recovery219-aware-guard.md) accepts
+        adapter221 and authorizes the deliberate final-five retry, not visual screening.
+        [Retry223](docs/223-review-response-doc222-oulu-batch09-packet-retry.md) independently
+        exports main/sibling:5 packets/9 unique videos/1204 RGB frames/1235 files each,
+        1235/1235 byte-identical;2438 PNG roundtrips/30 temporal-trigger reconstructions.
+        Accepted explicit guard checks all5 stat fields;92 prior roots/raw owner fields/
+        frozen13/config17 preserved. Focused87/full274 PASS; actual CLI refusals5+4,
+        three new immutable targets refused. No whole-archive rehash or visual judgments.
+        Current/semantic-owner/AI80/85/five unviewed/history1-unresolved0/readinessfalse;
+        publish/exact NEW CI then STOP for formal223 packet review, before AI/human work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
