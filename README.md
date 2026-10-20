@@ -782,6 +782,16 @@ is the strict source-only design consolidated in
         assertions and focused88/full275 PASS are not browser/scientific clearance.
         Prior96 roots/owner fields/history preserved. Publish/exact NEW CI then STOP
         for formal227 handoff/unprocessed-input review, before any owner processing.
+    - [Review228](docs/228-review-doc227-oulu-batch09-handoff-unprocessed-input.md)
+        accepts227 as partial/blocked and authorizes read-only diagnostics only.
+        [Diagnostic229](docs/229-review-response-doc228-oulu-batch09-input-diagnostics.md)
+        pins18 immutable core +1 separate input/18 sibling, strict JSON/types/ranks/
+        references PASS; owner categorically self-attests genuine intended export
+        and both pre-judgment functional sequences, not independent authentication
+        or retrospective authority.98 roots/278 pins/history preserved;89 focused/
+        276 full PASS. No supplied outcomes accepted/imported/activated, AI85/effective80;
+       227's failed criterion remains unchanged. Publish/exact NEW CI then STOP for
+        formal229 diagnostic review before further collection/import/activation.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
