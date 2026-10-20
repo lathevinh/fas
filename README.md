@@ -804,6 +804,17 @@ is the strict source-only design consolidated in
         AI85/effective80/semantic-owner80, activation0, historical disagreement1/
         unresolved0, batch09 open/readinessfalse. Publish/exact NEW CI then STOP for
         formal231 import/reconciliation review before acceptance or activation.
+    - [Review232](docs/232-review-doc231-oulu-batch09-categorical-import.md) accepts
+        five imported rejections at semantic level: semantic-owner85/85 and AI85/85,
+        current effective80/85. [Activation233](docs/233-review-response-doc232-oulu-batch09-activation.md)
+        materializes five separate activated rows, all activation-review pending and
+        counts-currentfalse. Current effective80/prospective85 only after acceptance;
+        accepted-current batch09 activations0, batch09 open/readinessfalse. Full
+        historical import copies and all owner bytes/fields/flags are preserved;
+        8/8 serialization replay,102 roots/292 pins/frozen13/config17 and108 source
+        files unchanged. Focused90 PASS; accepted231 full277 baseline not rerun locally.
+        Publish/exact NEW CI then STOP for formal233 activation review, no closure
+        or further dataset/model/scientific execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
