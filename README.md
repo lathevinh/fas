@@ -815,6 +815,19 @@ is the strict source-only design consolidated in
         files unchanged. Focused90 PASS; accepted231 full277 baseline not rerun locally.
         Publish/exact NEW CI then STOP for formal233 activation review, no closure
         or further dataset/model/scientific execution.
+    - [Review234](docs/234-review-doc233-oulu-batch09-activation.md) accepts the
+        final-five activation: effective/semantic-owner/AI85/85; batch09 and the
+        fixed85 highest-risk prefix are closed at screen-level scope only.
+        [Read-only inventory235](docs/235-review-response-doc234-residual-gate-inventory.md)
+        records unchanged gate errors0/63/64/65/66, maps all66 unique messages and
+        distinguishes existing frozen metadata from missing materialization/audit
+        acceptance and downstream scientific evidence. Frozen CSV schemas8/8 and
+        joins4/4 verify without any CSV/config/policy changes. Main/sibling1/1
+        byte-identical;104 roots/303 pins/history preserved; focused65 PASS, full277
+        accepted231 baseline. Propose only a separately reviewed non-ready frozen-root
+        governance bridge, retaining not_audited and all technical/scientific gates.
+        Publish/exact NEW CI then STOP for formal235 inventory/next-scope review;
+        no further audit, screening, owner collection or model execution.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
