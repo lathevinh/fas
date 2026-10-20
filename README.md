@@ -759,6 +759,18 @@ is the strict source-only design consolidated in
         three new immutable targets refused. No whole-archive rehash or visual judgments.
         Current/semantic-owner/AI80/85/five unviewed/history1-unresolved0/readinessfalse;
         publish/exact NEW CI then STOP for formal223 packet review, before AI/human work.
+    - [Review224](docs/224-review-doc223-oulu-batch09-packet-retry.md) accepts223
+        technical packets and authorizes only final-five AI screening.
+        [AI225](docs/225-review-response-doc224-oulu-batch09-ai-proposals.md) actually
+        opens all15 existing composites for80..84 and records five bounded rejection
+        proposals, zero confirmations/uncertainties, pending formal AI checkpoint review.
+        Nine video keys/one exact reuse group and recurring configurations are dependent,
+        not independent trials/raters or capture clearance. Eight-record serialization
+        replay is byte-identical, not another visual pass.94 roots/owner fields/history
+        preserved;87 focused tests PASS, accepted223 full274 baseline not rerun locally.
+        AI85/85 includes pending225; accepted AI/effective/semantic-owner remain80/85,
+        human0/activation0/readinessfalse. Publish/exact NEW CI then STOP for formal225
+        AI review before any human handoff/input/import/activation or scientific work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
