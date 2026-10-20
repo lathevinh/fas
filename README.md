@@ -828,6 +828,18 @@ is the strict source-only design consolidated in
         governance bridge, retaining not_audited and all technical/scientific gates.
         Publish/exact NEW CI then STOP for formal235 inventory/next-scope review;
         no further audit, screening, owner collection or model execution.
+    - [Review236](docs/236-review-doc235-residual-gate-inventory.md) accepts235 and
+        authorizes only the [non-ready bridge237](docs/237-review-response-doc236-frozen-governance-bridge.md).
+        Explicit external frozen-root binding verifies permanent registry/frozen13,
+        regular contained nonsymlink byte snapshots and drift; default behavior stays
+        fail-closed. Exact metadata/core-role counts/hashes are projected, all8 statuses
+        remain not_audited, SiW subjects blank/source1057 versus metadata1680.
+        Measured default gates0/16/17/18/19; explicit-root0/8/9/10/11, not scientific
+        readiness. Authorized5 source/summary transitions are explicit;106 roots and
+        inherited pins/frozen/owner/history preserved. New4/focused69/full281 PASS;
+        independent children1/1 replay and actualCLI11/refusals5+3 pass.
+        Publish/exact NEW CI then STOP for formal237 bridge review. Any OULU residual
+        audit-acceptance checklist is a proposal only, no automatic audit/model work.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

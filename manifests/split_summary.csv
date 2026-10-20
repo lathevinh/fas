@@ -1,5 +1,5 @@
 dataset,audit_status,group_unit,train_groups,branch_calibration_groups,g_domain_groups,routing_validation_groups,g_attack_groups,train_attack_videos,branch_calibration_attack_videos,g_domain_attack_videos,routing_validation_attack_videos,g_attack_attack_videos,role_manifest_sha256
-OULU-NPU,not_audited,subject,,,,,,,,,,,
-CASIA-FASD,not_audited,subject,,,,,,,,,,,
-MSU-MFSD,not_audited,subject,,,,,,,,,,,
-SiW-Mv2,not_audited,video,,,,,,,,,,,
+OULU-NPU,not_audited,subject,33,11,11,,,2376,792,792,,,ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d
+CASIA-FASD,not_audited,subject,30,10,10,,,270,90,90,,,289fd009cab93fad615be00fa9a92a8f1d216aaa2a12d366330f6d5dd67b0599
+MSU-MFSD,not_audited,subject,21,7,7,,,126,42,42,,,57b2ff247590fdd078453448210d963d332b5d0c562e4a1cd1d934588d0339a5
+SiW-Mv2,not_audited,video,632,215,210,,,318,110,105,,,a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7

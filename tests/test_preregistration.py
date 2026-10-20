@@ -4,6 +4,7 @@ import sys
 import csv
 import hashlib
 import json
+import os
 import shutil
 import tempfile
 import unittest
@@ -15,6 +16,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from fas import preregistration
 from fas.preregistration import (
     CONFIG_FILES,
     DATASET_COLUMNS,
@@ -95,6 +97,188 @@ class PreregistrationTest(unittest.TestCase):
             for path in (copy / "manifests" / "private").glob("*_roles.csv"):
                 self.assertNotIn("routing_validation", path.read_text())
             self.assertEqual(validate_stage(copy, "data-audit"), [])
+
+    @contextmanager
+    def _external_fixture(self, root: Path) -> Iterator[Path]:
+        self._write_synthetic_evidence(root)
+        external = root.parent / "external"
+        shutil.copytree(root / "manifests/private", external)
+        for dataset in preregistration.ALL_DATASETS:
+            slug = dataset.lower().replace("-", "_")
+            (external / f"{slug}_canonical.json").write_text('{"synthetic": true}', encoding="utf-8")
+        digest = self._pin_synthetic_root(root, external)
+        with patch("fas.preregistration.FROZEN_ROLE_REGISTRY_SHA256", digest):
+            yield external
+
+    def _pin_synthetic_root(self, root: Path, external: Path) -> str:
+        registry = {"frozen_artifact_sha256": {
+            path.name: self._digest(path) for path in external.iterdir()
+            if path.name != "source_role_freeze.json"
+        }}
+        payload = json.dumps(registry)
+        path = root / preregistration.FROZEN_ROLE_REGISTRY
+        path.write_text(payload, encoding="utf-8")
+        (external / "source_role_freeze.json").write_text(payload, encoding="utf-8")
+        return self._digest(path)
+
+    def test_external_frozen_root_defaults_and_nonready_statuses(self) -> None:
+        with self._copy() as copy, self._external_fixture(copy) as external:
+            self.assertEqual(validate_stage(copy, "data-audit"), [])
+            self.assertEqual(validate_stage(copy, "data-audit", frozen_root=external), [])
+            shutil.rmtree(copy / "manifests/private")
+            self.assertEqual(validate_stage(copy, "data-audit", frozen_root=external), [])
+            self.assertEqual(len(validate_stage(copy, "data-audit")), 8)
+            for name in ("dataset_summary.csv", "split_summary.csv"):
+                path = copy / "manifests" / name
+                path.write_text(path.read_text().replace("complete", "not_audited"), encoding="utf-8")
+            baseline = validate_stage(copy, "data-audit", frozen_root=external)
+            self.assertEqual(len(baseline), 8)
+            self.assertTrue(all("unaudited dataset" in error for error in baseline))
+            self.assertEqual(validate_stage(copy, "schema", frozen_root=external), [])
+            for stage in ("source-dry-run", "analysis-freeze", "locked-evaluation"):
+                errors = validate_stage(copy, stage, frozen_root=external)
+                self.assertEqual(errors[:8], baseline)
+                self.assertGreater(len(errors), 8)
+
+    def test_external_frozen_root_rejects_invalid_paths_and_files(self) -> None:
+        cases = ("missing", "file", "inside_repository", "root_symlink", "ancestor_symlink",
+                 "metadata_symlink", "roles_symlink", "canonical_symlink", "registry_symlink",
+                 "contained_symlink", "fifo", "directory", "wrong_hash", "wrong_registry_hash",
+                 "registry_path_escape")
+        for case in cases:
+            with self.subTest(case=case), self._copy() as copy, self._external_fixture(copy) as external:
+                candidate = external
+                if case == "missing":
+                    candidate = external / "missing"
+                elif case == "file":
+                    candidate = external / "source_role_freeze.json"
+                elif case == "inside_repository":
+                    candidate = copy
+                elif case == "root_symlink":
+                    candidate = copy.parent / "root_alias"
+                    candidate.symlink_to(external, target_is_directory=True)
+                elif case == "ancestor_symlink":
+                    alias = copy.parent / "parent_alias"
+                    alias.symlink_to(copy.parent, target_is_directory=True)
+                    candidate = alias / external.name
+                elif case in {"metadata_symlink", "roles_symlink", "canonical_symlink", "registry_symlink", "contained_symlink"}:
+                    name = {"metadata_symlink": "oulu_npu_metadata.csv", "roles_symlink": "siw_mv2_roles.csv",
+                            "canonical_symlink": "msu_mfsd_canonical.json", "registry_symlink": "source_role_freeze.json",
+                            "contained_symlink": "oulu_npu_metadata.csv"}[case]
+                    path = external / name
+                    target = (external if case == "contained_symlink" else copy.parent) / "substitute"
+                    target.write_bytes(path.read_bytes())
+                    path.unlink()
+                    path.symlink_to(target)
+                elif case in {"fifo", "directory"}:
+                    path = external / "oulu_npu_metadata.csv"
+                    path.unlink()
+                    if case == "fifo":
+                        os.mkfifo(path)
+                    else:
+                        path.mkdir()
+                elif case == "wrong_hash":
+                    (external / "casia_fasd_canonical.json").write_text("changed", encoding="utf-8")
+                elif case == "wrong_registry_hash":
+                    (copy / preregistration.FROZEN_ROLE_REGISTRY).write_text("{}", encoding="utf-8")
+                else:
+                    path = copy / preregistration.FROZEN_ROLE_REGISTRY
+                    registry = json.loads(path.read_text())
+                    registry["frozen_artifact_sha256"]["../escape.csv"] = "0" * 64
+                    path.write_text(json.dumps(registry), encoding="utf-8")
+                    with patch("fas.preregistration.FROZEN_ROLE_REGISTRY_SHA256", self._digest(path)):
+                        errors = validate_stage(copy, "schema", frozen_root=external)
+                    self.assertTrue(any("artifact names mismatch" in error for error in errors), errors)
+                    continue
+                for stage in ("schema", "data-audit"):
+                    errors = validate_stage(copy, stage, frozen_root=candidate)
+                    self.assertTrue(any("invalid external frozen evidence binding" in error for error in errors), errors)
+
+    def test_external_frozen_root_detects_binding_drift(self) -> None:
+        for case in ("bytes", "same_bytes_new_inode", "root_substitution", "registry"):
+            with self.subTest(case=case), self._copy() as copy, self._external_fixture(copy) as external:
+                original = preregistration._validate_siwmv2_population
+
+                def mutate(root: Path, rows: list[dict[str, str]], errors: list[str]) -> None:
+                    original(root, rows, errors)
+                    path = external / "oulu_npu_metadata.csv"
+                    if case == "root_substitution":
+                        replacement = external.with_name("renamed")
+                        external.rename(replacement)
+                        external.symlink_to(replacement, target_is_directory=True)
+                    elif case == "registry":
+                        path = copy / preregistration.FROZEN_ROLE_REGISTRY
+                        path.write_bytes(path.read_bytes() + b"\n")
+                    else:
+                        payload = path.read_bytes()
+                        if case == "same_bytes_new_inode":
+                            path.unlink()
+                        path.write_bytes(payload + (b"\n" if case == "bytes" else b""))
+
+                with patch("fas.preregistration._validate_siwmv2_population", side_effect=mutate):
+                    errors = validate_stage(copy, "data-audit", frozen_root=external)
+                self.assertEqual(errors, ["external frozen evidence binding drift"])
+
+    def test_external_frozen_root_preserves_deeper_data_and_siw_checks(self) -> None:
+        cases = (
+            ("schema", "columns do not match"), ("count", "does not reconcile"),
+            ("summary_hash", "SHA-256 does not match"), ("duplicate", "unique nonempty"),
+            ("label", "invalid binary labels"), ("join", "does not match audited metadata"),
+            ("group", "multiple roles"), ("siw_subject", "unknown SiW-Mv2 subject_id"),
+            ("siw_id", "IDs do not match"), ("siw_type", "type coverage"),
+            ("siw_mapping", "type/family mapping"), ("siw_family", "type/family mapping"),
+            ("siw_partition", "train/test membership"), ("siw_source_test", "target test video"),
+            ("siw_subject_count", "subject count must remain unknown"),
+        )
+        for case, message in cases:
+            with self.subTest(case=case), self._copy() as copy, self._external_fixture(copy) as external:
+                roles = case in {"join", "group", "siw_source_test"}
+                dataset = "SiW-Mv2" if case.startswith("siw_") else "OULU-NPU"
+                slug = dataset.lower().replace("-", "_")
+                path = external / f"{slug}_{'roles' if roles else 'metadata'}.csv"
+                with path.open(newline="", encoding="utf-8") as handle:
+                    rows = list(csv.DictReader(handle))
+                if case in {"count", "summary_hash", "siw_subject_count"}:
+                    summary_path = copy / "manifests/dataset_summary.csv"
+                    with summary_path.open(newline="", encoding="utf-8") as handle:
+                        summary = list(csv.DictReader(handle))
+                    field, value = {"count": ("groups", "9999"), "summary_hash": ("manifest_sha256", "0" * 64),
+                                    "siw_subject_count": ("subjects", "1680")}[case]
+                    next(row for row in summary if row["dataset"] == dataset)[field] = value
+                    self._write_csv(summary_path, DATASET_COLUMNS, summary)
+                else:
+                    if case == "schema":
+                        for row in rows:
+                            row.pop("attack_family")
+                    elif case == "duplicate":
+                        rows.append(dict(rows[0]))
+                    elif case == "label":
+                        rows[0]["binary_label"] = "unknown"
+                    elif case == "join":
+                        rows[0]["video_id"] = "missing_metadata_video"
+                    elif case == "group":
+                        rows[2]["subject_id"] = rows[0]["subject_id"]
+                    elif case == "siw_source_test":
+                        with (external / "siw_mv2_metadata.csv").open(newline="", encoding="utf-8") as handle:
+                            target = next(row for row in csv.DictReader(handle) if row["official_split"] == "test")
+                        rows[0].update(video_id=target["video_id"], binary_label=target["binary_label"])
+                    else:
+                        field, value = {
+                            "siw_subject": ("subject_id", "invented"), "siw_id": ("video_id", "Live_not_member"),
+                            "siw_type": ("reference_attack_type", "unknown_type"),
+                            "siw_mapping": ("attack_mapping_version", "changed"),
+                            "siw_family": ("attack_family", "not_frozen"),
+                            "siw_partition": ("official_split", "development"),
+                        }[case]
+                        selected = next(row for row in rows if row["binary_label"] == "attack") if case in {"siw_type", "siw_family"} else rows[0]
+                        selected[field] = value
+                    self._write_csv(path, tuple(rows[0]), rows)
+                    self._update_hash(copy / f"manifests/{'split' if roles else 'dataset'}_summary.csv",
+                                      dataset, "role_manifest_sha256" if roles else "manifest_sha256", path)
+                digest = self._pin_synthetic_root(copy, external)
+                with patch("fas.preregistration.FROZEN_ROLE_REGISTRY_SHA256", digest):
+                    errors = validate_stage(copy, "data-audit", frozen_root=external)
+                self.assertTrue(any(message in error for error in errors), errors)
 
     def test_data_stage_rejects_subject_role_overlap(self) -> None:
         with self._copy() as copy:

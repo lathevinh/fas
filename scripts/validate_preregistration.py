@@ -16,8 +16,9 @@ from fas.preregistration import STAGES, artifact_hashes, validate_stage
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stage", choices=STAGES, default="schema")
+    parser.add_argument("--frozen-root", type=Path, help="Read-only external permanent frozen metadata/role bundle")
     args = parser.parse_args()
-    errors = validate_stage(ROOT, args.stage)
+    errors = validate_stage(ROOT, args.stage, frozen_root=args.frozen_root)
     for name, digest in artifact_hashes(ROOT).items():
         print(f"{digest}  {name}")
     if errors:

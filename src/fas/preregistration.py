@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import io
 import json
+import os
 import re
+import stat
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -57,6 +60,8 @@ SOURCE_DRY_RUN_ARTIFACTS = {
     "results/source-dry-run/applicability.json",
 }
 SOURCE_POLICY_PATH = "configs/source_recipe_v2.yaml"
+FROZEN_ROLE_REGISTRY = "configs/role_policy_frozen_v2.yaml"
+FROZEN_ROLE_REGISTRY_SHA256 = "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -72,7 +77,7 @@ def validate(root: Path, require_counts: bool = True) -> list[str]:
     return validate_stage(root, "data-audit" if require_counts else "schema")
 
 
-def validate_stage(root: Path, stage: str) -> list[str]:
+def validate_stage(root: Path, stage: str, *, frozen_root: Path | None = None) -> list[str]:
     if stage not in STAGES:
         raise ValueError(f"stage must be one of {', '.join(STAGES)}")
     errors: list[str] = []
@@ -90,15 +95,89 @@ def validate_stage(root: Path, stage: str) -> list[str]:
     _validate_config_schema(configs, errors)
     _validate_benchmark(root, configs.get("benchmark_amendment_v2.yaml", {}), errors)
 
+    frozen_files = None
+    identities: dict[Path, tuple[int, ...]] = {}
+    if frozen_root is not None:
+        try:
+            frozen_files, identities = _load_frozen_evidence(root, frozen_root)
+        except OSError:
+            return errors + ["invalid external frozen evidence binding: unreadable path"]
+        except ValueError as exc:
+            return errors + [f"invalid external frozen evidence binding: {exc}"]
     if STAGES.index(stage) >= STAGES.index("data-audit"):
-        _validate_data_evidence(root, errors)
+        _validate_data_evidence(root, errors, frozen_files)
     if STAGES.index(stage) >= STAGES.index("source-dry-run"):
         _validate_source_dry_run(root, errors)
     if STAGES.index(stage) >= STAGES.index("analysis-freeze"):
         _validate_analysis_freeze(root, errors)
     if stage == "locked-evaluation":
         _validate_locked_authorization(root, errors)
+    if frozen_root is not None:
+        try:
+            bound_root = frozen_root.absolute()
+            if bound_root.resolve(strict=True) != bound_root or any(
+                _binding_identity(path) != identity for path, identity in identities.items()
+            ):
+                errors.append("external frozen evidence binding drift")
+        except (OSError, ValueError):
+            errors.append("external frozen evidence binding drift")
     return errors
+
+
+def _binding_identity(path: Path) -> tuple[int, ...]:
+    return _stat_identity(path.lstat())
+
+
+def _stat_identity(info: os.stat_result) -> tuple[int, ...]:
+    return (info.st_dev, info.st_ino, info.st_mode, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+
+
+def _bound_regular_bytes(path: Path) -> tuple[bytes, tuple[int, ...]]:
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError(f"{path.name} must be a regular non-symlink file")
+    identity = _stat_identity(before)
+    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(descriptor, "rb") as handle:
+        if _stat_identity(os.fstat(handle.fileno())) != identity:
+            raise ValueError("regular evidence file identity drift")
+        payload = handle.read()
+        if (_stat_identity(os.fstat(handle.fileno())) != identity
+                or _binding_identity(path) != identity or len(payload) != before.st_size):
+            raise ValueError("regular evidence file identity drift")
+    return payload, identity
+
+
+def _load_frozen_evidence(
+    root: Path, frozen_root: Path,
+) -> tuple[dict[str, bytes], dict[Path, tuple[int, ...]]]:
+    bound_root = frozen_root.absolute()
+    if bound_root.resolve(strict=True) != bound_root or not bound_root.is_dir():
+        raise ValueError("root must be a directory without symlink or path escape")
+    if bound_root == root.resolve() or root.resolve() in bound_root.parents:
+        raise ValueError("root must remain outside the repository")
+    identities = {bound_root: _binding_identity(bound_root)}
+    registry_path = root / FROZEN_ROLE_REGISTRY
+    registry_bytes, identities[registry_path] = _bound_regular_bytes(registry_path)
+    if hashlib.sha256(registry_bytes).hexdigest() != FROZEN_ROLE_REGISTRY_SHA256:
+        raise ValueError("permanent registry SHA-256 mismatch")
+    registry = json.loads(registry_bytes)
+    names = {f"{_slug(dataset)}_{kind}" for dataset in ALL_DATASETS
+             for kind in ("canonical.json", "metadata.csv", "roles.csv")}
+    expected = registry.get("frozen_artifact_sha256")
+    if not isinstance(expected, dict) or set(expected) != names:
+        raise ValueError("permanent registry artifact names mismatch")
+    expected = {**expected, "source_role_freeze.json": FROZEN_ROLE_REGISTRY_SHA256}
+    files = {}
+    for name, digest in expected.items():
+        path = bound_root / name
+        if path.resolve(strict=True).parent != bound_root:
+            raise ValueError(f"{name} path escape or symlink substitution")
+        payload, identities[path] = _bound_regular_bytes(path)
+        if not _sha256_string(digest) or hashlib.sha256(payload).hexdigest() != digest:
+            raise ValueError(f"{name} frozen SHA-256 mismatch")
+        files[name] = payload
+    return files, identities
 
 
 def artifact_hashes(root: Path) -> dict[str, str]:
@@ -516,13 +595,13 @@ def _validate_claims(config: dict[str, Any], errors: list[str]) -> None:
         errors.append("standalone branch failure must remain scoped to its own claim")
 
 
-def _validate_data_evidence(root: Path, errors: list[str]) -> None:
+def _validate_data_evidence(root: Path, errors: list[str], frozen_files: dict[str, bytes] | None = None) -> None:
     datasets = _read_summary(root / "manifests" / "dataset_summary.csv", DATASET_COLUMNS, errors)
     splits = _read_summary(root / "manifests" / "split_summary.csv", SPLIT_COLUMNS, errors)
     if not datasets or not splits:
         return
-    metadata_records = _validate_dataset_rows(root, datasets, errors)
-    role_records = _validate_split_rows(root, splits, errors)
+    metadata_records = _validate_dataset_rows(root, datasets, errors, frozen_files)
+    role_records = _validate_split_rows(root, splits, errors, frozen_files)
     _validate_siwmv2_population(root, metadata_records.get("SiW-Mv2", []), errors)
     for dataset in ALL_DATASETS:
         metadata = {
@@ -592,6 +671,7 @@ def _validate_dataset_rows(
     root: Path,
     rows: dict[str, dict[str, str]],
     errors: list[str],
+    frozen_files: dict[str, bytes] | None = None,
 ) -> dict[str, list[dict[str, str]]]:
     evidence_records: dict[str, list[dict[str, str]]] = {}
     for dataset, row in rows.items():
@@ -610,9 +690,10 @@ def _validate_dataset_rows(
         if not row["metadata_source"]:
             errors.append(f"dataset_summary.csv {dataset} metadata_source is required")
         evidence = root / "manifests" / "private" / f"{_slug(dataset)}_metadata.csv"
-        if _validate_evidence_hash(evidence, row["manifest_sha256"], f"{dataset} metadata", errors):
+        payload = frozen_files[evidence.name] if frozen_files is not None else None
+        if _validate_evidence_hash(evidence, row["manifest_sha256"], f"{dataset} metadata", errors, payload):
             columns = SIWMV2_METADATA_COLUMNS if dataset == "SiW-Mv2" else METADATA_COLUMNS
-            records = _read_evidence(evidence, columns, dataset, errors)
+            records = _read_evidence(evidence, columns, dataset, errors, payload)
             if records:
                 evidence_records[dataset] = records
                 _reconcile_dataset_summary(dataset, row, records, errors)
@@ -623,6 +704,7 @@ def _validate_split_rows(
     root: Path,
     rows: dict[str, dict[str, str]],
     errors: list[str],
+    frozen_files: dict[str, bytes] | None = None,
 ) -> dict[str, list[dict[str, str]]]:
     evidence_records: dict[str, list[dict[str, str]]] = {}
     for dataset, row in rows.items():
@@ -642,22 +724,23 @@ def _validate_split_rows(
                 if role not in required_roles | {"routing_validation"} and row[column] not in ("", "0"):
                     errors.append(f"split_summary.csv {dataset} {column} is not applicable")
         evidence = root / "manifests" / "private" / f"{_slug(dataset)}_roles.csv"
-        if _validate_evidence_hash(evidence, row["role_manifest_sha256"], f"{dataset} roles", errors):
-            records = _read_evidence(evidence, ROLE_COLUMNS, dataset, errors)
+        payload = frozen_files[evidence.name] if frozen_files is not None else None
+        if _validate_evidence_hash(evidence, row["role_manifest_sha256"], f"{dataset} roles", errors, payload):
+            records = _read_evidence(evidence, ROLE_COLUMNS, dataset, errors, payload)
             if records:
                 evidence_records[dataset] = records
                 _reconcile_split_summary(dataset, row, records, errors)
     return evidence_records
 
 
-def _validate_evidence_hash(path: Path, expected: str, label: str, errors: list[str]) -> bool:
-    if not path.exists():
+def _validate_evidence_hash(path: Path, expected: str, label: str, errors: list[str], payload: bytes | None = None) -> bool:
+    if payload is None and not path.exists():
         errors.append(f"missing private evidence file for {label}: {path.name}")
         return False
     if not _sha256_string(expected):
         errors.append(f"{label} SHA-256 must be 64 lowercase hexadecimal characters")
         return False
-    actual = hashlib.sha256(path.read_bytes()).hexdigest()
+    actual = hashlib.sha256(path.read_bytes() if payload is None else payload).hexdigest()
     if actual != expected:
         errors.append(f"{label} SHA-256 does not match the evidence file")
         return False
@@ -669,8 +752,10 @@ def _read_evidence(
     columns: tuple[str, ...],
     dataset: str,
     errors: list[str],
+    payload: bytes | None = None,
 ) -> list[dict[str, str]]:
-    with path.open(newline="", encoding="utf-8") as handle:
+    with (path.open(newline="", encoding="utf-8") if payload is None
+          else io.StringIO(payload.decode("utf-8"), newline="")) as handle:
         reader = csv.DictReader(handle)
         if tuple(reader.fieldnames or ()) != columns:
             errors.append(f"{path.name} columns do not match the required schema")
