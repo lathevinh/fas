@@ -199,6 +199,142 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch09_import_review230_strict_outcomes_preservation_and_pending(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import import_oulu_categorical_batch09 as module
+            import diagnose_oulu_batch09_input as diagnostic
+            digest = "a" * 64
+            dispositions = [rule["disposition"] for rule in module.CATEGORICAL_RULES]
+            definition = {field: digest for field in diagnostic.GLOBAL_BINDINGS}
+            definition.update({"categorical_rules": module.CATEGORICAL_RULES,
+                               "pairs": [{"queue_rank": rank, **{field: digest for field in diagnostic.PAIR_BINDINGS},
+                                          "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": digest for name in ("temporal_a", "temporal_b", "trigger")},
+                                          "ai_disposition": "rejected_false_positive"} for rank in range(80, 85)]})
+            record = {field: digest for field in diagnostic.GLOBAL_BINDINGS}
+            record.update({"version": 1, "record_type": "batch09_categorical_review", "review_definition_sha256": digest,
+                           "reviewer": {"kind": "owner_human", "id": "synthetic-only", "personally_inspected_bound_evidence": True},
+                           "reviewed_at_utc": "2026-10-20T00:00:00Z", "stop_for_prospective_scientific_decision": False,
+                           "pairs": [{**{field: pair[field] for field in ("queue_rank", *diagnostic.PAIR_BINDINGS)},
+                                      "reviewed_assets_sha256": pair["required_assets_sha256"], "evidence_sufficient": True,
+                                      "same_or_derived_content": False, "personal_inspection_attested": True, "owner_decision_attested": True,
+                                      "disposition": "rejected_false_positive", "capture_provenance_certified": False,
+                                      "stop_for_prospective_scientific_decision": False} for pair in definition["pairs"]]})
+            def validate(value, source=definition):
+                return module.validate_input(json.dumps(value).encode(), source, digest)
+            original, outcomes = validate(record)
+            self.assertEqual(original, record)
+            self.assertTrue(all(not row["reconciliation_required"] for row in outcomes))
+            for row, supplied in zip(outcomes, record["pairs"], strict=True):
+                self.assertEqual({field: row[field] for field in supplied}, supplied)
+                for field in ("effective_disposition_activated", "counts_as_accepted_current_effective_disposition", "model_execution_authorized", "scientific_readiness"):
+                    self.assertIs(row[field], False)
+                self.assertTrue(row["checkpoint_review_pending"] and row["semantic_acceptance_pending"])
+            for sufficient, same, disposition in [(False, None, "uncertain_insufficient_evidence"), (True, True, "confirmed_same_content_or_derived_lineage"), (True, False, "rejected_false_positive")]:
+                stop = same is True
+                changed = {**record, "stop_for_prospective_scientific_decision": stop,
+                           "pairs": [{**record["pairs"][0], "evidence_sufficient": sufficient, "same_or_derived_content": same,
+                                      "disposition": disposition, "stop_for_prospective_scientific_decision": stop}, *record["pairs"][1:]]}
+                _, rows = validate(changed)
+                self.assertEqual(rows[0]["validated_disposition"], disposition)
+                self.assertIs(rows[0]["scientific_stop_independently_derived"], stop)
+                self.assertEqual(rows[0]["reconciliation_required"], disposition != "rejected_false_positive")
+                with self.assertRaises(module.OutcomeDiscrepancy) as error:
+                    validate({**changed, "stop_for_prospective_scientific_decision": not stop})
+                self.assertIs(error.exception.scientific_stop_required, stop)
+            self.assertEqual(set(dispositions), {"uncertain_insufficient_evidence", "confirmed_same_content_or_derived_lineage", "rejected_false_positive"})
+            for field in ("personal_inspection_attested", "owner_decision_attested", "capture_provenance_certified"):
+                changed = {**record, "pairs": [{**record["pairs"][0], field: field == "capture_provenance_certified"}, *record["pairs"][1:]]}
+                self.assertTrue(diagnostic.diagnose_bytes(json.dumps(changed).encode(), definition, digest)["structure_types_pass"])
+                with self.assertRaises(ValueError):
+                    validate(changed)
+            bad_rows = [{"evidence_sufficient": None}, {"evidence_sufficient": 1}, {"same_or_derived_content": None},
+                        {"disposition": "clear"}, {"stop_for_prospective_scientific_decision": True}, {"queue_rank": 80.0},
+                        *({field: "drift"} for field in diagnostic.PAIR_BINDINGS), {"reviewed_assets_sha256": {}}]
+            for changes in bad_rows:
+                with self.assertRaises(ValueError):
+                    validate({**record, "pairs": [{**record["pairs"][0], **changes}, *record["pairs"][1:]]})
+            for field in module.DERIVED_FIELDS:
+                with self.assertRaises(ValueError):
+                    validate({**record, "pairs": [{**record["pairs"][0], field: False}, *record["pairs"][1:]]})
+            for changes in ({"version": True}, {"record_type": "batch08_categorical_review"}, {"reviewer": {**record["reviewer"], "id": " "}},
+                            {"reviewer": {**record["reviewer"], "personally_inspected_bound_evidence": False}}, {"reviewed_at_utc": "2026-10-20T00:00:00+01:00"},
+                            {"pairs": record["pairs"][:-1]}, {"pairs": [record["pairs"][0]] * 5}, *({field: "drift"} for field in diagnostic.GLOBAL_BINDINGS)):
+                with self.assertRaises(ValueError):
+                    validate({**record, **changes})
+            with self.assertRaises(ValueError):
+                validate(record, {**definition, "categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]})
+            for payload in (b'{"x":1,"x":2}', b'{"x":NaN}', b'{"x":1e999}', b'[]', b'null', b'{', b'\xff'):
+                with self.assertRaises(ValueError):
+                    module.validate_input(payload, definition, digest)
+            import ast
+            import hashlib
+            from argparse import Namespace
+            from unittest.mock import patch
+            flags = {"import_authorized": True, **{field: False for field in ("human_input_collection_authorized", "effective_activation_authorized", "model_execution_authorized", "scientific_readiness")}}
+            authority = {**flags, "checkpoint": 231, "review230_sha256": module.REVIEW_SHA256, "review228_sha256": diagnostic.REVIEW_SHA256,
+                         "diagnostic_document_sha256": module.DIAGNOSTIC_DOCUMENT_SHA256, "diagnostic_report_sha256": module.DIAGNOSTIC_REPORT_SHA256,
+                         "prospective_criteria_sha256": module.CRITERIA_SHA256, "input_sha256": module.INPUT_SHA256, "input_byte_size": 6710, "source229_CI": module.SOURCE229_CI}
+            module.verify_authority(authority)
+            for changes in ({"checkpoint": 231.0}, {"review230_sha256": digest}, {"input_sha256": digest}, {"input_byte_size": 6710.0},
+                            *({field: not value} for field, value in flags.items()), {"source229_CI": {**module.SOURCE229_CI, "run_id": 0}},
+                            {"source229_CI": {**module.SOURCE229_CI, "all_steps_success": 1}}):
+                with self.assertRaises(ValueError):
+                    module.verify_authority({**authority, **changes})
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                current_test = root / "tests/test_oulu.py"
+                current_test.parent.mkdir()
+                prior_source = "class PriorTests:\n    def existing_test(self):\n        pass\n"
+                current_source = prior_source + f"    def {module.NEW_TEST_METHOD}(self):\n        pass\n"
+                current_test.write_text(current_source)
+                prior_sha = hashlib.sha256(prior_source.encode()).hexdigest()
+                prior_ast = hashlib.sha256(ast.dump(ast.parse(prior_source)).encode()).hexdigest()
+                original = {"protected_snapshots": {str(root / f"prior{index}"): {} for index in range(98)},
+                            "pinned_file_sha256": {str(current_test): prior_sha, **{str(root / f"pin{index}"): digest for index in range(277)}},
+                            "frozen_file_sha256": {}, "study_config_sha256": {}, "main_root": str(root / "main"), "sibling_root": str(root / "sibling"),
+                            "input_path": str(root / "main" / diagnostic.INPUT_NAME), "input_identity": {"synthetic": 1}, "input_sha256": module.INPUT_SHA256, "input_byte_size": 6710}
+                confirmation = {"input_sha256": module.INPUT_SHA256, "classification": "owner_self_attested_genuine_export_intended_submission",
+                                "blank_form_sequence": "owner_attested_completed_before_genuine_judgments", "separate_synthetic_sequence": "owner_attested_completed_before_genuine_judgments",
+                                "independent_owner_authentication_claimed": False, "retrospective_collection_authority": False}
+                records = {"diagnostic_preflight_path": ("private_preflight_sha256", original),
+                           "diagnostic_main_path": ("private_diagnostic_main_sha256", {}), "diagnostic_sibling_path": ("private_diagnostic_sibling_sha256", {}),
+                           "owner_confirmation_path": ("private_owner_confirmation_sha256", confirmation)}
+                report, paths = {}, {}
+                for field, (public_field, value) in records.items():
+                    path = root / field / "record.json"
+                    path.parent.mkdir()
+                    path.write_text(json.dumps(value))
+                    paths[field] = str(path)
+                    report[public_field] = module._sha256(path)
+                verification_path = root / "verification.json"
+                verification_path.write_text(json.dumps({"owner_confirmation_sha256": report["private_owner_confirmation_sha256"], "input_sha256": module.INPUT_SHA256}))
+                paths["diagnostic_verification_path"] = str(verification_path)
+                report["private_verification_sha256"] = module._sha256(verification_path)
+                context = {**original, **paths, "pinned_file_sha256": {**original["pinned_file_sha256"], str(current_test): module._sha256(current_test)},
+                           "protected_snapshots": {**original["protected_snapshots"], **{str(Path(paths[field]).parent): {"record.json": report[public_field]}
+                                                   for field, public_field in (("diagnostic_main_path", "private_diagnostic_main_sha256"), ("diagnostic_sibling_path", "private_diagnostic_sibling_sha256"))}},
+                           "test_transition": {"old_sha256": prior_sha, "new_sha256": module._sha256(current_test), "only_added_test": module.NEW_TEST_METHOD, "prior_test_AST_unchanged": True}}
+                with patch.object(module, "ROOT", root), patch.object(module, "OLD_TEST_SHA256", prior_sha), patch.object(module, "OLD_TEST_AST_SHA256", prior_ast):
+                    self.assertEqual(module.verify_context(context, report), original)
+                    for changes in ({"pinned_file_sha256": {}}, {"frozen_file_sha256": {"drift": digest}}, {"study_config_sha256": {"drift": digest}},
+                                    {"protected_snapshots": original["protected_snapshots"]}, {"input_identity": {"drift": 1}}, {"input_path": str(root / "other.json")},
+                                    {"test_transition": {**context["test_transition"], "only_added_test": "wrong"}}):
+                        with self.assertRaises(ValueError):
+                            module.verify_context({**context, **changes}, report)
+                    with self.assertRaises(ValueError):
+                        module.verify_context(context, {**report, "private_owner_confirmation_sha256": digest})
+                    current_test.write_text(current_source.replace("def existing_test", "def changed_prior_test"))
+                    with self.assertRaises(ValueError):
+                        module.verify_context({**context, "test_transition": {**context["test_transition"], "new_sha256": module._sha256(current_test)}}, report)
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused231", root / "source"):
+                    with self.assertRaises(ValueError):
+                        module.import_review(Namespace(preflight=root / "absent.json", human_input=root / "source/input.json", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch09_input_diagnostics_review228_strict_read_and_bindings_only(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

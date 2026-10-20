@@ -792,6 +792,18 @@ is the strict source-only design consolidated in
         276 full PASS. No supplied outcomes accepted/imported/activated, AI85/effective80;
        227's failed criterion remains unchanged. Publish/exact NEW CI then STOP for
         formal229 diagnostic review before further collection/import/activation.
+    - [Review230](docs/230-review-doc229-oulu-batch09-input-diagnostics.md) accepts229
+        within its reported/self-attestation boundary and authorizes strict import only.
+        [Import231](docs/231-review-response-doc230-oulu-batch09-categorical-import.md)
+        validates the existing export: five rejections/five AI agreements, zero new
+        uncertainty/disagreement/unresolved reconciliation, no derived scientific stop.
+        Five imported rows remain inactive/pending checkpoint and semantic review;
+        8/8 serialization replay is not another owner or independent authentication.
+        Raw6710 bytes/all fields,100 roots/287 pins/frozen13/config17/history preserved
+        with explicit one-method test transition;90 focused/277 full tests PASS.
+        AI85/effective80/semantic-owner80, activation0, historical disagreement1/
+        unresolved0, batch09 open/readinessfalse. Publish/exact NEW CI then STOP for
+        formal231 import/reconciliation review before acceptance or activation.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
