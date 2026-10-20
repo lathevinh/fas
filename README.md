@@ -690,6 +690,18 @@ is the strict source-only design consolidated in
     Publish211, verify exact new CI success, then STOP for separately authorized
     categorical import/reconciliation. Effective70/AI80/five unviewed unchanged;
     importedhuman0/activation0/readinessfalse. No repeat owner answers are requested.
+    [Review212](docs/212-review-doc211-oulu-batch08-owner-export-receipt.md)
+    accepts211 and authorizes a separate strict categorical import70..79.
+    [Import213](docs/213-review-response-doc212-oulu-batch08-categorical-import.md)
+    independently derives10 rejections/10 agreements/0 uncertainty/disagreement
+    and stop=false from strict answers, not raw outcome labels. Raw bytes/all fields,
+    original AI/formal records and historical disagreement1/unresolved0 are preserved.
+    Main/replay actualCLIs produce13/13 identical records, NOT second human review;
+    focused83/full270 PASS in fas. Imported10 remain review-pending and inactive,
+    newlyaccepted0/activation0, effective70/AI80/five unviewed unchanged, batch08open.
+    Publish213, verify exact new CI success, then STOP for formal import review
+    before separately authorized activation. No queue continuation or scientific
+    clearance; owner checks/authorship remain attested, not independently verified.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
