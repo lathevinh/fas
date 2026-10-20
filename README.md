@@ -677,6 +677,19 @@ is the strict source-only design consolidated in
     Publish209, verify exact new CI completed/success, then STOP for formal handoff
     review BEFORE collecting owner answers/import/reconciliation/activation, rank80+,
     other datasets or research models. Human0/effectiveactivation0/readinessfalse.
+    [Review210](docs/210-review-doc209-oulu-batch08-categorical-handoff.md)
+    accepts209 for conditional local owner use after real-form and separate synthetic
+    functional checks, then requires a separate import/reconciliation checkpoint.
+    [Receipt211](docs/211-review-response-doc210-oulu-batch08-functional-check.md)
+    preserves an existing genuine raw export for70..79 after categorical owner
+    confirmation of those prior checks. The agent browser still returns403; owner
+    attestations are not independent browser verification or human authentication.
+    Raw11681bytes report ten rejections but remain UNIMPORTED; original33+33 handoff
+    files are unchanged, with only one additive raw export in main.86 roots/frozen13/
+    config17 are preserved; focused82 pass, full269 remains accepted209 baseline.
+    Publish211, verify exact new CI success, then STOP for separately authorized
+    categorical import/reconciliation. Effective70/AI80/five unviewed unchanged;
+    importedhuman0/activation0/readinessfalse. No repeat owner answers are requested.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
