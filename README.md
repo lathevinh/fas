@@ -702,6 +702,18 @@ is the strict source-only design consolidated in
     Publish213, verify exact new CI success, then STOP for formal import review
     before separately authorized activation. No queue continuation or scientific
     clearance; owner checks/authorship remain attested, not independently verified.
+    [Review214](docs/214-review-doc213-oulu-batch08-categorical-import.md)
+    accepts213 and ten owner rejections at semantic-review level, authorizing only
+    a separate additive activation checkpoint.
+    [Activation215](docs/215-review-response-doc214-oulu-batch08-activation.md)
+    materializes ten separate rows, each activated=true but activation-review-pending
+    and counts-current=false; original213 inactive/pending flags remain unchanged.
+    Main/replay13/13 identical;88 roots/frozen13/config17 preserved, focused83 PASS,
+    full270 retained as accepted213 baseline, not locally rerun215.
+    Accepted-current batch08 rows0/current effective70;80 prospective only after215
+    acceptance. Semantic-owner/AI coverage80, five unviewed, history1/unresolved0,
+    batch08open/readinessfalse. Publish215, verify exact new CI success, then STOP
+    for formal activation review; no rank80+, new owner judgments/prose or models.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
