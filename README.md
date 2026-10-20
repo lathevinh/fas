@@ -854,6 +854,20 @@ is the strict source-only design consolidated in
         Proposed residual cross-role protocol399 is subject to formal239 review only;
         no new media/archive/detector/model/owner work or audit-status change.
         Publish/exact NEW CI then STOP for formal239 checklist/next-scope review.
+    - [Review240](docs/240-review-doc239-oulu-residual-acceptance-checklist.md) accepts239
+        and authorizes design/metadata reconciliation only.
+        [Protocol241](docs/241-review-response-doc240-oulu-residual-cross-role-protocol.md)
+        and its [aggregate](results/phase1/oulu-cross-role-protocol241-v1.json) bind exact399
+        residual members after closed85. Actual shared-video graph438v/399e/91 components;
+        exact-content quotient434v/393 endpoint pairs, not independent observations.
+        One prebound pair from44v/56e is proposed for324 files/run,648 in two exports:
+        297 thumbnails,20 full-temporal galleries,2 native triggers and5 JSON records.
+        No assets or judgments were produced; no global lineage/risk-contract waiver.
+        Focused69 PASS/full281 accepted237 baseline only;two actual children rederive
+        membership/graphs/selection and20 total validators,1/1 byte-identical replay,
+        113 roots/331 pins/frozen13/config17/source108 unchanged. Gates remain blocked.
+        Publish/exact NEW CI then STOP for formal241 protocol review; no automatic
+        pilot, new media/model/owner work, audit completion or next checkpoint.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.
