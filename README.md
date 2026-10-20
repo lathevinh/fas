@@ -840,6 +840,20 @@ is the strict source-only design consolidated in
         independent children1/1 replay and actualCLI11/refusals5+3 pass.
         Publish/exact NEW CI then STOP for formal237 bridge review. Any OULU residual
         audit-acceptance checklist is a proposal only, no automatic audit/model work.
+    - [Review238](docs/238-review-doc237-frozen-governance-bridge.md) accepts237
+        without rework and authorizes only the existing-evidence OULU checklist.
+        [Checklist239](docs/239-review-response-doc238-oulu-residual-acceptance-checklist.md)
+        maps21 requirements to exact sources/hashes/coverage/limits/next acceptance tests:
+        13 bounded-satisfied,7 residual,1 historical-context, not a readiness score.
+        Payload4950/decode-selector4949/failure1/calibration990-989 and closed85 remain;
+        13 exact pairs stay separate from6640 nonexact/6555 outside-prefix candidates.
+        No global clearance or exhaustive6555 screening requirement is inferred.
+        Actual default gates0/16/17/18/19,bound0/8/9/10/11;focused69 PASS/full281
+        accepted237 baseline only;two independent children1/1 replay,108 roots/326pins
+        and all17 configs/108 sources unchanged. Accounting addendum is consumed.
+        Proposed residual cross-role protocol399 is subject to formal239 review only;
+        no new media/archive/detector/model/owner work or audit-status change.
+        Publish/exact NEW CI then STOP for formal239 checklist/next-scope review.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

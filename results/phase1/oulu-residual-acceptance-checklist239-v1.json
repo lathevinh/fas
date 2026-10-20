@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "checkpoint": 239,
+  "status": "readonly_checklist_verified_pending_formal_checklist_and_next_scope_review",
+  "prospective_criteria_sha256": "ac6f00447b4dd0cc457ff373660bb81626ce2ceab65e0c845556e66214918822",
+  "review238_sha256": "710a05d9a2c2a2c44ae0470e27447dc752a917b1bb18b9518337d3d8191e06b9",
+  "private_preflight_sha256": "b210f2ab26dbdb81f6ae640af1576c5e2336421f4fae1429bdfe626b2ed0f727",
+  "source237_document_sha256": "d5f484b0ef0c62c94f9d5e9eb9301fbc0128d89a880d6277dbd907f35dac8773",
+  "source237_report_sha256": "f0774d33297ed1549f21d96cfd4aa2ffd18135acb99bca0bfa0016c156c6e761",
+  "source237_accounting_verification_sha256": "57d88f9dbb59e910ee2643eba8b89e3d6d830e13f3fc341d98bae50144e5ca1e",
+  "source237_preflight_sha256": "e20149921f4c279e23a91b85da2da5ab44836fdf844b98d8b101772c424bcca0",
+  "source237_provenance_sha256": "3d3b91d9796726df1e4ef8b0d4c1958560b4b648dcbbfbc1b4210eab752327e2",
+  "source237_verification_sha256": "2a8fdca7f32a7a25d00203d39c2b611e2c4d59ff71ae30bb1605536c101b972b",
+  "source237_gate_results_sha256": "06da74204edbe4d551a34727e56770706e72fa20cb3d9f8783cddd91c318d137",
+  "private_checklist_sha256": "2b08987acc585eca4f2deeeabcf68b4ff786aa3ff6935c2bd02815984b01abbd",
+  "private_verification_sha256": "ae442cc291e4d264897355da9b6646ce6e7b0a29c30fa2741978d6b766875731",
+  "checklist_definition_sha256": "d83c0e00c6f63d5d89bdc6d413fe706939c269a04efb9ee5ae07cfe810027e83",
+  "permanent_registry_sha256": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f",
+  "frozen_OULU_sha256": {
+    "canonical": "e45949f98641fffd420cc7750e605ff815ff8608e51c47feaaa05ede7de4173b",
+    "metadata": "5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3",
+    "roles": "ed415897ecf8b0c4abcb110f660c25b19a36b3a35b8780858e10f7d1acd2f38d"
+  },
+  "classification_counts": {"satisfied_bounded": 13, "residual": 7, "historical_context_only": 1},
+  "classification_counts_are_not_scientific_readiness_scores": true,
+  "actual_error_counts": {
+    "default": {"schema": 0, "data-audit": 16, "source-dry-run": 17, "analysis-freeze": 18, "locked-evaluation": 19},
+    "external": {"schema": 0, "data-audit": 8, "source-dry-run": 9, "analysis-freeze": 10, "locked-evaluation": 11}
+  },
+  "ordered_unique_errors": {
+    "default": [
+      "dataset_summary.csv has unaudited dataset: OULU-NPU",
+      "missing private evidence file for OULU-NPU metadata: oulu_npu_metadata.csv",
+      "dataset_summary.csv has unaudited dataset: CASIA-FASD",
+      "missing private evidence file for CASIA-FASD metadata: casia_fasd_metadata.csv",
+      "dataset_summary.csv has unaudited dataset: MSU-MFSD",
+      "missing private evidence file for MSU-MFSD metadata: msu_mfsd_metadata.csv",
+      "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+      "missing private evidence file for SiW-Mv2 metadata: siw_mv2_metadata.csv",
+      "split_summary.csv has unaudited dataset: OULU-NPU",
+      "missing private evidence file for OULU-NPU roles: oulu_npu_roles.csv",
+      "split_summary.csv has unaudited dataset: CASIA-FASD",
+      "missing private evidence file for CASIA-FASD roles: casia_fasd_roles.csv",
+      "split_summary.csv has unaudited dataset: MSU-MFSD",
+      "missing private evidence file for MSU-MFSD roles: msu_mfsd_roles.csv",
+      "split_summary.csv has unaudited dataset: SiW-Mv2",
+      "missing private evidence file for SiW-Mv2 roles: siw_mv2_roles.csv",
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record",
+      "locked-evaluation remains blocked until typed authorization exists"
+    ],
+    "external": [
+      "dataset_summary.csv has unaudited dataset: OULU-NPU",
+      "dataset_summary.csv has unaudited dataset: CASIA-FASD",
+      "dataset_summary.csv has unaudited dataset: MSU-MFSD",
+      "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+      "split_summary.csv has unaudited dataset: OULU-NPU",
+      "split_summary.csv has unaudited dataset: CASIA-FASD",
+      "split_summary.csv has unaudited dataset: MSU-MFSD",
+      "split_summary.csv has unaudited dataset: SiW-Mv2",
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record",
+      "locked-evaluation remains blocked until typed authorization exists"
+    ]
+  },
+  "stage_lists_are_cumulative_ordered_prefixes": true,
+  "OULU_external_status_gates": 2,
+  "other_domain_error_messages_are_validator_context_not_audit_execution": true,
+  "actual_focused_tests": {"tests_run": 69, "failures": 0, "errors": 0, "skips": 0, "elapsed_seconds": 82.129},
+  "accepted237_full_regression_baseline": 281,
+  "full_regression_rerun_locally": false,
+  "independent_children": [
+    {"exit_code": 0, "independent_child": true, "actual_readonly_validator_calls": 10, "elapsed_seconds": 61.762, "PASS_observed": true},
+    {"exit_code": 0, "independent_child": true, "actual_readonly_validator_calls": 10, "elapsed_seconds": 61.853, "PASS_observed": true}
+  ],
+  "byte_identical_replay_files": 1,
+  "actual_helper_output_refusals": 5,
+  "helper_refusals_are_not_CLI_claims": true,
+  "software_immutable_refusals": 3,
+  "owner_evidence_used_as_probe": false,
+  "preservation": {
+    "protected_roots": 108, "inherited_roots": 106, "added237_gate_roots": 2,
+    "singleton_pins": 326, "inherited_pins_after_only_prior237_transitions": 308, "new_distinct_pins": 18,
+    "frozen_files_unchanged": 13, "study_configs_unchanged": 17, "repository_sources_unchanged": 108,
+    "original_private_config_count15_preserved_correct17_addendum_consumed": true,
+    "all_owner_bytes_fields_metadata_history_and_prior_pending_failure_authorization_states_preserved": true
+  },
+  "source237_CI": {
+    "head_sha": "55a0937d1b6850e29f276f06114d2a0428e33b07", "run_id": 39392766762, "job_id": 118528029895,
+    "status": "completed", "conclusion": "success", "job_status": "completed", "job_conclusion": "success",
+    "job_completed_at_utc": "2026-10-20T08:21:51Z", "run_completed_at_utc": null,
+    "listed_successful_steps": 12, "all_steps_success": true,
+    "verification_source": "Review238 direct GitHub API observation; accepted237 final live DOM exact head/run/job/all12",
+    "fresh_live_source_CI_retrieval_performed_here": false, "source_CI_is_not_new_publication_CI": true
+  },
+  "evidence_sha256": {
+    "docs/42-data-to-experiment-implementation-plan.md": "3fd4f1cfe726484abd0b1b20b7cfe54a2a6e054e237a7656a4a37721dc6a4295",
+    "docs/88-phase1-benchmark-amendment-siwmv2.md": "4e1297fd560e6b6248e7f5d50031c96e2768816958341bb550eabbefeb27f1fe",
+    "docs/99-review-doc98-role-policy-v2.md": "34b4f485a19243895985b6aaa732ba5f95d1a71e68351d43546ac855aff3387f",
+    "docs/103-owner-authorized-technical-audit.md": "e188e18c8dcd4e7d9576d4dc4b8dfad803931e1d31aea695b5b98a0dd5817a6b",
+    "docs/108-review-doc107-oulu-per-video-media-audit.md": "16bbd1ec2345af42ea9ca3a90edeb8e975b75fbf43fce033f6506c081906ac71",
+    "docs/110-review-doc109-transaction-selector-freeze.md": "3c4f2971c8891b3be9d3206be6cd12648180f103fb9493e69ae89ecba6e932e8",
+    "docs/112-review-doc111-oulu-content-screening.md": "07c7915bb6f1148e6b4f0b4421cfacbab2c63b2b6939ff13c70fe90d60de688a",
+    "docs/114-review-doc113-oulu-lineage-exact-evidence.md": "75666bb79e6406ffff17999ce3a461a2e027cddfb9038896e61f828fee48bcdf",
+    "docs/220-review-doc219-oulu-archive-identity-recovery.md": "ad516d31c0b9df653b24fc32509f019d3fb8af9af94c54b54c2b7041dec40e3a",
+    "docs/222-review-doc221-oulu-recovery219-aware-guard.md": "648bf5d83a8724dca155b446e1dac2c92372a8c05e8a049ebdf270912a2490a6",
+    "docs/234-review-doc233-oulu-batch09-activation.md": "5510d2fd3f628a360453bd2f96f639d2720209b4a28c973c6d516aff5c1206fc",
+    "results/phase1/source-role-freeze-verification-v2.json": "639d885eb13bcc3f2a9f4a428b0768bb8041b3afd66f141aac1489c253560352",
+    "results/phase1/oulu-technical-archive-preflight-v1.json": "d24b8ddcc3743810bab243413cd606a232fdc2401a063a491319e5ccba6ce263",
+    "results/phase1/oulu-archive-byte-pinning-v1.json": "412b6a6d1e239d70edffc8136997890b822ab21c00ecb09ebfa7c4c0371dd875",
+    "results/phase1/oulu-archive-identity-recovery219-v1.json": "919fd1d4f5f0f129e46f2d89eebf0887f78ed43cfb7d945ca4b58fcc25ac8cb1",
+    "results/phase1/oulu-per-video-media-audit-v1.json": "04f5555da7493d7ca08cbf9e2fc44b00d5b09cc27d5e4ee441e4cec24f17ae0a",
+    "results/phase1/oulu-transaction-selector-freeze-v1.json": "a9375b5101dad20ced40c0dc846b41fa5c82ee6736b982002a0c55a34dd8d49e",
+    "results/phase1/oulu-content-screening-v1.json": "1a66bc0dc9bb063db78528a1fb53185234b3d73fdd6dedf09ac0c6950a71e872",
+    "results/phase1/oulu-lineage-exact-evidence-v1.json": "1d30047f49ecb5384b1faff9586d8a96860bb84ad723d62a453beee82a24743f",
+    "results/phase1/oulu-batch09-activation-v1.json": "f6a52b8ec41a25f3d0b4c9743248b4edce05dca480591095a1b17c7c7278db26"
+  },
+  "requirements": [
+    {
+      "id": "O01", "requirement": "Research permission basis",
+      "deciding_sources": ["Document42 section4.1 as operationally amended by Document103"],
+      "evidence": ["docs/103-owner-authorized-technical-audit.md"],
+      "observed_coverage": {"supplied_OULU_release_permission_attested": true},
+      "classification": "satisfied_bounded", "accepted_scope": "Owner research attestation is sufficient for the supplied release; no receipt administration.",
+      "limitation": "Not independently verified official acquisition, publisher checksum or redistribution authority.",
+      "objective_next_acceptance_test": "Retain103 and historical receipts unchanged; do not demand new owner prose or claim independent authentication."
+    },
+    {
+      "id": "O02", "requirement": "Archive/protocol/canonical intake reconciliation",
+      "deciding_sources": ["Document42 sections4.1-4.2", "Reviews104/106/220/222 additive archive authority"],
+      "evidence": ["results/phase1/oulu-technical-archive-preflight-v1.json", "results/phase1/oulu-archive-byte-pinning-v1.json", "results/phase1/oulu-archive-identity-recovery219-v1.json", "docs/220-review-doc219-oulu-archive-identity-recovery.md", "docs/222-review-doc221-oulu-recovery219-aware-guard.md"],
+      "observed_coverage": {"archives_pinned": 3, "archive_bytes": 105116817408, "protocol_files": 42, "canonical_videos_reconciled": 4950},
+      "classification": "satisfied_bounded", "accepted_scope": "Accepted local byte/header/protocol reconciliation and later additive recovery/binding; no new archive read.",
+      "limitation": "Historical hashes are not publisher authentication or perpetual current identity verification;219 pending flags are not current acceptance state.",
+      "objective_next_acceptance_test": "Any later separately authorized payload access must use the accepted219-aware guard and fail on any future identity drift; no rehash solely for reassurance."
+    },
+    {
+      "id": "O03", "requirement": "Canonical metadata, label and population contract",
+      "deciding_sources": ["Document42 sections4.2/5.1-5.2", "Review238 accepted metadata-only binding"],
+      "evidence": ["results/phase1/source-role-freeze-verification-v2.json"],
+      "observed_coverage": {"metadata_rows": 4950, "subjects": 55, "bona_fide": 990, "attack": 3960, "attack_families": 2},
+      "classification": "satisfied_bounded", "accepted_scope": "Pinned canonical metadata/schema/labels/counts; current bound validator still executes checks.",
+      "limitation": "Metadata rows do not establish all media-enriched fields, detector outputs or content independence.",
+      "objective_next_acceptance_test": "Keep canonical hashes/label mapping exact; future enriched media/frame records must join without relabeling or inventing optional attributes."
+    },
+    {
+      "id": "O04", "requirement": "Immutable group-disjoint source roles",
+      "deciding_sources": ["Document42 sections2.3-2.5/6.2", "Review99 approved native-subtype role policy"],
+      "evidence": ["docs/99-review-doc98-role-policy-v2.md", "results/phase1/source-role-freeze-verification-v2.json"],
+      "observed_coverage": {"role_rows": 4950, "subject_groups": 55, "train_branch_domain_groups": [33, 11, 11]},
+      "classification": "satisfied_bounded", "accepted_scope": "Exact frozen allocation/joins/group disjointness, split seed20261009; no reallocation.",
+      "limitation": "Group identifiers do not prove transformed capture independence or fitted-error/event feasibility.",
+      "objective_next_acceptance_test": "Reject changed roles/seed or group overlap; future content/fold checks may not repair a conflict by reassignment."
+    },
+    {
+      "id": "O05", "requirement": "Per-video payload integrity evidence",
+      "deciding_sources": ["Document42 sections4.2/5.2/14", "Review108 accepted strict media audit"],
+      "evidence": ["results/phase1/oulu-per-video-media-audit-v1.json", "docs/108-review-doc107-oulu-per-video-media-audit.md"],
+      "observed_coverage": {"payloads_hashed": 4950, "original_videos": 4950, "payload_bytes": 105096776810},
+      "classification": "satisfied_bounded", "accepted_scope": "Existing complete payload hash evidence for original4950; not a new hash run.",
+      "limitation": "Payload identity does not establish decode, near-duplicate absence or publisher authenticity.",
+      "objective_next_acceptance_test": "Bind original per-video bundle/summary digests; refuse drift and never replace or silently omit a payload."
+    },
+    {
+      "id": "O06", "requirement": "Strict decode and terminal failure visibility",
+      "deciding_sources": ["Document42 sections4.2/7.1/14", "Reviews108/110"],
+      "evidence": ["results/phase1/oulu-per-video-media-audit-v1.json", "docs/110-review-doc109-transaction-selector-freeze.md"],
+      "observed_coverage": {"decoded": 4949, "original_videos": 4950, "retained_terminal_failure": 1},
+      "classification": "satisfied_bounded", "accepted_scope": "Strict decoded-frame evidence and explicit one bona-fide branch-calibration failure accepted.",
+      "limitation": "Not4950 successful decodes; failure is retained, not repaired, dropped or retried.",
+      "objective_next_acceptance_test": "Any downstream ledger must reconcile4950 originals,4949 frame-available and1 scoreless terminal nonaccept."
+    },
+    {
+      "id": "O07", "requirement": "Deterministic primary selector",
+      "deciding_sources": ["Document42 sections7.1-7.2", "Review110 earlier-middle tie convention"],
+      "evidence": ["results/phase1/oulu-transaction-selector-freeze-v1.json", "docs/110-review-doc109-transaction-selector-freeze.md"],
+      "observed_coverage": {"selected_primary_frames": 4949, "original_transactions": 4950},
+      "classification": "satisfied_bounded", "accepted_scope": "Frozen floor((eligible_count-1)/2), whole supplied interval, earlier even tie; selector is not pending.",
+      "limitation": "No detector-success substitution; selector definitions are not exported crops or sensitivity/training frame banks.",
+      "objective_next_acceptance_test": "Reuse exact selector/transaction bundle hashes and retain null selection on failure; no resampling."
+    },
+    {
+      "id": "O08", "requirement": "Calibration and end-to-end denominator policy",
+      "deciding_sources": ["Document42 sections2.10/11.1-11.2", "Review110 technical failure amendment"],
+      "evidence": ["results/phase1/oulu-transaction-selector-freeze-v1.json", "docs/110-review-doc109-transaction-selector-freeze.md"],
+      "observed_coverage": {"calibration_original": 990, "calibration_frame_available": 989, "actual_score_fit_rows": 0},
+      "classification": "satisfied_bounded", "accepted_scope": "Definition fixed:198 bona-fide/197 available and792 attacks; one terminal nonaccept remains in original denominator.",
+      "limitation": "989 is not a measured final calibration fit count; detector success and valid scores are still required.",
+      "objective_next_acceptance_test": "Future score-fitting uses only valid detector-success scores; end-to-end denominators remain990 and4950 without fabricated error/score fields."
+    },
+    {
+      "id": "O09", "requirement": "Exact within-OULU duplicate boundary check",
+      "deciding_sources": ["Document42 sections2.4/6.4", "Review108 narrow exact-content acceptance"],
+      "evidence": ["results/phase1/oulu-per-video-media-audit-v1.json", "docs/108-review-doc107-oulu-per-video-media-audit.md"],
+      "observed_coverage": {"known_exact_payload_pairs": 13, "known_exact_RGB_sequence_pairs": 13, "cross_role_groups": 0, "cross_partition_groups": 0, "conflicting_label_groups": 0},
+      "classification": "satisfied_bounded", "accepted_scope": "Thirteen known exact pairs are preserved separately; no exact group crosses frozen roles/native partitions.",
+      "limitation": "Not near-duplicate, derived-content, capture-provenance or cross-dataset clearance.",
+      "objective_next_acceptance_test": "Do not reclassify these13 through the nonexact queue; any future transformed-lineage claim needs distinct sufficient evidence."
+    },
+    {
+      "id": "O10", "requirement": "Model-free candidate-screen coverage",
+      "deciding_sources": ["Document42 section6.4", "Review112 candidate-generation scope"],
+      "evidence": ["results/phase1/oulu-content-screening-v1.json", "docs/112-review-doc111-oulu-content-screening.md"],
+      "observed_coverage": {"fingerprinted_videos": 4949, "original_videos": 4950, "unordered_pairs": 12243826, "candidates": 6653, "known_exact": 13, "nonexact": 6640},
+      "classification": "satisfied_bounded", "accepted_scope": "Frozen five-rank heuristic compared all successful-video pairs and recovered13 known exact controls.",
+      "limitation": "Sparse samples/crops/overlays/shifts/shared regions can escape; non-candidate is not independent content and recall is not established.",
+      "objective_next_acceptance_test": "Preserve heuristic thresholds/candidate bytes and distinguish comparisons, candidates and confirmed lineage; no post-hoc tuning."
+    },
+    {
+      "id": "O11", "requirement": "Full-frame exact-evidence slice",
+      "deciding_sources": ["Document42 section6.4", "Review114 exact-identity limits"],
+      "evidence": ["results/phase1/oulu-lineage-exact-evidence-v1.json", "docs/114-review-doc113-oulu-lineage-exact-evidence.md"],
+      "observed_coverage": {"nonexact_pairs_examined": 6640, "nonexact_denominator": 6640, "any_exact_RGB_overlap": 0, "creation_time_uncertain": 6640},
+      "classification": "satisfied_bounded", "accepted_scope": "Existing complete decoded-index exact-identity pass; historical uncertain6640 remains immutable.",
+      "limitation": "Zero exact matches cannot reject transformed lineage; later prefix acceptance is additive, not a rewrite of this historical result.",
+      "objective_next_acceptance_test": "Reject any inference from no exact RGB match to independent capture; retain exact-evidence and later activation histories separately."
+    },
+    {
+      "id": "O12", "requirement": "Highest-risk fixed85 screen-level workflow",
+      "deciding_sources": ["Review234 accepted activation/history", "Review238 retained state"],
+      "evidence": ["results/phase1/oulu-batch09-activation-v1.json", "docs/234-review-doc233-oulu-batch09-activation.md"],
+      "observed_coverage": {"effective": 85, "semantic_owner": 85, "AI_screened": 85, "fixed_prefix": 85, "remaining_prefix_workflow": 0, "historical_disagreement": 1, "historical_unresolved": 0, "batch09_disagreement": 0, "batch09_unresolved": 0},
+      "classification": "satisfied_bounded", "accepted_scope": "Review234 additively closes85/85 at screen-level; original233 current80/pending/countfalse/open remains unchanged.",
+      "limitation": "Shared-video/configuration dependence, sampled visibility and self-attestation persist; agreement is not accuracy/global lineage clearance.",
+      "objective_next_acceptance_test": "No repeat AI/owner/activation work within closed85; any broader inference needs a separately reviewed evidence-based risk decision."
+    },
+    {
+      "id": "O13", "requirement": "Residual transformed/content-lineage risk",
+      "deciding_sources": ["Document42 sections2.4/6.4/14", "Reviews112/114/234/238"],
+      "evidence": ["results/phase1/oulu-lineage-exact-evidence-v1.json", "results/phase1/oulu-content-screening-v1.json", "docs/234-review-doc233-oulu-batch09-activation.md"],
+      "observed_coverage": {"nonexact_queue": 6640, "closed_prefix": 85, "remaining": 6555, "remaining_exclusive_priority_counts": [399, 185, 91, 5880]},
+      "classification": "residual", "accepted_scope": "Closed85 is separate from6555 not cleared by this checkpoint; original overlapping categories are not additive.",
+      "limitation": "No accepted complete transformed/shared-region lineage decision or evidence-based residual-risk acceptance; not proof of leakage either.",
+      "objective_next_acceptance_test": "Separately review a cross-role residual-risk decision protocol for the399 remaining cross-role candidates, with exact membership/dependence/coverage and sufficient proof standards; do not require or execute exhaustive399/6555 screening by default."
+    },
+    {
+      "id": "O14", "requirement": "Cross-dataset duplicate/ancestry boundary",
+      "deciding_sources": ["Document42 sections2.4/6.3-6.4", "Amendment88 active four-domain scope", "Review108/238 limits"],
+      "evidence": ["docs/88-phase1-benchmark-amendment-siwmv2.md", "results/phase1/oulu-per-video-media-audit-v1.json"],
+      "observed_coverage": {"cross_dataset_duplicate_audit_complete": false, "other_dataset_audits_executed_here": 0},
+      "classification": "residual", "accepted_scope": "Within-OULU evidence cannot establish a joined four-domain content boundary.",
+      "limitation": "Equivalent cross-domain media/ancestry evidence is not established by this bound OULU chain; not a global search proving absence elsewhere.",
+      "objective_next_acceptance_test": "Only separately authorized later domain work may construct and reconcile equivalent hash/lineage populations before cross-role/fold overlap acceptance; no execution now."
+    },
+    {
+      "id": "O15", "requirement": "Frozen detector/crop and failure coverage",
+      "deciding_sources": ["Document42 sections7.3-7.4/11.1", "Review110 no replacement or fabricated success"],
+      "evidence": ["results/phase1/oulu-transaction-selector-freeze-v1.json", "docs/110-review-doc109-transaction-selector-freeze.md"],
+      "observed_coverage": {"frame_available": 4949, "original_transactions": 4950, "detector_executed": false, "detector_coverage_measured": false},
+      "classification": "residual", "accepted_scope": "Frozen selector/technical failure definition only, not detector success or crop adequacy.",
+      "limitation": "No real class/role coverage, crop geometry/quality, weights parity or balanced source-shard evidence is established here.",
+      "objective_next_acceptance_test": "After separate authorization and prerequisite review, test exactly the frozen detector once per selected frame on a predeclared balanced source-only shard; exact parent joins/bounds/class-failure denominators, no detector/frame search or target tuning."
+    },
+    {
+      "id": "O16", "requirement": "Frame/crop banks and enriched manifests",
+      "deciding_sources": ["Document42 sections5.2-5.3/7.1-7.4/12 Phase3"],
+      "evidence": ["results/phase1/oulu-per-video-media-audit-v1.json", "results/phase1/oulu-transaction-selector-freeze-v1.json"],
+      "observed_coverage": {"primary_definition_frames": 4949, "frame_pixels_exported_by_selector_checkpoint": false, "training_bank_exported_by_media_checkpoint": false},
+      "classification": "residual", "accepted_scope": "Decode indexes/selector records are accepted, not complete frame/crop/feature-bank readiness.",
+      "limitation": "Sensitivity/training banks, detector-enriched required fields, one-to-one crop joins and throughput/repeatability remain separate future evidence.",
+      "objective_next_acceptance_test": "A separately authorized extraction scope must name configured units, exact parent joins/checksums, repeated indices, source-only unlabeled inspection and storage limits without changing the primary selector."
+    },
+    {
+      "id": "O17", "requirement": "Fold-local source competence/event applicability",
+      "deciding_sources": ["Document42 sections6.3-6.4/9/12", "src/fas/preregistration.py:_validate_source_dry_run"],
+      "evidence": ["results/phase1/source-role-freeze-verification-v2.json"],
+      "observed_coverage": {"typed_source_evidence_present": false, "model_runs_here": 0, "actual_calibration_score_fit_rows_in_selector": 0},
+      "classification": "residual", "accepted_scope": "Frozen role counts support allocation only; no fitted score/error event feasibility is inferred.",
+      "limitation": "Source-only fit/calibration/OOF exclusion, competence and minimum-error/applicability evidence are not supplied by metadata or prefix acceptance.",
+      "objective_next_acceptance_test": "After separately accepted technical prerequisites, require typed source-only competence/applicability and exact OOF ledgers under unchanged thresholds; do not fabricate evidence or run models now."
+    },
+    {
+      "id": "O18", "requirement": "OULU dataset/split audit acceptance",
+      "deciding_sources": ["Document42 section12 Phase1", "Review238", "src/fas/preregistration.py:_validate_dataset_rows/_validate_split_rows"],
+      "evidence": ["docs/234-review-doc233-oulu-batch09-activation.md"],
+      "observed_coverage": {"OULU_not_audited_status_fields": 2, "all_dataset_split_not_audited_fields": 8},
+      "classification": "residual", "accepted_scope": "Metadata/source/hash bookkeeping is valid without asserting complete audit.",
+      "limitation": "Status flags summarize acceptance; removing two OULU errors by editing status would not supply unresolved lineage/technical evidence.",
+      "objective_next_acceptance_test": "Keep both OULU statuses not_audited until a separately reviewed full-acceptance record satisfies all applicable gaps; never infer readiness from fewer gate messages."
+    },
+    {
+      "id": "O19", "requirement": "Scientific freeze and locked evaluation authority",
+      "deciding_sources": ["Document42 sections1.1/12 Phase7-8/14", "src/fas/preregistration.py:_validate_analysis_freeze/_validate_locked_authorization"],
+      "evidence": ["docs/88-phase1-benchmark-amendment-siwmv2.md"],
+      "observed_coverage": {"typed_analysis_freeze_present": false, "typed_locked_authorization_present": false},
+      "classification": "residual", "accepted_scope": "Existing read-only validators may report blockers but no scientific stage is executed.",
+      "limitation": "CI/software replay/private hash preservation is not a source-only scientific freeze or target authorization.",
+      "objective_next_acceptance_test": "Only after accepted typed source evidence, review the clean code/config/input/seed/artifact freeze and later exact typed authorization; no target output now."
+    },
+    {
+      "id": "O20", "requirement": "Reproducibility and immutable history",
+      "deciding_sources": ["Document42 sections2.1/2.9/14", "Review238 accounting-addendum requirement"],
+      "evidence": ["docs/234-review-doc233-oulu-batch09-activation.md"],
+      "observed_coverage": {"protected_roots": 108, "singleton_pins": 326, "frozen_files": 13, "study_configs_unchanged": 17, "repository_sources_unchanged": 108},
+      "classification": "satisfied_bounded", "accepted_scope": "Existing artifact hashes/history, prior authorized237 transitions and additive config15-to17 correction are bound without rewriting originals.",
+      "limitation": "Determinism and hashes do not independently authenticate owners, raters, capture provenance or scientific results.",
+      "objective_next_acceptance_test": "Verify readbacks/preservation and independent byte-identical software replay; preserve raw/canonical/all owner fields, disagreements and failed/pending/authorization flags."
+    },
+    {
+      "id": "O21", "requirement": "Track-A and optional-study applicability",
+      "deciding_sources": ["Document42 section6.1 as amended by88/89", "Document42 section12 Phase9"],
+      "evidence": ["docs/88-phase1-benchmark-amendment-siwmv2.md"],
+      "observed_coverage": {"active_domains": 4, "Track_A_historical_context_only": true, "optional_studies_executed_here": 0},
+      "classification": "historical_context_only", "accepted_scope": "Current study is amended cross-dataset OULU/CASIA/MSU/SiW-Mv2; Track-A is historical MCIO context only.",
+      "limitation": "Do not make historical MCIO/SSDG reproduction or optional LoRA/routing studies prerequisites or claim their execution.",
+      "objective_next_acceptance_test": "Any optional study requires separate preregistration; preserve amended target exclusion/populations and unchanged core scientific rules."
+    }
+  ],
+  "proposed_next_scope_subject_formal239_review": {
+    "scope": "OULU-only residual cross-role lineage risk-decision protocol for the399 remaining cross-role nonexact candidates, using existing immutable queue/exact/dependence commitments only; no visual adjudication or media execution.",
+    "success": ["Exactly399 memberships reconcile to frozen exclusive priority after excluding the closed85, with dependence/coverage limitations explicit.", "Specify admissible transformed/shared-region evidence, uncertainty/stop taxonomy and the smallest evidence-justified follow-up; do not assume399 or6555 must all be screened.", "No uncertainty becomes rejection/confirmation solely from missing exact hashes or prefix agreement; preserve all roles/denominators/history."],
+    "stop": ["Missing/drifting membership or sufficient lineage evidence: report the gap, keep uncertainty and request a separately bounded technical evidence scope.", "Any archive/media/model access, queue extension, new owner judgment, policy/status change or other-domain work requires separate authorization.", "Publish exact new CI and stop for formal protocol review before any proposed follow-up."]
+  },
+  "new_media_archive_reads_decodes_or_detector_model_execution": false,
+  "new_owner_judgments_or_explanatory_prose": false,
+  "other_datasets_audited_or_cross_dataset_execution": false,
+  "audit_status_changed_or_complete_claimed": false,
+  "scientific_readiness": false,
+  "new_publication_CI": "must_verify_exact_new_head_run_job_completed_success_all12_after_push_not_preclaimed_here",
+  "stop_boundary": "formal239_OULU_checklist_and_next_scope_review_before_any_further_execution"
+}
