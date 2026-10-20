@@ -739,6 +739,16 @@ is the strict source-only design consolidated in
     old guard still refuses; no binding acceptance, guard integration or packet retry.
     Current/semantic-owner/AI80, five unviewed, history1/unresolved0/readinessfalse.
     Publish219/verify exact NEW CI then STOP for formal recovery review, not retry.
+    - [Review220](docs/220-review-doc219-oulu-archive-identity-recovery.md) accepts
+        Recovery219/new environment binding as additive authority, without rewriting
+        its pending flags. [Guard221](docs/221-review-response-doc220-oulu-recovery219-aware-guard.md)
+        adds a separate explicit219-aware adapter; historical guard/callers stay unchanged.
+        Actual read-only study CLI PASS3 archives/59.774s/91 protected roots; all five
+        stat fields, frozen anchors and full177 lineage retained. Focused86/full273 PASS;
+        actual CLI refusals5+4/two immutable targets refused; no archive rehash/payload
+        access/decode/packets. Integration remains pending, retry unauthorized/current80,
+        five unviewed/history1-unresolved0/readinessfalse. Publish/verify exact NEW CI
+        then STOP for formal221 guard review before separately authorized retry80..84.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

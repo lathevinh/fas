@@ -2103,6 +2103,176 @@ class OuluMediaTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_recovery219_guard_requires_review220_and_rejects_future_drift(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import verify_oulu_archive_guard_batch09 as module
+            import prepare_oulu_visual_batch06 as historical
+            from argparse import Namespace
+            from contextlib import ExitStack
+            from fas.freeze import write_immutable_record
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                source, pins_root, old_root, recovered, repo = (root / name for name in ("source", "pins", "old177", "recovery219", "repo"))
+                source.mkdir()
+                pins, old_rows, rows, anchors, sizes = {}, {}, {}, {}, {}
+                for name in module.ANCHORS:
+                    archive = source / name
+                    archive.write_bytes(b"synthetic221 guard archive")
+                    current = module.file_identity(archive.stat())
+                    latest = {**current, "device": current["device"] + 1}
+                    original = {key: value for key, value in {**current, "device": current["device"] + 2}.items() if key != "byte_size"}
+                    pin_path = pins_root / (name + ".sha256.json")
+                    write_immutable_record(pin_path, {"file_identity": original})
+                    anchors[name] = hashlib.sha256(archive.read_bytes()).hexdigest()
+                    sizes[name] = current["byte_size"]
+                    pins[name] = {"private_record_sha256": module._sha256(pin_path), "sha256": anchors[name], "byte_size": sizes[name]}
+                    old_rows[name] = {"old_file_identity": original, "current_file_identity": latest, "old_private_record_sha256": module._sha256(pin_path),
+                        "current_sha256": anchors[name], "frozen_sha256": anchors[name], "byte_size": sizes[name], "changed_fields": ["device"],
+                        "whole_file_read": True, "content_hash_matches_frozen": True, "stat_identity_stable_during_hash": True}
+                    write_immutable_record(old_root / (name + ".rehash.json"), old_rows[name])
+                    rows[name] = {**old_rows[name], "old_file_identity": latest, "latest_accepted_environment_identity": latest,
+                        "current_file_identity": current, "original_frozen_pin_file_identity": original,
+                        "original_private_record_sha256": module._sha256(pin_path), "proposed_binding_accepted": False}
+                pin_report = repo / "results/phase1/oulu-archive-byte-pinning-v1.json"
+                write_immutable_record(pin_report, {"media_archives": pins})
+                old_binding_path = old_root / "environment_binding.json"
+                write_immutable_record(old_binding_path, {"archives": old_rows, "archive_pin_report_sha256": module._sha256(pin_report),
+                    "old_archive_pins_unchanged": True, "recovery_checkpoint_review_pending": True})
+                old_report_path = repo / "results/phase1/oulu-archive-identity-recovery-v1.json"
+                write_immutable_record(old_report_path, {"private_environment_binding_sha256": module._sha256(old_binding_path),
+                    "archive_pin_report_sha256": module._sha256(pin_report),
+                    "archive_results": {name: {"rehash_record_sha256": module._sha256(old_root / (name + ".rehash.json"))} for name in anchors}})
+                review178 = repo / "docs/178-review-doc177-oulu-archive-identity-recovery.md"
+                review178.parent.mkdir()
+                review178.write_text("synthetic Review178", encoding="ascii")
+                recovery = {"accepted_by_Review178": True, "review178_sha256": module._sha256(review178),
+                    "binding_path": str(old_binding_path), "binding_sha256": module._sha256(old_binding_path),
+                    "accepted177_report_sha256": module._sha256(old_report_path), "archive_pin_report_sha256": module._sha256(pin_report)}
+                marker = root / "protected/prior.json"
+                write_immutable_record(marker, {"preserve": True})
+                lineage = {"review218_sha256": "1" * 64, "accepted217_document_sha256": "2" * 64,
+                    "accepted217_report_sha256": "3" * 64, "accepted217_blocker_sha256": "4" * 64, "source217_CI": {"synthetic": True}}
+                prior_path = root / "preflight219.json"
+                write_immutable_record(prior_path, {**lineage, "accepted_recovery": recovery,
+                    "latest_accepted_archive_identity": {name: row["current_file_identity"] for name, row in old_rows.items()},
+                    "observed_archive_identity": {name: row["current_file_identity"] for name, row in rows.items()},
+                    "protected_snapshots": {str(marker.parent): {marker.name: module._sha256(marker)}},
+                    "pinned_file_sha256": {}, "frozen_file_sha256": {}, "study_config_sha256": {}})
+                for name, row in rows.items():
+                    row.update({"latest_accepted_binding_sha256": module._sha256(old_binding_path),
+                        "preflight_sha256": module._sha256(prior_path), "review218_sha256": lineage["review218_sha256"]})
+                    write_immutable_record(recovered / (name + ".rehash.json"), row)
+                code = repo / "scripts/recover_oulu_archive_identity_batch09.py"
+                code.parent.mkdir()
+                code.write_text("synthetic recovery219 runner", encoding="ascii")
+                binding_path = recovered / "environment_binding.json"
+                write_immutable_record(binding_path, {**lineage, "checkpoint": 219, "archives": rows, "latest_accepted_recovery": recovery,
+                    "preflight_sha256": module._sha256(prior_path), "recovery_code_sha256": module._sha256(code),
+                    "archive_pin_report_sha256": module._sha256(pin_report), "recovery_checkpoint_review_pending": True,
+                    "proposed_binding_accepted": False, "packet_runner_guard_changed": False, "packet_preparation_authorized_by_this_record": False,
+                    "archive_identity_blocker_closed": False, "original_pins_and_accepted177_records_unchanged": True})
+                verification_path = root / "verification219.json"
+                write_immutable_record(verification_path, {"recovery_file_sha256": {path.name: module._sha256(path) for path in recovered.iterdir()}})
+                report_path = repo / "results/phase1/oulu-archive-identity-recovery219-v1.json"
+                report = {**lineage, "private_binding_sha256": module._sha256(binding_path), "private_preflight_sha256": module._sha256(prior_path),
+                    "private_verification_sha256": module._sha256(verification_path), "recovery_code_sha256": module._sha256(code),
+                    "latest_accepted_binding_sha256": module._sha256(old_binding_path),
+                    **{key: recovery[key] for key in ("archive_pin_report_sha256", "review178_sha256", "accepted177_report_sha256")},
+                    "archive_results": {name: {"rehash_record_sha256": module._sha256(recovered / (name + ".rehash.json"))} for name in anchors}}
+                write_immutable_record(report_path, report)
+                authority = {}
+                for filename in module.AUTHORITY_BINDINGS:
+                    path = repo / filename
+                    if not path.exists():
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text("synthetic221 authority", encoding="ascii")
+                    authority[filename] = module._sha256(path)
+                preflight = {"checkpoint": 221, "accepted_by_Review220": True, "guard_integration_authorized": True,
+                    "packet_retry_authorized": False, "packet_preparation_authorized": False, "recovery_authorized": False,
+                    "authority_sha256": authority, "source219_CI": module.SOURCE219_CI.copy(), "guard_code_sha256": module._sha256(Path(module.__file__)),
+                    "accepted219_binding_path": str(binding_path), "accepted219_preflight_path": str(prior_path),
+                    "accepted219_verification_path": str(verification_path), "protected_snapshots": {
+                        str(marker.parent): {marker.name: module._sha256(marker)},
+                        str(recovered): {path.name: module._sha256(path) for path in recovered.iterdir()}},
+                    "pinned_file_sha256": {}, "frozen_file_sha256": {}, "study_config_sha256": {}}
+                preflight_path = root / "preflight221.json"
+                write_immutable_record(preflight_path, preflight)
+                args = Namespace(input_root=source, archive_records=pins_root, preflight=preflight_path, out_root=root / "guard-output")
+                before = json.dumps(preflight, sort_keys=True)
+                with ExitStack() as stack:
+                    for target, key, value in ((module, "ROOT", repo), (module, "ANCHORS", anchors), (module, "ARCHIVE_SIZES", sizes),
+                                               (module, "AUTHORITY_BINDINGS", authority), (historical, "ROOT", repo), (historical, "ANCHORS", anchors)):
+                        stack.enter_context(patch.object(target, key, value))
+                    real_open = Path.open
+                    def no_archive_reads(path, *arguments, **keywords):
+                        if path.parent == source:
+                            raise AssertionError("no archive or payload bytes may be opened")
+                        return real_open(path, *arguments, **keywords)
+                    stack.enter_context(patch.object(Path, "open", no_archive_reads))
+                    self.assertEqual(len(module.verified_archive_identities(source, pins_root, preflight)), 3)
+                    self.assertFalse(args.out_root.exists())
+                    result = module.verify(args)
+                    self.assertEqual(result["archives_verified"], 3)
+                    self.assertTrue(result["guard_integration_checkpoint_review_pending"])
+                    for key in ("guard_integration_accepted", "packet_preparation_authorized", "packet_retry_authorized", "selected_payloads_opened", "scientific_readiness"):
+                        self.assertFalse(result[key])
+                    self.assertEqual(len(list(args.out_root.iterdir())), 1)
+                    with self.assertRaisesRegex(ValueError, "archive identity drift"):
+                        historical.verified_archive_identities(source, pins_root, recovery)
+                    original_identity = module.file_identity
+                    stale = lambda value: {**original_identity(value), "device": original_identity(value)["device"] + 1}
+                    for changed_identity in [stale, *[lambda value, field=field: {**original_identity(value), field: original_identity(value)[field] + 2} for field in module.IDENTITY_FIELDS]]:
+                        with patch.object(module, "file_identity", side_effect=changed_identity):
+                            with self.assertRaisesRegex(ValueError, "archive identity drift"):
+                                module.verified_archive_identities(source, pins_root, preflight)
+                    invalid = [{**preflight, key: value} for key, value in (("checkpoint", 221.0), ("accepted_by_Review220", False),
+                        ("guard_integration_authorized", False), ("packet_retry_authorized", True), ("packet_preparation_authorized", True),
+                        ("recovery_authorized", True), ("authority_sha256", {}), ("guard_code_sha256", "0" * 64))]
+                    for key, value in (("head_sha", "0" * 40), ("run_id", 39354730481), ("run_id", float(module.SOURCE219_CI["run_id"])),
+                        ("job_id", 118406801611), ("status", "in_progress"), ("conclusion", "failure"), ("job_status", "queued"),
+                        ("job_conclusion", "failure"), ("listed_successful_steps", 11), ("all_steps_success", False)):
+                        invalid.append({**preflight, "source219_CI": {**preflight["source219_CI"], key: value}})
+                    invalid.extend([{**preflight, "protected_snapshots": {}},
+                        {**preflight, "protected_snapshots": {str(recovered): preflight["protected_snapshots"][str(recovered)]}}])
+                    for index, bad in enumerate(invalid):
+                        bad_path = root / f"invalid221-{index}.json"
+                        write_immutable_record(bad_path, bad)
+                        rejected = Namespace(**{**vars(args), "preflight": bad_path, "out_root": root / "never-created"})
+                        with self.assertRaises(ValueError):
+                            module.verify(rejected)
+                        self.assertFalse(rejected.out_root.exists())
+                    for output in (args.out_root, ROOT / "results/refused221", source / "refused", root):
+                        with self.assertRaises(ValueError):
+                            module.verify(Namespace(**{**vars(args), "out_root": output}))
+                    accepted = module.verified_archive_identities(source, pins_root, preflight)
+                    changed = {**accepted, "Dev_files.tar": (0, *accepted["Dev_files.tar"][1:])}
+                    with patch.object(module, "verified_archive_identities", side_effect=[accepted, changed]):
+                        with self.assertRaisesRegex(ValueError, "changed during guard"):
+                            module.verify(Namespace(**{**vars(args), "out_root": root / "never-created"}))
+                    self.assertFalse((root / "never-created").exists())
+                    for path in (binding_path, recovered / "Dev_files.tar.rehash.json", pin_report, review178, prior_path, verification_path):
+                        payload = path.read_bytes()
+                        path.write_bytes(b"synthetic changed evidence")
+                        with self.assertRaises(ValueError):
+                            module.verified_archive_identities(source, pins_root, preflight)
+                        path.write_bytes(payload)
+                    archive = source / "Dev_files.tar"
+                    alias = source / "archive-alias"
+                    archive.rename(alias)
+                    archive.symlink_to(alias)
+                    with self.assertRaisesRegex(ValueError, "archive identity drift"):
+                        module.verified_archive_identities(source, pins_root, preflight)
+                    archive.unlink()
+                    alias.rename(archive)
+                    marker.write_bytes(b"changed protected evidence")
+                    with self.assertRaisesRegex(ValueError, "protected prior evidence drift"):
+                        module.verify(Namespace(**{**vars(args), "out_root": root / "never-created"}))
+                    self.assertFalse((root / "never-created").exists())
+                self.assertEqual(json.dumps(preflight, sort_keys=True), before)
+        finally:
+            sys.path.pop(0)
+
     def test_archive_identity_recovery_requires_full_hash_and_stable_device_only_drift(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
