@@ -771,6 +771,17 @@ is the strict source-only design consolidated in
         AI85/85 includes pending225; accepted AI/effective/semantic-owner remain80/85,
         human0/activation0/readinessfalse. Publish/exact NEW CI then STOP for formal225
         AI review before any human handoff/input/import/activation or scientific work.
+    - [Review226](docs/226-review-doc225-oulu-batch09-ai-proposals.md) accepts reported
+        AI85/85, not human/effective outcomes; effective/semantic-owner remain80/85.
+        [Handoff227](docs/227-review-response-doc226-oulu-batch09-categorical-handoff.md)
+        prepares five categorical pairs using15 existing assets: initial18/18 replay
+        PASS, but final main19/sibling18 because an unprocessed export-like file appeared.
+        All18 prepared files still match; final main file-set gate BLOCKED, no receipt,
+        answer parsing/import/activation or genuine-owner completion claimed. Browser403
+        leaves actual rendering/interactions/download unverified;236 synthetic Node
+        assertions and focused88/full275 PASS are not browser/scientific clearance.
+        Prior96 roots/owner fields/history preserved. Publish/exact NEW CI then STOP
+        for formal227 handoff/unprocessed-input review, before any owner processing.
     Confirmed near-duplicate/cross-dataset lineage, other media audits and model applicability
     remain pending; no archive migration, role regeneration or model execution.
     Stop for checkpoint review before further media/model work.

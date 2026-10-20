@@ -199,6 +199,110 @@ class OuluHumanReviewTest(unittest.TestCase):
         finally:
             sys.path.pop(0)
 
+    def test_batch09_categorical_handoff_review226_blank_controls_and_provenance(self) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_categorical_batch09 as module
+            digest = "a" * 64
+            dependence = {"exact_reused_video_rank_groups": {"synthetic": [81, 82]},
+                          "visually_correlated_configuration_rank_groups": [{"ranks": [81, 82, 84]}]}
+            pairs = [{"queue_rank": rank, "packet_sha256": digest, "ai_record_sha256": digest, "source_sampling_provenance_sha256": digest,
+                      "exact_pair_record_sha256": digest, "ai_disposition": "uncertain_insufficient_evidence", "ai_observations": ["</script>"],
+                      "human_review_notice": module.human_notice(rank, dependence),
+                      "required_assets_sha256": {f"assets/{rank:06d}/{name}.png": digest for name in ("temporal_a", "temporal_b", "trigger")}} for rank in module.TARGET_RANKS]
+            authority = {"review226_sha256": module.REVIEW_SHA256, "accepted_AI_report_sha256": module.AI_REPORT_SHA256,
+                         "accepted_AI_document_sha256": module.AI_DOCUMENT_SHA256, "accepted_packet_report_sha256": module.PACKET_REPORT_SHA256}
+            definition = {**authority, "pairs": pairs, "preflight_sha256": digest, "observation_input_sha256": digest,
+                          "source_packet_lineage_sha256": digest, "source_packet_summary_sha256": digest,
+                          "categorical_rules": module.CATEGORICAL_RULES, "dependence": dependence, "dependence_sha256": module.structured_digest(dependence)}
+            before = json.dumps(definition, sort_keys=True)
+            page = module.render_categorical(definition, digest)
+            data, _ = json.JSONDecoder().raw_decode(page.split("const DATA=", 1)[1])
+            self.assertEqual(data, {"definition": definition, "sha256": digest})
+            self.assertEqual(before, json.dumps(definition, sort_keys=True))
+            for fragment in ("evidence_sufficient:null", "same_or_derived_content:null", "personal_inspection_attested:null", "owner_decision_attested:null",
+                             "submitted:false", "names.length===3", "names.every", "item.personal_inspection_attested===true", "item.owner_decision_attested===true",
+                             "state[current].same_or_derived_content=null", "state[current].submitted=false", "details.hidden=true", "state[current].submitted!==true",
+                             "if(!exportReady())return", "source_sampling_provenance_sha256:pair.source_sampling_provenance_sha256",
+                             "review226_sha256:DATA.definition.review226_sha256", "observation_input_sha256:DATA.definition.observation_input_sha256",
+                             "accepted_AI_document_sha256:DATA.definition.accepted_AI_document_sha256", "dependence_sha256:DATA.definition.dependence_sha256",
+                             "batch09_categorical_review", "oulu-batch09-categorical-review.json", "rows.some", "\\u003c/script>"):
+                self.assertIn(fragment, page)
+            for fragment in ("createElement('textarea')", "rationale:", "formal_review_record_sha256", "review194", "batch07_categorical_review"):
+                self.assertNotIn(fragment, page)
+            for changes in ({**{field: digest for field in authority}}, {"preflight_sha256": ""}, {"observation_input_sha256": ""},
+                            {"source_packet_lineage_sha256": ""}, {"dependence_sha256": digest}, {"categorical_rules": []},
+                            {"categorical_rules": [{**module.CATEGORICAL_RULES[0], "evidence_sufficient": 0}, *module.CATEGORICAL_RULES[1:]]},
+                            {"pairs": pairs[:-1]}, {"pairs": list(reversed(pairs))}, {"pairs": [{**pairs[0], "queue_rank": 80.0}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "human_review_notice": "Reject"}, *pairs[1:]]}, {"pairs": [{**pairs[0], "source_sampling_provenance_sha256": ""}, *pairs[1:]]},
+                            {"pairs": [{**pairs[0], "required_assets_sha256": {}}, *pairs[1:]]}, {"pairs": [{**pairs[0], "ai_disposition": "clear"}, *pairs[1:]]}):
+                with self.assertRaises(ValueError):
+                    module.render_categorical({**definition, **changes}, digest)
+            flags = {field: False for field in ("human_input_collection_authorized", "import_authorized", "effective_activation_authorized", "model_execution_authorized", "scientific_readiness")}
+            preflight = {**authority, **flags, "checkpoint": 227, "queue_ranks": list(module.TARGET_RANKS), "source225_CI": module.SOURCE225_CI}
+            module.verify_authority(preflight)
+            for changes in ({"checkpoint": 227.0}, {"queue_ranks": list(range(80, 90))}, {"queue_ranks": [80.0, *range(81, 85)]},
+                            *({field: True} for field in flags), *({field: digest} for field in authority),
+                            *({"source225_CI": {**module.SOURCE225_CI, field: "drift"}} for field in module.SOURCE225_CI),
+                            {"source225_CI": {**module.SOURCE225_CI, "run_id": float(module.SOURCE225_CI["run_id"])}}):
+                with self.assertRaises(ValueError):
+                    module.verify_authority({**preflight, **changes})
+            self.assertIn("exact source video", module.human_notice(81, dependence))
+            self.assertIn("dependent", module.human_notice(82, dependence))
+            self.assertIn("correlated", module.human_notice(84, dependence))
+            import ast
+            import hashlib
+            from unittest.mock import patch
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                current_test = root / "tests/test_oulu.py"
+                current_test.parent.mkdir()
+                prior_source = "class EarlierTests:\n    def existing_test(self):\n        pass\n"
+                current_source = prior_source + f"    def {module.NEW_TEST_METHOD}(self):\n        pass\n"
+                current_test.write_text(current_source)
+                prior_sha = hashlib.sha256(prior_source.encode()).hexdigest()
+                prior_ast = hashlib.sha256(ast.dump(ast.parse(prior_source)).encode()).hexdigest()
+                original = {"protected_snapshots": {str(root / f"prior{index}"): {} for index in range(94)},
+                            "pinned_file_sha256": {str(current_test): prior_sha}, "frozen_file_sha256": {}, "study_config_sha256": {}}
+                original_path = root / "original.json"
+                original_path.write_text(json.dumps(original))
+                observed = {**dependence, "preflight_sha256": module._sha256(original_path)}
+                observed_path = root / "observations.json"
+                observed_path.write_text(json.dumps(observed))
+                verification_path = root / "verification.json"
+                file_map = {"definition.json": digest}
+                verification_path.write_text(json.dumps({"output_file_sha256": file_map}))
+                report = {"private_preflight_sha256": module._sha256(original_path), "observation_input_sha256": module._sha256(observed_path),
+                          "private_verification_sha256": module._sha256(verification_path)}
+                context = {**original, "protected_snapshots": {**original["protected_snapshots"], str(root / "ai"): file_map, str(root / "sibling"): file_map},
+                           "pinned_file_sha256": {str(current_test): module._sha256(current_test)}, "AI_preflight_path": str(original_path),
+                           "observations_path": str(observed_path), "AI_verification_path": str(verification_path), "ai_root": str(root / "ai"),
+                           "ai_sibling_root": str(root / "sibling"), "dependence": dependence,
+                           "test_transition": {"old_sha256": prior_sha, "new_sha256": module._sha256(current_test),
+                                               "only_added_test": module.NEW_TEST_METHOD, "prior_test_AST_unchanged": True}}
+                with patch.object(module, "ROOT", root), patch.object(module, "OLD_TEST_SHA256", prior_sha), patch.object(module, "OLD_TEST_AST_SHA256", prior_ast):
+                    self.assertEqual(module.verify_source_context(context, report), observed)
+                    for changes in ({"pinned_file_sha256": {}}, {"frozen_file_sha256": {"drift": digest}}, {"study_config_sha256": {"drift": digest}},
+                                    {"protected_snapshots": original["protected_snapshots"]},
+                                    {"protected_snapshots": {name: value for name, value in context["protected_snapshots"].items() if name != str(root / "prior0")}},
+                                    {"dependence": {**dependence, "exact_reused_video_rank_groups": {}}},
+                                    {"test_transition": {**context["test_transition"], "only_added_test": "wrong"}}):
+                        with self.assertRaises(ValueError):
+                            module.verify_source_context({**context, **changes}, report)
+                    with self.assertRaises(ValueError):
+                        module.verify_source_context(context, {**report, "observation_input_sha256": digest})
+                    current_test.write_text(current_source.replace("def existing_test", "def changed_prior_test"))
+                    with self.assertRaises(ValueError):
+                        module.verify_source_context({**context, "test_transition": {**context["test_transition"], "new_sha256": module._sha256(current_test)}}, report)
+            from argparse import Namespace
+            with tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for output in (root, ROOT / "results/refused-batch09-categorical", root / "source/overlap"):
+                    with self.assertRaises(ValueError):
+                        module.prepare(Namespace(preflight=root / "preflight.json", packet_root=root / "source", ai_root=root / "ai", out_root=output))
+        finally:
+            sys.path.pop(0)
+
     def test_batch08_categorical_handoff_acceptance_authority_and_blank_controls(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:
