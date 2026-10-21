@@ -21,6 +21,96 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_pilot243_authority_output_and_parent_watchdog_refusals(self) -> None:
+        from unittest.mock import MagicMock
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_pilot243 as module
+            for preflight in ({}, {"checkpoint": True}, {"checkpoint": 243, "caps": {}, "review242_consolidated_pilot_authorized": True},
+                              {"checkpoint": 243, "caps": module.CAPS, "review242_consolidated_pilot_authorized": False},
+                              {"checkpoint": 243, "caps": module.CAPS, "review242_consolidated_pilot_authorized": True, "membership_sha256": "drift"}):
+                with self.assertRaises(ValueError):
+                    module.selected_sources(preflight)
+            with tempfile.TemporaryDirectory() as directory:
+                home = Path(directory)
+                source = home / "source.json"
+                source.write_text("{}")
+                existing = home / "existing"
+                existing.mkdir()
+                for output in (existing, ROOT / "results/refused243", home / "source.json/child"):
+                    with self.assertRaises(ValueError):
+                        module.supervise(source, output, home / "metrics.json")
+                for field in ("rss_bytes", "temporary_bytes", "output_bytes"):
+                    process = MagicMock(pid=12345)
+                    measured = {key: 0 for key in ("rss_bytes", "temporary_bytes", "output_bytes")}
+                    measured[field] = module.CAPS[field] + 1
+                    records = []
+                    with patch.object(module.subprocess, "Popen", return_value=process), patch.object(module, "usage", return_value=measured), \
+                         patch.object(module.os, "killpg") as kill, patch.object(module, "write_immutable_record", side_effect=lambda path, record: records.append(record)):
+                        self.assertEqual(module.supervise(source, home / "out", home / "metrics.json"), 1)
+                        kill.assert_called_once()
+                        process.wait.assert_called_once()
+                    self.assertFalse(records[0]["completion_claimed"])
+                    self.assertEqual(records[0]["sampled_peaks"][field], measured[field])
+                with patch.object(module.subprocess, "Popen", return_value=MagicMock(pid=12345)), \
+                     patch.object(module, "usage", return_value={key: 0 for key in measured}), \
+                     patch.object(module.time, "monotonic", side_effect=[0, 1801, 1802]), \
+                     patch.object(module.os, "killpg"), patch.object(module, "write_immutable_record") as writer:
+                    self.assertEqual(module.supervise(source, home / "out", home / "metrics.json"), 1)
+                    self.assertFalse(writer.call_args.args[1]["completion_claimed"])
+        finally:
+            sys.path.pop(0)
+
+    def test_pilot243_stream_deadline_integrity_and_chronological_gallery(self) -> None:
+        import numpy as np
+        from types import SimpleNamespace
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import prepare_oulu_pilot243 as module
+            frames = [np.full((2, 3, 3), value, np.uint8) for value in (11, 23)]
+            payload = b"".join(frame.tobytes() for frame in frames)
+            media = {"decode_status": "decoded", "frame_count": 2, "frame_index": [
+                {"decode_order": order, "decode_success": True, "width": 3, "height": 2,
+                 "timestamp_seconds": str(order), "rgb_sha256": hashlib.sha256(frame.tobytes()).hexdigest()}
+                for order, frame in enumerate(frames)]}
+            command = [sys.executable, "-c", f"import os;os.write(1,{payload!r})"]
+            received = []
+            module.stream_frames(Path("unused"), media, lambda order, rgb: received.append((order, rgb.copy())), command=command)
+            self.assertEqual([order for order, rgb in received], [0, 1])
+            self.assertTrue(all(np.array_equal(rgb, frames[order]) for order, rgb in received))
+            for changed in (payload[:-1], payload + b"x", b"x" + payload[1:]):
+                with self.subTest(size=len(changed)), self.assertRaises(ValueError):
+                    module.stream_frames(Path("unused"), media, lambda *args: None,
+                                         command=[sys.executable, "-c", f"import os;os.write(1,{changed!r})"])
+            for suffix in (";os.write(2,b'error')", ";raise SystemExit(1)"):
+                with self.assertRaises(ValueError):
+                    module.stream_frames(Path("unused"), media, lambda *args: None,
+                                         command=[sys.executable, "-c", f"import os;os.write(1,{payload!r})" + suffix])
+            with self.assertRaises(TimeoutError):
+                module.stream_frames(Path("unused"), media, lambda *args: None, timeout=0.1,
+                                     command=[sys.executable, "-c", "import threading;threading.Event().wait()"])
+            tiles = [np.full((455, 256, 3), order, np.uint8) for order in range(19)]
+            for start in (0, 16):
+                sheet = module.gallery(tiles, start)
+                self.assertEqual(sheet.shape, (1932, 1024, 3))
+                for slot in range(16):
+                    top, left = slot // 4 * 483 + 28, slot % 4 * 256
+                    self.assertTrue(np.all(sheet[top:top + 455, left:left + 256] == (start + slot if start + slot < 19 else 255)))
+            for start in (-1, 1, 32, True):
+                with self.assertRaises(ValueError):
+                    module.gallery(tiles, start)
+            valid = SimpleNamespace(name="train/a.avi", size=18, isfile=lambda: True)
+            module.checked_member(valid, {"media_relpath": "train/a.avi", "byte_size": 18})
+            for member in (SimpleNamespace(name="../a", size=18, isfile=lambda: True),
+                           SimpleNamespace(name="train/a.avi", size=19, isfile=lambda: True),
+                           SimpleNamespace(name="train/a.avi", size=18, isfile=lambda: False)):
+                with self.assertRaises(ValueError):
+                    module.checked_member(member, {"media_relpath": "train/a.avi", "byte_size": 18})
+        finally:
+            sys.path.pop(0)
+
     def test_batch08_categorical_import_receipt_strict_JSON_and_derived_stops(self) -> None:
         sys.path.insert(0, str(ROOT / "scripts"))
         try:

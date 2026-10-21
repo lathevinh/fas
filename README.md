@@ -10,6 +10,17 @@ Integrity/leakage stops and frozen scientific gates remain. The next report must
 include a concrete OULU completion table; no399-pair clearance, human collection,
 detector/model execution or full dataset acceptance is authorized.
 
+Current execution result:
+[Checkpoint243](docs/243-review-response-doc242-oulu-consolidated-pilot.md)
+and its [aggregate](results/phase1/oulu-consolidated-pilot243-v1.json) complete the
+consolidated selected-pair pilot: two byte-identical324-file exports,92 focused
+tests,20 galleries/all297 thumbnail tiles and two native triggers inspected.
+Assets support bounded foreground comparison, not transformed-region/capture-lineage
+clearance. No disposition or coverage increment;85-prefix, all not_audited statuses
+and scientific blocks remain. One completion table and concrete missing-evidence
+action are included. Stop for one substantive243 review; exact new publication CI
+is verified in the final handoff.
+
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 
