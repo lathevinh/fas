@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Current control-feasibility decision (2026-10-21):
+[Review269](docs/269-review-doc268-control-feasibility.md) accepts268 without rework
+and closes the proposed SSCD validation route under currently inspected evidence:
+trusted relevant real controls and allegation applicability are not established.
+No model installation, new benchmark/media run, model switch or acknowledgment-only
+response is requested. This is not a measured SSCD failure or dataset acceptance.
+The completed399 comparison ledger and inventory remain reusable; all scientific
+dispositions/statuses and later gates remain unchanged. Older scopes below are
+historical.
+
 Control feasibility after267 (2026-10-21):
 [Package268](docs/268-oulu-control-feasibility-and-scope-corrections.md) and its
 [inventory](results/phase1/oulu-control268-feasibility-v1.json) inspect actual frozen
