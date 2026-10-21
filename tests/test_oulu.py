@@ -21,6 +21,34 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_correspondence253_camera_compensation_and_unknown_registration(self) -> None:
+        import numpy as np
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import evaluate_oulu_motion253 as experiment
+
+            previous = np.random.default_rng(17).integers(0, 256, (128, 128), dtype=np.uint8)
+            current = np.roll(previous, (1, 2), axis=(0, 1))
+            mask, metadata = experiment.residual_mask(previous, current)
+            self.assertEqual(metadata["status"], "registered_translation")
+            np.testing.assert_allclose(metadata["shift"], [2, 1], atol=0.01)
+            self.assertFalse(np.any(mask))
+            first, second = experiment.dynamic_background_sequences(600)
+            self.assertEqual((len(first), len(second)), (9, 9))
+            np.testing.assert_array_equal(first[0][32, 32], second[0][32, 32])
+            self.assertTrue(np.any(first[0][128, 80] != second[0][128, 80]))
+            blank = np.zeros((64, 64, 3), np.uint8)
+            baseline, revised = experiment.feature_sets([blank] * 9)
+            self.assertEqual([value["rgb_sha256"] for value in baseline], [value["rgb_sha256"] for value in revised])
+            self.assertTrue(all(value["camera_motion"]["status"] == "registration_unavailable" for value in revised[1:]))
+            finding = experiment.compare_features(revised, revised)
+            self.assertIsNone(finding["scientific_disposition"])
+            self.assertFalse(finding["capture_independence"])
+            self.assertFalse(finding["witnesses"])
+        finally:
+            sys.path.pop(0)
+
     def test_correspondence251_component_connectivity_and_disjointness(self) -> None:
         from fas.content_correspondence import planned_edge_rows
 

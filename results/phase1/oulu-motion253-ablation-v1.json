@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkpoint": 253,
+  "authority252_sha256": "c70b20efd39b87bdd4f84cba28ce68c9ea43a9cbe5a57cb8d783cdba9d5f4e37",
+  "prospective_experiment_sha256": "56d261842f3b31c7555783b178ca1f83f1c66b54d823e532bb1f3d15b7a20f72",
+  "supplemental_challenge_lock_sha256": "8c93682f7df241bc7bd0aa85a39618a44f83a5d14f0e5d36a7cf013419e08df4",
+  "private_sha256": {
+    "primary128_AB": "ce4131781dd752e137bbeff40c176075832fe70de26018757b6bc5fcd9d50b68",
+    "supplemental8_dynamic_background": "e8b67a8af0db4faf28a2f8f0f8cd532247f782741116cee6a9a4eea5b7f4fd54",
+    "technical_verification": "84593e1de1a8da7016fcf218ff31f48bb8a2931eaa30367eda3b7583a6c3a60f"
+  },
+  "current_code_sha256": {
+    "scripts/evaluate_oulu_motion253.py": "c989a2969e55746e316462fd9adabcdaf0aeee8e35f086ff709f43ba2259db99",
+    "tests/test_oulu.py": "aa1d29bbacdab15c66d3b49c8d4834c63b47b3c46f60a44ed44b484103db6ba1",
+    "src/fas/content_correspondence.py": "d545f799af8dd04de2acf27adabebce9767b9ceeb9862bd1503b3b304f080236",
+    "scripts/evaluate_oulu_method249.py": "75dfc7705d626617c36ec87be29b43b2c6194ed5ddfc700eb93a5701a24f60bf"
+  },
+  "original_primary_script_sha256_reconstructed": "0bf64dd4c97395d62198cf7d9c7bdb76546a225efba57257e279e6fce1b7b2f0",
+  "method": {
+    "change": "phase_correlation_global_translation_before_residual_motion_mask",
+    "minimum_response": 0.15,
+    "maximum_shift_fraction_each_dimension": 0.1,
+    "difference_threshold": 12,
+    "dilation_and_valid_support_erosion": 5,
+    "unchanged_ORB_and_geometric_temporal_witness_thresholds": true,
+    "failed_registration": "no_features_unknown_not_clearance",
+    "semantic_foreground_segmentation": false
+  },
+  "fresh_primary": {
+    "paired_cases": 128,
+    "development_seeds": [400, 401, 402, 403, 404, 405, 406, 407],
+    "held_out_seeds": [500, 501, 502, 503, 504, 505, 506, 507],
+    "shared_content_foreground_cases": 64,
+    "baseline_positive_witnesses": 64,
+    "compensated_positive_witnesses": 64,
+    "shared_camera_background_different_foreground_cases": 16,
+    "baseline_camera_background_witnesses": 16,
+    "compensated_camera_background_witnesses": 0,
+    "independent_scene_cases": 16,
+    "baseline_independent_witnesses": 0,
+    "compensated_independent_witnesses": 0,
+    "identical_static_cases": 16,
+    "baseline_and_compensated_static_witnesses": 0,
+    "black_cases": 16,
+    "baseline_and_compensated_black_witnesses": 0,
+    "known_foreground_inlier_coordinate_observations_inside": 14572,
+    "known_foreground_inlier_coordinate_observations_total": 14572,
+    "registrations_accepted": 1792,
+    "registrations_unavailable": 256,
+    "seconds": 27.671,
+    "process_peak_RSS_bytes": 131948544
+  },
+  "fresh_exploratory_challenge": {
+    "seeds": [600, 601, 602, 603, 604, 605, 606, 607],
+    "dynamic_background_different_foreground_cases": 8,
+    "baseline_witnesses": 8,
+    "compensated_witnesses": 8,
+    "baseline_inlier_coordinates_inside_panel": 797,
+    "baseline_inlier_coordinates_total": 7634,
+    "compensated_inlier_coordinates_inside_panel": 2862,
+    "compensated_inlier_coordinates_total": 2872,
+    "post_primary_predeclared_no_parameter_tuning": true,
+    "seconds": 2.205,
+    "process_peak_RSS_bytes": 89014272
+  },
+  "interpretation": {
+    "camera_translation_confound_reduced_on_toy_generator": true,
+    "dynamic_background_confound_removed": false,
+    "static_reuse_blindspot_removed": false,
+    "synthetic_ground_truth_used_as_matcher_input": false,
+    "inlier_coordinates_are_independent_observations": false,
+    "representative_real_validation": false,
+    "capture_adjudication_or_clearance_adequate": false,
+    "investigative_value": "paired_localized_evidence_for_camera_consistent_versus_residual_support_keep_both_streams",
+    "suppressed_background_witness_clears_edge": false,
+    "real_purpose_or_resource_approval": false,
+    "scientific_tolerance_adopted": false
+  },
+  "preservation": {
+    "historical_test_AST_unchanged": true,
+    "matcher_planner251_unchanged": true,
+    "runner249_unchanged": true,
+    "primary_algorithm_unchanged_after_challenge": true,
+    "historical_controls_rerun_or_overwritten": false,
+    "frozen_population_modified": false
+  },
+  "fresh_focused_tests": {
+    "passed": 97,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "runner_seconds": 8.754,
+    "discovery_inclusive_seconds": 8.899,
+    "new_test_methods": 1,
+    "fresh_local_full_suite": false
+  },
+  "retained_state": {
+    "new_real_pairs_screened": 0,
+    "new_dispositions": 0,
+    "accepted_effective_semantic_AI": 85,
+    "cross_role_unadjudicated": 399,
+    "endpoints": 438,
+    "components": 91,
+    "residual_context": 6555,
+    "noncandidate_coverage": 0,
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "all8_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_steps_including_Complete_job",
+    "source251_CI_is_not_substitute": true
+  },
+  "stop_boundary": "synthetic_extension_measured_not_a_closure_method_no_real_execution_or_automatic_followup"
+}

@@ -43,6 +43,16 @@ prohibited overlap remains a hard error;85-prefix/all not_audited statuses remai
 No further approval/activation of this wording is needed; a distinct substantive
 method and evidence-coverage decision is still required before execution.
 
+Latest new method experiment:
+[Camera-motion ablation253](docs/253-camera-compensated-motion-ablation.md)
+and its [aggregate](results/phase1/oulu-motion253-ablation-v1.json) test a concrete
+extension under252's safe-synthetic permission, not another repair activation.
+Across128 new paired controls, compensation reduces shared-camera-background
+witnesses16/16 to0/16 while retaining64/64 toy shared-content/foreground witnesses.
+But all8 dynamic-background-panel challenges still yield witnesses; static reuse
+is still missed.97 focused tests pass. Both witness streams remain investigative
+evidence, not capture adjudication/clearance. No real screening was authorized/run.
+
 Latest planner/disposition response:
 [Review250](docs/250-review-doc249-temporal-method-controls.md) is addressed in
 [Package251](docs/251-review-response-doc250-planner-and-disposition-evidence.md)
