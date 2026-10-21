@@ -1,5 +1,17 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Current OULU work direction (2026-10-21):
+[Corrective review263](docs/263-corrective-review-oulu-completion-plan.md)
+ends automatic image escalation and replaces repeated insufficiency reviews with
+one existing-evidence acceptance reconciliation, recommended ceiling8 active
+agent-hours, one399-edge ledger and one decision-ready report. No new decode or
+matcher run is prescribed. Technical comparison399/399 is complete; local audit
+acceptance remains incomplete. Joined cross-dataset assurance, preprocessing and
+later science are separate milestones. No status/contract change is implied.
+The report must recommend an exact supported acceptance, exact prospective
+scientific change, or a specific terminal blocker; no acknowledgment-only response
+or automatic follow-on experiment. Historical scopes below remain historical.
+
 Latest bounded native investigation (2026-10-21): following
 [Review260](docs/260-review-doc259-five-witness-analysis.md) and new explicit owner
 approval, [Package261](docs/261-oulu-d-native-crop-investigation.md) and its
