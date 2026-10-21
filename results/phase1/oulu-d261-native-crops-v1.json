@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "checkpoint": 261,
+  "authority260_sha256": "74124cb34e513bd9d945e6d40d95032a50463efa988eb9421d7973f25f4eded2",
+  "new_explicit_owner_approval_not_inferred_from_review": true,
+  "private_sha256": {
+    "owner_approval": "3f636ae85f9d078bdfc0feb2b83a41f176acfafabc8cda15a26bb1319ce6c4c9",
+    "preflight": "25589e46161170c832d7e9b7227b4e23318d39375647c4addb921241b625a32a",
+    "tests": "6b36b8f924f7a9f6b00c8a71f4f012a634d82cd3684730273174ef04ec8b700c",
+    "resources": "363e9585ae9d7cef19fc8f64dadd0c7ca17d4b321369c810b58026b73574c0b3",
+    "output_summary": "1a2535d0f0515ea601caaf1d48bb6651340665d9034b94c26c956305197207ab",
+    "technical_verification": "bcac22d61e0901ac8ac2ea98c25a9843f06aacbbafbb0f61064620ce48275e2d",
+    "actual_inspection": "fab137783747b8477866ce5faab010666271d6b8c679dbe58e8750c168e92d93"
+  },
+  "code_sha256": {
+    "scripts/inspect_oulu_d261.py": "3854e4807a1775dff3fd26dee0f75e8eda65c5d9f780335b0640bbe9676a363e",
+    "tests/test_oulu.py": "af630ddf833e6e9595d06afc368b05779fde856676a9b348ad2dd4fb2b30eb88"
+  },
+  "fixed_scope": {
+    "case": "D",
+    "left_native_orders": [54, 72, 90],
+    "right_native_orders": [18, 37, 56],
+    "native_window_xyxy_half_open": [86, 1132, 929, 1824],
+    "crop_width_height": [843, 692],
+    "crop_RGB_bytes": 10500408,
+    "interpretation_fixed_before_extraction_and_viewing": true,
+    "source_parents_orders_region_not_adapted": true,
+    "no_new_matcher_threshold_or_alignment_search": true
+  },
+  "caps": {
+    "whole_seconds": 1800,
+    "decoder_seconds": 180,
+    "rss_bytes": 2147483648,
+    "temporary_bytes": 134217728,
+    "output_bytes": 268435456,
+    "reserve_bytes": 671088640
+  },
+  "actual": {
+    "new_real_attempts": 1,
+    "automatic_retries": 0,
+    "technical_complete": true,
+    "failure": null,
+    "parent_returncode": 0,
+    "elapsed_seconds": 445.601,
+    "endpoint_rows": 2,
+    "successful_endpoints": 2,
+    "failed_endpoints": 0,
+    "not_run_endpoints": 0,
+    "strict_RGB_frames_verified": 297,
+    "native_RGB_bytes": 1847577600,
+    "selected_payload_bytes": 58944794,
+    "persisted_native_crops": 6,
+    "new_whole_native_frames_or_feature_banks": 0,
+    "sampled_peaks": {
+      "rss_bytes": 259522560,
+      "temporary_bytes": 32425650,
+      "output_bytes": 8698514
+    },
+    "watchdog_interval_seconds": 0.05,
+    "sampled_not_continuous_hardware_maxima": true,
+    "per_decoder_or_stage_durations_instrumented": false,
+    "fixed_absolute_decoder_deadlines_passed": true,
+    "final_publication_headroom_bytes_inside_cap": 8388608,
+    "final_run_root_files": 13,
+    "final_run_root_bytes_excluding_external_receipts": 5322751,
+    "pending_payload_directories": 0,
+    "single_attempt_latch_bound_in_technical_verification": true,
+    "summary_metrics_printed_completion_and_failure_agree": true
+  },
+  "actual_inspection": {
+    "actual_image_open_calls": 6,
+    "unique_native_crops_opened": 6,
+    "extra_native_views_overlays_or_orders": 0,
+    "paired_observations": [
+      {
+        "left_order": 54,
+        "right_order": 18,
+        "observed": "dark_upper_band_loop_dash_motifs_braid_like_columns_right_brighter_sharper_edges",
+        "limit": "organized_texture_not_unique_transient_fold_occlusion_or_recording_artifact"
+      },
+      {
+        "left_order": 72,
+        "right_order": 37,
+        "observed": "central_diagonal_loop_junctions_lower_light_dark_transition_near_static",
+        "limit": "no_discriminating_timed_crease_or_occluder_event_resolved"
+      },
+      {
+        "left_order": 90,
+        "right_order": 56,
+        "observed": "recurrent_braid_columns_lower_patch_transition_minor_tone_framing_variation",
+        "limit": "no_uniquely_linked_temporal_recording_detail_identified_across_three_pairs"
+      }
+    ],
+    "physical_construction_authenticated": false,
+    "motif_similarity_alone_not_confirmation": true,
+    "incidental_artifact_absence_proved": false,
+    "identity_inference": false,
+    "same_recording_cues_dependent": true,
+    "terminal_local_outcome": "inconclusive_physical_material_vs_recorded_region_reuse",
+    "specific_alignment_or_localized_copy_rejected": false,
+    "confirmed_prohibited_reuse": false,
+    "accepted_negative_or_whole_edge_clearance": false,
+    "upper_regions_other_orders_edges_and394_not_cleared": true,
+    "population_wide_image_audit_futility_claim": false,
+    "automatic_further_native_tier_or_transform_search": false
+  },
+  "verification": {
+    "all13_persisted_hashes_and_two_media_six_crop_parent_joins": true,
+    "native_RGB_window_order_crop_RGB_PNG_joins": true,
+    "archive_guard_descriptor_before_after_equal": true,
+    "prior259_five_pairs_eight_endpoint_media_gallery_parents_unchanged": true,
+    "source_pins_unchanged_after_execution": true,
+    "native_stream_replayed_during_readback": false,
+    "focused_module_tests_passed": 104,
+    "test_failures": 0,
+    "test_errors": 0,
+    "test_skips": 0,
+    "tests_seconds_including_discovery": 9.237,
+    "new_D_test_methods": 4,
+    "historical100_test_method_AST_unchanged": true,
+    "shared243_257_guard_runner_matcher_sources_unchanged": true,
+    "fresh_local_full_suite": false,
+    "standalone_storage_probe_passed_after_mutable_mock_fixture_corrected": true
+  },
+  "retained_state": {
+    "new_dispositions": 0,
+    "accepted_effective_semantic_AI": 85,
+    "cross_role_scientifically_unadjudicated": 399,
+    "witness_candidates_all_analyzed": 5,
+    "non_detections_not_accepted_negatives": 394,
+    "residual_context": 6555,
+    "noncandidate_coverage_increment": 0,
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "all8_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "394_acceptance_basis": {
+    "validated_finite_negative_acceptance_supplied": false,
+    "generic_blindspots_not_individual_hidden_allegations": true,
+    "future_decision_distinguishes_candidate_reason_material_evidence_residual_uncertainty": true,
+    "universal_transform_proof_or_mandatory438_capture_certificates": false,
+    "new394_runs_or_method_commissioned": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_steps_including_Complete_job",
+    "source259_CI_is_not_substitute": true
+  },
+  "stop_boundary": "one_substantive261_D_execution_evidence_review_local_check_ends_inconclusive_no_automatic_next_native_tier_or_status_promotion"
+}

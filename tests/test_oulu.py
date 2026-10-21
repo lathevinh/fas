@@ -21,6 +21,172 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_d261_complete_six_PNG_readback_and_drift(self) -> None:
+        import numpy as np
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import inspect_oulu_d261 as module
+
+            with tempfile.TemporaryDirectory() as directory:
+                home = Path(directory)
+                output = home / "run"
+                source = home / "preflight.json"
+                source.write_text("{}")
+                preflight = {"preflight_path": str(source), "videos": {}}
+                rgb = np.full((692, 843, 3), 73, np.uint8)
+                encoded = module.png_bytes(rgb)
+                digest = hashlib.sha256(rgb.tobytes()).hexdigest()
+                for side, count in (("left", 146), ("right", 151)):
+                    media = home / f"{side}.json"
+                    media.write_text(json.dumps({"frame_index": [{"rgb_sha256": "b" * 64} for order in range(count)]}))
+                    binding = {"media_path": str(media), "media_record_sha256": hashlib.sha256(media.read_bytes()).hexdigest(),
+                               "frame_count": count, "payload_bytes": 100}
+                    preflight["videos"][side] = binding
+                    assets = []
+                    for order in module.ORDERS[side]:
+                        path = output / "crops" / f"{side}-{order:06d}.png"
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_bytes(encoded)
+                        assets.append({"decode_order": order, "source_RGB_sha256": "b" * 64, "crop_RGB_sha256": digest,
+                                       "path": str(path.relative_to(output)), "sha256": hashlib.sha256(encoded).hexdigest(),
+                                       "width": 843, "height": 692, "window_xyxy_half_open": module.WINDOW})
+                    module.write_immutable_record(output / "endpoints" / f"{side}.json", {
+                        "status": "success", "media_record_sha256": binding["media_record_sha256"], "crops": assets,
+                        "strict_RGB_frames_verified": count, "native_RGB_bytes": count * 1080 * 1920 * 3,
+                        "payload_bytes": 100, "scientific_disposition": None})
+                module.write_immutable_record(output / "worker_completion.json", {
+                    "checkpoint": 261, "endpoints": 2, "crops": 6, "guard_before_after_equal": True,
+                    "preflight_sha256": hashlib.sha256(source.read_bytes()).hexdigest()})
+                summary = module.finalize(preflight, output, None)
+                self.assertTrue(summary["technical_complete"])
+                self.assertEqual((summary["successful_endpoints"], summary["persisted_crops"], summary["strict_RGB_frames_verified"]), (2, 6, 297))
+                self.assertFalse((output / "summary.json").exists())
+                path = output / "crops/left-000054.png"
+                path.write_bytes(encoded[:-1])
+                with self.assertRaises(ValueError):
+                    module.finalize(preflight, output, None)
+                path.unlink()
+                with self.assertRaises(ValueError):
+                    module.finalize(preflight, output, None)
+        finally:
+            sys.path.pop(0)
+
+    def test_d261_scope_and_incomplete_readback_refusals(self) -> None:
+        import copy
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import inspect_oulu_d261 as module
+
+            valid = {"checkpoint": 261, "caps": module.CAPS, "orders": module.ORDERS,
+                     "window_xyxy_half_open": module.WINDOW, "approval_sha256": module.APPROVAL_SHA,
+                     "interpretation": module.INTERPRETATION}
+            module.validate_scope(valid)
+            for field, value in (("checkpoint", 257), ("orders", {"left": [54, 72, 91], "right": [18, 37, 56]}),
+                                 ("window_xyxy_half_open", [85, 1132, 929, 1824]), ("approval_sha256", "0" * 64),
+                                 ("caps", {}), ("interpretation", {})):
+                with self.subTest(field=field), self.assertRaises(ValueError):
+                    module.validate_scope({**copy.deepcopy(valid), field: value})
+            with tempfile.TemporaryDirectory() as directory:
+                output = Path(directory) / "partial"
+                preflight = {"videos": {side: {"media_record_sha256": "a" * 64} for side in ("left", "right")}}
+                with self.assertRaises(ValueError):
+                    module.finalize(preflight, output, None)
+                partial = module.finalize(preflight, output, "toy failure")
+                self.assertEqual((partial["endpoint_rows"], partial["successful_endpoints"], partial["persisted_crops"]), (2, 0, 0))
+                self.assertFalse(partial["technical_complete"])
+                self.assertEqual(sorted(path.stem for path in (output / "endpoints").glob("*.json")), ["left", "right"])
+        finally:
+            sys.path.pop(0)
+
+    def test_d261_parent_final_caps_and_single_attempt_latch(self) -> None:
+        from unittest.mock import MagicMock
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import inspect_oulu_d261 as module
+
+            for scenario in ("success", "wall", "size", "rss_bytes", "temporary_bytes", "output_bytes", "worker_failure"):
+                with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as directory:
+                    home = Path(directory)
+                    source, output, metrics = home / "preflight.json", home / "run", home / "metrics.json"
+                    source.write_text("{}")
+                    ready = home / "worker-ready"
+                    ready.mkdir()
+                    clock = [0]
+
+                    def launch(*args, **kwargs):
+                        ready.rename(output)
+                        return MagicMock(pid=12345, wait=MagicMock(return_value=int(scenario == "worker_failure")))
+
+                    def readback(preflight, destination, failure):
+                        if scenario == "wall":
+                            clock[0] = module.CAPS["whole_seconds"] + 1
+                        elif scenario == "size":
+                            with (destination / "oversized.bin").open("wb") as handle:
+                                handle.truncate(module.CAPS["output_bytes"] + 1)
+                        return {"checkpoint": 261, "technical_complete": failure is None, "failure": failure,
+                                "successful_endpoints": 2, "persisted_crops": 6, "file_sha256_without_summary": {}}
+
+                    measured = {key: (module.CAPS[key] + 1 if scenario == key else 0)
+                                for key in ("rss_bytes", "temporary_bytes", "output_bytes")}
+                    with patch.object(module, "BASE", home), patch.object(module, "load_preflight", return_value={"source_sha256": {}}), \
+                         patch.object(module.subprocess, "Popen", side_effect=launch) as spawn, \
+                         patch.object(module, "measured_usage", return_value=measured), \
+                         patch.object(module.time, "monotonic", side_effect=lambda: clock[0]), \
+                         patch.object(module, "finalize", side_effect=readback), patch.object(module.os, "killpg"):
+                        self.assertEqual(module.supervise(source, output, metrics), 0 if scenario == "success" else 1)
+                        with self.assertRaises(FileExistsError):
+                            module.supervise(source, home / "retry", home / "retry-metrics.json")
+                        self.assertEqual(spawn.call_count, 1)
+                    summary, measured = json.loads((output / "summary.json").read_bytes()), json.loads(metrics.read_bytes())
+                    self.assertEqual(summary["technical_complete"], scenario == "success")
+                    self.assertEqual(summary["technical_complete"], measured["completion_claimed"])
+                    self.assertEqual(summary["failure"], measured["failure"])
+                    self.assertEqual(measured["summary_sha256"], hashlib.sha256((output / "summary.json").read_bytes()).hexdigest())
+        finally:
+            sys.path.pop(0)
+
+    def test_d261_crops_strict_full_stream_and_exact_window(self) -> None:
+        import numpy as np
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import inspect_oulu_d261 as module
+
+            frames = []
+            for order in range(4):
+                rgb = np.empty((1920, 1080, 3), np.uint8)
+                rgb[:, :, 0] = np.arange(1080, dtype=np.uint16)[None, :] % 251
+                rgb[:, :, 1] = np.arange(1920, dtype=np.uint16)[:, None] % 251
+                rgb[:, :, 2] = order
+                frames.append(rgb)
+            media = {"decode_status": "decoded", "frame_count": 4, "frame_index": [
+                {"decode_order": order, "decode_success": True, "width": 1080, "height": 1920,
+                 "timestamp_seconds": str(order), "rgb_sha256": hashlib.sha256(rgb.tobytes()).hexdigest()}
+                for order, rgb in enumerate(frames)]}
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "native.rgb"
+                payload = b"".join(rgb.tobytes() for rgb in frames)
+                path.write_bytes(payload)
+                command = [sys.executable, "-c", "import pathlib,sys;sys.stdout.buffer.write(pathlib.Path(sys.argv[1]).read_bytes())", str(path)]
+                crops = module.crop_frames(path, media, [0, 1, 2], command=command)
+                self.assertEqual([crop["decode_order"] for crop in crops], [0, 1, 2])
+                for order, crop in enumerate(crops):
+                    self.assertEqual(crop["rgb"].shape, (692, 843, 3))
+                    self.assertTrue(np.array_equal(crop["rgb"], frames[order][1132:1824, 86:929]))
+                    self.assertEqual(crop["source_RGB_sha256"], media["frame_index"][order]["rgb_sha256"])
+                    self.assertEqual(crop["crop_RGB_sha256"], hashlib.sha256(crop["rgb"].tobytes()).hexdigest())
+                path.write_bytes(payload[:-1] + b"x")
+                with self.assertRaises(ValueError):
+                    module.crop_frames(path, media, [0, 1, 2], command=command)
+                for orders in ([0, 0, 2], [0, 2], [0, 1, 4], [True, 1, 2], [2, 1, 0]):
+                    with self.assertRaises(ValueError):
+                        module.crop_frames(path, media, orders, command=command)
+        finally:
+            sys.path.pop(0)
+
     def test_investigation257_final_caps_before_success_publication(self) -> None:
         from unittest.mock import MagicMock
 

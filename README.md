@@ -1,5 +1,17 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Latest bounded native investigation (2026-10-21): following
+[Review260](docs/260-review-doc259-five-witness-analysis.md) and new explicit owner
+approval, [Package261](docs/261-oulu-d-native-crop-investigation.md) and its
+[aggregate](results/phase1/oulu-d261-native-crops-v1.json) complete one D attempt:
+297 strict native frames, exactly six fixed garment crops,445.601s within caps,
+104 focused tests. All six crops were actually inspected. Fine loop/dash/braid-like
+motifs are clearer but provide no discriminating temporal/recording detail;
+D ends inconclusive, not confirmed reuse or an accepted negative. No retry, further
+native tier or scientific disposition;399 unresolved/394 non-detections,
+85-prefix/all8 not_audited and scientific blocks remain. Stop for one substantive
+261 execution/evidence review; older scopes below remain historical.
+
 Latest witness evidence analysis (2026-10-21): after
 [Review258](docs/258-review-doc257-completed-investigation.md),
 [Analysis259](docs/259-five-witness-edge-evidence-analysis.md) and its
