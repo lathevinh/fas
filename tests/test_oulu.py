@@ -20,6 +20,81 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluReconciliationTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        sys.path.remove(str(ROOT / "scripts"))
+
+    def test_frozen264_rows_and_hash_refuse_drift(self) -> None:
+        import copy
+
+        import reconcile_oulu264 as module
+
+        rows = [{"queue_rank": rank} for rank in range(399)]
+        preflight = {"rows": rows, "videos": {str(index): {} for index in range(438)},
+                     "components": [{} for index in range(91)]}
+        plan = copy.deepcopy(preflight)
+        plan["rows"] = [dict(row, existing_evidence={}) for row in rows]
+        self.assertEqual(module.frozen_rows(preflight, plan), rows)
+        for change in ("missing", "duplicate", "row", "video", "component"):
+            altered = copy.deepcopy(preflight)
+            if change == "missing":
+                altered["rows"].pop()
+            elif change == "duplicate":
+                altered["rows"][-1] = altered["rows"][0]
+            elif change == "row":
+                altered["rows"][0]["extra"] = True
+            elif change == "video":
+                altered["videos"]["0"] = {"drift": True}
+            else:
+                altered["components"].pop()
+            with self.assertRaises(ValueError):
+                module.frozen_rows(altered, plan)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "record.json"
+            path.write_text("{}")
+            self.assertEqual(module.read_record(path)[0], {})
+            with self.assertRaises(ValueError):
+                module.read_record(path, "0" * 64)
+
+    def test_frozen264_grouping_is_not_scientific_clearance(self) -> None:
+        import copy
+        import reconcile_oulu264 as module
+
+        candidate = {"minimum_hamming": 5, "aligned_slots_within_8": 3}
+        branch = {"witnesses": [], "geometric_hits": 0, "scientific_disposition": None}
+        pair = {"branches": {"baseline": copy.deepcopy(branch), "compensated": copy.deepcopy(branch)}}
+        self.assertEqual(module.evidence_group(candidate, pair, None), "non_detection_aligned_only_no_geometry")
+        pair["branches"]["baseline"]["geometric_hits"] = 2
+        self.assertEqual(module.evidence_group(candidate, pair, None), "non_detection_aligned_only_subchain_geometry")
+        with self.assertRaises(ValueError):
+            module.evidence_group(candidate, pair, {"alias": "A"})
+        pair["branches"]["baseline"]["witnesses"] = [{}]
+        self.assertEqual(module.evidence_group(candidate, pair, {"alias": "B"}), "witness_B")
+        with self.assertRaises(ValueError):
+            module.evidence_group(candidate, pair, None)
+        pair["branches"]["baseline"]["scientific_disposition"] = "negative"
+        with self.assertRaises(ValueError):
+            module.evidence_group(candidate, pair, {"alias": "B"})
+        with self.assertRaises(ValueError):
+            module.evidence_group({"minimum_hamming": 5, "aligned_slots_within_8": 2}, pair, {"alias": "B"})
+
+    def test_frozen264_groups_partition_exact399(self) -> None:
+        import reconcile_oulu264 as module
+
+        rows = [{"edge_id": f"edge-{index:03d}", "evidence_group": "retained"} for index in range(399)]
+        self.assertEqual(len(module.group_members(rows)["retained"]), 399)
+        with self.assertRaises(ValueError):
+            module.group_members(rows[:-1])
+        rows[-1]["edge_id"] = rows[0]["edge_id"]
+        with self.assertRaises(ValueError):
+            module.group_members(rows)
+
+
 class OuluHumanReviewTest(unittest.TestCase):
     def test_d261_complete_six_PNG_readback_and_drift(self) -> None:
         import numpy as np

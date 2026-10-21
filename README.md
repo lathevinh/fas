@@ -1,5 +1,19 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Latest existing-evidence reconciliation (2026-10-21):
+[Review263](docs/263-corrective-review-oulu-completion-plan.md) is implemented in
+[Package264](docs/264-oulu-existing-evidence-acceptance-reconciliation.md) and its
+[399-edge ledger](results/phase1/oulu-completion264-ledger-v1.json).
+Original candidate reasons, frozen boundaries, parents, both257 branches and
+259/261 observations are joined without new media or matcher execution.389
+non-detections have no supported geometry, five have subchain geometry, and five
+witnesses remain unresolved. Explicit member groups preserve pilot/visual
+exceptions. Recommended terminal decision: existing evidence cannot complete
+local acceptance under247; retain incomplete audit without a new escalation
+assignment. Zero dispositions/status changes; technical comparison is finished,
+joined assurance/later pipeline gates remain separate. Stop for one substantive
+264 decision review; older scopes below are historical.
+
 Current OULU work direction (2026-10-21):
 [Corrective review263](docs/263-corrective-review-oulu-completion-plan.md)
 ends automatic image escalation and replaces repeated insufficiency reviews with
