@@ -1,5 +1,17 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Latest completed technical investigation (2026-10-21): after
+[Review256](docs/256-review-doc255-partial-investigation.md) and explicit owner
+approval of one new attempt, [Package257](docs/257-oulu-investigation-repeat-and-final-verdict.md)
+and its [aggregate](results/phase1/oulu-investigation257-v1.json) complete438 endpoints/
+399 comparisons in1028.156s, within unchanged recorded caps. The final-verdict
+inconsistency is repaired and100 focused tests pass. Baseline5/compensated4 witness
+edges include one baseline-only hit;394 non-detections remain unresolved. Three
+witness edges/five sheets/45 tiles were actually viewed, with no native escalation.
+No new dispositions:399 scientific relationships remain unadjudicated,85-prefix,
+all8 not_audited and scientific blocks unchanged.255's failed attempt is preserved.
+Stop for one substantive257 evidence review; no automatic further run or clearance.
+
 Latest authorized real investigation (2026-10-21): after
 [Review254](docs/254-review-doc253-camera-compensated-motion.md), the owner explicitly
 approved a bounded399-edge/438-endpoint run retaining both witness streams.

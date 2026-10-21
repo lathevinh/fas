@@ -38,7 +38,8 @@ CAPS = {"whole_seconds": 7200, "decoder_seconds": 180, "rss_bytes": 2048 * MIB,
         "temporary_bytes": 128 * MIB, "feature_bytes": 128 * MIB,
         "output_bytes": 256 * MIB, "reserve_bytes": 640 * MIB}
 BASE = Path("/mnt/e/FAS-private/artifacts/phase1")
-APPROVAL_SHA = "2fa580a235ff9f2b7aa30cadb64a05c2ca68f9f0939a5c5c9682676b093db34d"
+CHECKPOINT = 257
+APPROVAL_SHA = "6ce0c7d14939efd504c6ed23b8195a919a2fe5199b60fd7dc66ba96ab2e85755"
 PLAN_SHA = "67520c44ba519afa45d9a4b76275daa33b1139dd7dc34ba56ce6713cb3dbebb9"
 PILOT_SHA = "111bc614362b6e719a6aded8cff962dfef6964333ac8e3324b6087365b8ca85e"
 PROVENANCE_SHA = "fa35cd8ed4281c6d9848b21374de9cd7d5b9f992044002b7d936437dc6b34c29"
@@ -95,7 +96,7 @@ def compare_complete(left: list[dict], right: list[dict]) -> dict:
 
 
 def make_preflight(destination: Path) -> dict:
-    approval_path = BASE / "oulu_investigation255_owner_approval_v1.json"
+    approval_path = BASE / "oulu_investigation257_owner_approval_v1.json"
     approval = read_verified_json(approval_path, APPROVAL_SHA)
     if approval.get("explicit_owner_approval") is not True or approval.get("caps") != CAPS:
         raise ValueError("explicit fixed investigation approval required")
@@ -112,10 +113,15 @@ def make_preflight(destination: Path) -> dict:
                  "scripts/evaluate_oulu_method249.py", "scripts/prepare_oulu_pilot243.py",
                  "scripts/verify_oulu_archive_guard_batch09.py", "src/fas/content_correspondence.py",
                  "src/fas/freeze.py", "src/fas/visual.py", "src/fas/lineage.py", "tests/test_oulu.py",
-                 "docs/254-review-doc253-camera-compensated-motion.md"):
+                 "docs/256-review-doc255-partial-investigation.md",
+                 "docs/255-oulu-authorized-correspondence-investigation.md", "results/phase1/oulu-investigation255-v1.json"):
         source[str(ROOT / name)] = _sha256(ROOT / name)
-    if source[str(ROOT / "docs/254-review-doc253-camera-compensated-motion.md")] != approval["authority254_sha256"]:
-        raise ValueError("Review254 authority drift")
+    for name in ("oulu_investigation255_publication_verification_v1.json", "oulu_investigation255_resources_v1.json",
+                 "oulu_investigation255_run_v1/summary.json", "oulu_investigation255_executed_source_v1.json"):
+        source[str(BASE / name)] = _sha256(BASE / name)
+    if source[str(ROOT / "docs/256-review-doc255-partial-investigation.md")] != approval["authority256_sha256"]:
+        raise ValueError("Review256 authority drift")
+    lock = (ROOT / "docs/257-oulu-investigation-repeat-and-final-verdict.md").read_text().split("## Prospective Execution Lock\n\n")[1].split("\n## Actual Execution")[0]
     check_bindings(source)
     paths = pilot["execution_paths"]
     counts = {name: read_verified_json(Path(paths["audit_root"]) / "videos" / f"{name}.json",
@@ -131,9 +137,10 @@ def make_preflight(destination: Path) -> dict:
     test_path = str(ROOT / "tests/test_oulu.py")
     before = guard["pinned_file_sha256"][test_path]
     guard["pinned_file_sha256"][test_path] = source[test_path]
-    record = {"checkpoint": 255, "caps": CAPS, "approval_sha256": APPROVAL_SHA,
+    record = {"checkpoint": CHECKPOINT, "caps": CAPS, "approval_sha256": APPROVAL_SHA,
+              "prospective_execution_sha256": hashlib.sha256(lock.encode()).hexdigest(),
               "source_sha256": source, "paths": paths, "guard_context": guard,
-              "test_pin_transition": {"from243": before, "to255": source[test_path], "historical_records_unchanged": True},
+              "test_pin_transition": {"from243": before, "to257": source[test_path], "historical_records_unchanged": True},
               "rows": rows, "videos": plan["videos"], "components": plan["components"], "ffmpeg": pilot["ffmpeg"]}
     private_output(destination, [Path(name) for name in source])
     if destination.resolve().parent != BASE.resolve():
@@ -144,11 +151,15 @@ def make_preflight(destination: Path) -> dict:
 
 def load_preflight(path: Path) -> dict:
     record = json.loads(path.read_bytes())
-    if record.get("checkpoint") != 255 or record.get("caps") != CAPS or record.get("approval_sha256") != APPROVAL_SHA:
-        raise ValueError("fixed approved255 execution required")
-    approval = read_verified_json(BASE / "oulu_investigation255_owner_approval_v1.json", APPROVAL_SHA)
-    if approval.get("explicit_owner_approval") is not True or approval.get("caps") != CAPS:
+    if record.get("checkpoint") != CHECKPOINT or record.get("caps") != CAPS or record.get("approval_sha256") != APPROVAL_SHA:
+        raise ValueError("fixed approved257 execution required")
+    approval = read_verified_json(BASE / "oulu_investigation257_owner_approval_v1.json", APPROVAL_SHA)
+    if (approval.get("explicit_owner_approval") is not True or approval.get("caps") != CAPS or
+            approval.get("new_real_attempts_authorized") != 1 or approval.get("automatic_retry_authorized") is not False):
         raise ValueError("owner authority mismatch")
+    lock = (ROOT / "docs/257-oulu-investigation-repeat-and-final-verdict.md").read_text().split("## Prospective Execution Lock\n\n")[1].split("\n## Actual Execution")[0]
+    if hashlib.sha256(lock.encode()).hexdigest() != record["prospective_execution_sha256"]:
+        raise ValueError("prospective execution lock drift")
     check_bindings(record["source_sha256"])
     if record["source_sha256"].get(str(Path(__file__))) != _sha256(Path(__file__)):
         raise ValueError("runner binding required")
@@ -173,7 +184,7 @@ def worker(preflight_path: Path, output: Path) -> None:
     identities = verified_archive_identities(paths["input_root"], paths["archive_records"], preflight["guard_context"])
     if subprocess.run(["ffmpeg", "-version"], capture_output=True, text=True, check=True).stdout.splitlines()[0] != preflight["ffmpeg"]:
         raise ValueError("accepted FFmpeg version drift")
-    write_immutable_record(output / "lineage.json", {"checkpoint": 255, "preflight_sha256": _sha256(preflight_path),
+    write_immutable_record(output / "lineage.json", {"checkpoint": CHECKPOINT, "preflight_sha256": _sha256(preflight_path),
                             "approval_sha256": APPROVAL_SHA, "scientific_readiness": False})
     media = {name: read_verified_json(paths["audit_root"] / "videos" / f"{name}.json", row["record_sha256"])
              for name, row in preflight["videos"].items()}
@@ -200,7 +211,7 @@ def worker(preflight_path: Path, output: Path) -> None:
             feature_bytes = 0
             for identity in sorted(component["videos"]):
                 record = media[identity]
-                write_immutable_record(output / "attempts" / f"{identity}.json", {"checkpoint": 255,
+                write_immutable_record(output / "attempts" / f"{identity}.json", {"checkpoint": CHECKPOINT,
                                        "video_id": identity, "status": "started",
                                        "media_record_sha256": preflight["videos"][identity]["record_sha256"]})
                 archive_name = record["media_archive"]
@@ -237,7 +248,7 @@ def worker(preflight_path: Path, output: Path) -> None:
                 gallery_path.parent.mkdir(parents=True, exist_ok=True)
                 with gallery_path.open("xb") as destination:
                     destination.write(encoded)
-                endpoint = {"checkpoint": 255, "video_id": identity, "status": "success", "orders": value["orders"],
+                endpoint = {"checkpoint": CHECKPOINT, "video_id": identity, "status": "success", "orders": value["orders"],
                             "media_record_sha256": preflight["videos"][identity]["record_sha256"],
                             "strict_RGB_frames_verified": record["frame_count"], "payload_bytes": total,
                             "feature_array_bytes": value["feature_bytes"], "resident_component_feature_bytes": feature_bytes,
@@ -255,7 +266,7 @@ def worker(preflight_path: Path, output: Path) -> None:
                 findings = {branch: compare_complete(first[branch], second[branch]) for branch in ("baseline", "compensated")}
                 hit = any(value["witnesses"] for value in findings.values())
                 parents = {side: _sha256(output / "endpoints" / f"{row[side]}.json") for side in ("left", "right")}
-                result = {**row, "checkpoint": 255, "status": "screened_witness" if hit else "screened_non_detection",
+                result = {**row, "checkpoint": CHECKPOINT, "status": "screened_witness" if hit else "screened_non_detection",
                           "real_screening_performed": True, "method_coverage": "nine_quantiles_motion_regions_only",
                           "candidate_finding": "witness_requires_review" if hit else "non_detection_not_clearance",
                           "evidence": [{"endpoint_record_sha256": parents}], "branches": findings,
@@ -263,13 +274,13 @@ def worker(preflight_path: Path, output: Path) -> None:
                           "effective_disposition": None}
                 write_immutable_record(output / "pairs" / f"{rank:06d}.json", result)
             features.clear()
-            print("COMPONENT255", len(component["videos"]), len(component["ranks"]), flush=True)
+            print(f"COMPONENT{CHECKPOINT}", len(component["videos"]), len(component["ranks"]), flush=True)
         for name, (handle, archive, members) in archives.items():
             if archive_identity(handle) != identities[name]:
                 raise ValueError("final archive descriptor drift")
     if verified_archive_identities(paths["input_root"], paths["archive_records"], preflight["guard_context"]) != identities:
         raise ValueError("final archive guard drift")
-    write_immutable_record(output / "worker_completion.json", {"checkpoint": 255, "preflight_sha256": _sha256(preflight_path),
+    write_immutable_record(output / "worker_completion.json", {"checkpoint": CHECKPOINT, "preflight_sha256": _sha256(preflight_path),
                            "endpoints": 438, "pairs": 399, "guard_before_after_equal": True, "scientific_dispositions": 0})
 
 
@@ -292,13 +303,13 @@ def finalize(preflight: dict, output: Path, failure: str | None) -> dict:
         path = output / "endpoints" / f"{identity}.json"
         if not path.exists():
             status = "failed_or_interrupted" if (output / "attempts" / f"{identity}.json").exists() else "not_run_after_stop"
-            write_immutable_record(path, {"checkpoint": 255, "video_id": identity, "status": status,
+            write_immutable_record(path, {"checkpoint": CHECKPOINT, "video_id": identity, "status": status,
                                    "media_record_sha256": original["record_sha256"], "reason": failure or "missing endpoint",
                                    "scientific_disposition": None})
     for row in preflight["rows"]:
         path = output / "pairs" / f"{row['queue_rank']:06d}.json"
         if not path.exists():
-            write_immutable_record(path, {**row, "checkpoint": 255, "status": "not_screened_after_stop",
+            write_immutable_record(path, {**row, "checkpoint": CHECKPOINT, "status": "not_screened_after_stop",
                                    "unresolved_reason": failure or "missing pair", "real_screening_performed": False})
     files = {str(path.relative_to(output)): _sha256(path) for path in output.rglob("*") if path.is_file()}
     endpoints = [json.loads((output / "endpoints" / f"{identity}.json").read_bytes()) for identity in preflight["videos"]]
@@ -309,7 +320,7 @@ def finalize(preflight: dict, output: Path, failure: str | None) -> dict:
         raise ValueError("worker zero exit lacks complete readback")
     if any(row["effective_disposition"] is not None for row in pairs):
         raise ValueError("unexpected scientific disposition")
-    summary = {"checkpoint": 255, "technical_complete": failure is None, "failure": failure,
+    summary = {"checkpoint": CHECKPOINT, "technical_complete": failure is None, "failure": failure,
                "endpoint_rows": len(endpoints), "edge_rows": len(pairs), "successful_endpoints": len(successful),
                "pairs_screened": len(screened), "strict_RGB_frames_verified": sum(row["strict_RGB_frames_verified"] for row in successful),
                "selected_payload_bytes": sum(row["payload_bytes"] for row in successful),
@@ -318,7 +329,6 @@ def finalize(preflight: dict, output: Path, failure: str | None) -> dict:
                                  for branch in ("baseline", "compensated")},
                "any_witness_pairs": sum(any(value["witnesses"] for value in row["branches"].values()) for row in screened),
                "file_sha256_without_summary": files, "new_dispositions": 0, "scientific_readiness": False}
-    write_immutable_record(output / "summary.json", summary)
     return summary
 
 
@@ -368,14 +378,22 @@ def supervise(preflight_path: Path, output: Path, metrics_path: Path) -> int:
     except ValueError as error:
         failure = failure or str(error)
         summary = finalize(preflight, output, failure)
-    if time.monotonic() - started > CAPS["whole_seconds"] or sum(path.stat().st_size for path in output.rglob("*") if path.is_file()) > CAPS["output_bytes"]:
-        failure = failure or "final readback resource cap"
-    metrics = {"checkpoint": 255, "caps": CAPS, "preflight_sha256": _sha256(preflight_path),
+    metrics = {"checkpoint": CHECKPOINT, "caps": CAPS, "preflight_sha256": _sha256(preflight_path),
                "elapsed_seconds": round(time.monotonic() - started, 3), "sampled_peaks": peaks,
                "watchdog_interval_seconds": 0.05, "returncode": code, "failure": failure,
-               "completion_claimed": failure is None and summary["technical_complete"], "summary_sha256": _sha256(output / "summary.json")}
+               "completion_claimed": failure is None and summary["technical_complete"], "summary_sha256": "0" * 64,
+               "final_publication_headroom_bytes": 4096}
+    final_bytes = preflight_path.stat().st_size + sum(path.stat().st_size for path in output.rglob("*") if path.is_file())
+    final_bytes += sum(len((json.dumps(record, indent=2, sort_keys=True) + "\n").encode("utf-8"))
+                       for record in (summary, metrics)) + metrics["final_publication_headroom_bytes"]
+    if time.monotonic() - started > CAPS["whole_seconds"] or final_bytes > CAPS["output_bytes"]:
+        failure = failure or "final readback resource cap"
+    summary.update(technical_complete=failure is None, failure=failure)
+    metrics.update(completion_claimed=summary["technical_complete"], failure=failure)
+    write_immutable_record(output / "summary.json", summary)
+    metrics["summary_sha256"] = _sha256(output / "summary.json")
     write_immutable_record(metrics_path, metrics)
-    print("COMPLETE255" if metrics["completion_claimed"] else "PARTIAL255", json.dumps({key: value for key, value in summary.items() if key != "file_sha256_without_summary"}), flush=True)
+    print(f"COMPLETE{CHECKPOINT}" if metrics["completion_claimed"] else f"PARTIAL{CHECKPOINT}", json.dumps({key: value for key, value in summary.items() if key != "file_sha256_without_summary"}), flush=True)
     return 0 if metrics["completion_claimed"] else 1
 
 
@@ -397,7 +415,7 @@ def main() -> int:
             worker(args.preflight, args.out_root)
             return 0
         except Exception as error:
-            write_immutable_record(args.out_root / "worker_failure.json", {"checkpoint": 255, "failure": type(error).__name__ + ": " + str(error)})
+            write_immutable_record(args.out_root / "worker_failure.json", {"checkpoint": CHECKPOINT, "failure": type(error).__name__ + ": " + str(error)})
             return 1
     if args.metrics is None:
         raise ValueError("parent metrics required")

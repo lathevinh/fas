@@ -21,6 +21,65 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_investigation257_final_caps_before_success_publication(self) -> None:
+        from unittest.mock import MagicMock
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import investigate_oulu255 as investigation
+
+            preflight = {"source_sha256": {}, "videos": {str(index): {} for index in range(438)},
+                         "rows": [{"queue_rank": index} for index in range(399)]}
+            for scenario in ("success", "wall", "size"):
+                with self.subTest(scenario=scenario), tempfile.TemporaryDirectory() as directory:
+                    home = Path(directory)
+                    source, output, metrics = home / "preflight.json", home / "run", home / "metrics.json"
+                    source.write_text("{}")
+                    ready = home / "worker-ready"
+                    (ready / "endpoints").mkdir(parents=True)
+                    (ready / "pairs").mkdir()
+                    for identity in preflight["videos"]:
+                        (ready / "endpoints" / f"{identity}.json").write_text(json.dumps({
+                            "status": "success", "strict_RGB_frames_verified": 1, "payload_bytes": 1,
+                            "resident_component_feature_bytes": 1}))
+                    for row in preflight["rows"]:
+                        (ready / "pairs" / f"{row['queue_rank']:06d}.json").write_text(json.dumps({
+                            "real_screening_performed": True, "effective_disposition": None,
+                            "branches": {branch: {"witnesses": []} for branch in ("baseline", "compensated")}}))
+                    (ready / "worker_completion.json").write_text("{}")
+                    clock = [0]
+                    original_finalize = investigation.finalize
+
+                    def finish_worker(*args, **kwargs):
+                        ready.rename(output)
+                        return MagicMock(pid=12345, wait=MagicMock(return_value=0))
+
+                    def readback_then_limit(*args):
+                        value = original_finalize(*args)
+                        if scenario == "wall":
+                            clock[0] = investigation.CAPS["whole_seconds"] + 1
+                        elif scenario == "size":
+                            with (output / "oversized.bin").open("wb") as handle:
+                                handle.truncate(investigation.CAPS["output_bytes"] + 1)
+                        return value
+
+                    with patch.object(investigation, "BASE", home), \
+                         patch.object(investigation, "load_preflight", return_value=preflight), \
+                         patch.object(investigation.subprocess, "Popen", side_effect=finish_worker), \
+                         patch.object(investigation, "measured_usage", return_value={key: 0 for key in ("rss_bytes", "temporary_bytes", "output_bytes")}), \
+                         patch.object(investigation.time, "monotonic", side_effect=lambda: clock[0]), \
+                         patch.object(investigation, "finalize", side_effect=readback_then_limit), \
+                         patch.object(investigation.os, "killpg"):
+                        self.assertEqual(investigation.supervise(source, output, metrics), 0 if scenario == "success" else 1)
+                    summary, measured = json.loads((output / "summary.json").read_bytes()), json.loads(metrics.read_bytes())
+                    self.assertEqual(summary["technical_complete"], scenario == "success")
+                    self.assertEqual(summary["technical_complete"], measured["completion_claimed"])
+                    self.assertEqual(summary["failure"], measured["failure"])
+                    self.assertEqual((summary["successful_endpoints"], summary["pairs_screened"]), (438, 399))
+                    self.assertEqual(measured["summary_sha256"], hashlib.sha256((output / "summary.json").read_bytes()).hexdigest())
+        finally:
+            sys.path.pop(0)
+
     def test_investigation255_parent_caps_and_complete_partial_rows(self) -> None:
         from unittest.mock import MagicMock
 
