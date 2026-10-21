@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Current OULU operational authority (2026-10-21):
+[Review242](docs/242-review-doc241-oulu-protocol-and-streamlined-workflow.md)
+accepts protocol241 and adopts one bounded work package, one execution report and
+one substantive review. The selected one-pair pilot may combine implementation,
+tests, verified exports and non-binding AI evidence-adequacy inspection; separate
+runner/asset/activation-only approval loops are removed within the stated scope.
+Integrity/leakage stops and frozen scientific gates remain. The next report must
+include a concrete OULU completion table; no399-pair clearance, human collection,
+detector/model execution or full dataset acceptance is authorized.
+
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 
