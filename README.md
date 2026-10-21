@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+New proposal for criticism (2026-10-21): at the owner's explicit publication
+request, [Proposal266](docs/266-oulu-video-copy-validation-proposal.md) proposes
+SSCD frame-copy retrieval plus localized temporal verification, validated on a
+separate benchmark before considering another399-edge run. Trusted real-negative
+controls, exact validation design and execution resources remain unresolved;
+no validated method or new execution approval is claimed. This package publishes
+the proposal only: no model/media/benchmark execution, new dispositions, claim
+changes or audit-status promotion. Review265's closed route stays closed.
+
 Terminal existing-evidence review (2026-10-21):
 [Review265](docs/265-review-doc264-terminal-reconciliation.md) accepts264 without
 rework and closes263's work item. The ledger accounts for399 edges:389 no-geometry,
