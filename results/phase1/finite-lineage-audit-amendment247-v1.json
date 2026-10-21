@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "checkpoint": 247,
+  "decision_date": "2026-10-21",
+  "base_commit": "5ed2e6249ee86927f3d5b9bcc79cef0d524b5b10",
+  "status": "adopted_prospectively_by_explicit_owner_approval",
+  "approval_scope": "only_exact_two_paragraph_finite_operational_lineage_acceptance_wording_in_review246",
+  "scientific_wording_approvals": 1,
+  "adopted_text_sha256": "473c6f6bf28804303ccd55c9b1682a2a6037269e96ff3fee5f799361b7294d05",
+  "text_digest_encoding": "UTF-8 of the two exact unprefixed quoted paragraphs joined by two LF characters; no terminal LF",
+  "private_owner_approval_record_sha256": "258c0061d7007328674951142f33239c3f2c0d983522d5296dd0b8cc6629daef",
+  "source_sha256": {
+    "docs/42-data-to-experiment-implementation-plan.md": "3fd4f1cfe726484abd0b1b20b7cfe54a2a6e054e237a7656a4a37721dc6a4295",
+    "docs/246-review-doc245-oulu-terminal-lineage-decision.md": "27f2a6d0635b1a595ca6b58c9c4df772ccbfe40156c2044e1e44e3c061046fcd",
+    "docs/245-review-response-doc244-oulu-terminal-lineage-decision.md": "db9f0fb8ceafac5328c2a05b3542bcd8d32d676f42893f2a4d68df68fd9e8a37",
+    "results/phase1/oulu-terminal-lineage-decision245-v1.json": "7832defb391e243f693f138266778a1f77cb4e8b0eb4c4026b3f7f77c97c3c35"
+  },
+  "source245_publication_receipt_sha256": "f4a19dadfa1e4cb26a62fcbb3a22f45bbd893f6822c73eee6aaa2120e7c69ed8",
+  "adopted_claim": "finite_predeclared_validated_protocol_and_reported_coverage_with_explicit_scientific_dispositions_not_universal_capture_independence",
+  "unchanged_requirements": {
+    "prohibited_overlap_hard_error": true,
+    "no_role_selector_seed_repair_to_hide_overlap": true,
+    "materially_unresolved_relationships_require_scientific_disposition": true,
+    "AI_agreement_heuristic_score_finite_negative_sample_or_no_exact_match_alone_can_clear": false,
+    "document42_original_bytes_preserved": true,
+    "review246_creation_time_proposed_status_preserved": true,
+    "retrospective_acceptance": false,
+    "mandatory_capture_paperwork_for_all438": false,
+    "population_wide_pixel_futility_established": false
+  },
+  "unapproved_method_boundary": {
+    "scientific_method_approved": false,
+    "population_or_selection": null,
+    "detectable_transformations_regions": null,
+    "controls_validation_acceptance": null,
+    "candidate_noncandidate_coverage": null,
+    "numeric_miss_rate": null,
+    "resource_limits_and_completion_test": null,
+    "existing_five_rank_heuristic_validated": false,
+    "method_implementation_or_execution_authorized": false,
+    "required_before_execution": "distinct_substantive_method_population_coverage_validation_completion_decision",
+    "reapproval_or_activation_of_adopted_wording_needed": false
+  },
+  "fresh_checks": {
+    "exact_paragraph_equality_to_review246": 2,
+    "controlling_public_records_unchanged": 4,
+    "accepted245_publication_receipt_commitment_checked": true,
+    "private_approval_immutable_readback": true,
+    "new_owner_pair_judgments": 0,
+    "new_residual_dispositions": 0,
+    "new_decode_image_export_provenance_or_target_execution": 0,
+    "new_code_test_dependency_changes": false,
+    "unchanged_local_test_suites_rerun": false,
+    "full_history_or_archive_rehash": false
+  },
+  "source245_CI_reused_by_review246": {
+    "head": "30f33bd531de57bcd1c76dc053aa4296d7255f8b",
+    "run": 39526558214,
+    "job": 118982465307,
+    "status": "completed",
+    "conclusion": "success",
+    "successful_steps": 12,
+    "requeried": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_success_including_Complete_job",
+    "required_final_handoff_and_immutable_receipt": true,
+    "source_CI_is_not_substitute": true
+  },
+  "retained_state": {
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "accepted_effective": 85,
+    "accepted_semantic_owner": 85,
+    "accepted_AI": 85,
+    "accepted_coverage_increment": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "residual_cross_role_unadjudicated": 399,
+    "residual_context": 6555,
+    "all8_dataset_split_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "remaining_boundary": "wording_adopted_no_repeated_activation_review_distinct_method_evidence_decision_still_required_before_execution"
+}

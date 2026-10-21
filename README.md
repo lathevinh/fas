@@ -32,6 +32,17 @@ independent-provenance/different-method/contract decision is needed; no such act
 or amendment is executed.85-prefix,399 unadjudicated relationships, not_audited
 statuses and scientific blocks remain. Stop for substantive245 exit review.
 
+Current acceptance definition (2026-10-21): after
+[Review246](docs/246-review-doc245-oulu-terminal-lineage-decision.md), the owner
+explicitly approved the exact finite operational lineage wording.
+[Amendment247](docs/247-dated-finite-lineage-audit-amendment.md) and its
+[aggregate](results/phase1/finite-lineage-audit-amendment247-v1.json) record that
+prospective adoption, not universal independence or current audit completion.
+No method/population/coverage/miss-rate or new execution is approved. Confirmed
+prohibited overlap remains a hard error;85-prefix/all not_audited statuses remain.
+No further approval/activation of this wording is needed; a distinct substantive
+method and evidence-coverage decision is still required before execution.
+
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 
