@@ -21,6 +21,17 @@ and scientific blocks remain. One completion table and concrete missing-evidence
 action are included. Stop for one substantive243 review; exact new publication CI
 is verified in the final handoff.
 
+Latest terminal decision:
+[Review244](docs/244-review-doc243-oulu-consolidated-pilot.md) accepts243.
+[Checkpoint245](docs/245-review-response-doc244-oulu-terminal-lineage-decision.md)
+and its [aggregate](results/phase1/oulu-terminal-lineage-decision245-v1.json) use
+244's no-new-native branch: existing observations identify no specific lost-detail
+correspondence hypothesis, so zero new decode/view/export is performed. Same-pair
+pixel escalation ends with insufficient lineage evidence, not clearance. A real
+independent-provenance/different-method/contract decision is needed; no such action
+or amendment is executed.85-prefix,399 unadjudicated relationships, not_audited
+statuses and scientific blocks remain. Stop for substantive245 exit review.
+
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 
