@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "checkpoint": 255,
+  "authority254_sha256": "26d368ebe3014bba86b7bba66d94ce9a256f1b2a95fcaf051cbcb3c2f6c9d199",
+  "new_explicit_owner_approval_not_inferred_from_Review254": true,
+  "prospective_execution_sha256": "166664e385d592b18f99e823470a2cf14b9d18db231f94117d5d764c2eba14ff",
+  "private_sha256": {
+    "owner_approval": "2fa580a235ff9f2b7aa30cadb64a05c2ca68f9f0939a5c5c9682676b093db34d",
+    "preflight": "2337cd9d5f60727a6afba5c815c4c1af522f40a5e9017ca1d3f8852cd0d30682",
+    "execution_lock": "9d85f9328f1c29e3eeba6afedc0a20849ce97825e456e36169d7bfa349ba00df",
+    "tests_before_run": "45ce78790921ce634ad5d8e58f221a77e8ff1b5c2f37567c8c5a21079c53d840",
+    "executed_source": "7b8e0faafeee018134d98c7289449ecf88a3f4fe65cc30b41205501433299db7",
+    "resources": "c579bc13271e5b12e43f701c578a9d359dd3228358c22823a0faf99622ab5408",
+    "output_summary": "b71b18836b389e25c784e8cc16f2d6ec0eebacb79d49b59cc9d073c2ac13050d",
+    "technical_verification": "30023d4567df864603b75d6b43eb1218783d043c88bf259e3f7818eba03607e4"
+  },
+  "executed_code_sha256": {
+    "scripts/investigate_oulu255.py": "67f01fee10313bfcba812e75f46c275d1e14d9291740a0c657df8e0bd0314d9c",
+    "tests/test_oulu.py": "1647c655684e9c39c59b7521fe7246efbf6cbbdb5226633b77f92bac34c2ab47"
+  },
+  "published_repaired_code_sha256": {
+    "scripts/investigate_oulu255.py": "26f4b709adbdc8e15391accb4c8cdf179b87d69af8997ce7b1f245e94452e1c6",
+    "tests/test_oulu.py": "d839c25db7737b28bf08a92a43c9c1f7231213487cba05f2def57a0dfa2f83d6"
+  },
+  "caps": {
+    "whole_seconds": 7200,
+    "decoder_seconds": 180,
+    "rss_bytes": 2147483648,
+    "temporary_bytes": 134217728,
+    "feature_bytes": 134217728,
+    "output_bytes": 268435456,
+    "reserve_bytes": 671088640
+  },
+  "frozen_scope": {
+    "edges": 399,
+    "endpoints": 438,
+    "components": 91,
+    "largest_component_endpoints": 44
+  },
+  "actual": {
+    "real_attempts": 1,
+    "real_retries": 0,
+    "technical_complete": false,
+    "failure": "FileNotFoundError_during_live_payload_storage_sampling",
+    "parent_command_succeeded": false,
+    "worker_completion_record_exists": false,
+    "elapsed_seconds": 179.207,
+    "endpoint_status_counts": {
+      "success": 12,
+      "failed_or_interrupted": 1,
+      "not_run_after_stop": 425
+    },
+    "endpoint_attempt_markers": 13,
+    "endpoint_rows": 438,
+    "edge_rows": 399,
+    "pairs_screened": 0,
+    "pairs_not_screened_after_stop": 399,
+    "baseline_witness_pairs": null,
+    "compensated_witness_pairs": null,
+    "zero_summary_witness_counters_are_not_measured_non_detections": true,
+    "committed_successful_endpoints_only": {
+      "strict_RGB_frames_verified": 1552,
+      "native_RGB_bytes": 9654681600,
+      "payload_bytes": 225009982,
+      "compensated_context_slots": 12,
+      "compensated_registered_noncontext_slots": 96,
+      "contact_sheets": 12,
+      "thumbnail_tiles": 108,
+      "maximum_component_feature_array_bytes": 3051560
+    },
+    "interrupted_endpoint_extra_work_unknown": true,
+    "contact_sheets_opened_by_AI": 0,
+    "new_visual_or_semantic_decisions": 0,
+    "sampled_peaks": {
+      "rss_bytes": 340635648,
+      "temporary_bytes": 24289430,
+      "output_bytes": 29379470
+    },
+    "resource_compliance_certified": false,
+    "storage_sampling_itself_failed": true,
+    "final_run_root_files": 864,
+    "final_run_root_bytes_excluding_external_receipts": 3409850,
+    "temporary_payload_directories_remaining": 0
+  },
+  "repair_and_verification": {
+    "single_live_storage_traversal_with_disappearance_tolerance": true,
+    "permission_errors_not_swallowed": true,
+    "historical243_helper_and_guard_unchanged": true,
+    "both_matchers_and_thresholds_unchanged": true,
+    "historical_test_AST_unchanged": true,
+    "all_output_hashes_and_exact_parent_joins_verified": true,
+    "archive_guard_before_after_identities_equal": true,
+    "historical_records_and_old_pins_preserved": true,
+    "executed_source_preserved_before_repair": true,
+    "repair_real_execution_validated": false,
+    "pre_execution_tests": {
+      "passed": 99,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 12.203
+    },
+    "post_repair_tests": {
+      "passed": 99,
+      "errors": 0,
+      "failures": 0,
+      "skips": 0,
+      "seconds": 11.957
+    },
+    "fresh_local_full_suite": false
+  },
+  "retained_state": {
+    "new_dispositions": 0,
+    "accepted_effective_semantic_AI": 85,
+    "cross_role_unadjudicated": 399,
+    "residual_context": 6555,
+    "noncandidate_coverage_increment": 0,
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "all8_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_steps_including_Complete_job",
+    "source253_CI_is_not_substitute": true
+  },
+  "stop_boundary": "partial_failed_real_execution_report_one_substantive_review_no_automatic_retry_or_scientific_promotion"
+}

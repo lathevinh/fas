@@ -1,5 +1,18 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Latest authorized real investigation (2026-10-21): after
+[Review254](docs/254-review-doc253-camera-compensated-motion.md), the owner explicitly
+approved a bounded399-edge/438-endpoint run retaining both witness streams.
+[Package255](docs/255-oulu-authorized-correspondence-investigation.md) and its
+[aggregate](results/phase1/oulu-investigation255-v1.json) report a **partial failure**:
+the storage watchdog hit a live-payload file-disappearance race after179.207s.
+12 endpoints committed,1 interrupted,425 not run;0/399 pairs screened,zero new
+dispositions. All438/399 rows remain. Race repair passes99 focused tests but was
+not retried on real media. Executed and repaired sources are separately bound.
+All399 relationships stay unresolved,85-prefix/all8 not_audited statuses and
+scientific blocks remain. Stop for one substantive review; older sections below
+retain their historical scopes/results, not the latest execution authority.
+
 Current OULU operational authority (2026-10-21):
 [Review242](docs/242-review-doc241-oulu-protocol-and-streamlined-workflow.md)
 accepts protocol241 and adopts one bounded work package, one execution report and

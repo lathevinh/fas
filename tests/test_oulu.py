@@ -21,6 +21,109 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_investigation255_parent_caps_and_complete_partial_rows(self) -> None:
+        from unittest.mock import MagicMock
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import investigate_oulu255 as investigation
+
+            preflight = {"source_sha256": {}, "videos": {name: {"record_sha256": "a" * 64} for name in ("left", "right")},
+                         "rows": [{"queue_rank": 19, "left": "left", "right": "right", "effective_disposition": None,
+                                   "evidence": [], "candidate_finding": None}]}
+            with tempfile.TemporaryDirectory() as directory:
+                home = Path(directory)
+                source = home / "preflight.json"
+                source.write_text("{}")
+                payload = home / "usage" / ".payload255-toy" / "media.avi"
+                payload.parent.mkdir(parents=True)
+                payload.write_bytes(b"a" * 30)
+                (home / "usage" / "regular.json").write_bytes(b"b" * 70)
+                with patch.object(investigation, "usage", side_effect=lambda *args: {"rss_bytes": 0, "temporary_bytes": 0, "output_bytes": 0}):
+                    self.assertEqual(investigation.measured_usage(123, home / "usage"),
+                                     {"rss_bytes": 0, "temporary_bytes": 30, "output_bytes": 70})
+                    original_stat, calls = Path.stat, []
+
+                    def disappearing_stat(path, *args, **kwargs):
+                        if path == payload:
+                            calls.append(path)
+                            if len(calls) == 2:
+                                raise FileNotFoundError(str(path))
+                        return original_stat(path, *args, **kwargs)
+
+                    with patch.object(Path, "stat", disappearing_stat):
+                        self.assertEqual(investigation.measured_usage(123, home / "usage"),
+                                         {"rss_bytes": 0, "temporary_bytes": 0, "output_bytes": 70})
+                    self.assertEqual(len(calls), 2)
+
+                    def denied_stat(path, *args, **kwargs):
+                        if path == payload:
+                            raise PermissionError(str(path))
+                        return original_stat(path, *args, **kwargs)
+
+                    with patch.object(Path, "stat", denied_stat), self.assertRaises(PermissionError):
+                        investigation.measured_usage(123, home / "usage")
+                for field in ("rss_bytes", "temporary_bytes", "output_bytes"):
+                    output, metrics = home / field, home / f"{field}.json"
+                    measured = {key: 0 for key in ("rss_bytes", "temporary_bytes", "output_bytes")}
+                    measured[field] = investigation.CAPS[field] + 1
+                    process = MagicMock(pid=12345)
+                    with patch.object(investigation, "BASE", home), patch.object(investigation, "load_preflight", return_value=preflight), \
+                         patch.object(investigation.subprocess, "Popen", return_value=process), \
+                         patch.object(investigation, "measured_usage", return_value=measured), patch.object(investigation.os, "killpg") as kill:
+                        self.assertEqual(investigation.supervise(source, output, metrics), 1)
+                        kill.assert_called_once()
+                    self.assertFalse(json.loads(metrics.read_bytes())["completion_claimed"])
+                    summary = json.loads((output / "summary.json").read_bytes())
+                    self.assertEqual((summary["endpoint_rows"], summary["edge_rows"], summary["pairs_screened"]), (2, 1, 0))
+                    row = json.loads((output / "pairs" / "000019.json").read_bytes())
+                    self.assertIsNone(row["effective_disposition"])
+                    self.assertFalse(row["real_screening_performed"])
+                with patch.object(investigation, "BASE", home), patch.object(investigation, "load_preflight", return_value=preflight), \
+                     patch.object(investigation.subprocess, "Popen", return_value=MagicMock(pid=12345)), \
+                     patch.object(investigation, "measured_usage", return_value={key: 0 for key in measured}), \
+                     patch.object(investigation.time, "monotonic", side_effect=[0, 7201, 7202, 7203]), \
+                     patch.object(investigation.os, "killpg"):
+                    self.assertEqual(investigation.supervise(source, home / "wall", home / "wall.json"), 1)
+                self.assertFalse(json.loads((home / "wall.json").read_bytes())["completion_claimed"])
+                with self.assertRaises(ValueError):
+                    investigation.finalize(preflight, home / "false_complete", None)
+        finally:
+            sys.path.pop(0)
+
+    def test_investigation255_strict_sampling_and_comparison_projection(self) -> None:
+        import numpy as np
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import investigate_oulu255 as investigation
+            from fas.content_correspondence import compare_features
+            import evaluate_oulu_method249 as controls
+
+            frames = [np.full((64, 96, 3), value, np.uint8) for value in (11, 23, 35)]
+            writer = "import os;payload=b''.join(bytes([value])*18432 for value in (11,23,35));"
+            media = {"decode_status": "decoded", "frame_count": 3, "frame_index": [
+                {"decode_order": order, "decode_success": True, "width": 96, "height": 64,
+                 "timestamp_seconds": str(order), "rgb_sha256": hashlib.sha256(frame.tobytes()).hexdigest()}
+                for order, frame in enumerate(frames)]}
+            result = investigation.sample_features(Path("unused"), media,
+                         command=[sys.executable, "-c", writer + "os.write(1,payload)"])
+            self.assertEqual(result["orders"], [0, 1, 2])
+            self.assertEqual(result["gallery"].shape, (573, 288, 3))
+            self.assertTrue(np.all(result["gallery"][20:84, :96] == 11))
+            with self.assertRaises(ValueError):
+                investigation.sample_features(Path("unused"), media,
+                    command=[sys.executable, "-c", writer + "os.write(1,payload[:-1])"])
+            baseline, compensated = investigation.feature_sets(controls.scene(100))
+            for features in (baseline, compensated):
+                actual = investigation.compare_complete(features, features)
+                self.assertEqual({key: value for key, value in actual.items() if key != "tested_pairs"},
+                                 compare_features(features, features))
+                self.assertEqual(len(actual["tested_pairs"]), 34)
+                self.assertIsNone(actual["scientific_disposition"])
+        finally:
+            sys.path.pop(0)
+
     def test_correspondence253_camera_compensation_and_unknown_registration(self) -> None:
         import numpy as np
 
