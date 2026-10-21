@@ -1,5 +1,18 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Latest witness evidence analysis (2026-10-21): after
+[Review258](docs/258-review-doc257-completed-investigation.md),
+[Analysis259](docs/259-five-witness-edge-evidence-analysis.md) and its
+[aggregate](results/phase1/oulu-witness259-analysis-v1.json) assess all five persisted
+witness edges, including baseline-only and both previously unseen findings.
+Eight existing sheets/72 unique tiles were inspected with exact matched-order and
+region joins. Each edge has a specific unresolved material-texture versus recorded-
+reuse analysis; no new scientific disposition is supported. One six-crop matched-
+garment view for case D is proposed only, not executed.394 non-detections lack an
+adequate finite acceptance basis under247. No decode/rerun, method/status change or
+automatic next tier;399 unadjudicated,85-prefix/all8 not_audited blocks remain.
+Stop for one substantive259 evidence/decision review; historical scopes below remain.
+
 Latest completed technical investigation (2026-10-21): after
 [Review256](docs/256-review-doc255-partial-investigation.md) and explicit owner
 approval of one new attempt, [Package257](docs/257-oulu-investigation-repeat-and-final-verdict.md)

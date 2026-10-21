@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "checkpoint": 259,
+  "authority": "docs/258-review-doc257-completed-investigation.md",
+  "base_head": "7d3c8807ec102ae7a608a1f0d345968910b879c3",
+  "private_sha256": {
+    "analysis": "f593249cfe9e3b13975835ed629f4f4f792510f8a9c42b11c640b7ee5b6b05f6",
+    "accepted257_summary": "c89216450e28289a5c8d2101c3dba6ec1769dd9bc8ff6c1e288fe22ef2926c47",
+    "accepted257_technical_verification": "e6b1b9eb5aeaa41823f38c2edfd480d9bac4abbfe6345176c908214c1d9d1f79",
+    "accepted257_publication": "3798ce007510ccdce8e1482c5b80698e9c5d086584e50828b8198cbdffae14cd"
+  },
+  "actual259": {
+    "findings_analyzed": 5,
+    "baseline_witness_edges_retained": 5,
+    "compensated_witness_edges_retained": 4,
+    "baseline_only_edges_retained": 1,
+    "selected_three_slot_chains_joined": 9,
+    "endpoint_and_media_parents_joined": 8,
+    "fresh_existing_sheet_open_calls": 8,
+    "unique_sheets": 8,
+    "unique_preview_tiles": 72,
+    "previously_unopened_sheets": 3,
+    "previously_unviewed_findings_now_covered": 2,
+    "cumulative257_259_sheet_open_calls": 13,
+    "cumulative257_259_unique_sheets": 8,
+    "cumulative257_259_unique_preview_tiles": 72,
+    "independent_raters_or_samples": false,
+    "new_media_decodes": 0,
+    "new_native_views_crops_overlays": 0,
+    "new_real_attempts_or_retries": 0,
+    "new_matchers_or_ablation_runs": 0,
+    "identity_inference": false
+  },
+  "edge_analyses": [
+    {
+      "alias": "A",
+      "branches": "both",
+      "observed_support": "mottled_lower_torso_texture_with_limited_upper_compensated_points",
+      "missing_discriminator": "evolving_unique_fold_or_recording_detail_not_resolved",
+      "outcome": "unresolved",
+      "scientific_disposition_entered": false
+    },
+    {
+      "alias": "B",
+      "branches": "baseline_only",
+      "observed_support": "mottled_garment_below_dark_chest_band_sparse_upper_support",
+      "missing_discriminator": "compensated_chain_suppression_not_explanation_or_clearance",
+      "outcome": "unresolved",
+      "scientific_disposition_entered": false
+    },
+    {
+      "alias": "C",
+      "branches": "both",
+      "observed_support": "lower_left_central_checked_garment_bordered_by_dark_outerwear",
+      "missing_discriminator": "grid_cell_fold_occlusion_evolution_unresolved_at_preview_scale",
+      "outcome": "unresolved",
+      "scientific_disposition_entered": false
+    },
+    {
+      "alias": "D",
+      "branches": "both",
+      "observed_support": "multiregion_mottled_sleeve_torso_motifs_and_garment_silhouette",
+      "missing_discriminator": "unique_crease_junction_or_incidental_recording_artifact_evolution",
+      "outcome": "unresolved",
+      "scientific_disposition_entered": false
+    },
+    {
+      "alias": "E",
+      "branches": "both_different_first_qualifying_temporal_chains",
+      "observed_support": "checked_garment_outerwear_near_static_texture_multiple_alignments",
+      "missing_discriminator": "order_ambiguity_and_small_fabric_fold_details_unresolved",
+      "outcome": "unresolved",
+      "scientific_disposition_entered": false
+    }
+  ],
+  "additional_detail_proposal_only": {
+    "case": "D",
+    "executed": false,
+    "new_execution_authority_supplied": false,
+    "question": "evolving_crease_motif_junction_or_incidental_recording_detail_beyond_print_recurrence",
+    "left_native_orders": [54, 72, 90],
+    "right_native_orders": [18, 37, 56],
+    "native_window_xyxy_half_open": [86, 1132, 929, 1824],
+    "crop_width_height": [843, 692],
+    "crop_count": 6,
+    "crop_RGB_bytes": 10500408,
+    "strict_native_stream_frames": 297,
+    "strict_native_stream_RGB_bytes": 1847577600,
+    "selected_payload_bytes": 58944794,
+    "caps_proposed_not_measured": {
+      "whole_seconds": 1800,
+      "decoder_seconds": 180,
+      "rss_bytes": 2147483648,
+      "temporary_bytes": 134217728,
+      "output_bytes": 268435456,
+      "reserve_bytes": 671088640
+    },
+    "upper_regions_and_other_edges_remain_unknown": true,
+    "print_similarity_alone_is_not_confirmation": true,
+    "absence_of_incidental_detail_is_not_whole_edge_rejection": true,
+    "automatic_disposition_or_followon": false
+  },
+  "non_detection_acceptance": {
+    "edges": 394,
+    "accepted_as_negative": 0,
+    "adequate_finite_acceptance_basis_supplied": false,
+    "known_material_gaps": [
+      "static_reuse_blindspot",
+      "between_quantile_transient_content",
+      "small_or_occluded_regions_and_unvalidated_transforms",
+      "representative_controls_and_adopted_uncertainty_basis",
+      "dependent_witness_selected_analysis_not_negative_recall_validation"
+    ],
+    "universal_ancestry_proof_required": false,
+    "mandatory438_capture_paperwork": false,
+    "new_matcher_or394_repeat_commissioned": false
+  },
+  "verification": {
+    "accepted257_parents_exact": true,
+    "five_pair_eight_endpoint_media_gallery_joins": true,
+    "nine_chain_orders_and_inlier_counts_exact": true,
+    "PNG_width_height_verified": [288, 573],
+    "native_RGB_verification_inherited_not_recomputed": true,
+    "focused_analysis_checks_passed": true,
+    "initial_dimension_wording_check_failed_then_repaired": true,
+    "local_test_suite_rerun": false,
+    "inherited257_focused_tests_passed": 100,
+    "executable_code_configs_and_historical_answers_unchanged": true
+  },
+  "retained_state": {
+    "new_dispositions": 0,
+    "accepted_effective_semantic_AI": 85,
+    "cross_role_scientifically_unadjudicated": 399,
+    "residual_context": 6555,
+    "noncandidate_coverage_increment": 0,
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "all8_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_steps_including_Complete_job",
+    "accepted257_CI_is_not_substitute": true
+  },
+  "stop_boundary": "one_substantive259_all_five_evidence_analysis_and_D_proposal_review_no_automatic_native_run_or_status_promotion"
+}
