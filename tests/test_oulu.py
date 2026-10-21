@@ -3781,5 +3781,82 @@ class OuluInventoryTest(unittest.TestCase):
         self.assertFalse((self.root.parent / "loop.json").exists())
 
 
+class OuluBenchmark272Test(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        import importlib.util
+
+        specification = importlib.util.spec_from_file_location(
+            "complete_oulu272", ROOT / "scripts" / "complete_oulu272.py")
+        cls.module = importlib.util.module_from_spec(specification)
+        specification.loader.exec_module(cls.module)
+
+    def rows(self):
+        metadata = [dict(dataset="OULU-NPU", video_id="left", subject_id="first",
+                         binary_label="attack", official_split="train"),
+                    dict(dataset="OULU-NPU", video_id="right", subject_id="second",
+                         binary_label="attack", official_split="test")]
+        roles = [dict(row, role="train" if row["video_id"] == "left" else "g_domain")
+                 for row in metadata]
+        return metadata, roles
+
+    def test_subject_and_identity_drift_fail_closed(self) -> None:
+        metadata, roles = self.rows()
+        self.assertEqual(self.module.group_checks(metadata, roles)["forbidden_group_crossings"], 0)
+        metadata[1]["subject_id"] = roles[1]["subject_id"] = "first"
+        self.assertEqual(self.module.group_checks(metadata, roles)["forbidden_group_crossings"], 2)
+        roles[1]["binary_label"] = "bona_fide"
+        with self.assertRaisesRegex(ValueError, "label drift"):
+            self.module.group_checks(metadata, roles)
+
+    def test_unknown_subject_or_incomplete_population_is_not_accepted(self) -> None:
+        metadata, roles = self.rows()
+        with self.assertRaisesRegex(ValueError, "population"):
+            self.module.group_checks(metadata, roles[:1])
+        metadata[0]["subject_id"] = ""
+        with self.assertRaisesRegex(ValueError, "subject"):
+            self.module.group_checks(metadata, roles)
+
+    def test_protocol_number_fold_schema_and_crossings(self) -> None:
+        rows = [dict(subject_id="first", protocol_memberships=[
+            dict(protocol_number=3, protocol_fold=1, official_split="train")]),
+                dict(subject_id="second", protocol_memberships=[
+            dict(protocol_number=3, protocol_fold=1, official_split="test")])]
+        self.assertEqual(self.module.protocol_checks(rows), [
+            dict(protocol=[3, 1], left="test", right="train", count=0)])
+        rows[1]["subject_id"] = "first"
+        self.assertEqual(self.module.protocol_checks(rows)[0]["count"], 1)
+        with self.assertRaisesRegex(ValueError, "coverage"):
+            self.module.protocol_checks([])
+
+    def test_historical_schema_variants_preserve_scope_and_reject_unknowns(self) -> None:
+        rows = [dict(activation_record=dict(effective_disposition="rejected_false_positive",
+                                           reconciliation_required=False)),
+                dict(activation_record=dict(disposition="rejected_false_positive",
+                                           reconciliation_required=False))]
+        self.assertEqual(self.module.historical_checks(rows)["accepted_prefix_records"], 2)
+        rows[1]["activation_record"]["reconciliation_required"] = True
+        with self.assertRaisesRegex(ValueError, "historical"):
+            self.module.historical_checks(rows)
+        rows[1]["activation_record"] = dict(reconciliation_required=False)
+        with self.assertRaisesRegex(ValueError, "historical"):
+            self.module.historical_checks(rows)
+
+    def test_exact_crossing_and_internal_repeat_remain_distinct(self) -> None:
+        metadata, roles = self.rows()
+        group = dict(identity_type="media_sha256", video_ids=["left", "right"],
+                     partitions=["test", "train"], roles=["g_domain", "train"])
+        indexed = {row["video_id"]: row for row in metadata}
+        assigned = {row["video_id"]: row for row in roles}
+        self.assertTrue(self.module.exact_checks([group], indexed, assigned)[0]["prohibited"])
+        metadata[1].update(subject_id="first", official_split="train")
+        roles[1]["role"] = "train"
+        group.update(partitions=["train"], roles=["train"])
+        self.assertFalse(self.module.exact_checks([group], indexed, assigned)[0]["prohibited"])
+        group["roles"] = ["g_domain"]
+        with self.assertRaisesRegex(ValueError, "boundary drift"):
+            self.module.exact_checks([group], indexed, assigned)
+
+
 if __name__ == "__main__":
     unittest.main()

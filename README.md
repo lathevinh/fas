@@ -1,5 +1,12 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+OULU local audit completed (2026-10-21): the owner explicitly adopted271 and
+[Package272](docs/272-oulu-benchmark-grounded-audit-completion.md) completed its
+mandatory record checks. Only the two OULU summary statuses are now complete;
+the other six remain not_audited.399 similarity outcomes stay scientifically
+unknown, not validated negatives. Joined ancestry and scientific readiness are
+not certified. No new media/model run or role/selector change occurred.
+
 Benchmark-grounded proposed fast path (2026-10-21):
 [Review271](docs/271-benchmark-grounded-review-and-fast-audit-proposal.md) revisits
 official collection/protocol descriptions and proposes an exact finite acceptance

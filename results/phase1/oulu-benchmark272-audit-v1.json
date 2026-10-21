@@ -1,0 +1,467 @@
+{
+  "accepted_history": {
+    "acceptance_chain": "inherited_accepted268_snapshot_not_fresh_activation_recertification",
+    "accepted_prefix_records": 85,
+    "new_dispositions": 0
+  },
+  "accounting": {
+    "calibration_original": 990,
+    "calibration_score_fit": 0,
+    "calibration_selected": 989,
+    "original": 4950,
+    "selected": 4949,
+    "terminal_failures": 1
+  },
+  "checkpoint": 272,
+  "exact_distinct_member_sets": 13,
+  "exact_groups_by_hash_type": {
+    "decoded_rgb_sequence_sha256": 13,
+    "media_sha256": 13
+  },
+  "forbidden_group_or_exact_crossings": 0,
+  "group_intersections": [
+    {
+      "boundary": "role",
+      "count": 0,
+      "left": "branch_calibration",
+      "right": "g_domain"
+    },
+    {
+      "boundary": "role",
+      "count": 0,
+      "left": "branch_calibration",
+      "right": "train"
+    },
+    {
+      "boundary": "role",
+      "count": 0,
+      "left": "g_domain",
+      "right": "train"
+    },
+    {
+      "boundary": "official_split",
+      "count": 0,
+      "left": "development",
+      "right": "test"
+    },
+    {
+      "boundary": "official_split",
+      "count": 0,
+      "left": "development",
+      "right": "train"
+    },
+    {
+      "boundary": "official_split",
+      "count": 0,
+      "left": "test",
+      "right": "train"
+    }
+  ],
+  "groups": {
+    "official_split": {
+      "development": 15,
+      "test": 20,
+      "train": 20
+    },
+    "role": {
+      "branch_calibration": 11,
+      "g_domain": 11,
+      "train": 33
+    }
+  },
+  "known_derivation_scope": "exact_member_relationships_and_accepted85_history_not_universal_capture_ancestry",
+  "local_mandatory_checks_pass": true,
+  "media_bundle_verification": "inherited_accepted_media_hashes_not_full_media_JSON_rehash",
+  "new_media_model_runs": 0,
+  "official_protocol_intersections": [
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        1,
+        null
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        1,
+        null
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        1,
+        null
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        2,
+        null
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        2,
+        null
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        2,
+        null
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        1
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        1
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        1
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        2
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        2
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        2
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        3
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        3
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        3
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        4
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        4
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        4
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        5
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        5
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        5
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        6
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        3,
+        6
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        3,
+        6
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        1
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        1
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        1
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        2
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        2
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        2
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        3
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        3
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        3
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        4
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        4
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        4
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        5
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        5
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        5
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        6
+      ],
+      "right": "test"
+    },
+    {
+      "count": 0,
+      "left": "development",
+      "protocol": [
+        4,
+        6
+      ],
+      "right": "train"
+    },
+    {
+      "count": 0,
+      "left": "test",
+      "protocol": [
+        4,
+        6
+      ],
+      "right": "train"
+    }
+  ],
+  "policy": "explicitly_adopted271",
+  "private_record_sha256": "fdf57e7dbb06c637498a8d7501007948815c27cb18fa0a07e32b64244d801e1b",
+  "retained_similarity": {
+    "new_scientific_pair_dispositions": 0,
+    "non_detections": 394,
+    "total": 399,
+    "witnesses": 5
+  },
+  "scientific_readiness": false,
+  "version": 1,
+  "wall_seconds": 8.780522132999977
+}
