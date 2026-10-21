@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Terminal existing-evidence review (2026-10-21):
+[Review265](docs/265-review-doc264-terminal-reconciliation.md) accepts264 without
+rework and closes263's work item. The ledger accounts for399 edges:389 no-geometry,
+5 subchain and5 witness findings. Existing evidence does not support scientific
+acceptance under247; all399 dispositions remain unresolved. No acknowledgment-only
+response, repeated reconciliation or automatic experiment is requested. Further
+completion needs a concrete substantive evidence or prospective acceptance choice;
+no such change is adopted here. Audit statuses and later scientific gates remain.
+Older work directions below are historical.
+
 Latest existing-evidence reconciliation (2026-10-21):
 [Review263](docs/263-corrective-review-oulu-completion-plan.md) is implemented in
 [Package264](docs/264-oulu-existing-evidence-acceptance-reconciliation.md) and its
