@@ -21,6 +21,26 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_correspondence251_component_connectivity_and_disjointness(self) -> None:
+        from fas.content_correspondence import planned_edge_rows
+
+        for right, valid, invalid in [
+                ("c", [{"ranks": [19, 86], "videos": ["a", "b", "c"]}],
+                 [{"ranks": [19], "videos": ["a", "b"]}, {"ranks": [86], "videos": ["b", "c"]}]),
+                ("d", [{"ranks": [19], "videos": ["a", "b"]}, {"ranks": [86], "videos": ["c", "d"]}],
+                 [{"ranks": [19, 86], "videos": ["a", "b", "c", "d"]}])]:
+            members = [{"queue_rank": 19, "left": "a", "right": "b", "record_sha256": "a" * 64},
+                       {"queue_rank": 86, "left": "b" if right == "c" else "c", "right": right,
+                        "record_sha256": "b" * 64}]
+            counts = {member[side]: 151 for member in members for side in ("left", "right")}
+            with self.subTest(right=right):
+                rows = planned_edge_rows(members, valid, counts)
+                self.assertEqual([row["queue_rank"] for row in rows], [19, 86])
+                self.assertEqual([{key: row[key] for key in members[0]} for row in rows], members)
+                self.assertTrue(all(row["effective_disposition"] is None for row in rows))
+                with self.assertRaises(ValueError):
+                    planned_edge_rows(members, invalid, counts)
+
     def test_correspondence249_complete_edge_plan_and_fail_closed_joins(self) -> None:
         from copy import deepcopy
         from fas.content_correspondence import planned_edge_rows

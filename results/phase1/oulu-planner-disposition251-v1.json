@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "checkpoint": 251,
+  "authority250_sha256": "071c2a47545a9bc1a2ea439b73d1f65ea053f578d1b6c31e5fe34f3af1615522",
+  "private_verification_sha256": "771644214decb61044e57c46b71b2f2eff209263180001e99ea4301519e26043",
+  "inherited_plan249_sha256": "67520c44ba519afa45d9a4b76275daa33b1139dd7dc34ba56ce6713cb3dbebb9",
+  "code_sha256": {
+    "src/fas/content_correspondence.py": "d545f799af8dd04de2acf27adabebce9767b9ceeb9862bd1503b3b304f080236",
+    "tests/test_oulu.py": "73f67b43282426228e83184265015c8403798ccb3a71b95f7211eb5eac466b22",
+    "scripts/evaluate_oulu_method249.py": "75dfc7705d626617c36ec87be29b43b2c6194ed5ddfc700eb93a5701a24f60bf"
+  },
+  "repair": {
+    "component_connectivity_enforced": true,
+    "global_endpoint_disjointness_enforced": true,
+    "pre_fix_failed_counterexamples": 2,
+    "fresh_neighboring_tests_passed": 4,
+    "neighboring_runner_seconds": 0.445,
+    "simple_graphs_checked": 64,
+    "vertices_max": 4,
+    "partitions_checked": 877,
+    "accepted_partitions": 64,
+    "rejected_partitions": 813,
+    "independent_graph_oracle_disagreements": 0,
+    "new_test_methods": 1
+  },
+  "frozen_population": {
+    "edges": 399,
+    "endpoints": 438,
+    "components": 91,
+    "source_record_hashes_checked": 837,
+    "canonical_partition_matches": true,
+    "planner_output_equals_old_row_projection": true,
+    "old_parent_evidence_preserved_in_original_plan": true,
+    "population_repaired": false,
+    "all_findings_and_dispositions": "null_not_run",
+    "noncandidate_coverage": 0
+  },
+  "preservation": {
+    "matcher_AST_outside_planner_unchanged": true,
+    "historical_test_AST_unchanged": true,
+    "synthetic_runner_unchanged": true,
+    "controls249_rerun": false,
+    "records249_overwritten": false,
+    "guard_context_implicitly_activated": false
+  },
+  "fresh_focused_tests": {
+    "passed": 96,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "runner_seconds": 7.595,
+    "discovery_inclusive_seconds": 7.681,
+    "fresh_local_full_suite": false
+  },
+  "prospective_disposition_rubric": {
+    "technical_witness_is_not_scientific_outcome": true,
+    "foreground_requires_distinctive_correspondence_and_corroboration": true,
+    "background_location_is_neither_clearance_nor_confirmation": true,
+    "specific_hit_explanation_does_not_automatically_clear_edge": true,
+    "scoped_rejection_requires_accepted_finite_adequacy_and_material_allegations_addressed": true,
+    "method249_supplies_that_adequacy": false,
+    "non_detection_or_missing_evidence_clears": false,
+    "prohibited_reuse_if_confirmed": "hard_error_stop_affected_science_no_role_repair",
+    "material_uncertainty_outcome": "retain_unresolved_audit_incomplete",
+    "new_scientific_method_or_tolerance_adopted": false,
+    "universal_capture_independence_proof_required": false,
+    "mandatory438_provenance_collection": false
+  },
+  "recommendation": {
+    "commission_witness_only_as_audit_closure_method": false,
+    "current_outcome": "audit_incomplete_no_real_run",
+    "distinct_optional_decision": "investigative_witness_only399_edge438_endpoint_run_may_resolve_zero_under249_proposed_caps",
+    "optional_purpose_and_resources_approved": false,
+    "additional_activation_checkpoint_required": false
+  },
+  "retained_state": {
+    "new_real_pairs_screened": 0,
+    "new_dispositions": 0,
+    "accepted_effective_semantic_AI": 85,
+    "cross_role_unadjudicated": 399,
+    "residual_context": 6555,
+    "originals": 4950,
+    "selected": 4949,
+    "terminal_failures": 1,
+    "calibration_original": 990,
+    "calibration_frame_available": 989,
+    "calibration_actual_score_fit": 0,
+    "historical_disagreement": 1,
+    "unresolved_historical_answers": 0,
+    "all8_statuses": "not_audited",
+    "scientific_readiness": false
+  },
+  "new_publication_CI": {
+    "observation_at_creation": "pending_exact_new_head_run_job_all12_steps_including_Complete_job",
+    "source249_CI_is_not_substitute": true
+  }
+}

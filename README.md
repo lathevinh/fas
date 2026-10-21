@@ -43,6 +43,17 @@ prohibited overlap remains a hard error;85-prefix/all not_audited statuses remai
 No further approval/activation of this wording is needed; a distinct substantive
 method and evidence-coverage decision is still required before execution.
 
+Latest planner/disposition response:
+[Review250](docs/250-review-doc249-temporal-method-controls.md) is addressed in
+[Package251](docs/251-review-response-doc250-planner-and-disposition-evidence.md)
+and its [aggregate](results/phase1/oulu-planner-disposition251-v1.json).
+Planner connectivity/global endpoint disjointness are repaired;96 focused tests
+and877 toy graph partitions pass. Frozen399-edge/438-endpoint/91-component rows
+are unchanged. The prospective disposition rubric separates foreground reuse,
+shared-scene/background explanations and unresolved non-detections. Recommendation:
+do not commission witness-only triage as audit closure; audit remains incomplete.
+No real media screening, new disposition or scientific-status change occurred.
+
 Latest method evidence:
 [Review248](docs/248-review-doc247-finite-lineage-amendment.md) authorizes synthetic
 method work. [Package249](docs/249-review-response-doc248-temporal-method-controls.md)

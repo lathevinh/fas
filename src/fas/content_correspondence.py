@@ -131,18 +131,35 @@ def planned_edge_rows(members: list[dict], components: list[dict], frame_counts:
         raise ValueError("invalid or duplicate frozen edge ranks")
     by_rank = {member["queue_rank"]: member for member in members}
     membership = {}
+    assigned_vertices = set()
     for index, component in enumerate(components):
         vertices = set()
+        adjacency = {}
         if not component["ranks"] or len(set(component["ranks"])) != len(component["ranks"]):
             raise ValueError("empty or duplicate component ranks")
         digest = hashlib.sha256(json.dumps(component, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         for rank in component["ranks"]:
             if rank not in by_rank or rank in membership:
                 raise ValueError("component edge mismatch")
-            vertices.update((by_rank[rank]["left"], by_rank[rank]["right"]))
+            left, right = by_rank[rank]["left"], by_rank[rank]["right"]
+            vertices.update((left, right))
+            adjacency.setdefault(left, set()).add(right)
+            adjacency.setdefault(right, set()).add(left)
             membership[rank] = (index, digest)
         if vertices != set(component["videos"]) or len(vertices) != len(component["videos"]):
             raise ValueError("component endpoint mismatch")
+        if assigned_vertices & vertices:
+            raise ValueError("endpoint shared between components")
+        reached = set()
+        pending = [next(iter(vertices))]
+        while pending:
+            vertex = pending.pop()
+            if vertex not in reached:
+                reached.add(vertex)
+                pending.extend(adjacency[vertex] - reached)
+        if reached != vertices:
+            raise ValueError("disconnected component")
+        assigned_vertices.update(vertices)
     if set(membership) != set(ranks):
         raise ValueError("missing frozen component edge")
     endpoints = {member[side] for member in members for side in ("left", "right")}
