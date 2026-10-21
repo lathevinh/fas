@@ -43,6 +43,17 @@ prohibited overlap remains a hard error;85-prefix/all not_audited statuses remai
 No further approval/activation of this wording is needed; a distinct substantive
 method and evidence-coverage decision is still required before execution.
 
+Latest method evidence:
+[Review248](docs/248-review-doc247-finite-lineage-amendment.md) authorizes synthetic
+method work. [Package249](docs/249-review-response-doc248-temporal-method-controls.md)
+and its [aggregate](results/phase1/oulu-temporal-method249-v1.json) supply a concrete
+ORB/geometry/temporal prototype,192 primary controls plus8 background challenges,
+95 focused tests and399 metadata-only planned rows over438 endpoints/91 components.
+All128 toy moving-texture positives were detected, but8/8 shared-moving-background
+challenges alarm and static reused content is missed. Proposed use is witness-only,
+not clearance/capture adjudication. No real pair was screened;85-prefix/statuses
+remain unchanged. Stop for one substantive method/evidence-purpose decision.
+
 Research dossier for a practical and publishable face presentation attack detection
 (PAD) system using one RGB image. The proposed system studies:
 

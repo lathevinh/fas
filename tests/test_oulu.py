@@ -21,6 +21,70 @@ from fas.transactions import calibration_fit_rows, select_primary_frame, technic
 
 
 class OuluHumanReviewTest(unittest.TestCase):
+    def test_correspondence249_complete_edge_plan_and_fail_closed_joins(self) -> None:
+        from copy import deepcopy
+        from fas.content_correspondence import planned_edge_rows
+
+        members = [{"queue_rank": rank, "left": "left", "right": right, "record_sha256": "a" * 64}
+                   for rank, right in [(19, "right1"), (86, "right2")]]
+        components = [{"ranks": [19, 86], "videos": ["left", "right1", "right2"]}]
+        counts = {"left": 151, "right1": 146, "right2": 150}
+        rows = planned_edge_rows(members, components, counts)
+        self.assertEqual([row["queue_rank"] for row in rows], [19, 86])
+        self.assertTrue(all(row["candidate_finding"] is None and row["effective_disposition"] is None for row in rows))
+        self.assertEqual(len(rows[0]["planned_orders"]["left"]), 9)
+        for changed_members, changed_components, changed_counts in [
+                (members + members[:1], components, counts), (members, [], counts),
+                (members, components + components, counts), (members, components, {"left": 151})]:
+            with self.assertRaises(ValueError):
+                planned_edge_rows(changed_members, changed_components, changed_counts)
+        changed = deepcopy(components)
+        changed[0]["videos"].append("extra")
+        with self.assertRaises(ValueError):
+            planned_edge_rows(members, changed, counts)
+
+    def test_correspondence249_synthetic_replay_and_shared_camera_confound(self) -> None:
+        from fas.content_correspondence import compare_features, sequence_features
+
+        sys.path.insert(0, str(ROOT / "scripts"))
+        try:
+            import evaluate_oulu_method249 as controls
+
+            original = sequence_features(controls.scene(100))
+            first = compare_features(original, original)
+            self.assertTrue(first["witnesses"])
+            self.assertEqual(first, compare_features(original, original))
+            left, right = controls.shared_camera_sequences(300)
+            confounded = compare_features(sequence_features(left), sequence_features(right))
+            self.assertTrue(confounded["witnesses"])
+            self.assertIsNone(confounded["scientific_disposition"])
+            self.assertFalse(confounded["capture_independence"])
+        finally:
+            sys.path.pop(0)
+
+    def test_correspondence249_orders_input_and_temporal_geometry(self) -> None:
+        import numpy as np
+        from fas.content_correspondence import compare_features, sample_orders, sequence_features, temporal_chain
+
+        self.assertEqual(sample_orders(151), [0, 18, 37, 56, 75, 93, 112, 131, 150])
+        self.assertEqual(sample_orders(2), [0, 1])
+        for invalid in (0, -1, True, 1.5):
+            with self.assertRaises(ValueError):
+                sample_orders(invalid)
+        for frames in ([], [np.zeros((16, 16, 3), np.uint8)], [np.zeros((64, 64, 3), np.float32)]):
+            with self.assertRaises(ValueError):
+                sequence_features(frames)
+        blank = sequence_features([np.zeros((64, 64, 3), np.uint8)] * 9)
+        result = compare_features(blank, blank)
+        self.assertEqual(result["finding"], "no_supported_witness_not_clearance")
+        self.assertIsNone(result["scientific_disposition"])
+        self.assertEqual(result["tested_slot_pairs"], 34)
+        hits = {(slot, slot): {"projected_corners": [[0, 0], [1, 0], [0, 1], [1, 1]]} for slot in (1, 2, 3)}
+        self.assertEqual(len(temporal_chain(hits)), 3)
+        self.assertEqual(temporal_chain({key: value for key, value in hits.items() if key[0] < 3}), [])
+        hits[3, 3] = {"projected_corners": [[20, 0], [21, 0], [20, 1], [21, 1]]}
+        self.assertEqual(temporal_chain(hits), [])
+
     def test_pilot243_authority_output_and_parent_watchdog_refusals(self) -> None:
         from unittest.mock import MagicMock
 
