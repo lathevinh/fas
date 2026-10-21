@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Benchmark-grounded proposed fast path (2026-10-21):
+[Review271](docs/271-benchmark-grounded-review-and-fast-audit-proposal.md) revisits
+official collection/protocol descriptions and proposes an exact finite acceptance
+clarification plus one local completion package. Repeated garments/backgrounds and
+legitimate PAD attack construction are not automatically copied split units.
+Concrete group/exact/known-derivation violations still block. The proposal is NOT
+adopted; no scientific status change is implied. After substantive adoption, use
+the five specified checks, reuse existing evidence and report one local pass/defect
+decision without another copy-model or crop series. Earlier scopes are historical.
+
 Current control-feasibility decision (2026-10-21):
 [Review269](docs/269-review-doc268-control-feasibility.md) accepts268 without rework
 and closes the proposed SSCD validation route under currently inspected evidence:
