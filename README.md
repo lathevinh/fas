@@ -1,5 +1,16 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Control feasibility after267 (2026-10-21):
+[Package268](docs/268-oulu-control-feasibility-and-scope-corrections.md) and its
+[inventory](results/phase1/oulu-control268-feasibility-v1.json) inspect actual frozen
+metadata, synthetic controls,85-prefix scope and timestamp/region joins without
+media/model execution.540 OULU metadata candidates in6 groups remain after known
+399/85 exposure exclusions, but trusted real non-copy labels and applicability
+of the proposed two-second/25-percent scope are not established. Duration,
+sampling/phase, region, retrieval and decision definitions are corrected; stop
+before SSCD resources, not a new numerical experiment. Zero dispositions/status
+changes; one substantive268 review, no automatic next method or native tier.
+
 New proposal for criticism (2026-10-21): at the owner's explicit publication
 request, [Proposal266](docs/266-oulu-video-copy-validation-proposal.md) proposes
 SSCD frame-copy retrieval plus localized temporal verification, validated on a

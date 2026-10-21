@@ -20,6 +20,58 @@ from fas.media import probe_video
 from fas.transactions import calibration_fit_rows, select_primary_frame, technical_population_counts, technical_transaction, validate_transaction_policy
 
 
+class OuluControlInventoryTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        sys.path.insert(0, str(ROOT / "scripts"))
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        sys.path.remove(str(ROOT / "scripts"))
+
+    def test_control268_video_grouping_does_not_collapse_unknown_subjects(self) -> None:
+        from inventory_oulu_controls268 import index_collection
+
+        rows = [{"dataset": "SiW-Mv2", "subject_id": "", "video_id": name,
+                 "binary_label": "attack"} for name in ("first", "second")]
+        result = index_collection(rows, rows[:1], "video_id")
+        self.assertEqual((result["metadata_groups"], result["assigned_groups"]), (2, 1))
+        self.assertFalse(result["trusted_real_noncopy_labels_supplied"])
+        self.assertTrue(all(row["noncopy_label"] is None for row in result["manifest_candidates"]))
+        with self.assertRaises(ValueError):
+            index_collection(rows, rows, "subject_id")
+
+    def test_control268_scope_uses_rational_timestamps_not_order_fps(self) -> None:
+        from inventory_oulu_controls268 import observed_scope
+
+        joins = [{"native_orders": {"left": index, "right": index},
+                  "normalized_inlier_bbox_xyxy": {"left": [0, 0, 0.5, 0.5],
+                                                   "right": [0, 0, 0.5, 0.5]}} for index in (0, 1, 2)]
+        timestamps = {"left": {0: "0", 1: "1/3", 2: "5/4"},
+                      "right": {0: "1", 1: "3/2", 2: "5/2"}}
+        result = observed_scope(joins, timestamps)
+        self.assertEqual(result["left"]["observed_first_to_last_span_seconds"], 1.25)
+        self.assertEqual(result["right"]["observed_first_to_last_span_seconds"], 1.5)
+        self.assertIsNone(result["left"]["true_visible_copied_area_fraction"])
+        self.assertFalse(result["right"]["continuous_copy_duration_established"])
+
+    def test_control268_identity_and_parent_drift_refused(self) -> None:
+        from inventory_oulu_controls268 import index_collection, read_csv
+
+        row = {"dataset": "test", "subject_id": "group", "video_id": "first", "binary_label": "attack"}
+        with self.assertRaises(ValueError):
+            index_collection([row, row], [row], "subject_id")
+        with self.assertRaises(ValueError):
+            index_collection([row], [dict(row, video_id="missing")], "subject_id")
+        with self.assertRaises(ValueError):
+            index_collection([row], [dict(row, binary_label="bona_fide")], "subject_id")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "metadata.csv"
+            path.write_text("video_id\nfirst\n")
+            with self.assertRaises(ValueError):
+                read_csv(path, "0" * 64)
+
+
 class OuluReconciliationTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
