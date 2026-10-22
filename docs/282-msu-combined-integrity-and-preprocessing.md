@@ -1,10 +1,152 @@
 # 282 - MSU-MFSD combined release integrity and primary-image preprocessing
 
 Date: 2026-10-22
-Governing review: [281](281-review-doc280-oulu-image-preprocessing-complete.md).
+Governing reviews: [281](281-review-doc280-oulu-image-preprocessing-complete.md)
+and [283](283-review-doc282-msu-recovery-in-progress.md).
 Base commit: `0e07beb`.
 
-## Current state: additionally authorized recovery running
+## Final result: local MSU audit and primary-image preprocessing complete
+
+The one additionally authorized recovery finished successfully. Its worker,
+strict-replay verifier, full280-row output verifier and final supervisor checks
+passed; both fixed visual sheets were actually opened afterward. The original
+failed attempt and launch records remain immutable. No second recovery, OULU
+rerun, detector change, score fitting or target access occurred.
+
+This is the consolidated terminal handoff requested by283, not another
+publication/import/activation checkpoint. The
+[terminal software result](../results/phase1/msu-preprocessing282-recovery-v1.json),
+[additive actual visual receipt](../results/phase1/msu-preprocessing282-visual-review-v1.json)
+and [same-package local audit result](../results/phase1/msu-local-audit282-v1.json)
+record the distinct software, visual and summary-update steps.
+
+### Exact original-ID and failure accounting
+
+| Scope | Originals | Selected/detector successes | Pre-detector failures | Detector failures |
+| --- | ---: | ---: | ---: | ---: |
+| Train | 168 | 163 | 5 | 0 |
+| Branch calibration | 56 | 56 | 0 | 0 |
+| g_domain | 56 | 53 | 3 | 0 |
+| Total | **280** | **272** | **8** | **0** |
+
+Exactly4 earlier provisional outputs were reconstructed and copied
+byte-identically without reinference, plus276 newly attempted originals:
+268 new selected-image successes and8 pre-detector failures. All280 IDs remain
+in the final manifest, with unchanged labels, official partitions and frozen
+roles. The8 strict-probe failures are recorded as
+`invalid_or_undecodable_media`, `not_run/non_accept`, with no image, score,
+classifier error or substitute frame. That generic strict-probe outcome is
+not a new claim of proven physical corruption or a license to retry them.
+Calibration retains56 originals/56 selected and zero actual fitted scores.
+
+### Integrity, replay and all-output readback
+
+- All8 original archive pins cover11,095,264,656 bytes. Recovery reused these
+  exact local baseline hashes only after unchanged identities/header guards.
+- All16 reconstructed volumes matched prior CRC/size/SHA; joined ZIP bytes
+  were11,092,803,150. Exact inner headers/native metadata matched.
+- All280 video payloads were CRC-read, totaling11,099,241,100 bytes, and all326
+  non-directory ancillary entries were CRC/hash-read. No bundled executable
+  was run and no supplied face annotation drove geometry.
+- The272 successful full-decode records contain75,765 validated native frames.
+  The268 newly selected units each have complete per-frame RGB identity,
+  EOF, zero-exit and zero-stderr replay receipts. The four reused units passed
+  accepted saved-pixel/parent reconstruction. The formerly failing fifth
+  unit also passed the separate301-frame unchanged-RGB fix validation.
+- All272 selected frames and matching shared/224/518 crops passed final
+  saved-pixel geometry and exact RGB branch readback: **1088 image assets =
+  272 selected frames +816 crops**. No orphan asset or leftover temporary
+  ZIP/video remained.
+- Exact whole-payload/decoded-sequence duplicate groups:0. Forbidden exact
+  crossings:0. Frozen role subject groups are21/7/7 with all pairwise
+  intersections0; official train/test subjects are15/20 and disjoint.
+  Native documented print/replay construction remains subject-scoped.
+  These checks do not certify hidden/transformed duplication or joined-domain
+  ancestry.
+
+### Actual bounded visual inspection
+
+Opened both fixed label-free sheets:32+4=36 tiles, comprising35 selected face
+crops and one explicit pre-detector-failure placeholder. All35 visible crops
+show a framed face with eye/nose/mouth regions; no blank/background-only crop
+was observed. Blur, low contrast, exposure variation, glasses, screen/print
+appearance and some tight hair/chin margins remain; no frame, label or original
+appearance was replaced. With zero detector failures, no detector-failure sheet
+was required. All8 pre-detector failures have no image and remain in the manifest.
+
+This is a bounded assistant sample-based usability check, not visual inspection
+of all272 outputs, independent human review, detector accuracy or PAD validation.
+Creation-time software visual-pending fields remain unchanged and are closed by
+the later additive visual receipt.
+
+### Final resources and persistent evidence
+
+| Measurement | Terminal observation | Authorized cap |
+| --- | ---: | ---: |
+| Diagnosis-authority to software terminal | 2282.4568321704865s (38m02.457s) | 14400s |
+| Recovery supervised portion | 1583.3097660019994s (26m23.310s) | Same absolute deadline |
+| Sampled peak group RSS | 373,174,272 bytes (about356MiB) | 4GiB |
+| Sampled peak combined retained/temporary bytes | 26,880,827,017 | 40GiB |
+| GPU / scores / fits / model downloads | 0 | None authorized |
+
+The authority clock was not reset at inference start. Peak accounting carries
+diagnosis peaks and includes the old failed282 package, new recovery package,
+274/276/278/280/model and temporary ZIP/media. Terminal metadata receipts use the
+reserved final-record space. Measurements are sampled, not continuous hardware
+maxima. Producer, watcher and read-only terminal waiter have stopped.
+
+Private terminal SHA256 commitments:
+
+- Resources: `b442de7827f9e162de142208245b54cec156ae481162776acaf3ab37581504ac`.
+- Full readback: `a4683dc87e856ddac1d198d9ad4d908eb606889d2d9cb9d87a763ef014feac38`.
+- Full280 manifest: `1f9c40001fe76b9ac5093146dc35a9247ae3fde21b8f81777ea3484a8a26d504`.
+- Strict replay readback: `418232be9a879b6a095f9e1dedcc12ce225fe2503e04e3aa55fbab38a6175818`.
+- Actual visual review: `daa24f531773604cb941139e1027d7c5f9529c5160f5bc8e6689caf405cf9eb8`.
+- Local audit: `9dbd7ad98d6cd808dc68995f70878c8b13aecd612e837fd7d73b35126eed5bf8`.
+- Exact summary-update verification: `0387db28d09a118090f6917a427673ae63d4e432679e0c85e4aac72e76258508`.
+
+### Local audit summary updates, not global readiness
+
+Under the bounded benchmark checks and283 handoff, **MSU's local dataset and
+split audits are complete**. Only the two MSU `audit_status` cells become
+`complete`; its dataset provenance text now names this local integrity/group/
+exact audit rather than metadata-only evidence. Original counts, groups,
+metadata/role hashes, every other dataset field and all73 runtime source pins
+remain unchanged. The [checker](../scripts/complete_msu282.py) verifies existing
+terminal/visual evidence without opening or decoding any media.
+
+The normal validator with the permanent frozen root initially returned exactly
+six unaudited-status errors. After the two MSU updates it returns exactly four,
+for CASIA-FASD and SiW-Mv2 only, with no other error. Schema passes. No predicate
+is filtered or bypassed. OULU stays accepted. Scientific readiness, joined-domain
+assurance, feature/competence work, OOF/calibration, analysis freeze and locked
+evaluation remain separate and are not activated.
+
+Final focused regression: **53 tests passed in37.874 seconds**, including the
+new exact canonical-null-role to frozen-assigned-role projection regression.
+An additional53 existing manifest/preregistration regressions passed in117.556
+seconds after the two summary updates; this is a second targeted run, not a
+claim of a newly executed full local suite.
+The final metadata checker initially rejected that projection by comparing the
+native `role:null` directly to the already frozen assigned role; it was corrected
+to require exact equality to the canonical record with only the frozen assigned
+role projected. No receipt was written by the failed check, no media was rerun,
+and all other field drift still fails.
+
+Exact recovery-implementation commit `3f3cd92a95fcd7845ca30af8f8a49ef5bf9c250d`
+CI is now confirmed successful:
+[run39765484713](https://github.com/lathevinh/fas/actions/runs/39765484713),
+[validate119779750900](https://github.com/lathevinh/fas/actions/runs/39765484713/job/119779750900),
+completed2026-10-22 10:47:15 UTC, all12 listed steps successful. This resolves
+283's earlier pending observation; it is not a claim about an as-yet-unpublished
+final commit's CI, private image quality or independent human verification.
+
+**No further MSU execution is running or required by this package.** Do not
+restart it on reconnection or silently retry the8 terminal technical failures.
+Subsequent datasets remain outside this completed recovery's execution scope.
+The following sections preserve the earlier launch/failure/recovery chronology.
+
+## Historical state: additionally authorized recovery running
 
 After publication of the failed attempt in commit `49e18a4`, the owner explicitly
 approved one combined diagnosis/fix/tests/recovery package: CPU-only,4h/4GiB

@@ -1,0 +1,109 @@
+{
+  "all_images_visually_inspected": false,
+  "ancillary_crc_checked": 326,
+  "check_wall_seconds": 6.624434352997923,
+  "checker_sha256": "92919ac1d69c1d2e5b3db3e709b7561e9935c54f4e1942a0e260864f480df4b6",
+  "checkpoint": 282,
+  "crc_checked_volumes": 16,
+  "dataset": "MSU-MFSD",
+  "detector_failure": 0,
+  "detector_success": 272,
+  "exact_duplicate_groups": 0,
+  "expected_remaining_unaudited": [
+    "CASIA-FASD",
+    "SiW-Mv2"
+  ],
+  "fitted_scores": 0,
+  "forbidden_exact_crossings": 0,
+  "full_manifest_sha256": "1f9c40001fe76b9ac5093146dc35a9247ae3fde21b8f81777ea3484a8a26d504",
+  "groups": {
+    "forbidden_subject_crossings": 0,
+    "official_subjects": {
+      "test": 20,
+      "train": 15
+    },
+    "role_subjects": {
+      "branch_calibration": 7,
+      "g_domain": 7,
+      "train": 21
+    },
+    "role_videos": {
+      "branch_calibration": 56,
+      "g_domain": 56,
+      "train": 168
+    },
+    "subjects": 35,
+    "videos": 280
+  },
+  "joined_domain_assurance": false,
+  "known_native_parent_group_crossings": 0,
+  "known_parent_scope": "native documented subject-scoped print/replay construction; no independent-capture certification",
+  "local_audit_complete": true,
+  "model_scores": 0,
+  "native_frames": 75765,
+  "near_duplicate_transformed_independence_certified": false,
+  "new_attempts": 276,
+  "normal_validator_baseline_errors": [
+    "dataset_summary.csv has unaudited dataset: CASIA-FASD",
+    "dataset_summary.csv has unaudited dataset: MSU-MFSD",
+    "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+    "split_summary.csv has unaudited dataset: CASIA-FASD",
+    "split_summary.csv has unaudited dataset: MSU-MFSD",
+    "split_summary.csv has unaudited dataset: SiW-Mv2"
+  ],
+  "original_archive_bytes": 11095264656,
+  "original_archive_count": 8,
+  "originals": 280,
+  "pre_detector_failure": 8,
+  "pre_detector_failure_reasons": {
+    "invalid_or_undecodable_media": 8
+  },
+  "pre_detector_failure_roles": {
+    "g_domain": 3,
+    "train": 5
+  },
+  "private_local_audit_sha256": "9dbd7ad98d6cd808dc68995f70878c8b13aecd612e837fd7d73b35126eed5bf8",
+  "readback_sha256": "a4683dc87e856ddac1d198d9ad4d908eb606889d2d9cb9d87a763ef014feac38",
+  "recovery": true,
+  "resources_sha256": "b442de7827f9e162de142208245b54cec156ae481162776acaf3ab37581504ac",
+  "reused_after_pixel_readback": 4,
+  "role_originals": {
+    "branch_calibration": 56,
+    "g_domain": 56,
+    "train": 168
+  },
+  "role_selected": {
+    "branch_calibration": 56,
+    "g_domain": 53,
+    "train": 163
+  },
+  "scientific_readiness": false,
+  "selected": 272,
+  "selected_payload_bytes": 11099241100,
+  "status": "local_release_subject_integrity_exact_and_primary_preprocessing_complete",
+  "summary_before_sha256": {
+    "dataset_summary.csv": "db08f5c497fa8e324e70b433ede148ab91e1fae28a091b10eadf05c29d1233c5",
+    "split_summary.csv": "eb35b7dfd3d79c8dc31c671103c4cb2ea9f53b9d2fd3d9b5971f4a12b1ff7f1d"
+  },
+  "summary_changes": {
+    "dataset_summary.csv": {
+      "MSU-MFSD": {
+        "audit_status": [
+          "not_audited",
+          "complete"
+        ]
+      }
+    },
+    "split_summary.csv": {
+      "MSU-MFSD": {
+        "audit_status": [
+          "not_audited",
+          "complete"
+        ]
+      }
+    }
+  },
+  "target_access": false,
+  "video_crc_checked": 280,
+  "visual_review_sha256": "daa24f531773604cb941139e1027d7c5f9529c5160f5bc8e6689caf405cf9eb8"
+}

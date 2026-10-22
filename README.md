@@ -1,5 +1,23 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+MSU local audit and primary-image preprocessing complete (2026-10-22):
+[Package282 final](docs/282-msu-combined-integrity-and-preprocessing.md) completes
+the handoff in [Review283](docs/283-review-doc282-msu-recovery-in-progress.md):
+280 originals =272 selected/detector successes +8 retained pre-detector failures.
+Four pixel-validated outputs were reused and276 originals newly attempted.
+Full manifest, strict replay, all1088 image assets and final caps passed;
+two fixed sheets/36 tiles (35 crops plus one failure placeholder) were actually
+opened. Train168/163 selected, calibration56/56, g_domain56/53; no detector
+failures, substituted frames, scores/fits or target access. Recovery took38m02s,
+peak RSS about356MiB and peak combined retained/temporary storage26.88GB.
+The [terminal result](results/phase1/msu-preprocessing282-recovery-v1.json),
+[actual visual receipt](results/phase1/msu-preprocessing282-visual-review-v1.json)
+and [local audit evidence](results/phase1/msu-local-audit282-v1.json) retain
+creation-time chronology. Both MSU summary audit statuses are now complete;
+CASIA/SiW-Mv2 remain unaudited and scientific readiness remains false.
+53 focused tests pass; the producer/watchers stopped. Do not restart this package.
+Earlier running/failed-state descriptions below are historical.
+
 MSU additionally authorized recovery running (2026-10-22):
 [Package282 recovery](docs/282-msu-combined-integrity-and-preprocessing.md)
 preserves the first failed attempt and records the owner's additional one-package
