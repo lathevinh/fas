@@ -4,17 +4,73 @@ Date: 2026-10-22
 Implements: [Review279](279-review-doc278-train-batch-and-reconnection.md)
 Parent: `388815c`
 
-## Current status
+## Final status
 
-**One approved batch has launched; completion is not yet claimed.** The
-persistent supervisor committed its plan and began producing the1979 remaining
-selected images. At the observed progress snapshot,444 new transaction records
-had been written, the supervisor was alive, and no terminal failure receipt
-existed. This is a live snapshot, not final image/ledger acceptance.
+**OULU selected-image preprocessing and full original-denominator manifest are
+complete.** One approved1979-frame batch succeeded with zero new detector
+failures. Full saved-output readback passed for all4949 selected frames,
+including2970 reused train outputs. The immutable manifest contains4950 unique
+original IDs and retains the one calibration decode failure without an image,
+score or fabricated detector outcome. The process exited0.
+
+The [machine aggregate](../results/phase1/oulu-preprocessing280-completion-v1.json)
+records the accepted software result. All three fixed visual sheets were
+actually opened after completion:32+32+26=90 tiles. The
+[additive visual receipt](../results/phase1/oulu-preprocessing280-visual-review-v1.json)
+records this later inspection without rewriting creation-time visual-pending
+flags in the machine receipts. This is not training, calibration fitting,
+target execution or global scientific readiness.
+
+The historical launch report observed444 new rows and explicitly withheld
+completion. That snapshot is superseded by the measured final result here,
+not reinterpreted as an earlier acceptance.
 
 Accepted2970 train outputs are reused, not inferred again. No archive recovery,
 new pilot,105GB rehash, detector download or fitting is part of this stage.
 The present recovered archive identities matched before launch.
+
+## Measured execution and actual inspection
+
+The authority-to-terminal batch clock was6843.697576761246 seconds
+(1h54m03.698s), below4 hours. The separately supervised worker/readback portion
+was6197.2964209090005 seconds (1h43m17.296s). Measured peak process-group RSS
+was612544512 bytes (about584MiB), below4GiB. Peak declared total retained
+storage across274/276/278/280 was15417831466 bytes (about15.42GB), below24GiB.
+These are measured/sampled peaks, not continuous hardware maxima. GPU time0,
+downloads0, archive rehashes0 and automatic retries0.
+
+The new batch checked264824 native-frame commitments while extracting only
+the1979 frozen selected frames; selected-video payload was42388241168 bytes of
+cumulative sequential input, not retained output. Final readback reconstructed
+all new and reused shared-context crops from selected RGB and verified both
+bicubic branches, PNG/RGB hashes and exact asset sets. The full manifest binds
+4949 selected-frame assets plus14847 crop assets (19796 image assets), all4950
+originals and the active-v3 configuration SHA256.
+
+Final role reconciliation:
+
+| Role | Originals | Detector successes | Detector failures | Pre-detector failure |
+|---|---:|---:|---:|---:|
+| train, reused | 2970 | 2970 | 0 | 0 |
+| branch_calibration | 990 | 989 | 0 | 1 |
+| g_domain | 990 | 990 | 0 | 0 |
+| Total | 4950 | 4949 | 0 | 1 |
+
+After software completion, all published private receipt commitments, full
+manifest original/selected/role joins, final cap arithmetic, active policy,
+inherited source bindings and current archive guard were checked again before
+the visual receipt was recorded. The opened sheets exactly match the90 unique
+fixed planned indices and their saved hashes. Every tile shows a framed face
+with eye/nose/mouth regions present; no blank or background-only crop was
+observed. Closed eyes, pose, glasses, blur, strong exposure and low contrast are
+retained original appearances, not reasons for replacement or relabeling.
+Zero detector failures means no detector-failure sheets were expected. The
+preexisting decode failure has no image to inspect.
+
+This is the executing assistant's actual fixed-sample crop-usability inspection,
+not an independent human rating, all4949-image visual inspection, detector
+accuracy estimate or PAD validation. No model score, threshold selection or
+fitting was performed.
 
 ## Combined owner authority and measured budget
 
@@ -168,28 +224,30 @@ the package refuses an existing output root.
 
 The private `oulu_preprocessing280_v1` package contains the actual owner
 authority, persistent supervisor, immutable plan/attempt lease, incremental
-records, execution log and a read-only30-second `progress.log`. It later
-receives `worker_completion.json`, `full_manifest.json`, `readback.json`,
-visual sheets and terminal `resources.json`, or explicit failure receipts.
+records, execution log and a read-only30-second `progress.log`. It now contains
+`worker_completion.json`, `full_manifest.json`, `readback.json`,
+visual sheets, terminal `resources.json` and the additive `visual_review.json`.
 All source/media identities and images remain private.
 
 The local VS Code task `OULU280 Progress (30s, read-only)` is configured.
-The VS Code tool client disconnected while opening it, so a visible terminal
-was not confirmed. The independent production process stayed alive; a detached
-read-only watcher also writes `progress.log` every30 seconds and stops at
-terminal status. Once VS Code reconnects, the configured task can display the
-same live counters without controlling the batch.
+The VS Code tool client initially disconnected while opening it; after
+reconnection its actual terminal output was confirmed. The independent batch
+stayed alive throughout. Both the production process and detached progress
+watcher have now exited0. The displayed100-percent counter described new
+records written, not completion of the subsequent full4949-image readback.
 
 The terminal public aggregate is
-`results/phase1/oulu-preprocessing280-completion-v1.json`. It will contain
+`results/phase1/oulu-preprocessing280-completion-v1.json`. It contains
 counts, source-reconciliation commitments, the active configuration pin and
 resource measurements, not private row identities. Final visual observations
-must be added separately rather than rewriting creation-time pending flags.
+are in the separate additive receipt, preserving creation-time pending flags.
 
 ## Retained scientific state
 
 OULU local audit and accepted2970 train preprocessing remain complete.
-Full4950-original preprocessing is still pending this actual batch/readback.
+Full4950-original accounting/4949 selected-image preprocessing is now complete
+under the explicit active-v3 parameter pin. The one calibration decode failure
+remains terminal and is not counted as a successfully preprocessed image.
 The other six dataset/split audit fields remain not_audited;399 similarity
 outcomes, accepted85/historical disagreement1/unresolved0, calibration990/989
 and zero fitted scores remain unchanged. Joined assurance, training/OOF,

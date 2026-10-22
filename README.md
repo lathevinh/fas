@@ -1,17 +1,24 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Remaining OULU image preprocessing launched (2026-10-22):
+OULU selected-image preprocessing completed (2026-10-22):
 [Package280](docs/280-oulu-remaining-preprocessing-and-active-pin.md) implements
 [Review279](docs/279-review-doc278-train-batch-and-reconnection.md) with one
 explicitly approved1979-frame source calibration/g_domain batch and full4950
-manifest/readback under4h/4GiB/24GiB total retained storage. Accepted2970 train
+manifest/readback under4h/4GiB/24GiB total retained storage. All1979 new frames
+succeeded; full readback passed for4949 selected images and the manifest covers
+4950 originals including the unchanged calibration decode failure. Actual
+inspection opened3 fixed sheets/90 tiles. Batch wall time was1h54m04s, peak RSS
+about584MiB and total storage about15.42GB. Accepted2970 train
 outputs and the one calibration decode failure are preserved; no archive
 rehash, new train inference, scores/fits or target access is included.
 The approved [active-v3 parameter pin](configs/preprocessing_v3.yaml) is now the
 canonical reference, exactly equivalent to the accepted detector/geometry;
-historical v2/pilot bytes remain unchanged. Execution is in progress, not
-completed. Use `python scripts/preprocess_oulu280.py --status` after reconnecting;
-do not start another attempt. Later scientific gates remain unchanged.
+historical v2/pilot bytes remain unchanged. The
+[machine aggregate](results/phase1/oulu-preprocessing280-completion-v1.json)
+and [additive actual visual receipt](results/phase1/oulu-preprocessing280-visual-review-v1.json)
+preserve software/visual chronology. No all-image visual review or independent
+human confirmation is claimed. The batch has stopped; do not start another
+attempt. Later scientific gates remain unchanged.
 
 Accepted train preprocessing (2026-10-22):
 [Review279](docs/279-review-doc278-train-batch-and-reconnection.md) accepts278:
