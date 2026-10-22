@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Accepted OULU image-preprocessing completion (2026-10-22):
+[Review281](docs/281-review-doc280-oulu-image-preprocessing-complete.md) accepts280
+without rework:4950 original IDs,4949 successful primary selected images and
+shared/224/518 exports, one retained calibration decode failure, explicit active-v3
+pin. No OULU rerun or acknowledgment-only activation is requested. Move to the next
+available dataset using the same fixed pipeline and a single bounded package.
+This completes the selected-image stage, not every optional frame bank or later
+training/evaluation gate. Older stage directions below are historical.
+
 OULU selected-image preprocessing completed (2026-10-22):
 [Package280](docs/280-oulu-remaining-preprocessing-and-active-pin.md) implements
 [Review279](docs/279-review-doc278-train-batch-and-reconnection.md) with one
