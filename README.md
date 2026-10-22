@@ -1,5 +1,20 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+MSU additionally authorized recovery running (2026-10-22):
+[Package282 recovery](docs/282-msu-combined-integrity-and-preprocessing.md)
+preserves the first failed attempt and records the owner's additional one-package
+authority. Captured decoder stderr identified rawvideo output-timebase DTS
+quantization, not connection loss. Preserving the source encoder timebase fixes
+the synthetic ProRes regression and all301 original fifth-video RGB hashes,
+with zero stderr and unchanged frozen middle RGB.52 focused tests passed.
+Four provisional outputs were pixel-validated/copied without inference;
+the remaining276 are processing once under the shared4h/4GiB/40GiB recovery
+clock, including diagnosis/testing and all old/new/temporary storage.
+The [recovery launch receipt](results/phase1/msu-preprocessing282-recovery-launch-v1.json)
+is not final acceptance. Progress displays every30s in the MSU282 Recovery
+VS Code task; final full readback/actual visual inspection are pending.
+OULU and generic audit/scientific status fields remain unchanged.
+
 MSU combined package stopped on a concrete replay defect (2026-10-22):
 [Package282](docs/282-msu-combined-integrity-and-preprocessing.md) follows281
 with one explicitly approved280-video/35-subject release-integrity, strict-decode,

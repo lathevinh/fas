@@ -4,7 +4,88 @@ Date: 2026-10-22
 Governing review: [281](281-review-doc280-oulu-image-preprocessing-complete.md).
 Base commit: `0e07beb`.
 
-## Terminal decision: concrete replay defect, stopped without retry
+## Current state: additionally authorized recovery running
+
+After publication of the failed attempt in commit `49e18a4`, the owner explicitly
+approved one combined diagnosis/fix/tests/recovery package: CPU-only,4h/4GiB
+group RSS/40GiB total private storage including historical packages and temporary
+ZIP, preserving the failed attempt and allowing no further retry. The authority
+clock started at **2026-10-22 10:32:47.171862 UTC** (17:32:47 UTC+7), with an
+absolute deadline of14:32:47 UTC. Diagnosis, implementation/testing and recovery
+share this deadline; starting inference did not reset the clock.
+
+The diagnostic reconstruction read16 volume payloads to EOF and matched every
+CRC/size/SHA against the first attempt. Original8 archive SHA pins were reused
+only after exact regular-file identity/header guards; no redundant full archive
+rehash was performed. The inner headers and native metadata hashes also matched.
+
+### Established cause and verified narrow fix
+
+The exact interrupted fifth video reproduced this FFmpeg diagnostic:
+
+```text
+Application provided invalid, non monotonically increasing dts to muxer in stream 0: 1 >= 1
+```
+
+The original rawvideo replay returned0 but emitted120 stderr bytes. This was
+not evidence of a failed full image decode: the rawvideo output encoder's
+default timebase quantized distinct native timestamps to the same muxer DTS.
+The old helper correctly refused nonempty stderr; it did not retain the useful
+payload. Its producer bytes and original failure records remain unchanged.
+
+The additive [replay helper](../scripts/msu_replay282.py) sets output
+`-enc_time_base -1`, preserving the source timebase rather than rounding to
+the default frame-rate timebase. It does **not** suppress stderr, remove
+`-xerror`, relax exit checks, retime the canonical media record, alter RGB
+conversion, replace a frame or change the detector/geometry. It retains
+per-video stderr and a durable replay receipt even on failure.
+
+A synthetic fractional-timestamp ProRes MOV reproduced the original
+non-monotonic-DTS error and passed after this change, with every RGB hash
+unchanged. A single fixed replay of the exact original fifth video verified
+**all301 original decoded RGB hashes**, returned0 with **zero stderr**, and
+preserved the frozen middle-frame RGB. No detection/inference was used for
+this validation.
+
+### One recovery execution, separate from the preserved failed attempt
+
+The [diagnostic stage](../scripts/diagnose_msu282_recovery.py) completed in
+296.785 seconds. The [recovery driver](../scripts/recover_msu282.py) binds73
+source/authority/diagnostic/prior-output commitments and writes to a new private
+namespace. Its inference supervisor started at10:41:36.195362 UTC.
+
+The first four provisional transaction/media/image sets were reconstructed and
+validated using the accepted saved-pixel validator, then copied byte-identically
+without rerunning detection. Each copy is checked against its new source pin,
+and the original transaction hash must match the first attempt's terminal
+failure ledger. The remaining276 original IDs are attempted once, beginning
+with the formerly interrupted fifth video. That video now has a detector-success
+row. At the first displayed recovery snapshot,16/280 rows were written; this
+is progress, **not terminal acceptance**.
+
+The same full280-row/asset/geometry verifier is reused, with additional exact
+new-replay-record/stderr accounting and final receipt checks. The final manifest
+still includes every original and preserves decode/detector failures. The
+recovery cap counts both the old failed package and the new package plus
+274/276/278/280/model/staged ZIP/media; original evidence is not deleted to
+make space. The final resource receipt will carry the diagnosis-stage sampled
+peaks as well as recovery peaks.
+
+Before recovery execution, **52 focused tests passed in27.038 seconds**,
+including the original45 and seven new recovery tests: exact prior-volume
+staging/drift refusal, explicit additional authority, byte-identical saved-pixel
+reuse without inference, final resource/missing-readback guards, strict
+RGB/EOF/exit/stderr diagnostics, the real synthetic ProRes timebase regression
+and exact replay-readback accounting. Actual metadata-only recovery preflight,
+`py_compile` and whitespace checks also passed.
+
+The [recovery launch receipt](../results/phase1/msu-preprocessing282-recovery-launch-v1.json)
+preserves source hashes and chronology. A persistent30-second watcher and the
+VS Code task **MSU282 Recovery Progress (30s, read-only)** were opened and verified.
+Full readback, actual bounded visual inspection and terminal publication remain
+pending. No global audit/scientific status is promoted.
+
+## Preserved first terminal decision: concrete replay defect, stopped without retry
 
 The single attempt stopped after383.804 seconds (6m23.804s), around
 17:26:09 UTC+7. Reconnection inspection found an immutable failure receipt,
@@ -57,10 +138,11 @@ verified full result. Terminal private commitments:
 - Full280-row conservative failure accounting:
   `d82e25fe0b84091403651f9e08a6f8123498d05b65b0bc087f1076094d5ec29b`.
 
-Any renewed media diagnosis/recovery requires explicit additional authority
-because the original approval prohibited retry. Preserve this failed attempt
-and its exact producer bytes; diagnose the actual decoder output before
-choosing a recovery implementation. There is no basis for reprocessing OULU.
+At this first terminal decision, renewed media diagnosis/recovery required
+explicit additional authority because the original approval prohibited retry.
+That additional authority was subsequently obtained as documented above. The
+failed attempt and exact producer bytes remain preserved. There is no basis
+for reprocessing OULU.
 
 ## Historical launch evidence
 
