@@ -1,0 +1,61 @@
+{
+  "active_config_sha256": "a4f1a27ffc6418c548702e38f3454d67a17ec834fda351ed46d6accaba738c71",
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 42949672960,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 14400
+  },
+  "checkpoint": 282,
+  "completion_claimed": false,
+  "dataset": "MSU-MFSD",
+  "detector_failure": null,
+  "detector_success": null,
+  "exact_duplicate_groups": null,
+  "expected_joined_zip_bytes": 11092803150,
+  "failure_category": "RuntimeError",
+  "fitted_scores": 0,
+  "forbidden_exact_crossings": null,
+  "gpu_seconds": 0,
+  "joined_domain_assurance": false,
+  "model_downloads": 0,
+  "model_scores": 0,
+  "native_frames": null,
+  "near_duplicate_independence_certified": false,
+  "original_archive_bytes": 11095264656,
+  "originals": 280,
+  "package_wall_seconds": 383.8040373325348,
+  "pre_detector_failure": null,
+  "private_record_sha256": {
+    "attempt_lock.json": "b5868669172901cf718709ffa024f14883e25730d5e4cd02d6cd374ef7e2df7a",
+    "owner_approval.json": "76350d18611278c94f42e45fbfa1286f925593f58a0279db1c67a1e68e4cf5ee",
+    "plan.json": "3d355bb37565e962b7315de7070c1d99f3286614a03c1e7629943d10b22e89f3",
+    "release_integrity.json": "5626233cd13af979baa9debbd7225c295d7630bda62e5207138ec91c7a5ab387",
+    "resources.json": "5a992088b5f9ab20d95fdabbd1db5b7f62cf460be49eab79b962e24e51d429ac",
+    "supervisor.json": "d3a2c3c664f1495dc385adc288e5471d0a55c60b9bd8d9402ceb7bebc54fca41"
+  },
+  "role_originals": {
+    "branch_calibration": 56,
+    "g_domain": 56,
+    "train": 168
+  },
+  "role_subjects": {
+    "branch_calibration": 7,
+    "g_domain": 7,
+    "train": 21
+  },
+  "sampled_peaks": {
+    "output_bytes": 26597692527,
+    "rss_bytes": 353169408,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": null,
+  "selected_payload_bytes": null,
+  "status": "concrete_defect_stopped_no_retry",
+  "subjects": 35,
+  "target_access": false,
+  "visual_inspection_completed": false
+}

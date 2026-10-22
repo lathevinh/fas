@@ -1,17 +1,23 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-MSU combined package running (2026-10-22):
+MSU combined package stopped on a concrete replay defect (2026-10-22):
 [Package282](docs/282-msu-combined-integrity-and-preprocessing.md) follows281
 with one explicitly approved280-video/35-subject release-integrity, strict-decode,
 fixed-frame image/crop, full-manifest/readback and bounded-visual package.
 Frozen source roles remain168/56/56 videos across21/7/7 disjoint subjects.
-The persistent CPU-only attempt is capped at4h/4GiB RSS/40GiB total inherited,
+The CPU-only attempt was capped at4h/4GiB RSS/40GiB total inherited,
 new and temporary storage; no retry, new model, scores/fits or target access.
 45 focused tests and actual metadata-only preflight passed before launch.
 The [launch receipt](results/phase1/msu-preprocessing282-launch-v1.json) is not
-a terminal completion claim. Progress is displayed every30s in the MSU282
-VS Code task. OULU outputs and generic audit/scientific status fields are
-unchanged; final readback and actual visual inspection are still pending.
+a terminal completion claim. The
+[terminal aggregate](results/phase1/msu-preprocessing282-v1.json) reports failure
+after6m24s:8/8 archive hashes and16/16 volume CRCs completed, but raw-RGB replay
+of the fifth video stopped on the strict decoder exit/stderr guard. Four
+detector-success rows remain provisional without full readback. Temporary
+ZIP/media were removed; all280 denominators remain in conservative failure
+accounting. No retry was started. OULU outputs and generic audit/scientific
+status fields are unchanged; further media diagnosis/recovery needs explicit
+additional authority under the original no-retry limit.
 
 Accepted OULU image-preprocessing completion (2026-10-22):
 [Review281](docs/281-review-doc280-oulu-image-preprocessing-complete.md) accepts280

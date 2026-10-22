@@ -4,7 +4,65 @@ Date: 2026-10-22
 Governing review: [281](281-review-doc280-oulu-image-preprocessing-complete.md).
 Base commit: `0e07beb`.
 
-## Current decision: one authorized package running, not yet complete
+## Terminal decision: concrete replay defect, stopped without retry
+
+The single attempt stopped after383.804 seconds (6m23.804s), around
+17:26:09 UTC+7. Reconnection inspection found an immutable failure receipt,
+not a live supervisor. The connection loss is not established as the cause:
+the worker traceback explicitly reports `ValueError: strict decoder exit/stderr`
+while replaying raw RGB for the fifth original video.
+
+All8 original archives were hashed, all16 volume payloads passed CRC/size
+accounting, the joined ZIP/native metadata was verified, and all ancillary
+entries were read before video processing. Five per-video media records and
+five attempt records exist. Four transaction records report detector success;
+these are **provisional outputs without final full readback**, not four accepted
+images or a completed dataset.
+
+For the interrupted fifth unit, the first strict probe/framehash pass reported
+301 decoded640x480 frames with ProRes video. The subsequent raw-RGB replay
+raised the shared helper's exit/stderr guard after reading its expected frame
+payloads. The helper does not retain the decoder return code or stderr payload
+in this exception, so this evidence cannot distinguish an exit failure from
+nonempty diagnostic output or identify the underlying decoder cause. Do not
+infer that it is harmless, relax strictness, substitute a frame, or claim the
+video is definitively corrupt without diagnostic evidence.
+
+The supervisor stopped, removed its named temporary joined ZIP/video, retained
+all existing records, and wrote280 conservative failure-accounting rows.
+No worker-completion record, full manifest, full readback or visual-inspection
+receipt exists. No second attempt was launched. Source bindings remain equal
+to the original30 plan commitments. Accepted OULU evidence is unchanged.
+
+| Terminal measurement | Observed |
+| --- | ---: |
+| Authority-to-terminal wall time | 383.8040373325348 seconds |
+| Supervised wall time | 341.1025115010016 seconds |
+| Sampled peak group RSS | 353,169,408 bytes |
+| Sampled peak combined retained/temporary storage | 26,597,692,527 bytes |
+| Final temporary directory entries | 0 |
+| Provisional detector-success transactions | 4 / 280 originals |
+| Terminal completion claimed | false |
+| Automatic retry / scores / fits / GPU / target work | none |
+
+Caps were not the reported stopping condition. The public
+[terminal aggregate](../results/phase1/msu-preprocessing282-v1.json) preserves
+null final success/failure counts rather than presenting partial outputs as a
+verified full result. Terminal private commitments:
+
+- Resources:
+  `5a992088b5f9ab20d95fdabbd1db5b7f62cf460be49eab79b962e24e51d429ac`.
+- Release integrity:
+  `5626233cd13af979baa9debbd7225c295d7630bda62e5207138ec91c7a5ab387`.
+- Full280-row conservative failure accounting:
+  `d82e25fe0b84091403651f9e08a6f8123498d05b65b0bc087f1076094d5ec29b`.
+
+Any renewed media diagnosis/recovery requires explicit additional authority
+because the original approval prohibited retry. Preserve this failed attempt
+and its exact producer bytes; diagnose the actual decoder output before
+choosing a recovery implementation. There is no basis for reprocessing OULU.
+
+## Historical launch evidence
 
 Review281 accepts OULU280 without rework. Its4950-original/4949-image manifest
 and accepted images are preserved; this package does not rerun OULU.
@@ -16,7 +74,7 @@ manifest/readback and bounded actual visual inspection in one package.
 The single persistent attempt started at **2026-10-22 10:19:45.223516 UTC**
 (17:19:45 UTC+7), with an absolute four-hour deadline of14:19:45 UTC.
 The supervisor was verified alive and the first original archive hash completed.
-This is launch evidence, not a terminal pass, release certification or an
+This historical section records launch evidence, not a terminal pass, release certification or an
 estimate of frame-processing completion. No final selected-image counts,
 readback success or visual observations are asserted yet.
 
@@ -157,7 +215,7 @@ could not resolve the workspace file URI; no Pylance diagnostic success is
 claimed. Actual interpreter compilation and executed tests are the syntax and
 runtime evidence.
 
-## Progress, finalization and retained limits
+## Historical progress setup and retained limits
 
 A persistent read-only watcher writes a snapshot every30 seconds to private
 progress records. The VS Code task **MSU282 Progress (30s, read-only)** displays
@@ -165,10 +223,11 @@ those snapshots and was opened successfully. It distinguishes archive hashing,
 temporary assembly, video processing, readback and terminal state. A280/280
 written-row counter does not certify final acceptance.
 
-On terminal notification, read the actual immutable resources/readback/manifest,
-verify receipts/caps, open the fixed and failure sheets, and publish one final
-pass or concrete defect report plus an additive visual receipt. Do not start a
-second attempt automatically or rewrite historical pending flags.
+Reconnection inspection read the actual terminal resource/failure evidence and
+confirmed the concrete defect above. No readback or inspection sheets were
+produced, so no actual visual review is claimed. The terminal watcher must stop
+with the failed package; do not start a second attempt automatically or rewrite
+historical pending flags.
 
 This package does not certify all-image manual inspection, independent human
 confirmation, detector accuracy, near-duplicate/reencoded-content independence,
