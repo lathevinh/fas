@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Accepted train preprocessing (2026-10-22):
+[Review279](docs/279-review-doc278-train-batch-and-reconnection.md) accepts278:
+2938 new plus32 reused equals2970 source-train outputs. Published code is unchanged
+between in-progress/final commits; current CI and population checks pass, with
+private execution/visual verification limits disclosed. No rerun is requested for
+the lost connection. Next scope is the remaining1979 selected non-train frames
+and retained one failure under applicable access/resource authority, without score
+fitting or target work. Full preprocessing/global readiness are not yet complete.
+
 OULU source-train preprocessing completed (2026-10-22):
 [Package278](docs/278-oulu-remaining-train-batch-execution.md) implements277 with
 one approved remaining2938-frame CPU batch, reusing32 accepted pilot outputs.
