@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Accepted OULU local audit (2026-10-22):
+[Review273](docs/273-review-doc272-oulu-local-audit-complete.md) accepts272 without
+rework under the reported explicit271 adoption. Both OULU audit statuses are
+complete; six other-domain status fields remain not_audited. No additional399-pair
+investigation or manual image confirmation is required to activate this local
+acceptance. Next is the planned detector/crop preprocessing, with the approved
+SCRFD weight/hash as the concrete input dependency and applicable execution scope.
+Joined assurance and later science remain separate; historical directions below
+do not reopen the accepted local audit.
+
 OULU local audit completed (2026-10-21): the owner explicitly adopted271 and
 [Package272](docs/272-oulu-benchmark-grounded-audit-completion.md) completed its
 mandatory record checks. Only the two OULU summary statuses are now complete;
