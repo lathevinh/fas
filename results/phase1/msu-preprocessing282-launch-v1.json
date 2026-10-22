@@ -1,0 +1,55 @@
+{
+  "checkpoint": 282,
+  "dataset": "MSU-MFSD",
+  "status": "single_approved_package_running_not_complete",
+  "started_utc": "2026-10-22T10:19:45.223516+00:00",
+  "deadline_utc": "2026-10-22T14:19:45.223516+00:00",
+  "explicit_owner_approval": true,
+  "caps": {
+    "wall_seconds": 14400,
+    "rss_bytes": 4294967296,
+    "output_bytes": 42949672960,
+    "gpu_seconds": 0
+  },
+  "originals": 280,
+  "subjects": 35,
+  "role_originals": {
+    "train": 168,
+    "branch_calibration": 56,
+    "g_domain": 56
+  },
+  "role_subjects": {
+    "train": 21,
+    "branch_calibration": 7,
+    "g_domain": 7
+  },
+  "original_archive_count": 8,
+  "original_archive_bytes": 11095264656,
+  "split_volumes": 16,
+  "temporary_joined_zip_bytes": 11092803150,
+  "video_payload_bytes": 11099241100,
+  "native_frames_before_execution": null,
+  "fixed_visual_tiles": 36,
+  "bound_sources": 30,
+  "targeted_tests_passed": 45,
+  "targeted_test_seconds": 30.525,
+  "producer_sha256": "e18e388906f647aa5e5a4f3298ea3df225b144336791b5a654ec7856463fa1b4",
+  "test_source_sha256": "85fe1db111094aa791063898e8359879fbd55c435a1a9075a27a44f75e76af6a",
+  "active_config_sha256": "a4f1a27ffc6418c548702e38f3454d67a17ec834fda351ed46d6accaba738c71",
+  "private_launch_record_sha256": {
+    "owner_approval.json": "76350d18611278c94f42e45fbfa1286f925593f58a0279db1c67a1e68e4cf5ee",
+    "supervisor.json": "d3a2c3c664f1495dc385adc288e5471d0a55c60b9bd8d9402ceb7bebc54fca41",
+    "plan.json": "3d355bb37565e962b7315de7070c1d99f3286614a03c1e7629943d10b22e89f3",
+    "attempt_lock.json": "b5868669172901cf718709ffa024f14883e25730d5e4cd02d6cd374ef7e2df7a"
+  },
+  "automatic_retry": false,
+  "model_downloads": 0,
+  "model_scores": 0,
+  "fitted_scores": 0,
+  "target_access": false,
+  "oulu_reprocessing": false,
+  "visual_inspection_completed": false,
+  "completion_claimed": false,
+  "audit_summary_statuses_changed": false,
+  "scientific_readiness": false
+}
