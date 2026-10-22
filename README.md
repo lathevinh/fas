@@ -1,5 +1,17 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+OULU remaining-train execution launched (2026-10-22):
+[Package278](docs/278-oulu-remaining-train-batch-execution.md) implements277 with
+an approved remaining2938-frame CPU batch reusing the accepted32 pilot outputs.
+Preflight found a new device-only archive identity change after the interrupted
+connection; the owner additionally approved one bounded full-byte remount
+recovery, now running before the batch. No completion is claimed yet.
+The persistent runner saves incremental receipts and supports read-only
+`python scripts/preprocess_oulu278.py --status` after a lost chat. Do not start a
+second attempt. The24GiB cap covers total retained274/276/278 storage. Actual
+final readback and visual inspection remain required; global preprocessing and
+later scientific gates remain unchanged.
+
 Accepted OULU local audit (2026-10-22):
 [Review273](docs/273-review-doc272-oulu-local-audit-complete.md) accepts272 without
 rework under the reported explicit271 adoption. Both OULU audit statuses are
