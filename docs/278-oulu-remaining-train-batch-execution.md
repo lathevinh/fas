@@ -4,22 +4,71 @@ Date: 2026-10-22
 Implements: [Review277](277-review-doc276-recovery-and-preprocessing-pilot.md)
 Parent: `1130ee7`
 
-## Status at this report
+## Final status
 
-**Execution launched, not completed.** The persistent supervisor has started the
-additional approved remount recovery. No new train outputs, final detector
-counts, crop-quality conclusion or completed train milestone is claimed here.
-The authoritative live state and terminal receipts are on disk, not dependent
-on the chat transcript. A final public aggregate is written automatically when
-the package exits; it must be read before making any completion claim.
+**Source-train preprocessing completed and the fixed visual sample was actually
+inspected.** One recovery and one new2938-transaction batch completed without
+retry. All2938 new detections succeeded; the combined immutable ledger contains
+exactly2970 unique train IDs, including the32 reused pilot outputs, with2970
+successes and zero detector failures. The supervised final readback passed and
+the process exited0. This is train-only completion, not global preprocessing
+activation or scientific readiness.
 
-Publication snapshot: the live supervisor was confirmed running. The latest
+The [machine aggregate](../results/phase1/oulu-preprocessing278-train-v1.json)
+records software completion. Its creation-time visual-pending flags remain
+unchanged; the later
+[additive visual receipt](../results/phase1/oulu-preprocessing278-visual-review-v1.json)
+records actual inspection of all three fixed sheets/65 tiles.
+
+Historical launch-publication snapshot: the supervisor was running. The latest
 observed recovery log reports23622382472 bytes read from the first archive at
 280.998 recovery wall seconds. No whole-archive hash result had been recorded,
 the batch plan was not yet committed, and new train transaction outputs were0.
 This is an in-progress observation, not a successful recovery or batch result.
 The20-test result below validates synthetic software behavior, not those still
-pending real-media outcomes.
+then-pending real-media outcomes. This snapshot is superseded by the measured
+terminal outcome above, not reinterpreted as an earlier completion.
+
+## Measured execution and readback
+
+Recovery read exactly105116817408 bytes once in1245.470591098 seconds
+(20m45.471s). All three SHA256 hashes matched the accepted anchors. Recovery
+high-water RSS was79151104 bytes, below1GiB; the new additive binding was
+published without changing276/219.
+
+The batch-authority clock, including batch preflight and final readback, was
+8264.376972436905 seconds (2h17m44.377s), below6 hours. The supervised
+worker/readback portion was7411.584910224001 seconds. Measured process-group
+RSS peaked at676708352 bytes (about645MiB), below4GiB. Peak declared total
+retained output was9367325346 bytes (about9.37GB), below24GiB and including
+the retained274/276 packages/model pack, new outputs, temporary payloads and
+accounting. GPU time was0; there was no download, environment change, cap
+extension or retry.
+
+The new batch strictly verified392548 native frames while extracting only the
+2938 frozen selected frames. Cumulative selected-video payload was61897964372
+bytes; this is sequential input I/O, not concurrent retained output. No frame
+was substituted. The verifier checked all new selected-frame assets and8814
+success crop assets, reconstructed context geometry from frozen RGB pixels,
+verified exact shared/224/518 hashes and bicubic joins, and rejected no rows.
+The32 pilot results were reused with exact parent/model/config/output joins.
+The2970-ID combined ledger and its record commitments were checked before
+software acceptance.
+
+After process completion, the published commitments for all private terminal
+records were checked again. The combined ledger was read back as2970 unique
+IDs with exactly32 reused rows. Resource thresholds and the three visual-sheet
+SHA256 commitments were checked before recording visual inspection.
+
+All three actual fixed label-free sheets were opened:32+32+1=65 tiles. Each
+shows a framed face with eye/nose/mouth regions present; no blank or
+background-only crop was observed. Pose, glasses, blur, illumination, closed
+eyes and presentation appearance remain visible. Zero detector failures means
+no additional failure sheets were expected. This is the executing assistant's
+sample-based crop-usability check, not an independent human rating, inspection
+of all2970 images, detector-accuracy estimate or PAD validation. The private
+visual receipt is immutable and additive; it does not rewrite the original
+machine pending flags.
 
 ## Owner decisions and actual preflight
 
@@ -68,13 +117,13 @@ and newly processed results. Interrupted/rejected attempts receive a separate
 denominator-preserving failure ledger. Final record joins, deadline, storage
 and RSS checks precede software acceptance.
 
-Visual coverage is fixed before outcomes, stratified by label and the first
+Visual coverage was fixed before outcomes, stratified by label and the first
 two frozen filename components, supplemented by every100th manifest position.
 All failed detections get additional source-frame sheets. These label-free
-sheets are reconstructed and saved for actual inspection; producing sheets
-alone never claims they were opened. A software-success aggregate explicitly
-remains `software_complete_visual_review_pending` until a separate inspection
-receipt reports what was actually viewed.
+sheets were reconstructed and saved for actual inspection; producing sheets
+alone did not claim they were opened. The software-success aggregate retains
+its creation-time `software_complete_visual_review_pending` status. The later
+additive receipt now records what was actually opened.
 
 [Additional recovery](../scripts/recover_oulu278.py) checks non-device identities,
 stable regular-file descriptors and paths before/after reads, exact archive byte
@@ -120,9 +169,10 @@ The terminal public aggregate is
 `results/phase1/oulu-preprocessing278-train-v1.json`. It contains only scope,
 counts, resource measurements and private-record commitments, not media or row
 identities. Absence of that aggregate means no terminal outcome is published.
-If software succeeds, open the fixed sheets and every failure sheet, record
-actual observations separately, and update this report with measured outcomes.
-Do not infer human visual review, detector accuracy, or all-success from exit0.
+For this completed run, both aggregates and the private visual-review receipt
+now exist. The terminal process and the30-second read-only progress monitor
+have stopped. Do not infer independent human review or detector accuracy from
+exit0 or from the65-tile assistant inspection.
 
 ## Unchanged scientific scope
 
@@ -132,3 +182,6 @@ failure, calibration990/989/zero fitted scores and all frozen role/selection
 boundaries remain unchanged. No global preprocessing_v2 activation, calibration,
 g_domain/target processing, training, OOF or scientific-readiness promotion is
 included. Train-only completion is not full4950-video preprocessing completion.
+The remaining non-train population is1980 originals/1979 selected frames,
+including the unchanged one calibration terminal failure. No execution of that
+remaining population is commissioned by this report.

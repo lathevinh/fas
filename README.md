@@ -1,16 +1,19 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-OULU remaining-train execution launched (2026-10-22):
+OULU source-train preprocessing completed (2026-10-22):
 [Package278](docs/278-oulu-remaining-train-batch-execution.md) implements277 with
-an approved remaining2938-frame CPU batch reusing the accepted32 pilot outputs.
-Preflight found a new device-only archive identity change after the interrupted
-connection; the owner additionally approved one bounded full-byte remount
-recovery, now running before the batch. No completion is claimed yet.
-The persistent runner saves incremental receipts and supports read-only
-`python scripts/preprocess_oulu278.py --status` after a lost chat. Do not start a
-second attempt. The24GiB cap covers total retained274/276/278 storage. Actual
-final readback and visual inspection remain required; global preprocessing and
-later scientific gates remain unchanged.
+one approved remaining2938-frame CPU batch, reusing32 accepted pilot outputs.
+The additional owner-approved remount recovery matched all105116817408 archive
+bytes. Final readback passed for exactly2970 unique train transactions with
+2970 detector successes/zero failures; the fixed3-sheet/65-tile visual sample
+was actually inspected. The batch clock was2h17m44s, peak RSS about645MiB and
+total retained output about9.37GB, within the6h/4GiB/24GiB caps. The
+[machine aggregate](results/phase1/oulu-preprocessing278-train-v1.json) retains
+its creation-time visual-pending state; the
+[additive visual receipt](results/phase1/oulu-preprocessing278-visual-review-v1.json)
+closes that step without rewriting historical receipts. No retry, all-image
+visual-inspection claim, global preprocessing activation or later scientific
+readiness promotion is implied.
 
 Accepted OULU local audit (2026-10-22):
 [Review273](docs/273-review-doc272-oulu-local-audit-complete.md) accepts272 without
