@@ -52,6 +52,15 @@ class PreregistrationTest(unittest.TestCase):
             self.assertTrue(any("claim spec" in error for error in errors))
             self.assertTrue(any("auxiliary prompts" in error for error in errors))
 
+    def test_schema_requires_explicit_active_preprocessing_pin(self) -> None:
+        with self._copy() as copy:
+            path = copy / "configs/preprocessing_v3.yaml"
+            config = json.loads(path.read_text())
+            config["face"]["detector_weight_sha256"] = None
+            path.write_text(json.dumps(config))
+            errors = validate_stage(copy, "schema")
+            self.assertTrue(any("active preprocessing v3" in error for error in errors))
+
     def test_schema_rejects_attack_family_names_in_core_prompts(self) -> None:
         with self._copy() as copy:
             path = copy / "configs" / "prompts_core_v1.yaml"

@@ -15,6 +15,7 @@ from typing import Any
 
 from .contracts import CORE_DOMAINS, GROUP_BOUNDARIES, SIWMV2_ATTACK_FAMILIES, validate_source_evidence
 from .freeze import build_analysis_freeze_record
+from .preprocessing_policy import validate_active_preprocessing
 
 CONFIG_FILES = (
     "experiment_core_v1.yaml",
@@ -23,6 +24,7 @@ CONFIG_FILES = (
     "prompts_core_v1.yaml",
     "prompts_aux_v1.yaml",
     "preprocessing_v2.yaml",
+    "preprocessing_v3.yaml",
     "seeds_v1.yaml",
     "source_recipe_v2.yaml",
     "environment_v1.yaml",
@@ -400,7 +402,7 @@ def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str
         "benchmark_spec": "benchmark_amendment_v2.yaml",
         "claim_spec": "claims_v1.yaml",
         "seed_spec": "seeds_v1.yaml",
-        "preprocessing_spec": "preprocessing_v2.yaml",
+        "preprocessing_spec": "preprocessing_v3.yaml",
         "source_recipe": "source_recipe_v2.yaml",
     }
     for field, expected in expected_references.items():
@@ -467,6 +469,10 @@ def _validate_config_schema(configs: dict[str, dict[str, Any]], errors: list[str
         errors.append("face preprocessing must preserve the fixed crop and detector-failure action")
     if preprocessing.get("openclip") != {"resolution": 224, "normalization": "checkpoint_native"}:
         errors.append("OpenCLIP preprocessing must remain checkpoint-native at 224")
+    try:
+        validate_active_preprocessing(configs.get("preprocessing_v3.yaml", {}))
+    except ValueError as exc:
+        errors.append(str(exc))
 
     seed_config = configs.get("seeds_v1.yaml", {})
     if forbidden & seed_config.keys():

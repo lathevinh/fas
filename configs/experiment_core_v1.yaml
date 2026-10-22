@@ -41,6 +41,6 @@
   },
   "claim_spec": "claims_v1.yaml",
   "seed_spec": "seeds_v1.yaml",
-  "preprocessing_spec": "preprocessing_v2.yaml",
+  "preprocessing_spec": "preprocessing_v3.yaml",
   "source_recipe": "source_recipe_v2.yaml"
 }

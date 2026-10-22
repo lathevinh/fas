@@ -1,5 +1,18 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Remaining OULU image preprocessing launched (2026-10-22):
+[Package280](docs/280-oulu-remaining-preprocessing-and-active-pin.md) implements
+[Review279](docs/279-review-doc278-train-batch-and-reconnection.md) with one
+explicitly approved1979-frame source calibration/g_domain batch and full4950
+manifest/readback under4h/4GiB/24GiB total retained storage. Accepted2970 train
+outputs and the one calibration decode failure are preserved; no archive
+rehash, new train inference, scores/fits or target access is included.
+The approved [active-v3 parameter pin](configs/preprocessing_v3.yaml) is now the
+canonical reference, exactly equivalent to the accepted detector/geometry;
+historical v2/pilot bytes remain unchanged. Execution is in progress, not
+completed. Use `python scripts/preprocess_oulu280.py --status` after reconnecting;
+do not start another attempt. Later scientific gates remain unchanged.
+
 Accepted train preprocessing (2026-10-22):
 [Review279](docs/279-review-doc278-train-batch-and-reconnection.md) accepts278:
 2938 new plus32 reused equals2970 source-train outputs. Published code is unchanged
