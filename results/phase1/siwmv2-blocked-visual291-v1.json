@@ -1,0 +1,25 @@
+{
+  "all_images_visually_inspected": false,
+  "checker_sha256": "3be4e3aa0615452566c1944f9b058cb0c2129d88ed2a106c5632006aea5579d0",
+  "checkpoint": 291,
+  "combined_wall_seconds_through_visual": 13305.87135720253,
+  "dataset": "SiW-Mv2",
+  "inspected_face_crops": 92,
+  "local_audit_complete": false,
+  "no_image_placeholders": 0,
+  "normal_validator_remaining_errors": [
+    "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+    "split_summary.csv has unaudited dataset: SiW-Mv2"
+  ],
+  "observations": "Actually opened all three predetermined fixed sheets, the complete16-image detector-failure sheet and the12-original exact-duplicate sheet. Successful samples retain upright facial or face-presentation regions with visible eyes/nose/mouth where the supplied pose, mask or partial attack permits. Source blur, exposure, profile/closed-eye poses, presentation-media borders and deliberate occlusions remain; no substitute frame or blank crop was introduced. Failure images include visible faces as well as an off-frame subject and a blurred moving subject; these observations do not establish every detector failure cause. All six saved exact-duplicate pairs also appear visually identical in the dedicated sheet, consistent with byte/full-sequence commitments, not merely an appearance-based identity judgment. Crop usability of this bounded sample passes, but five forbidden boundary pairs remain a hard local-audit blocker; no original was dropped, regrouped or promoted and not all1680 images were manually inspected.",
+  "opened_tiles": 108,
+  "primary_image_preprocessing_complete": false,
+  "private_visual_review_sha256": "7d36c0a86a16eb116d7c66e9914f04aa9c0e35a037f983ed978cf2900f5b1c0e",
+  "promotion_permitted": false,
+  "readback_sha256": "27207575dcb0d65d21d37bd20fa3d52d99bc1b85023d0036be3cf35039d8cf4a",
+  "resources_sha256": "62b8623d58abab70363181c2d31ec9c4c08495334b8c1e03a232fc62d3ed45b6",
+  "sample_crop_usability_check_pass": true,
+  "scientific_readiness": false,
+  "selected_failure_images": 16,
+  "visual_inspection_completed": true
+}

@@ -1,0 +1,53 @@
+{
+  "accounting_complete": false,
+  "attempts": 1,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 51539607552,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 21600
+  },
+  "checkpoint": 291,
+  "dataset": "SiW-Mv2",
+  "detector_failure": null,
+  "detector_success": null,
+  "evaluation": false,
+  "excluded_videos_not_processed": 20,
+  "failure": "RuntimeError: --worker failed; exact evidence retained, no automatic retry",
+  "fitted_scores": 0,
+  "gpu_seconds": 0,
+  "image_assets": null,
+  "image_export_software_complete": false,
+  "local_audit_complete": false,
+  "missing_references_not_invented": 11,
+  "model_scores": 0,
+  "native_frames": null,
+  "null_role_test_originals": 623,
+  "originals": 1680,
+  "package_wall_seconds": 12369.05549621582,
+  "participant_identity_verified": false,
+  "pre_detector_failure": null,
+  "primary_image_preprocessing_complete": false,
+  "private_record_sha256": {
+    "archive_integrity.json": "faabf4c13a9e27f9dc7de27320cb7e27227eddac03d4dd2d133892cc5697dadb",
+    "compatibility.json": "03c278ed37d68cb55ea3452f5efb95583e9aeba99a48762c50afa0c7ff90c276",
+    "failure_rows.json": "f0b13da1856668d21a35e47b4a285663925d18973d1a5c8d4a0c518deef33a72",
+    "lease.json": "f2c3e423959a8b22b4f841452b3714c17e73d38dfd98bde06bed1ae644831cd4",
+    "observer_preflight.json": "4e2d1c3b7271f5003f153f4eb2cd8f89f9312d4029528a679e077b5c4dc4b7dd",
+    "owner_approval.json": "544c0857a45360236b8889524d018de9652cb3aaebfde75efc88be7a74001e0b",
+    "plan.json": "894077e5c5388feb974808befc368e78661b0191d1c113c4f844ddce194dc5f5",
+    "resources.json": "49b56b99e87803f04f74c483686c1c160685301c86bd5b7bc7bfa6cd3b303475",
+    "supervisor.json": "af173db59e091b362a2b6c0475bbc9846e8705ad3bb39e241b9cc9a1df5d04f0"
+  },
+  "sampled_peaks": {
+    "output_bytes": 24323719083,
+    "rss_bytes": 783298560,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": null,
+  "source_originals": 1057,
+  "specific_probe_failures": [],
+  "strict_replay_count": null
+}

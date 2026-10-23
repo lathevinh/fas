@@ -1,5 +1,23 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+SiW291 image artifacts verified; local acceptance blocked (2026-10-23):
+[Report291](docs/291-siwmv2-local-audit-and-primary-images.md) processes all1680
+frozen originals:1664 detector successes,16 retained detector failures,
+zero pre-detector failures and6672 image assets. The producer correctly stops
+on exact duplicates: six byte-identical pairs are also full decoded-sequence
+duplicates; three cross official train/test, two cross permanent source roles
+and one stays within a role. No membership is changed or original removed.
+An additive non-accepting readback verifies all1680 saved probes/replays and
+all pixels without source decoding/inference again; five sheets are actually
+opened (108 tiles:92 crops,16 failure images,zero placeholders).
+The [local assessment](results/phase1/siwmv2-local-assessment291-v1.json)
+keeps both SiW audit statuses unaudited and all acceptance/scientific gates
+blocked. Source roles632/215/210 and623 null-role test rows are preserved.
+OULU/MSU/CASIA and both summary files are unchanged. Visual closure finished
+in3h41m46s within the original6h/4GiB/48GiB limits; all processes stopped.
+54 combined targeted tests pass. An explicit frozen-population/role decision,
+not a repeat video run or silent duplicate waiver, is needed next.
+
 CASIA local audit and primary-image preprocessing complete (2026-10-23):
 [Report289](docs/289-casia-retained447-and-remaining153-closure.md) closes
 [Review288](docs/288-review-doc287-casia-recovery-and-partial-progress.md):
