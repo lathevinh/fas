@@ -1,0 +1,26 @@
+{
+  "checkpoint": 289,
+  "conservative_reported_bytes": 268599539,
+  "filesystem": "actual workspace filesystem",
+  "foreground_max_seconds": 0.008772622008109465,
+  "foreground_max_threshold_seconds": 0.25,
+  "foreground_median_seconds": 0.0027645165027934127,
+  "foreground_p95_seconds": 0.005310306994942948,
+  "foreground_p95_threshold_seconds": 0.05,
+  "full_scan_seconds": 5.010608651995426,
+  "growth_conservatively_accounted": true,
+  "growth_files": 40,
+  "idle_between_complete_scans_seconds": 30,
+  "initial_synthetic_files": 15000,
+  "measurement_samples": 200,
+  "observed_total_bytes": 164094,
+  "populated_original_shaped_directories": 600,
+  "private_media_opened": false,
+  "reservation_max_seconds": 0.0994116980000399,
+  "snapshot_age_limit_seconds": 90,
+  "source_sha256": {
+    "benchmark_casia289_observer.py": "0824160c86b4e68a2283977bfd5cb1b3da109abbbdf9b501431a0f2f8bbc066e",
+    "casia_budget289.py": "418dc00290749aaa175603ba9d88c401de10208a5366f76c82d8ac532a3613b5"
+  },
+  "synthetic_only": true
+}

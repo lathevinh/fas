@@ -1,0 +1,59 @@
+{
+  "accounting_complete": false,
+  "attempts": 1,
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 34359738368,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 7200
+  },
+  "checkpoint": 289,
+  "dataset": "CASIA-FASD",
+  "detector_failure": null,
+  "detector_success": null,
+  "failure": "FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/FAS-private/artifacts/phase1/casia_resume289_v1/observer/writes.json'",
+  "fitted_scores": 0,
+  "gpu_seconds": 0,
+  "image_export_software_complete": false,
+  "local_audit_complete": false,
+  "model_scores": 0,
+  "native_frames": null,
+  "originals": 600,
+  "package_wall_seconds": 277.3634760379791,
+  "pre_detector_failure": null,
+  "primary_image_preprocessing_complete": false,
+  "private_record_sha256": {
+    "failure_rows.json": "b721bb402b42a8082f3585da6b53d84af7beab48eb14c7c596f7375818af503d",
+    "lease.json": "57528a94cedaa4753e0f0c45b880c9477048303bb53da1037784fc81e22067bb",
+    "owner_approval.json": "a89ca858c21711739fe48ddd072980cdfc878967eb2aca33903683d7536762db",
+    "plan.json": "414b3d4598035b6829b6f03d8c411584d7a996dacc3f785c5ed29d77ac862e71",
+    "release_integrity.json": "8d2bfe69b7b71c27f66ed2dc815239c03113f56ced47d677bc2ba7e73ce481d7",
+    "resources.json": "ce7646c409193ea635d65af6b9a324f99ee2abae0f865a53598280edaa9daadb",
+    "retained_readback.json": "f6d638c73ffe71282390400cf90f007219970544141fed83d577c1eec122a0eb",
+    "selective_staging.json": "67ba19438955dd9079976584aaf1b6564ec0bb095a3517ebea781450f55ae902",
+    "supervisor.json": "9506edc1d5e29c24de7071953c2ec887ae08d37f6167489bd1da45a7bc2447f0"
+  },
+  "remaining_authorized": 153,
+  "retained_without_decode_or_inference": 447,
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "role_subjects": {
+    "branch_calibration": 10,
+    "g_domain": 10,
+    "train": 30
+  },
+  "sampled_peaks": {
+    "output_bytes": 21336549641,
+    "rss_bytes": 539451392,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": null,
+  "strict_replay_count": null,
+  "supervised_wall_seconds": 224.2712877629965
+}

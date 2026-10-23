@@ -1,0 +1,19 @@
+{
+  "accounting_complete": true,
+  "all_images_visually_inspected": false,
+  "checker_sha256": "9d4d205342ea7b92786f4ee5c41e89ed205b49317df735a41506429a1ae3e792",
+  "checkpoint": 289,
+  "dataset": "CASIA-FASD",
+  "inspected_face_crops": 63,
+  "no_image_placeholders": 0,
+  "observations": "Actually opened both predetermined fixed sheets and the complete detector-failure sheet. Successful samples show upright, centered facial regions with eyes, nose and mouth retained; source blur, exposure differences, glasses reflections and visible presentation media remain, rather than fabricated or blank crops. All six detector-failure originals retain real selected images with visible facial content; some have dark exposure or strong glasses reflections, but these observations do not prove their detector failure causes. The repeated failure tile in the fixed sheet is counted again as a viewed tile, not another original. No frame replacement, no placeholders and no claim of viewing all600 images.",
+  "opened_tiles": 70,
+  "primary_image_preprocessing_complete": true,
+  "private_visual_review_sha256": "2d2544310e311931ce36b010c25c450fe05aad4882fec0595e5607d3f296e2fc",
+  "readback_sha256": "62aacdd8722cb7929d7b429085337a9ce4c9da641f9f3fbcdf1feb90302256c4",
+  "recorded_unix_seconds": 1792734873.4619431,
+  "resources_sha256": "c172112ed9c49bf4a5521e62de14cae3a457dc639799b762b277f10e229143b8",
+  "sample_crop_usability_check_pass": true,
+  "selected_failure_images": 7,
+  "visual_inspection_completed": true
+}

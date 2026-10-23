@@ -1,0 +1,66 @@
+{
+  "accounting_complete": true,
+  "attempts": 1,
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 34359738368,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 7200
+  },
+  "checkpoint": 289,
+  "dataset": "CASIA-FASD",
+  "detector_failure": 6,
+  "detector_success": 594,
+  "failure": null,
+  "fitted_scores": 0,
+  "gpu_seconds": 0,
+  "handoff_new_attempts": 136,
+  "handoff_retained_without_repeat": 464,
+  "image_export_software_complete": true,
+  "local_audit_complete": false,
+  "model_scores": 0,
+  "native_frames": 111029,
+  "native_handoff_plan_sha256": "480946bcfc1853fd7d23d804e8e22c388aabaca84fb60b5715f6f752491afa2b",
+  "originals": 600,
+  "package_wall_seconds": 5512.479448080063,
+  "pre_detector_failure": 0,
+  "primary_image_preprocessing_complete": false,
+  "private_record_sha256": {
+    "content_checks.json": "f72df8ac520fb2f5cd398c86ddc496d5f6bbf52163da10f87c5abe91d5104f0e",
+    "full_manifest.json": "ebd3eb4406a1119254820cfefd025c98e245443da4f59015d04319f69b25ca1f",
+    "lease.json": "4cc4d5bfdf029e2c4bc0436b261a51a0f5588fbf184c68550ab022d5449ffcdc",
+    "native_ipc_handoff_approval.json": "56c36e14379dfab69f1d2fb33184a4a3d3254ce05c3dcdfef73c028365cd9178",
+    "owner_approval.json": "a89ca858c21711739fe48ddd072980cdfc878967eb2aca33903683d7536762db",
+    "plan.json": "414b3d4598035b6829b6f03d8c411584d7a996dacc3f785c5ed29d77ac862e71",
+    "probe_readback.json": "bc8309e8f85a22616bee60a657ac2c6e53fff6f07829337c5f5510a6b18f522c",
+    "readback.json": "62aacdd8722cb7929d7b429085337a9ce4c9da641f9f3fbcdf1feb90302256c4",
+    "release_integrity.json": "8d2bfe69b7b71c27f66ed2dc815239c03113f56ced47d677bc2ba7e73ce481d7",
+    "resources.json": "c172112ed9c49bf4a5521e62de14cae3a457dc639799b762b277f10e229143b8",
+    "retained_readback.json": "f6d638c73ffe71282390400cf90f007219970544141fed83d577c1eec122a0eb",
+    "selective_staging.json": "67ba19438955dd9079976584aaf1b6564ec0bb095a3517ebea781450f55ae902",
+    "supervisor.json": "9506edc1d5e29c24de7071953c2ec887ae08d37f6167489bd1da45a7bc2447f0",
+    "worker_completion.json": "6032357ca814f5d9ebdd44293bc260b0ed2e655af701645e8fcae05ae4f45783"
+  },
+  "remaining_authorized": 153,
+  "retained_without_decode_or_inference": 447,
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "role_subjects": {
+    "branch_calibration": 10,
+    "g_domain": 10,
+    "train": 30
+  },
+  "sampled_peaks": {
+    "output_bytes": 21702982075,
+    "rss_bytes": 543854592,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": 600,
+  "strict_replay_count": 600
+}

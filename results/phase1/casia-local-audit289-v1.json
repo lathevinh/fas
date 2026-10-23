@@ -1,0 +1,100 @@
+{
+  "accounting_complete": true,
+  "archive_rehashed": false,
+  "audit_summary_statuses_changed": true,
+  "checker_sha256": "9d4d205342ea7b92786f4ee5c41e89ed205b49317df735a41506429a1ae3e792",
+  "checkpoint": 289,
+  "combined_wall_seconds_through_local_completion": 5830.311212062836,
+  "dataset": "CASIA-FASD",
+  "detector_failure": 6,
+  "detector_success": 594,
+  "exact_duplicate_groups": 0,
+  "explicit_non_coded_vops": 137,
+  "fitted_scores": 0,
+  "forbidden_exact_crossings": 0,
+  "full600_extraction_repeated": false,
+  "groups": {
+    "forbidden_subject_crossings": 0,
+    "official_subjects": {
+      "test": 30,
+      "train": 20
+    },
+    "role_subjects": {
+      "branch_calibration": 10,
+      "g_domain": 10,
+      "train": 30
+    },
+    "role_videos": {
+      "branch_calibration": 120,
+      "g_domain": 120,
+      "train": 360
+    },
+    "subjects": 50,
+    "videos": 600
+  },
+  "image_assets": 2382,
+  "joined_domain_assurance": false,
+  "local_audit_complete": true,
+  "local_checks_sha256": "c7bc5eb8959abc02e8d12737720bb834086258f1b96b6b32b4d69a0fba04b07a",
+  "model_scores": 0,
+  "native_frames": 111029,
+  "near_duplicate_independence_certified": false,
+  "new_attempts": 153,
+  "new_extracted_videos": 153,
+  "normal_validator_baseline_errors": [
+    "dataset_summary.csv has unaudited dataset: CASIA-FASD",
+    "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+    "split_summary.csv has unaudited dataset: CASIA-FASD",
+    "split_summary.csv has unaudited dataset: SiW-Mv2"
+  ],
+  "normal_validator_remaining_errors": [
+    "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+    "split_summary.csv has unaudited dataset: SiW-Mv2"
+  ],
+  "originals": 600,
+  "pre_detector_failure": 0,
+  "pre_detector_failure_reasons": {},
+  "primary_image_preprocessing_complete": true,
+  "prior285_checker_source": {
+    "basename": "record_casia285_visual_review.py",
+    "public_source_available": false,
+    "sha256": "7555cd9d030488c71d988d0d4bfd56e6d81ed46d775c83a3f1ba160d645e8988",
+    "used_as_recovery_acceptance_gate": false
+  },
+  "private_local_audit_sha256": "87cb5228de562c6000ef7cfa01e440224d69ed41b658e854eb8276ae38f6451e",
+  "probe_readback_sha256": "bc8309e8f85a22616bee60a657ac2c6e53fff6f07829337c5f5510a6b18f522c",
+  "readback_sha256": "62aacdd8722cb7929d7b429085337a9ce4c9da641f9f3fbcdf1feb90302256c4",
+  "resources_sha256": "c172112ed9c49bf4a5521e62de14cae3a457dc639799b762b277f10e229143b8",
+  "retained_readback_sha256": "f6d638c73ffe71282390400cf90f007219970544141fed83d577c1eec122a0eb",
+  "retained_without_decode_or_inference": 447,
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "role_selected": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "scientific_readiness": false,
+  "selected": 600,
+  "selective_staging_sha256": "67ba19438955dd9079976584aaf1b6564ec0bb095a3517ebea781450f55ae902",
+  "status": "local_release_subject_integrity_and_primary_image_complete",
+  "strict_replay_count": 600,
+  "summary_after_sha256": {
+    "dataset_summary.csv": "73d30e8f4aedbc5ae7ba77a955608a0bfa6467d54dd279b78cbb75596db5cdb4",
+    "split_summary.csv": "3c8eb02a074e1c6079cd3b2d56687a05cd173a99067af841d565d31cf3b14014"
+  },
+  "summary_before_sha256": {
+    "dataset_summary.csv": "8b6a5d567998b7136cc9f389eb9676e311f0e00288237e593d3e33cf327a93b7",
+    "split_summary.csv": "9349efd0cecaa5d2408702bbeec8c3a1f37aa9e433f5285b8e3e570e94c38075"
+  },
+  "target_access": false,
+  "timestamp_transports": {
+    "native_packet_dts_guarded_genpts": 600
+  },
+  "video_crc_checked": 600,
+  "video_payload_bytes": 866586586,
+  "visual_review_sha256": "2d2544310e311931ce36b010c25c450fe05aad4882fec0595e5607d3f296e2fc"
+}

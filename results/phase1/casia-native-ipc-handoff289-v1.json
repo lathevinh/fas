@@ -1,0 +1,12 @@
+{
+  "checkpoint": 289,
+  "completion_gate_sha256": "0cd2ac5aab7d48cbfd15a84ba0c1a3a32c2c45783b3d13d76397e8aad4daad9b",
+  "explicit_same_clock_handoff": true,
+  "handoff_restaging_sha256": "a0e18c0d9f4c98d48294a17ab5d980b804a43577bcbe442ca9f2059a856ef94d",
+  "handoff_retained_readback_sha256": "ff8a23fc084a16ea1df028933c9b3f1724830a8f8aed5abf9c4918a878510ccc",
+  "local_audit_sha256": "87cb5228de562c6000ef7cfa01e440224d69ed41b658e854eb8276ae38f6451e",
+  "native_handoff_plan_sha256": "480946bcfc1853fd7d23d804e8e22c388aabaca84fb60b5715f6f752491afa2b",
+  "new_handoff_attempts": 136,
+  "retained_without_repeat": 464,
+  "scientific_readiness": false
+}

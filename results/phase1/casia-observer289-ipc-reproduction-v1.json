@@ -1,0 +1,19 @@
+{
+  "checkpoint": 289,
+  "corrective_transport": "same bounded journal protocol on native Linux storage; data remains on original filesystem",
+  "missing_or_stale_measurement_fatal": true,
+  "native_linux": {
+    "missing_reads": 0,
+    "partial_json_reads": 0,
+    "successful_reads": 28528
+  },
+  "private_media_opened": false,
+  "probe_source_publicly_available": false,
+  "probe_source_sha256": "353e122f7e7134bb9b7793bf090859151c0668383d993d37496ff99e72c06b9d",
+  "publications_per_filesystem": 200,
+  "synthetic_only": true,
+  "v9fs": {
+    "missing_reads": 960,
+    "successful_reads": 344
+  }
+}

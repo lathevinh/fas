@@ -1,5 +1,5 @@
 dataset,audit_status,subjects,group_unit,groups,bona_videos,attack_videos,attack_families,metadata_source,manifest_sha256
 OULU-NPU,complete,55,subject,55,990,3960,2,benchmark-grounded local audit272 under explicitly adopted271; joined ancestry not certified,5d7092aa6f637ea44b78208ddce4c4a5921ef04539038544decb10c7363425a3
-CASIA-FASD,not_audited,50,subject,50,150,450,2,accepted frozen metadata v2 (metadata-only; not media audit),1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea
+CASIA-FASD,complete,50,subject,50,150,450,2,bounded Bob-reference release/subject/integrity/decoded-exact audit289; transformed/joined ancestry not certified,1360b0ab50c1af9c3bd91b53a28591827c9fac1e47c57c8c4fc6368c9584c9ea
 MSU-MFSD,complete,35,subject,35,70,210,2,bounded local release/group/integrity/exact audit282 recovery; transformed/joined ancestry not certified,6ba31c13256b01fb5990a6403285cac06f978da91546f75c9e54948226c125bc
 SiW-Mv2,not_audited,,video,1680,785,895,5,accepted frozen metadata v2 (metadata-only; not media audit),f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb

@@ -1,5 +1,26 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+CASIA local audit and primary-image preprocessing complete (2026-10-23):
+[Report289](docs/289-casia-retained447-and-remaining153-closure.md) closes
+[Review288](docs/288-review-doc287-casia-recovery-and-partial-progress.md):
+447 retained transactions were verified without source decoding/inference;
+153 distinct remaining originals were processed. All600 originals reconcile:
+594 detector successes, six retained detector failures, zero pre-detector
+failures,600 selected frames,600 strict replay receipts and2382 pixel-validated
+image assets. Three sheets were actually opened:70 tiles, including63 crops,
+seven failure-image tiles (six distinct originals) and zero placeholders.
+An initial filesystem journal-publication failure stopped safely; an explicitly
+approved native-Linux IPC handoff preserved464 commits and finished136 under
+the unchanged clock. Software finished in91m52s; actual visual/local completion
+in97m10s, including the idle/UI delay, within the two-hour ceiling.
+Both CASIA audit statuses are complete; OULU/MSU and frozen roles are unchanged.
+Only the two SiW-Mv2 audit-status errors remain in the external-frozen-root
+validator; scientific readiness stays false. See the
+[local audit](results/phase1/casia-local-audit289-v1.json) and
+[actual visual receipt](results/phase1/casia-preprocessing289-visual-review-v1.json).
+76 targeted tests and schema validation pass. All289 processes have stopped.
+Earlier blocked/running descriptions below are historical.
+
 CASIA287 diagnosed but stopped at the original two-hour deadline (2026-10-23):
 [Report287](docs/287-casia-native-probe-recovery-and-deadline-stop.md) demonstrates
 the actual missing-terminal-timestamp and native non-coded-VOP count correction,
