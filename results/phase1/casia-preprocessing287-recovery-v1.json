@@ -1,0 +1,69 @@
+{
+  "accounting_complete": false,
+  "active_config_sha256": "a4f1a27ffc6418c548702e38f3454d67a17ec834fda351ed46d6accaba738c71",
+  "approved_same_deadline_handoff": true,
+  "attempts": 1,
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 34359738368,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 7200
+  },
+  "checkpoint": 287,
+  "committed_units_not_repeated": 17,
+  "continuation_plan_sha256": "47e10777211206a67da26f617516ef024417db2eb71e97f60797eab4ae95767a",
+  "dataset": "CASIA-FASD",
+  "detector_failure": null,
+  "detector_success": null,
+  "failure": "TimeoutError: combined two-hour CASIA287 deadline",
+  "fitted_scores": 0,
+  "gpu_seconds": 0,
+  "image_export_software_complete": false,
+  "images_reused_from285": 0,
+  "local_audit_complete": false,
+  "model_scores": 0,
+  "native_frames": null,
+  "originals": 600,
+  "package_wall_seconds": 7208.954565286636,
+  "pre_detector_failure": null,
+  "primary_image_preprocessing_complete": false,
+  "private_record_sha256": {
+    "attempt_lock.json": "8b10389793dc97a1f95aed1797253f275748e1e4a9d9ae0e0480ec1695fe10f6",
+    "diagnosis.json": "a0e5edca11f6869757488595bef48dcee49c502f31cd9096ab6b92b219a2e523",
+    "diagnosis_started.json": "664471bfcdbd840c49d330d5298424214d083199ef888860f590f9c7560dcdbc",
+    "failure_rows.json": "2d061fd6ccad77eed03c7c56e244edcf924b9a8e5548b3b3f28d346c9dd2c88a",
+    "fix-media.json": "a6accf4ef28b9e93073891885311d494e1743a8206efec040e82a91c2c59054b",
+    "fix_validation.json": "650485448ba4ccd44c37bfb977b214841cda8024701db783574b0f0a8452d652",
+    "handoff_approval.json": "c1180f099969907700bc28fae7cd9152bdb5cc06bf2f7bb0c4c482cf6102e4cc",
+    "native_fix_validation.json": "997f274ca2383376b5e7b28bb2b99688eb471b853e7d9d1911be5be8b56d665f",
+    "native_validation_selection.json": "e6f2a5111cac653c825c407ad8ee474790732996ac4fb227f5bc7a7cece6602e",
+    "owner_approval.json": "1fbce9035b0241abdc65b674814025d0b1ce0940f47c7dbfe3eb14d831d867af",
+    "plan.json": "067b9cf062cf74972827c5db31808f5769359e4eec4a48eed9f150e26336c7a1",
+    "release_integrity.json": "8d2bfe69b7b71c27f66ed2dc815239c03113f56ced47d677bc2ba7e73ce481d7",
+    "representative_selection.json": "05b25272ffef55b416706ab93a5781d937bc874067a54f09deddfc7d5fda10f7",
+    "resources.json": "354b092c914179956c97bf76733ee662d258a478c1f6a8811aab1110a7f770e2",
+    "supervisor.json": "f247b69ed93ecbe21b0864a3b65ca249b34910376bac24b4d65f975d82c3c385"
+  },
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "role_subjects": {
+    "branch_calibration": 10,
+    "g_domain": 10,
+    "train": 30
+  },
+  "sampled_peaks": {
+    "output_bytes": 17282819455,
+    "rss_bytes": 395608064,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": null,
+  "strict_replay_count": null,
+  "supervised_wall_seconds": 3851.2231036179874,
+  "visual_inspection_pending": false
+}

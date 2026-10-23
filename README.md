@@ -1,5 +1,21 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+CASIA287 diagnosed but stopped at the original two-hour deadline (2026-10-23):
+[Report287](docs/287-casia-native-probe-recovery-and-deadline-stop.md) demonstrates
+the actual missing-terminal-timestamp and native non-coded-VOP count correction,
+with425 fixed-source RGB frames proved before recovery. A separately approved
+same-deadline observer handoff preserved17 committed outputs without repeating
+their decoding/inference. The package ultimately stopped with447 provisional
+transactions (441 detector successes,6 detector failures), one interrupted
+original and152 not attempted. The
+[partial accounting](results/phase1/casia-preprocessing287-partial-v1.json)
+retains all600 originals; full readback/actual crop review/local completion
+did not finish. The observer's growing-tree scan remained too slow.
+A subsequently approved asynchronous observer change could not start after
+the unchanged deadline expired; no extension or further run was made.
+Both CASIA audit statuses remain unaudited; OULU/MSU remain accepted.
+Earlier285 failure descriptions below are historical, not the current diagnosis.
+
 CASIA285 blocked after the single authorized run (2026-10-23):
 [Report285](docs/285-casia-combined-integrity-and-preprocessing.md) reconciles
 600 originals/50 subjects, all600 native CRC/size/SHA joins and full readback,

@@ -1,0 +1,50 @@
+{
+  "accounting_complete": false,
+  "actual_bounded_crop_review_completed": false,
+  "administrative_metadata_inventory_only": true,
+  "async_storage_approval_executed": false,
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "checker_sha256": "7a3940af1bd5ceecfc46c8fe6c333ea62ddd5367359fafdb2300e44318e35fe8",
+  "checkpoint": 287,
+  "committed_image_asset_references": 1770,
+  "committed_role_counts": {
+    "branch_calibration": 108,
+    "g_domain": 84,
+    "train": 255
+  },
+  "dataset": "CASIA-FASD",
+  "execution_counts": {
+    "committed_provisional": 447,
+    "interrupted_before_commit": 1,
+    "not_attempted_after_deadline": 152
+  },
+  "failure": "TimeoutError: combined two-hour CASIA287 deadline",
+  "fresh_media_or_pixel_readback": false,
+  "full600_readback_completed": false,
+  "image_export_software_complete": false,
+  "local_audit_complete": false,
+  "originals": 600,
+  "owned_image_files_present": 1770,
+  "package_wall_seconds": 7208.954565286636,
+  "primary_image_preprocessing_complete": false,
+  "private_partial_accounting_sha256": "629adc348f7c855faf6d61ee45b79cd65ed41ba9341a5a9fa6cb1e99f3356923",
+  "producer_reported_committed_native_frames": 82774,
+  "producer_reported_committed_outcomes": {
+    "failed": 6,
+    "success": 441
+  },
+  "producer_reported_committed_selected": 447,
+  "producer_reported_explicit_non_coded_vops": 99,
+  "producer_reported_timestamp_transports": {
+    "native_packet_dts_guarded_genpts": 447
+  },
+  "resources_sha256": "354b092c914179956c97bf76733ee662d258a478c1f6a8811aab1110a7f770e2",
+  "sampled_peaks": {
+    "output_bytes": 17282819455,
+    "rss_bytes": 395608064,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "wall_cap_compliance_claimed": false
+}
