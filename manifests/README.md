@@ -3,6 +3,36 @@
 Tracked summary files contain only aggregate, non-sensitive counts and SHA-256 values.
 Restricted row-level evidence remains under ignored `manifests/private/`.
 
+## Adopted SiW source-use exclusions (293)
+
+[Review292](../docs/292-review-doc291-siw-images-and-exact-crossing-resolution.md)
+and one explicit owner adoption introduce
+[siwmv2-source-use-exclusions-v1](../configs/siwmv2_source_use_v1.yaml).
+The archived/prepared denominator remains1680, including all6672 image assets.
+Both summaries retain the original frozen counts and hashes: source632/215/210,
+test623, unknown subjects. Their `complete` status now means bounded local audit
+under this explicit use amendment, not a clean original archive.
+
+The private versioned overlay excludes five source originals from all source use;
+it does not delete originals or change their roles. Effective source counts are
+628/215/209 (1052 total), with1040 detector successes and12 retained failures.
+Official test623 remains null-role and prohibited from source use. Three
+train/test pairs retain the test original; two source-role pairs retain the more
+held-out role using g_domain > branch_calibration > train. The within-role pair
+remains active and disclosed. Historical findings remain six exact pairs/five
+forbidden crossings; effective-use checks derive zero forbidden crossings.
+
+Run the normal validator with both `--frozen-root <permanent-bundle>` and
+`--source-use-root <private293-directory>`. It verifies the policy, adoption,
+overlay/effective-manifest hashes, immutable inventory/role joins and strict
+active byte/decoded boundaries. Missing use evidence fails closed. Frozen hashes
+are not effective-use hashes. Source consumers use
+`fas.source_use.load_source_use` and its fitting/calibration/domain-use routes;
+saved transactions are hash-joined before use. SiW calibration rows require this
+context, and each subsequent SiW source-dry-run record must bind the policy,
+overlay and effective-manifest hashes. No training, target evaluation,
+participant-disjointness certification or scientific readiness is authorized.
+
 The 2026-10-08 [benchmark amendment](../docs/88-phase1-benchmark-amendment-siwmv2.md)
 defines four active core datasets. Summaries now declare `group_unit` and group
 counts separately from `subjects`; all actual counts remain unaudited. SiW-M is

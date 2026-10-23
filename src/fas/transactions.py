@@ -9,6 +9,7 @@ from collections.abc import Mapping, Sequence
 from fractions import Fraction
 from typing import Any
 
+from .source_use import SourceUseContext
 
 FROZEN_TRANSACTION_POLICY = {
     "version": 1, "state": "frozen_before_model_execution",
@@ -105,7 +106,9 @@ def technical_transaction(
     }
 
 
-def calibration_fit_rows(rows: Sequence[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
+def calibration_fit_rows(
+    rows: Sequence[Mapping[str, Any]], *, source_use: SourceUseContext | None = None,
+) -> list[Mapping[str, Any]]:
     result = []
     identities = set()
     for row in rows:
@@ -113,6 +116,10 @@ def calibration_fit_rows(rows: Sequence[Mapping[str, Any]]) -> list[Mapping[str,
         if not isinstance(identity, str) or not identity or identity in identities:
             raise ValueError("invalid or duplicate calibration transaction identity")
         identities.add(identity)
+        if row.get("dataset") == "SiW-Mv2" or "source_use_policy_id" in row or source_use is not None:
+            if source_use is None:
+                raise ValueError("SiW source calibration requires adopted use eligibility")
+            source_use.require_row(row, "calibration")
         if row.get("role") != "branch_calibration" or row.get("binary_label") not in {"attack", "bona_fide"}:
             raise ValueError("invalid calibration population")
         status = row.get("technical_status")

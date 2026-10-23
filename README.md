@@ -1,5 +1,23 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+SiW local audit closed under explicitly adopted source-use amendment (2026-10-23):
+[Report293](docs/293-siwmv2-adopted-source-use-and-saved-evidence-closure.md)
+implements [Review292](docs/292-review-doc291-siw-images-and-exact-crossing-resolution.md).
+All1680 originals/6672 prepared images and original632/215/210 roles remain
+archived unchanged. The owner adopted exactly five source-use exclusions:
+effective source roles628/215/209 =1052 originals (1040 detector successes,
+12 retained failures); all623 null-role test originals remain source-ineligible.
+The versioned [policy](configs/siwmv2_source_use_v1.yaml) retains official test
+copies and uses fixed g_domain > branch_calibration > train priority for source
+crossings. Historical six pairs/five crossings remain reported; effective use
+has zero prohibited byte/decoded crossings and retains the one within-role pair.
+Closure reuses291's sealed readback/visual evidence without media decoding,
+detector calls or reopening sheets. The normal validator requires both private
+frozen and adopted-use roots; both SiW audit statuses are complete under this
+amendment, not an assertion of clean original boundaries. No source fitting,
+target evaluation, participant certification or scientific readiness is authorized.
+Earlier blocked descriptions below preserve creation-time history.
+
 SiW291 image artifacts verified; local acceptance blocked (2026-10-23):
 [Report291](docs/291-siwmv2-local-audit-and-primary-images.md) processes all1680
 frozen originals:1664 detector successes,16 retained detector failures,

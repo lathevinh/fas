@@ -1,0 +1,121 @@
+{
+  "active_originals": 1675,
+  "archived_membership_and_roles_unchanged": true,
+  "archived_originals": 1680,
+  "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+  "effective_role_counts": {
+    "branch_calibration": {
+      "attack": 110,
+      "bona_fide": 105,
+      "class_detector_counts": {
+        "attack": {
+          "success": 110
+        },
+        "bona_fide": {
+          "failed": 1,
+          "success": 104
+        }
+      },
+      "detector_failure": 1,
+      "detector_success": 214,
+      "originals": 215
+    },
+    "g_domain": {
+      "attack": 104,
+      "bona_fide": 105,
+      "class_detector_counts": {
+        "attack": {
+          "success": 104
+        },
+        "bona_fide": {
+          "success": 105
+        }
+      },
+      "detector_failure": 0,
+      "detector_success": 209,
+      "originals": 209
+    },
+    "official_test_null_role": {
+      "attack": 362,
+      "bona_fide": 261,
+      "class_detector_counts": {
+        "attack": {
+          "failed": 3,
+          "success": 359
+        },
+        "bona_fide": {
+          "failed": 1,
+          "success": 260
+        }
+      },
+      "detector_failure": 4,
+      "detector_success": 619,
+      "originals": 623
+    },
+    "train": {
+      "attack": 314,
+      "bona_fide": 314,
+      "class_detector_counts": {
+        "attack": {
+          "failed": 5,
+          "success": 309
+        },
+        "bona_fide": {
+          "failed": 6,
+          "success": 308
+        }
+      },
+      "detector_failure": 11,
+      "detector_success": 617,
+      "originals": 628
+    }
+  },
+  "frozen_artifact_sha256": {
+    "siw_mv2_canonical.json": "16e726fe03588305780fc18a90965da99d1fba81cb4fa94690f416564189bb87",
+    "siw_mv2_metadata.csv": "f29780e41d61521a5ba77b8a809d6da45f4927798073b592a4d4c093cb1a39fb",
+    "siw_mv2_roles.csv": "a3cc84b6981f6122ce65c850728d2370978efab0e568dabb52871d7efd738ce7",
+    "source_role_freeze.json": "dcb6860522c04bc1a69d7c5a4b62809a7c046ee57e25132b6988b131e59a4e8f"
+  },
+  "historical_exact_groups": {
+    "binary_label_crossing_groups": 0,
+    "duplicate_groups_by_kind": {
+      "decoded_rgb_sequence_sha256": 6,
+      "media_sha256": 6
+    },
+    "forbidden_unique_groups": 5,
+    "local_audit_complete": false,
+    "official_train_test_crossing_groups": 3,
+    "promotion_permitted": false,
+    "scientific_readiness": false,
+    "source_role_only_crossing_groups": 2,
+    "unique_duplicate_member_sets": 6,
+    "unique_duplicated_originals": 12,
+    "within_one_partition_role_class_groups": 1
+  },
+  "official_test_originals": 623,
+  "official_test_retained": true,
+  "original_plan_sha256": "894077e5c5388feb974808befc368e78661b0191d1c113c4f844ddce194dc5f5",
+  "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+  "owner_adoption_sha256": "d6daac4cd7ab834af3e6486a0162a0ee5d49f36e2c25f0611985806ceaf8ea04",
+  "policy_id": "siwmv2-source-use-exclusions-v1",
+  "private_proposal_sha256": "de9486756f811b15b269da67284673dee1cb9624ec5a594b6764f4a97f277583",
+  "review292_sha256": "557b679712abe043ce1f12cab4270bb7ea462078e9463cd12ecf2639e6387d05",
+  "scientific_readiness": false,
+  "source_excluded_indices": [
+    1606,
+    1614,
+    1644,
+    1662,
+    1665
+  ],
+  "source_role_retention_priority": [
+    "g_domain",
+    "branch_calibration",
+    "train"
+  ],
+  "source_use_originals": 1052,
+  "state": "owner_adopted",
+  "target_evaluation_authorized": false,
+  "training_authorized": false,
+  "version": 1
+}

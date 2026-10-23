@@ -16,6 +16,7 @@ from typing import Any
 from .contracts import CORE_DOMAINS, GROUP_BOUNDARIES, SIWMV2_ATTACK_FAMILIES, validate_source_evidence
 from .freeze import build_analysis_freeze_record
 from .preprocessing_policy import validate_active_preprocessing
+from .source_use import POLICY_ID, POLICY_PATH, load_source_use, use_binding, validate_policy
 
 CONFIG_FILES = (
     "experiment_core_v1.yaml",
@@ -79,7 +80,9 @@ def validate(root: Path, require_counts: bool = True) -> list[str]:
     return validate_stage(root, "data-audit" if require_counts else "schema")
 
 
-def validate_stage(root: Path, stage: str, *, frozen_root: Path | None = None) -> list[str]:
+def validate_stage(
+    root: Path, stage: str, *, frozen_root: Path | None = None, source_use_root: Path | None = None,
+) -> list[str]:
     if stage not in STAGES:
         raise ValueError(f"stage must be one of {', '.join(STAGES)}")
     errors: list[str] = []
@@ -96,6 +99,11 @@ def validate_stage(root: Path, stage: str, *, frozen_root: Path | None = None) -
 
     _validate_config_schema(configs, errors)
     _validate_benchmark(root, configs.get("benchmark_amendment_v2.yaml", {}), errors)
+    if (root / POLICY_PATH).exists():
+        try:
+            validate_policy(load_config(root / POLICY_PATH))
+        except (OSError, ValueError, KeyError) as exc:
+            errors.append(f"invalid source-use policy: {exc}")
 
     frozen_files = None
     identities: dict[Path, tuple[int, ...]] = {}
@@ -107,7 +115,7 @@ def validate_stage(root: Path, stage: str, *, frozen_root: Path | None = None) -
         except ValueError as exc:
             return errors + [f"invalid external frozen evidence binding: {exc}"]
     if STAGES.index(stage) >= STAGES.index("data-audit"):
-        _validate_data_evidence(root, errors, frozen_files)
+        _validate_data_evidence(root, errors, frozen_files, source_use_root, identities)
     if STAGES.index(stage) >= STAGES.index("source-dry-run"):
         _validate_source_dry_run(root, errors)
     if STAGES.index(stage) >= STAGES.index("analysis-freeze"):
@@ -123,6 +131,15 @@ def validate_stage(root: Path, stage: str, *, frozen_root: Path | None = None) -
                 errors.append("external frozen evidence binding drift")
         except (OSError, ValueError):
             errors.append("external frozen evidence binding drift")
+    if source_use_root is not None and STAGES.index(stage) >= STAGES.index("data-audit"):
+        try:
+            bound = source_use_root.absolute()
+            if bound.resolve(strict=True) != bound or any(
+                _binding_identity(path) != identity for path, identity in identities.items()
+            ):
+                errors.append("external source-use evidence binding drift")
+        except (OSError, ValueError):
+            errors.append("external source-use evidence binding drift")
     return errors
 
 
@@ -186,6 +203,7 @@ def artifact_hashes(root: Path) -> dict[str, str]:
     paths = [root / "configs" / name for name in CONFIG_FILES]
     paths += [root / INTERSECTION_EVIDENCE, root / HISTORICAL_CONFIG]
     paths += [root / "configs" / "role_policy_frozen_v2.yaml", root / "configs" / "role_policy_proposal_v2.yaml", root / "configs" / "transaction_policy_v1.yaml"]
+    paths += [root / POLICY_PATH]
     paths += [root / "manifests" / "dataset_summary.csv", root / "manifests" / "split_summary.csv"]
     for directory in (root / "src" / "fas", root / "scripts"):
         paths.extend(sorted(directory.rglob("*.py")))
@@ -288,6 +306,23 @@ def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
         source_artifacts.get("competence.json", {}),
         source_artifacts.get("applicability.json", {}),
     ))
+    if (root / POLICY_PATH).exists():
+        try:
+            binding = use_binding((root / POLICY_PATH).read_bytes())
+        except (OSError, ValueError, KeyError) as exc:
+            errors.append(f"invalid source-use dry-run binding: {exc}")
+        else:
+            if evidence.get("source_use_binding") != binding:
+                errors.append("source-dry-run requires the adopted source-use policy/overlay/manifest binding")
+            for name, artifact in source_artifacts.items():
+                records = artifact.get("records")
+                if not isinstance(records, list):
+                    continue
+                for record in records:
+                    if (isinstance(record, dict) and isinstance(record.get("source_domains"), list)
+                            and "SiW-Mv2" in record["source_domains"]
+                            and record.get("source_use_binding") != binding):
+                        errors.append(f"{name} SiW source consumer lacks the adopted use binding")
     if evidence.get("source_policy_path") != SOURCE_POLICY_PATH:
         errors.append(f"source-dry-run policy must reference {SOURCE_POLICY_PATH}")
     policy_path = root / SOURCE_POLICY_PATH
@@ -601,7 +636,10 @@ def _validate_claims(config: dict[str, Any], errors: list[str]) -> None:
         errors.append("standalone branch failure must remain scoped to its own claim")
 
 
-def _validate_data_evidence(root: Path, errors: list[str], frozen_files: dict[str, bytes] | None = None) -> None:
+def _validate_data_evidence(
+    root: Path, errors: list[str], frozen_files: dict[str, bytes] | None = None,
+    source_use_root: Path | None = None, identities: dict[Path, tuple[int, ...]] | None = None,
+) -> None:
     datasets = _read_summary(root / "manifests" / "dataset_summary.csv", DATASET_COLUMNS, errors)
     splits = _read_summary(root / "manifests" / "split_summary.csv", SPLIT_COLUMNS, errors)
     if not datasets or not splits:
@@ -621,6 +659,54 @@ def _validate_data_evidence(root: Path, errors: list[str], frozen_files: dict[st
             if dataset == "SiW-Mv2" and not any(item["video_id"] == row["video_id"] and item["official_split"] == "train"
                                                for item in metadata_records.get(dataset, [])):
                 errors.append("SiW-Mv2 target test video cannot enter source roles")
+    _validate_source_use_evidence(root, datasets, metadata_records, role_records, frozen_files,
+                                  source_use_root, identities if identities is not None else {}, errors)
+
+
+def _validate_source_use_evidence(
+    root: Path, datasets: dict, metadata: dict, roles: dict,
+    frozen_files: dict[str, bytes] | None, source_use_root: Path | None,
+    identities: dict[Path, tuple[int, ...]], errors: list[str],
+) -> None:
+    policy_path = root / POLICY_PATH
+    if not policy_path.exists():
+        if POLICY_ID in datasets.get("SiW-Mv2", {}).get("metadata_source", ""):
+            errors.append("amended SiW audit requires the adopted source-use policy")
+        return
+    if frozen_files is None or source_use_root is None:
+        errors.append("adopted SiW source use requires --frozen-root and --source-use-root")
+        return
+    try:
+        bound = source_use_root.absolute()
+        if bound.resolve(strict=True) != bound or bound.is_relative_to(root.resolve()) or not bound.is_dir():
+            raise ValueError("source-use root must be an external non-symlink directory")
+        identities[bound] = _binding_identity(bound)
+        policy_payload, identities[policy_path] = _bound_regular_bytes(policy_path)
+        policy = json.loads(policy_payload)
+        payloads = {}
+        for name in ("effective_use_manifest.json", "overlay.json", "owner_adoption.json"):
+            path = bound / name
+            if path.resolve(strict=True).parent != bound:
+                raise ValueError("source-use artifact path escape")
+            payloads[name], identities[path] = _bound_regular_bytes(path)
+        context = load_source_use(policy_payload, payloads["effective_use_manifest.json"],
+                                  payloads["overlay.json"], payloads["owner_adoption.json"])
+        for name, digest in policy["frozen_artifact_sha256"].items():
+            if name not in frozen_files or hashlib.sha256(frozen_files[name]).hexdigest() != digest:
+                raise ValueError("source-use overlay does not bind the permanent frozen bytes")
+        source_roles = {row["video_id"]: row for row in roles.get("SiW-Mv2", [])}
+        archived = {row["video_id"]: row for row in metadata.get("SiW-Mv2", [])}
+        if set(archived) != {row["video_id"] for row in context.rows}:
+            raise ValueError("effective-use manifest must retain the full archived population")
+        for row in context.rows:
+            original = archived[row["video_id"]]
+            role = source_roles.get(row["video_id"])
+            if (any(row[key] != original[key] for key in ("binary_label", "official_split"))
+                    or row["role"] != (role["role"] if role is not None else None)
+                    or (role is not None and row["binary_label"] != role["binary_label"])):
+                raise ValueError("source-use manifest changed an archived label/partition/role")
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        errors.append(f"invalid adopted source-use evidence: {exc}")
 
 
 def _validate_siwmv2_population(root: Path, rows: list[dict[str, str]], errors: list[str]) -> None:

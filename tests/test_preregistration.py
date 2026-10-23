@@ -34,7 +34,7 @@ class PreregistrationTest(unittest.TestCase):
 
     def test_readiness_is_blocked_until_real_counts_are_audited(self) -> None:
         errors = validate(ROOT, require_counts=True)
-        self.assertTrue(any("unaudited dataset" in error for error in errors))
+        self.assertTrue(any("unaudited dataset" in error or "missing private evidence" in error for error in errors))
 
     def test_all_frozen_artifacts_have_hashes(self) -> None:
         hashes = artifact_hashes(ROOT)
@@ -525,6 +525,8 @@ class PreregistrationTest(unittest.TestCase):
             yield destination
 
     def _write_synthetic_evidence(self, root: Path) -> None:
+        # These fixtures model the original, unamended population contract.
+        (root / "configs/siwmv2_source_use_v1.yaml").unlink(missing_ok=True)
         private = root / "manifests" / "private"
         private.mkdir(parents=True)
         dataset_rows = []
