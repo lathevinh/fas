@@ -1,5 +1,13 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Accepted MSU local completion (2026-10-23):
+[Review284](docs/284-review-msu282-local-audit-and-image-completion.md) accepts the
+MSU282 terminal recovery:280 originals,272 successful primary images/crop sets,
+8 retained pre-detector technical failures, no detector failures. Both MSU audit
+statuses are complete;OULU remains complete. Move to CASIA-FASD with the same fixed
+pipeline and one combined package. No MSU rerun/extra activation is requested.
+Four CASIA/SiW-Mv2 audit-status fields and later scientific stages remain pending.
+
 MSU local audit and primary-image preprocessing complete (2026-10-22):
 [Package282 final](docs/282-msu-combined-integrity-and-preprocessing.md) completes
 the handoff in [Review283](docs/283-review-doc282-msu-recovery-in-progress.md):
