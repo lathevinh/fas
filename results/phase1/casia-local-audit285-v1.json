@@ -1,0 +1,37 @@
+{
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "checker_sha256": "7555cd9d030488c71d988d0d4bfd56e6d81ed46d775c83a3f1ba160d645e8988",
+  "checkpoint": 285,
+  "dataset": "CASIA-FASD",
+  "exact_probe_failure_cause_established": false,
+  "local_audit_complete": false,
+  "normal_validator_error_count": 4,
+  "normal_validator_errors": [
+    "dataset_summary.csv has unaudited dataset: CASIA-FASD",
+    "dataset_summary.csv has unaudited dataset: SiW-Mv2",
+    "split_summary.csv has unaudited dataset: CASIA-FASD",
+    "split_summary.csv has unaudited dataset: SiW-Mv2"
+  ],
+  "originals": 600,
+  "pre_detector_failure": 600,
+  "pre_detector_failure_reasons": {
+    "invalid_or_undecodable_media": 600
+  },
+  "primary_image_preprocessing_complete": false,
+  "readback_sha256": "14ea5d9e01a977060fa10475601e137203e637b0d9a85e807dbc4c94a5f33d33",
+  "release_integrity_sha256": "51df3f74c1590e36ee63d073c717d1d41f9684394bc689fff70ac2dafe0c3b8b",
+  "release_role_subject_integrity_subchecks_passed": true,
+  "resources_sha256": "c8f0384d292be333612e98bb31b2aee0ebd81548b54902c76f23f23d296a5e45",
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "scientific_readiness": false,
+  "selected": 0,
+  "status": "blocked_no_selected_images",
+  "strict_probe_failure_not_proof_of_physical_corruption": true,
+  "video_crc_checked": 600,
+  "visual_review_sha256": "ed3709d85956f22ef25f4a45e7639567ede20bfe77678da1fb376597bab5e34b"
+}

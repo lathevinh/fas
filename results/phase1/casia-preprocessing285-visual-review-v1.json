@@ -1,0 +1,17 @@
+{
+  "all_images_visually_inspected": false,
+  "checkpoint": 285,
+  "dataset": "CASIA-FASD",
+  "full_readback_sha256": "14ea5d9e01a977060fa10475601e137203e637b0d9a85e807dbc4c94a5f33d33",
+  "inspected_face_crops": 0,
+  "no_image_placeholders": 64,
+  "observations": "Actually opened both fixed sheets:64 explicit DECODE FAILURE placeholders, no face crops, no selected images. This confirms no-image accounting only; crop usability cannot pass. No detector-failure sheets exist because detector was never reached.",
+  "opened_tiles": 64,
+  "primary_image_preprocessing_complete": false,
+  "private_visual_review_sha256": "ed3709d85956f22ef25f4a45e7639567ede20bfe77678da1fb376597bab5e34b",
+  "recorded_unix_seconds": 1792716607.9746926,
+  "resources_sha256": "c8f0384d292be333612e98bb31b2aee0ebd81548b54902c76f23f23d296a5e45",
+  "sample_crop_usability_check_pass": false,
+  "status": "blocked_no_selected_images",
+  "visual_inspection_completed": true
+}

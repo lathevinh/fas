@@ -1,5 +1,17 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+CASIA285 blocked after the single authorized run (2026-10-23):
+[Report285](docs/285-casia-combined-integrity-and-preprocessing.md) reconciles
+600 originals/50 subjects, all600 native CRC/size/SHA joins and full readback,
+but all600 fail the configured strict pre-detector probe: **zero selected
+images/crops**. The exact underlying probe failure is not yet established;
+this is not proof of600 physically corrupt files. Both fixed sheets were
+opened:64 no-image placeholders, no crop-usability acceptance.
+The [local assessment](results/phase1/casia-local-audit285-v1.json) explicitly
+blocks completion; CASIA's two audit statuses remain unaudited, as do SiW-Mv2's.
+No original was retried, no check relaxed and no OULU/MSU milestone changed.
+Additional media diagnosis/recovery requires explicit additional authority.
+
 Accepted MSU local completion (2026-10-23):
 [Review284](docs/284-review-msu282-local-audit-and-image-completion.md) accepts the
 MSU282 terminal recovery:280 originals,272 successful primary images/crop sets,

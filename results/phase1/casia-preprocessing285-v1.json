@@ -1,0 +1,67 @@
+{
+  "active_config_sha256": "a4f1a27ffc6418c548702e38f3454d67a17ec834fda351ed46d6accaba738c71",
+  "attempts": 1,
+  "audit_summary_statuses_changed": false,
+  "automatic_retry": false,
+  "caps": {
+    "gpu_seconds": 0,
+    "output_bytes": 34359738368,
+    "rss_bytes": 4294967296,
+    "wall_seconds": 14400
+  },
+  "checkpoint": 285,
+  "completion_claimed": true,
+  "dataset": "CASIA-FASD",
+  "detector_failure": 0,
+  "detector_success": 0,
+  "exact_duplicate_groups": 0,
+  "failure": null,
+  "fitted_scores": 0,
+  "forbidden_exact_crossings": 0,
+  "gpu_seconds": 0,
+  "model_downloads": 0,
+  "model_scores": 0,
+  "native_frames": 0,
+  "near_duplicate_independence_certified": false,
+  "originals": 600,
+  "package_wall_seconds": 1578.1278941631317,
+  "pre_detector_failure": 600,
+  "private_record_sha256": {
+    "attempt_lock.json": "17b3d750e6024337278b5a98f6d4b8789db267c3b2eaa7505254611dc429aa8a",
+    "content_checks.json": "d5a81a5b8fef244d9d23068297bbb2c156b8e7f05df4acce3eb3011c65a5028d",
+    "full_manifest.json": "066800d52657eb433e11c3d62107cd813beeea628d795dcd761c3b6c7ee1d382",
+    "owner_approval.json": "9a4e875d3c6820f4c8939073ea363efffa976ce71933fd5777cc23c8b9632395",
+    "plan.json": "22c5012961bf7794a023cd2f1ecaeee468e77a97b7641ddace82c7123dac4e54",
+    "readback.json": "14ea5d9e01a977060fa10475601e137203e637b0d9a85e807dbc4c94a5f33d33",
+    "release_integrity.json": "51df3f74c1590e36ee63d073c717d1d41f9684394bc689fff70ac2dafe0c3b8b",
+    "resources.json": "c8f0384d292be333612e98bb31b2aee0ebd81548b54902c76f23f23d296a5e45",
+    "supervisor.json": "f30f448e9025a1f491893777d97c6652f4f2be5a1f2ef06e3629e7d9713ca4f2",
+    "worker_completion.json": "25f7b119fa9a521f4f46b81aecfc7bf61d3569c8e63943386aaa1f4cb553119e"
+  },
+  "readback_sha256": "14ea5d9e01a977060fa10475601e137203e637b0d9a85e807dbc4c94a5f33d33",
+  "role_originals": {
+    "branch_calibration": 120,
+    "g_domain": 120,
+    "train": 360
+  },
+  "role_subjects": {
+    "branch_calibration": 10,
+    "g_domain": 10,
+    "train": 30
+  },
+  "sampled_peaks": {
+    "output_bytes": 16576978904,
+    "rss_bytes": 265527296,
+    "temporary_bytes": 0
+  },
+  "scientific_readiness": false,
+  "selected": 0,
+  "status": "software_complete_visual_review_pending",
+  "strict_replay_count": 0,
+  "subjects": 50,
+  "supervised_wall_seconds": 235.54427065199707,
+  "target_access": false,
+  "video_payload_bytes": 866586586,
+  "visual_inspection_completed": false,
+  "visual_inspection_pending": true
+}
