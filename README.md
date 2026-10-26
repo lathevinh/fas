@@ -14,7 +14,9 @@ Normal schema/data-audit/source-dry-run gates pass; both source claims are
 eligible in all12 combinations. This is not a positive target RQ verdict:
 all12 primary heterogeneous domain-minus-sample AP intervals are negative,
 and standalone OpenCLIP fails competence everywhere. No result triggered tuning.
-Analysis freeze follows separately through the normal clean-commit gate.
+The immutable [analysis freeze](results/analysis-freeze/freeze_record.json)
+was created separately from clean source-evidence commit14b29a4 through the
+normal gate, without rewriting creation-time execution receipts.
 No target predictions/tuning, gate selection or locked-evaluation authorization.
 See the [actual execution](results/phase1/source-run299-v1.json),
 [closure](results/phase1/source-closure299-v1.json) and

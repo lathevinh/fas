@@ -20,6 +20,12 @@ claim-specific source applicability. The canonical
 the completed worker, not readiness placeholders. Passing these source
 prerequisites is not evidence that RQ1 or RQ2 succeeds on target data.
 
+The immutable [analysis freeze](../results/analysis-freeze/freeze_record.json)
+was created through the normal CLI from clean source-evidence commit
+`14b29a4ff04f4d7ff40b276edf2eafe7e4a69cd1`. Normal analysis-freeze validation
+passed before committing the record; its committed persistence is checked
+again at publication. No locked-evaluation authorization exists.
+
 ## Scope
 
 This package continues the fixed experiment rather than tuning away297's
@@ -338,6 +344,13 @@ model. Analysis freeze is attempted only after that source gate succeeds and
 the source package is committed cleanly. No locked-evaluation authorization
 is created. G_domain diagnostics do not select a gate or risk variant.
 
+The source/evidence commit precedes the separate freeze-record commit.
+Creation-time execution/closure receipts retain their original
+`pending_clean_commit_and_existing_gate` field; they are not rewritten after
+freeze. The immutable record and normal post-commit validation establish the
+later state. Published-head CI is checked separately against its exact SHA;
+local tests or an unfinished Actions job are not labeled CI success.
+
 The [297 CI terminal receipt](../results/phase1/source297-ci-terminal-v1.json)
 closes the previously unconfirmed publication check: exact-head
 run40290548935/job121464322107 completed successfully at08:39:08Z with all12
@@ -354,3 +367,9 @@ reuse without refitting and persisted-freeze identity checks. These synthetic
 tests are distinct from the actual source execution evidence. Changed Python
 files compile. Pylance MCP was unavailable earlier; no editor type-check
 success is claimed.
+
+The final combined64-test run also exposed a test-fixture assumption:
+the external-root negative test inherited newly real source evidence from
+the workspace. It now explicitly removes named source/freeze evidence only
+inside its isolated temporary fixture, preserving its intended missing-
+evidence assertions without deleting real outputs or weakening validation.
