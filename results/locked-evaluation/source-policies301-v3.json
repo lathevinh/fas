@@ -1,0 +1,3355 @@
+{
+  "owner_selected": "worst_source_fa_1pct_max_coverage",
+  "records": [
+    {
+      "key": "OULU-NPU-20260917",
+      "outer_target": "OULU-NPU",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2238095238095238,
+          "source_macro_coverage": 0.9384237107921319,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9788135593220338,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.24832214765100669,
+            "bona_fide_coverage": 0.912751677852349,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 13,
+            "bona_fide_originals": 149,
+            "coverage": 0.9532467532467532,
+            "covered_apcer": 0.004329004329004329,
+            "covered_bpcer": 0.17647058823529416,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  27,
+                  28
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  10,
+                  11
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  75,
+                  97
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.38463964180707716
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.319047619047619,
+          "source_macro_coverage": 0.8747113997113997,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9788135593220338,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.38926174496644295,
+            "bona_fide_coverage": 0.6912751677852349,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 46,
+            "bona_fide_originals": 149,
+            "coverage": 0.8675324675324675,
+            "covered_apcer": 0.004329004329004329,
+            "covered_bpcer": 0.11650485436893199,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  26,
+                  26
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  9,
+                  9
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  56,
+                  68
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.2761853819998553
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.1349206349206349,
+          "source_macro_coverage": 0.9654534062428799,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9788135593220338,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.18120805369127513,
+            "bona_fide_coverage": 0.9798657718120806,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 3,
+            "bona_fide_originals": 149,
+            "coverage": 0.9792207792207792,
+            "covered_apcer": 0.004329004329004329,
+            "covered_bpcer": 0.1643835616438356,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  12,
+                  13
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  81,
+                  103
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.2008051083819605
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2904761904761905,
+          "source_macro_coverage": 0.874643047011468,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9788135593220338,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.42281879194630867,
+            "bona_fide_coverage": 0.6577181208053692,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 51,
+            "bona_fide_originals": 149,
+            "coverage": 0.8545454545454545,
+            "covered_apcer": 0.004329004329004329,
+            "covered_bpcer": 0.12244897959183676,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  29
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  10,
+                  10
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  47,
+                  59
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.16822715809923539
+        }
+      },
+      "seed": 20260917
+    },
+    {
+      "key": "OULU-NPU-20260923",
+      "outer_target": "OULU-NPU",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.08412698412698412,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9872881355932204,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1610738255033557,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 149,
+            "coverage": 0.9922077922077922,
+            "covered_apcer": 0.004291845493562232,
+            "covered_bpcer": 0.1610738255033557,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  14,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  82,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5297087581919069
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.06984126984126986,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9872881355932204,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1476510067114094,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 149,
+            "coverage": 0.9922077922077922,
+            "covered_apcer": 0.004291845493562232,
+            "covered_bpcer": 0.1476510067114094,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  14,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  83,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5818135165091368
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.08412698412698412,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9872881355932204,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1610738255033557,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 149,
+            "coverage": 0.9922077922077922,
+            "covered_apcer": 0.004291845493562232,
+            "covered_bpcer": 0.1610738255033557,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  14,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  82,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.32012127337961993
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.06984126984126986,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9872881355932204,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1476510067114094,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 149,
+            "coverage": 0.9922077922077922,
+            "covered_apcer": 0.004291845493562232,
+            "covered_bpcer": 0.1476510067114094,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  14,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  83,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.4768464508446667
+        }
+      },
+      "seed": 20260923
+    },
+    {
+      "key": "OULU-NPU-20261001",
+      "outer_target": "OULU-NPU",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.22857142857142856,
+          "source_macro_coverage": 0.9416135034556087,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9830508474576272,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 1,
+            "bfnr_end2end": 0.24161073825503354,
+            "bona_fide_coverage": 0.9194630872483222,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 12,
+            "bona_fide_originals": 149,
+            "coverage": 0.9584415584415584,
+            "covered_apcer": 0.004310344827586207,
+            "covered_bpcer": 0.17518248175182483,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  26,
+                  28
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  10,
+                  10
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  77,
+                  99
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.41170317264668177
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.1285714285714286,
+          "source_macro_coverage": 0.9539302802460696,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9788135593220338,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.13422818791946312,
+            "bona_fide_coverage": 0.9463087248322147,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 8,
+            "bona_fide_originals": 149,
+            "coverage": 0.9662337662337662,
+            "covered_apcer": 0.004329004329004329,
+            "covered_bpcer": 0.08510638297872342,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  27,
+                  27
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  12,
+                  13
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  90,
+                  101
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.432129753340975
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.09523809523809523,
+          "source_macro_coverage": 0.9789530644793802,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9830508474576272,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 1,
+            "bfnr_end2end": 0.16778523489932884,
+            "bona_fide_coverage": 0.9932885906040269,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 1,
+            "bona_fide_originals": 149,
+            "coverage": 0.987012987012987,
+            "covered_apcer": 0.004310344827586207,
+            "covered_bpcer": 0.16216216216216217,
+            "estimable": true,
+            "fa_end2end": 0.00423728813559322,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  28,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  14,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  82,
+                  104
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.23618014946829827
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.9174603174603174,
+          "source_macro_coverage": 0.6838023088023087,
+          "source_macro_fa": 0.0,
+          "source_summary": {
+            "attack_coverage": 0.9745762711864406,
+            "attack_detector_coverage": 0.9872881355932204,
+            "attack_failures": 3,
+            "attack_originals": 236,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 3,
+            "bfnr_end2end": 0.9530201342281879,
+            "bona_fide_coverage": 0.12751677852348994,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 130,
+            "bona_fide_originals": 149,
+            "coverage": 0.6467532467532467,
+            "covered_apcer": 0.0,
+            "covered_bpcer": 0.631578947368421,
+            "estimable": true,
+            "fa_end2end": 0.0,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  5,
+                  5
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  1,
+                  2
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  1,
+                  12
+                ],
+                "1": [
+                  104,
+                  0,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.052184288751939666
+        }
+      },
+      "seed": 20261001
+    },
+    {
+      "key": "CASIA-FASD-20260917",
+      "outer_target": "CASIA-FASD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.24636844636844635,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.26182965299684546,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.26182965299684546,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  145,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  78,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.4748450095168575
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.9759018759018758,
+          "source_macro_coverage": 0.6825593022961445,
+          "source_macro_fa": 0.0,
+          "source_summary": {
+            "attack_coverage": 0.9829424307036247,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 13,
+            "bfnr_end2end": 0.9716088328075709,
+            "bona_fide_coverage": 0.07886435331230283,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 292,
+            "bona_fide_originals": 317,
+            "coverage": 0.754581673306773,
+            "covered_apcer": 0.0,
+            "covered_bpcer": 0.64,
+            "estimable": true,
+            "fa_end2end": 0.0,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  0,
+                  1
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  3,
+                  10
+                ],
+                "1": [
+                  792,
+                  0,
+                  783
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  6,
+                  14
+                ],
+                "1": [
+                  104,
+                  0,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.33706563382782545
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.24636844636844635,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.26182965299684546,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.26182965299684546,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  145,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  78,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.3824093870511653
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 1.0,
+          "source_macro_coverage": 0.6719798232956128,
+          "source_macro_fa": 0.0,
+          "source_summary": {
+            "attack_coverage": 0.9829424307036247,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 13,
+            "bfnr_end2end": 1.0,
+            "bona_fide_coverage": 0.050473186119873815,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 301,
+            "bona_fide_originals": 317,
+            "coverage": 0.747410358565737,
+            "covered_apcer": 0.0,
+            "covered_bpcer": 1.0,
+            "estimable": true,
+            "fa_end2end": 0.0,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  0,
+                  1
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  0,
+                  7
+                ],
+                "1": [
+                  792,
+                  0,
+                  783
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  0,
+                  8
+                ],
+                "1": [
+                  104,
+                  0,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": -1.0
+        }
+      },
+      "seed": 20260917
+    },
+    {
+      "key": "CASIA-FASD-20260923",
+      "outer_target": "CASIA-FASD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.254016354016354,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.26498422712933756,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.26498422712933756,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  148,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  74,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5002431318124384
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.15151515151515152,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1451104100946372,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.1451104100946372,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  12,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  174,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  85,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.47360013365500236
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.254016354016354,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.26498422712933756,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.26498422712933756,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  148,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  74,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.22768578813756327
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.15151515151515152,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9968017057569296,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.1451104100946372,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9976095617529881,
+            "covered_apcer": 0.0010695187165775401,
+            "covered_bpcer": 0.1451104100946372,
+            "estimable": true,
+            "fa_end2end": 0.0010660980810234541,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  12,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  174,
+                  198
+                ],
+                "1": [
+                  792,
+                  0,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  85,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  104
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.25476402266265663
+        }
+      },
+      "seed": 20260923
+    },
+    {
+      "key": "CASIA-FASD-20261001",
+      "outer_target": "CASIA-FASD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2984607984607984,
+          "source_macro_coverage": 0.968215994531784,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9957356076759062,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 1,
+            "bfnr_end2end": 0.26813880126182965,
+            "bona_fide_coverage": 0.9842271293375394,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 5,
+            "bona_fide_originals": 317,
+            "coverage": 0.9928286852589642,
+            "covered_apcer": 0.0021413276231263384,
+            "covered_bpcer": 0.2564102564102564,
+            "estimable": true,
+            "fa_end2end": 0.0021321961620469083,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  9,
+                  13
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  148,
+                  198
+                ],
+                "1": [
+                  792,
+                  1,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  75,
+                  101
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.464516606066327
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 1.0,
+          "source_macro_coverage": 0.6745848206374522,
+          "source_macro_fa": 0.0,
+          "source_summary": {
+            "attack_coverage": 0.988272921108742,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 8,
+            "bfnr_end2end": 1.0,
+            "bona_fide_coverage": 0.0473186119873817,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 302,
+            "bona_fide_originals": 317,
+            "coverage": 0.750597609561753,
+            "covered_apcer": 0.0,
+            "covered_bpcer": 1.0,
+            "estimable": true,
+            "fa_end2end": 0.0,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  0,
+                  1
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  0,
+                  6
+                ],
+                "1": [
+                  792,
+                  0,
+                  787
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  0,
+                  8
+                ],
+                "1": [
+                  104,
+                  0,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": -1.0
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.26195286195286194,
+          "source_macro_coverage": 0.9805479608111187,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9957356076759062,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 1,
+            "bfnr_end2end": 0.25236593059936907,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 317,
+            "coverage": 0.9968127490039841,
+            "covered_apcer": 0.0021413276231263384,
+            "covered_bpcer": 0.25236593059936907,
+            "estimable": true,
+            "fa_end2end": 0.0021321961620469083,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  10,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  148,
+                  198
+                ],
+                "1": [
+                  792,
+                  1,
+                  792
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  79,
+                  105
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.2513718576540402
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.9936507936507937,
+          "source_macro_coverage": 0.6777746133009291,
+          "source_macro_fa": 0.0,
+          "source_summary": {
+            "attack_coverage": 0.988272921108742,
+            "attack_detector_coverage": 0.9968017057569296,
+            "attack_failures": 3,
+            "attack_originals": 938,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 8,
+            "bfnr_end2end": 0.9936908517350158,
+            "bona_fide_coverage": 0.05362776025236593,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 300,
+            "bona_fide_originals": 317,
+            "coverage": 0.7521912350597609,
+            "covered_apcer": 0.0,
+            "covered_bpcer": 0.8823529411764706,
+            "estimable": true,
+            "fa_end2end": 0.0,
+            "source_class_counts": {
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  0,
+                  1
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  0,
+                  6
+                ],
+                "1": [
+                  792,
+                  0,
+                  787
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  2,
+                  10
+                ],
+                "1": [
+                  104,
+                  0,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.052422054180286205
+        }
+      },
+      "seed": 20261001
+    },
+    {
+      "key": "MSU-MFSD-20260917",
+      "outer_target": "MSU-MFSD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2947570947570948,
+          "source_macro_coverage": 0.9346446925394294,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9939148073022313,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 6,
+            "bfnr_end2end": 0.3513513513513513,
+            "bona_fide_coverage": 0.7327327327327328,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 89,
+            "bona_fide_originals": 333,
+            "coverage": 0.9279757391963609,
+            "covered_apcer": 0.0020408163265306124,
+            "covered_bpcer": 0.11475409836065575,
+            "estimable": true,
+            "fa_end2end": 0.002028397565922921,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  22,
+                  22
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  104,
+                  126
+                ],
+                "1": [
+                  792,
+                  1,
+                  788
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  90,
+                  96
+                ],
+                "1": [
+                  104,
+                  1,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5513650981852374
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2754208754208754,
+          "source_macro_coverage": 0.9205475810738969,
+          "source_macro_fa": 0.006151256151256152,
+          "source_summary": {
+            "attack_coverage": 0.9929006085192698,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 7,
+            "bfnr_end2end": 0.26726726726726724,
+            "bona_fide_coverage": 0.7657657657657657,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 78,
+            "bona_fide_originals": 333,
+            "coverage": 0.935557240333586,
+            "covered_apcer": 0.008171603677221655,
+            "covered_bpcer": 0.04313725490196074,
+            "estimable": true,
+            "fa_end2end": 0.008113590263691683,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  20,
+                  20
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  140,
+                  148
+                ],
+                "1": [
+                  792,
+                  7,
+                  788
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  84,
+                  87
+                ],
+                "1": [
+                  104,
+                  1,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5870285536506669
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.42111592111592105,
+          "source_macro_coverage": 0.8954944178628388,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9929006085192698,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 7,
+            "bfnr_end2end": 0.6156156156156156,
+            "bona_fide_coverage": 0.46846846846846846,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 177,
+            "bona_fide_originals": 333,
+            "coverage": 0.8605003790750568,
+            "covered_apcer": 0.0010214504596527069,
+            "covered_bpcer": 0.17948717948717952,
+            "estimable": true,
+            "fa_end2end": 0.0010141987829614604,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  27,
+                  27
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  28,
+                  50
+                ],
+                "1": [
+                  792,
+                  0,
+                  787
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  73,
+                  79
+                ],
+                "1": [
+                  104,
+                  1,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.07765637581467269
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.6132275132275132,
+          "source_macro_coverage": 0.7986709197235514,
+          "source_macro_fa": 0.0048886298886298895,
+          "source_summary": {
+            "attack_coverage": 0.9898580121703854,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 10,
+            "bfnr_end2end": 0.8138138138138138,
+            "bona_fide_coverage": 0.21921921921921922,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 260,
+            "bona_fide_originals": 333,
+            "coverage": 0.7952994692949203,
+            "covered_apcer": 0.005122950819672131,
+            "covered_bpcer": 0.15068493150684936,
+            "estimable": true,
+            "fa_end2end": 0.005070993914807302,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  26,
+                  26
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  11,
+                  19
+                ],
+                "1": [
+                  792,
+                  4,
+                  785
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  25,
+                  28
+                ],
+                "1": [
+                  104,
+                  1,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.059188323653068545
+        }
+      },
+      "seed": 20260917
+    },
+    {
+      "key": "MSU-MFSD-20260923",
+      "outer_target": "MSU-MFSD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.3157287157287157,
+          "source_macro_coverage": 0.9394382420698211,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9979716024340771,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.3303303303303303,
+            "bona_fide_coverage": 0.7957957957957958,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 68,
+            "bona_fide_originals": 333,
+            "coverage": 0.9469294920394238,
+            "covered_apcer": 0.0010162601626016261,
+            "covered_bpcer": 0.1584905660377358,
+            "estimable": true,
+            "fa_end2end": 0.0010141987829614604,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  19,
+                  20
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  117,
+                  149
+                ],
+                "1": [
+                  792,
+                  0,
+                  791
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  87,
+                  96
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.5440841223813752
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.6753727753727755,
+          "source_macro_coverage": 0.7937887648413965,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9878296146044625,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 12,
+            "bfnr_end2end": 0.7477477477477478,
+            "bona_fide_coverage": 0.2732732732732733,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 242,
+            "bona_fide_originals": 333,
+            "coverage": 0.8074298711144806,
+            "covered_apcer": 0.002053388090349076,
+            "covered_bpcer": 0.07692307692307687,
+            "estimable": true,
+            "fa_end2end": 0.002028397565922921,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  12,
+                  12
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  25,
+                  30
+                ],
+                "1": [
+                  792,
+                  1,
+                  785
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  47,
+                  49
+                ],
+                "1": [
+                  104,
+                  1,
+                  99
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.44536302698068114
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.1504088504088504,
+          "source_macro_coverage": 0.9847776005670742,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9979716024340771,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 2,
+            "bfnr_end2end": 0.2222222222222222,
+            "bona_fide_coverage": 0.9039039039039038,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 32,
+            "bona_fide_originals": 333,
+            "coverage": 0.9742228961334344,
+            "covered_apcer": 0.0010162601626016261,
+            "covered_bpcer": 0.13953488372093026,
+            "estimable": true,
+            "fa_end2end": 0.0010141987829614604,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  136,
+                  168
+                ],
+                "1": [
+                  792,
+                  0,
+                  791
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  94,
+                  103
+                ],
+                "1": [
+                  104,
+                  1,
+                  103
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.09195729558367567
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.5992303992303992,
+          "source_macro_coverage": 0.8014354066985646,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9878296146044625,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 12,
+            "bfnr_end2end": 0.8048048048048049,
+            "bona_fide_coverage": 0.21621621621621623,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 261,
+            "bona_fide_originals": 333,
+            "coverage": 0.7930250189537529,
+            "covered_apcer": 0.002053388090349076,
+            "covered_bpcer": 0.09722222222222221,
+            "estimable": true,
+            "fa_end2end": 0.002028397565922921,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  26,
+                  26
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  8,
+                  13
+                ],
+                "1": [
+                  792,
+                  1,
+                  785
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  31,
+                  33
+                ],
+                "1": [
+                  104,
+                  1,
+                  99
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.04469454540004595
+        }
+      },
+      "seed": 20260923
+    },
+    {
+      "key": "MSU-MFSD-20261001",
+      "outer_target": "MSU-MFSD",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2891774891774892,
+          "source_macro_coverage": 0.9407850434166223,
+          "source_macro_fa": 0.003626003626003626,
+          "source_summary": {
+            "attack_coverage": 0.9959432048681541,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 4,
+            "bfnr_end2end": 0.28828828828828834,
+            "bona_fide_coverage": 0.8138138138138138,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 62,
+            "bona_fide_originals": 333,
+            "coverage": 0.9499620924943138,
+            "covered_apcer": 0.002036659877800407,
+            "covered_bpcer": 0.1254612546125461,
+            "estimable": true,
+            "fa_end2end": 0.002028397565922921,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  19,
+                  20
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  129,
+                  154
+                ],
+                "1": [
+                  792,
+                  1,
+                  790
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  89,
+                  97
+                ],
+                "1": [
+                  104,
+                  1,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.567455246672512
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.59004329004329,
+          "source_macro_coverage": 0.8238747120326068,
+          "source_macro_fa": 0.0048886298886298895,
+          "source_summary": {
+            "attack_coverage": 0.9918864097363083,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 8,
+            "bfnr_end2end": 0.6336336336336337,
+            "bona_fide_coverage": 0.3843843843843844,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 205,
+            "bona_fide_originals": 333,
+            "coverage": 0.8385140257771039,
+            "covered_apcer": 0.005112474437627812,
+            "covered_bpcer": 0.046875,
+            "estimable": true,
+            "fa_end2end": 0.005070993914807302,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  13,
+                  13
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  54,
+                  57
+                ],
+                "1": [
+                  792,
+                  4,
+                  787
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  55,
+                  58
+                ],
+                "1": [
+                  104,
+                  1,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.4802504373602781
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2162097162097162,
+          "source_macro_coverage": 0.9577175261385787,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9949290060851927,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 5,
+            "bfnr_end2end": 0.31831831831831836,
+            "bona_fide_coverage": 0.7837837837837838,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 72,
+            "bona_fide_originals": 333,
+            "coverage": 0.9416224412433661,
+            "covered_apcer": 0.0010193679918450561,
+            "covered_bpcer": 0.13026819923371646,
+            "estimable": true,
+            "fa_end2end": 0.0010141987829614604,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  29,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  112,
+                  137
+                ],
+                "1": [
+                  792,
+                  0,
+                  789
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  86,
+                  94
+                ],
+                "1": [
+                  104,
+                  1,
+                  102
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.08915819814777622
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.7730158730158729,
+          "source_macro_coverage": 0.7468766613503455,
+          "source_macro_fa": 0.0032051282051282055,
+          "source_summary": {
+            "attack_coverage": 0.9878296146044625,
+            "attack_detector_coverage": 1.0,
+            "attack_failures": 0,
+            "attack_originals": 986,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 12,
+            "bfnr_end2end": 0.9129129129129129,
+            "bona_fide_coverage": 0.10510510510510511,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 298,
+            "bona_fide_originals": 333,
+            "coverage": 0.7649734647460197,
+            "covered_apcer": 0.001026694045174538,
+            "covered_bpcer": 0.17142857142857137,
+            "estimable": true,
+            "fa_end2end": 0.0010141987829614604,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  17,
+                  17
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  0,
+                  3
+                ],
+                "1": [
+                  792,
+                  0,
+                  783
+                ]
+              },
+              "SiW-Mv2": {
+                "0": [
+                  105,
+                  12,
+                  15
+                ],
+                "1": [
+                  104,
+                  1,
+                  101
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.03138201159119473
+        }
+      },
+      "seed": 20261001
+    },
+    {
+      "key": "SiW-Mv2-20260917",
+      "outer_target": "SiW-Mv2",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.8835016835016836,
+          "source_macro_coverage": 0.7802910052910054,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9902597402597403,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 6,
+            "bfnr_end2end": 0.7603305785123967,
+            "bona_fide_coverage": 0.3512396694214876,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 157,
+            "bona_fide_originals": 242,
+            "coverage": 0.8576329331046312,
+            "covered_apcer": 0.007650273224043716,
+            "covered_bpcer": 0.3176470588235294,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  2,
+                  2
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  0,
+                  1
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  56,
+                  82
+                ],
+                "1": [
+                  792,
+                  7,
+                  787
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.3169460809454643
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.0625300625300625,
+          "source_macro_coverage": 0.9687830687830687,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9935064935064936,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 3,
+            "bfnr_end2end": 0.09917355371900827,
+            "bona_fide_coverage": 0.9173553719008265,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 20,
+            "bona_fide_originals": 242,
+            "coverage": 0.9777015437392796,
+            "covered_apcer": 0.007625272331154684,
+            "covered_bpcer": 0.018018018018018056,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  13,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  175,
+                  178
+                ],
+                "1": [
+                  792,
+                  7,
+                  790
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.7199270164104042
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.2151996151996152,
+          "source_macro_coverage": 0.9403799903799904,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9902597402597403,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 6,
+            "bfnr_end2end": 0.2727272727272727,
+            "bona_fide_coverage": 0.8388429752066116,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 39,
+            "bona_fide_originals": 242,
+            "coverage": 0.9588336192109777,
+            "covered_apcer": 0.007650273224043716,
+            "covered_bpcer": 0.13300492610837433,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  26,
+                  26
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  12
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  139,
+                  165
+                ],
+                "1": [
+                  792,
+                  7,
+                  787
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.29105032621600474
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.03559403559403559,
+          "source_macro_coverage": 0.9728234728234728,
+          "source_macro_fa": 0.0012626262626262627,
+          "source_summary": {
+            "attack_coverage": 0.9891774891774892,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 7,
+            "bfnr_end2end": 0.03305785123966942,
+            "bona_fide_coverage": 0.9834710743801653,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 4,
+            "bona_fide_originals": 242,
+            "coverage": 0.9879931389365352,
+            "covered_apcer": 0.0032822757111597373,
+            "covered_bpcer": 0.01680672268907568,
+            "estimable": true,
+            "fa_end2end": 0.003246753246753247,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  13,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  191,
+                  194
+                ],
+                "1": [
+                  792,
+                  3,
+                  786
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.3323348355875185
+        }
+      },
+      "seed": 20260917
+    },
+    {
+      "key": "SiW-Mv2-20260923",
+      "outer_target": "SiW-Mv2",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.8876382876382877,
+          "source_macro_coverage": 0.7933501683501684,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9859307359307359,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 10,
+            "bfnr_end2end": 0.8016528925619835,
+            "bona_fide_coverage": 0.3512396694214876,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 157,
+            "bona_fide_originals": 242,
+            "coverage": 0.8542024013722127,
+            "covered_apcer": 0.007683863885839737,
+            "covered_bpcer": 0.43529411764705883,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  1,
+                  1
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  1,
+                  3
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  46,
+                  81
+                ],
+                "1": [
+                  792,
+                  7,
+                  782
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.30975634669005003
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.04401154401154398,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0016835016835016836,
+          "source_summary": {
+            "attack_coverage": 0.9967532467532467,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.05371900826446285,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 242,
+            "coverage": 0.9974271012006861,
+            "covered_apcer": 0.004343105320304018,
+            "covered_bpcer": 0.05371900826446285,
+            "estimable": true,
+            "fa_end2end": 0.004329004329004329,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  13,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  186,
+                  198
+                ],
+                "1": [
+                  792,
+                  4,
+                  792
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.8106173375144067
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.5383357383357383,
+          "source_macro_coverage": 0.875036075036075,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9859307359307359,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 10,
+            "bfnr_end2end": 0.44628099173553715,
+            "bona_fide_coverage": 0.7066115702479339,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 71,
+            "bona_fide_originals": 242,
+            "coverage": 0.9279588336192109,
+            "covered_apcer": 0.007683863885839737,
+            "covered_bpcer": 0.216374269005848,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  18,
+                  18
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  3,
+                  5
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  113,
+                  148
+                ],
+                "1": [
+                  792,
+                  7,
+                  782
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.1296986752891332
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.04401154401154398,
+          "source_macro_coverage": 0.9821428571428571,
+          "source_macro_fa": 0.0016835016835016836,
+          "source_summary": {
+            "attack_coverage": 0.9967532467532467,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 0,
+            "bfnr_end2end": 0.05371900826446285,
+            "bona_fide_coverage": 1.0,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 0,
+            "bona_fide_originals": 242,
+            "coverage": 0.9974271012006861,
+            "covered_apcer": 0.004343105320304018,
+            "covered_bpcer": 0.05371900826446285,
+            "estimable": true,
+            "fa_end2end": 0.004329004329004329,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  13,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  39
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  186,
+                  198
+                ],
+                "1": [
+                  792,
+                  4,
+                  792
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.39846381050105223
+        }
+      },
+      "seed": 20260923
+    },
+    {
+      "key": "SiW-Mv2-20261001",
+      "outer_target": "SiW-Mv2",
+      "policies": {
+        "domain_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.8522847522847523,
+          "source_macro_coverage": 0.781108706108706,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9816017316017316,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 14,
+            "bfnr_end2end": 0.7148760330578512,
+            "bona_fide_coverage": 0.35537190082644626,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 156,
+            "bona_fide_originals": 242,
+            "coverage": 0.8516295025728988,
+            "covered_apcer": 0.007717750826901874,
+            "covered_bpcer": 0.19767441860465118,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  1,
+                  1
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  1,
+                  3
+                ],
+                "1": [
+                  42,
+                  0,
+                  37
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  67,
+                  82
+                ],
+                "1": [
+                  792,
+                  7,
+                  780
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.36165435693626213
+        },
+        "domain_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.24271284271284269,
+          "source_macro_coverage": 0.920117845117845,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9772727272727273,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 18,
+            "bfnr_end2end": 0.23966942148760328,
+            "bona_fide_coverage": 0.768595041322314,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 56,
+            "bona_fide_originals": 242,
+            "coverage": 0.9339622641509434,
+            "covered_apcer": 0.007751937984496124,
+            "covered_bpcer": 0.010752688172043001,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  24,
+                  24
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  10,
+                  11
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  150,
+                  151
+                ],
+                "1": [
+                  792,
+                  7,
+                  775
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.631119700829955
+        },
+        "matched_sample_oof/heterogeneous/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.16873496873496874,
+          "source_macro_coverage": 0.9441678691678691,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9816017316017316,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 14,
+            "bfnr_end2end": 0.18181818181818177,
+            "bona_fide_coverage": 0.8884297520661157,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 27,
+            "bona_fide_originals": 242,
+            "coverage": 0.9622641509433962,
+            "covered_apcer": 0.007717750826901874,
+            "covered_bpcer": 0.07906976744186045,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  27,
+                  27
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  11,
+                  13
+                ],
+                "1": [
+                  42,
+                  0,
+                  37
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  160,
+                  175
+                ],
+                "1": [
+                  792,
+                  7,
+                  780
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.13084162133357985
+        },
+        "matched_sample_oof/same_family/R_DVd": {
+          "alpha": 0.01,
+          "certified_security_claim": false,
+          "population": "eligible_source_G_domain_all_originals",
+          "selection": "equal_domain_max_coverage_then_macro_BFNR_FA_threshold",
+          "source_macro_bfnr": 0.052429052429052415,
+          "source_macro_coverage": 0.9650793650793651,
+          "source_macro_fa": 0.002946127946127946,
+          "source_summary": {
+            "attack_coverage": 0.9772727272727273,
+            "attack_detector_coverage": 0.9967532467532467,
+            "attack_failures": 3,
+            "attack_originals": 924,
+            "attacks_newly_admitted": 0,
+            "attacks_newly_blocked": 18,
+            "bfnr_end2end": 0.07438016528925617,
+            "bona_fide_coverage": 0.9338842975206612,
+            "bona_fide_detector_coverage": 1.0,
+            "bona_fide_failures": 0,
+            "bona_fide_newly_rejected": 16,
+            "bona_fide_originals": 242,
+            "coverage": 0.9682675814751286,
+            "covered_apcer": 0.007751937984496124,
+            "covered_bpcer": 0.008849557522123908,
+            "estimable": true,
+            "fa_end2end": 0.007575757575757576,
+            "source_class_counts": {
+              "CASIA-FASD": {
+                "0": [
+                  30,
+                  30,
+                  30
+                ],
+                "1": [
+                  90,
+                  0,
+                  90
+                ]
+              },
+              "MSU-MFSD": {
+                "0": [
+                  14,
+                  13,
+                  14
+                ],
+                "1": [
+                  42,
+                  0,
+                  38
+                ]
+              },
+              "OULU-NPU": {
+                "0": [
+                  198,
+                  181,
+                  182
+                ],
+                "1": [
+                  792,
+                  7,
+                  775
+                ]
+              }
+            }
+          },
+          "target_selection_input": false,
+          "threshold": 0.15625928366386524
+        }
+      },
+      "seed": 20261001
+    }
+  ],
+  "target_predictions": false,
+  "version": 1
+}

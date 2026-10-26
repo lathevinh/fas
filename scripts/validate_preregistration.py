@@ -18,8 +18,10 @@ def main() -> int:
     parser.add_argument("--stage", choices=STAGES, default="schema")
     parser.add_argument("--frozen-root", type=Path, help="Read-only external permanent frozen metadata/role bundle")
     parser.add_argument("--source-use-root", type=Path, help="External adopted SiW use overlay and effective manifest")
+    parser.add_argument("--freeze-record", type=Path, help="Explicit immutable versioned analysis-freeze record")
     args = parser.parse_args()
-    errors = validate_stage(ROOT, args.stage, frozen_root=args.frozen_root, source_use_root=args.source_use_root)
+    errors = validate_stage(ROOT, args.stage, frozen_root=args.frozen_root, source_use_root=args.source_use_root,
+                            freeze_record=args.freeze_record)
     for name, digest in artifact_hashes(ROOT).items():
         print(f"{digest}  {name}")
     if errors:

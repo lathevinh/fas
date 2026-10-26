@@ -230,10 +230,28 @@ class PersistedFreezeTests(unittest.TestCase):
             errors = []
             _validate_analysis_freeze(root, errors)
             self.assertEqual(errors, [])
-            (root / "configs/source_recipe_v2.yaml").write_text('{"changed":true}')
+            (root / "scripts/new_evaluator.py").write_text('"""Synthetic successor artifact."""\n')
             commit()
             errors = []
             _validate_analysis_freeze(root, errors)
+            self.assertTrue(errors)
+            predecessor_bytes = (root / "results/analysis-freeze/freeze_record.json").read_bytes()
+            successor = {**record, "created_from_commit": git("rev-parse", "HEAD"),
+                         "artifact_sha256": artifact_hashes(root)}
+            successor_path = Path("results/analysis-freeze/freeze_record301-v1.json")
+            write_immutable_record(root / successor_path, successor)
+            errors = []
+            _validate_analysis_freeze(root, errors, successor_path)
+            self.assertEqual(errors, [])
+            commit()
+            errors = []
+            _validate_analysis_freeze(root, errors, successor_path)
+            self.assertEqual(errors, [])
+            self.assertEqual((root / "results/analysis-freeze/freeze_record.json").read_bytes(), predecessor_bytes)
+            (root / "configs/source_recipe_v2.yaml").write_text('{"changed":true}')
+            commit()
+            errors = []
+            _validate_analysis_freeze(root, errors, successor_path)
             self.assertTrue(errors)
 
 

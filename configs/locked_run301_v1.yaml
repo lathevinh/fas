@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "checkpoint": 301,
+  "outer_targets": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "seeds": [20260917, 20260923, 20261001],
+  "target_split": "official_test_only_frozen_protocols",
+  "source_k1": {
+    "owner_selected": "worst_source_fa_1pct_max_coverage",
+    "alpha": 0.01,
+    "objective": "maximum_equal_source_domain_coverage",
+    "ties": ["minimum_macro_BFNR", "minimum_macro_FA", "smallest_threshold"],
+    "predicted_spoof": "terminal_non_accept",
+    "technical_failure": "terminal_non_accept_null_scores",
+    "operational_coverage": "detector_success_and_predicted_spoof_or_accepted_live",
+    "ranking_coverage": "separate_all_successful_transactions_risk_curve",
+    "certified_security_claim": false
+  },
+  "primary_rq1": "non_interpolated_error_AP_domain_minus_sample_heterogeneous_R_DVd",
+  "primary_rq2": "class_balanced_raw_AURC_same_minus_heterogeneous_domain_oof_R_DVd",
+  "bootstrap_repetitions": 2000,
+  "bootstrap_seed": 20261026,
+  "bootstrap_pairing": "within_target_subject_or_video_same_multiplicities_all_systems_and_three_seeds",
+  "minimum_valid_bootstrap_fraction": 0.95,
+  "undefined_AP": "inconclusive_no_seed_or_target_deletion",
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "successor_freeze": "results/analysis-freeze/freeze_record301-v3.json",
+  "source_freeze": "results/analysis-freeze/freeze_record.json",
+  "execution_manifest": "results/locked-evaluation/execution-manifest301-v3.json",
+  "limits": {
+    "wall_seconds": 14400,
+    "work_seconds": 12600,
+    "rss_bytes": 12884901888,
+    "cuda_bytes": 12884901888,
+    "output_bytes": 4294967296
+  },
+  "planning_seconds": {
+    "extraction_and_readback": 1200,
+    "saved_model_predictions": 1200,
+    "bootstrap_and_tables": 7200,
+    "closure_and_io": 3000,
+    "guaranteed_wall": false
+  },
+  "new_head_calibrator_risk_fits": 0,
+  "new_image_forward_maximum": 1857,
+  "new_text_forwards": 0,
+  "downloads_installation_allowed": false,
+  "automatic_retry": false,
+  "tuning_substitution_or_extension_allowed": false
+}

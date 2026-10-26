@@ -82,6 +82,7 @@ def validate(root: Path, require_counts: bool = True) -> list[str]:
 
 def validate_stage(
     root: Path, stage: str, *, frozen_root: Path | None = None, source_use_root: Path | None = None,
+    freeze_record: Path | None = None,
 ) -> list[str]:
     if stage not in STAGES:
         raise ValueError(f"stage must be one of {', '.join(STAGES)}")
@@ -119,9 +120,9 @@ def validate_stage(
     if STAGES.index(stage) >= STAGES.index("source-dry-run"):
         _validate_source_dry_run(root, errors)
     if STAGES.index(stage) >= STAGES.index("analysis-freeze"):
-        _validate_analysis_freeze(root, errors)
+        _validate_analysis_freeze(root, errors, freeze_record)
     if stage == "locked-evaluation":
-        _validate_locked_authorization(root, errors)
+        _validate_locked_authorization(root, errors, freeze_record)
     if frozen_root is not None:
         try:
             bound_root = frozen_root.absolute()
@@ -207,6 +208,9 @@ def artifact_hashes(root: Path) -> dict[str, str]:
     paths += [root / "manifests" / "dataset_summary.csv", root / "manifests" / "split_summary.csv"]
     for directory in (root / "src" / "fas", root / "scripts"):
         paths.extend(sorted(directory.rglob("*.py")))
+    paths.extend(sorted((root / "configs").glob("locked_run*.yaml")))
+    for pattern in ("execution-manifest*.json", "source-policies*.json"):
+        paths.extend(sorted((root / "results" / "locked-evaluation").glob(pattern)))
     return {
         str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in paths
@@ -332,8 +336,15 @@ def _validate_source_dry_run(root: Path, errors: list[str]) -> None:
         errors.append("source policy SHA-256 does not match the frozen policy artifact")
 
 
-def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
-    path = root / "results" / "analysis-freeze" / "freeze_record.json"
+def analysis_freeze_path(root: Path, record: Path | None = None) -> Path:
+    path = root / "results" / "analysis-freeze" / "freeze_record.json" if record is None else root / record
+    if path.parent.resolve() != (root / "results" / "analysis-freeze").resolve() or path.is_symlink():
+        raise ValueError("freeze record must be a non-symlink file in results/analysis-freeze")
+    return path
+
+
+def _validate_analysis_freeze(root: Path, errors: list[str], record: Path | None = None) -> None:
+    path = analysis_freeze_path(root, record)
     if not path.exists():
         errors.append("missing immutable analysis-freeze record")
         return
@@ -355,7 +366,7 @@ def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
             text=True,
             stderr=subprocess.DEVNULL,
         ).splitlines()
-        allowed_untracked = "?? results/analysis-freeze/freeze_record.json"
+        allowed_untracked = "?? " + str(path.relative_to(root))
         if any(line != allowed_untracked for line in status):
             errors.append("analysis freeze requires a clean worktree")
         if evidence.get("no_target_selection_input") is not True:
@@ -388,9 +399,9 @@ def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
         errors.append("analysis-freeze record does not match current frozen artifacts")
 
 
-def _validate_locked_authorization(root: Path, errors: list[str]) -> None:
+def _validate_locked_authorization(root: Path, errors: list[str], record: Path | None = None) -> None:
     authorization_path = root / "results" / "locked-evaluation" / "authorization.json"
-    freeze_path = root / "results" / "analysis-freeze" / "freeze_record.json"
+    freeze_path = analysis_freeze_path(root, record)
     if not authorization_path.exists():
         errors.append("locked-evaluation remains blocked until typed authorization exists")
         return

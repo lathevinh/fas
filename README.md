@@ -1,5 +1,18 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Locked-target evaluator prepared (2026-10-26):
+[Report301](docs/301-locked-target-package-and-fixed-evaluation.md)
+implements [Review300](docs/300-review-doc299-complete-source-evidence-and-analysis-freeze.md).
+The tested [revision3 execution manifest](results/locked-evaluation/execution-manifest301-v3.json)
+binds all selected models, caches, configs, target populations/masks and48
+[source-only K=1 policies](results/locked-evaluation/source-policies301-v3.json).
+Official tests comprise2943 originals,2929 successes and14 retained failures;
+2310 success features are reusable and only619 SiW test images need extraction.
+482 local tests pass, including negative/underpowered outcomes and a corrected
+live-only operational coverage rule. Source results/models are not rerun.
+Preparation and a successor freeze do not grant target execution authority;
+actual target status is recorded separately in the report.
+
 Complete fixed source experiment (2026-10-26):
 [Report299](docs/299-complete-source-experiment-and-clustered-evidence.md)
 implements [Review298](docs/298-review-doc297-first-source-fitting-and-oof-results.md).

@@ -422,9 +422,11 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
             if not _sha256(row[field]):
                 errors.append(f"transaction {transaction_id} requires valid {field}")
         status = row["detector_status"]
-        if status not in {"success", "failure"}:
+        if status not in {"success", "failure", "not_run"}:
             errors.append(f"invalid detector status for transaction {transaction_id}")
-        if status == "failure":
+        if status == "not_run" and row.get("technical_status") != "terminal_failure":
+            errors.append("unexecuted detector requires terminal technical failure")
+        if status in {"failure", "not_run"}:
             nullable = (
                 "pad_score",
                 "pad_threshold",
@@ -432,8 +434,9 @@ def validate_transaction_ledger(rows: Sequence[Mapping[str, Any]]) -> list[str]:
                 "risk_score",
                 "gate_threshold",
                 "gate_action",
+                "classifier_error",
             )
-            if any(row[field] is not None for field in nullable):
+            if any(row.get(field) is not None for field in nullable):
                 errors.append("detector failures require null scores and decisions")
             if row["final_k1_action"] != "non_accept":
                 errors.append("detector failures must be terminal non-accepts under K=1")

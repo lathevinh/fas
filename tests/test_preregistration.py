@@ -75,6 +75,7 @@ class PreregistrationTest(unittest.TestCase):
             for name in ("evidence.json", "competence.json", "applicability.json"):
                 (copy / "results/source-dry-run" / name).unlink(missing_ok=True)
             (copy / "results/analysis-freeze/freeze_record.json").unlink(missing_ok=True)
+            (copy / "results/locked-evaluation/authorization.json").unlink(missing_ok=True)
             source_errors = validate_stage(copy, "source-dry-run")
             freeze_errors = validate_stage(copy, "analysis-freeze")
             locked_errors = validate_stage(copy, "locked-evaluation")

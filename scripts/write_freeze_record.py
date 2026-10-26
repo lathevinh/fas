@@ -15,13 +15,14 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from fas.freeze import build_analysis_freeze_record, write_immutable_record
 from fas.contracts import CORE_DOMAINS
-from fas.preregistration import artifact_hashes, load_config, validate_stage
+from fas.preregistration import analysis_freeze_path, artifact_hashes, load_config, validate_stage
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--frozen-root", type=Path)
     parser.add_argument("--source-use-root", type=Path)
+    parser.add_argument("--record", type=Path, help="New versioned record; existing records are never overwritten")
     args = parser.parse_args()
     errors = validate_stage(ROOT, "source-dry-run", frozen_root=args.frozen_root,
                             source_use_root=args.source_use_root)
@@ -50,7 +51,7 @@ def main() -> int:
         seeds=seeds,
         no_target_selection_input=evidence["no_target_selection_input"],
     )
-    path = ROOT / "results" / "analysis-freeze" / "freeze_record.json"
+    path = analysis_freeze_path(ROOT, args.record)
     try:
         write_immutable_record(path, record)
     except FileExistsError as exc:
