@@ -1,0 +1,120 @@
+{
+  "cache_keys_include_labels": false,
+  "calibrator_fits": 0,
+  "checkpoint": 295,
+  "classifier_fits": 0,
+  "combined": {
+    "actual_score_fit": 0,
+    "archived": 7510,
+    "detector_failure": 22,
+    "model_input": 6855,
+    "null_role_test": 623,
+    "pre_detector_failure": 9,
+    "roles": {
+      "branch_calibration": {
+        "archived": 1381,
+        "class_counts": {
+          "attack": 1034,
+          "bona_fide": 347
+        },
+        "model_input": 1378,
+        "source_use": 1381
+      },
+      "g_domain": {
+        "archived": 1376,
+        "class_counts": {
+          "attack": 1028,
+          "bona_fide": 347
+        },
+        "model_input": 1372,
+        "source_use": 1375
+      },
+      "train": {
+        "archived": 4130,
+        "class_counts": {
+          "attack": 3086,
+          "bona_fide": 1040
+        },
+        "model_input": 4105,
+        "source_use": 4126
+      }
+    },
+    "source_excluded": 5,
+    "source_use": 6882,
+    "source_use_failures": 27
+  },
+  "current_owned_new_temporary_bytes": 1291716635,
+  "detector_calls": 0,
+  "feature_sample_join_and_saved_readback_passed": true,
+  "final_exact_commit_ci": "collect_after_publication",
+  "full_feature_extraction": false,
+  "gpu_peak_receipt_scope": "persisted_per_model_peaks_cover_image_pass; text_pass_caps_checked_but_final_peak_not_persisted",
+  "implementation_sha256": {
+    "scripts/close_source295.py": "9b1ed30adc1773781104f9eb13b520b13aca041c114998fc8fbbf4a8900484fc",
+    "scripts/integrate_source295.py": "e78388d5881bd0986e9297134072cba84d31357f63e8c097d80b03af7dcfcd4b",
+    "scripts/pilot_source295.py": "939b108606b850c4e2240f84ccd3568e95aca0da46c8fc1d823545f833a0a6fe",
+    "src/fas/frozen_features.py": "0c6ffb420830a7a6675ac84ee7c017bea47ef00182414785127f1c51b6f01b3b",
+    "src/fas/source_stage.py": "36ab26532c051c96f93752bd395f9aef7ec8b77f79ada8f0bb8c32cf6b7c3528",
+    "tests/test_frozen_features.py": "4a3e5941b4b28841c90012c02aa35993913e178ed200ddfb3772011391bb9b27",
+    "tests/test_source_stage.py": "35dd9fe2607a919505717f34e4f569b919d08d35dae084bb09779e4410c0895b"
+  },
+  "integration_sha256": "43bc26d77c7c1b3ab08e8e88286964635d4639d55f28feb97b4209131a096548",
+  "media_decode_calls": 0,
+  "model_free_all_outer_and_pseudo_domain_consumer_checks_passed": true,
+  "original_pilot_terminal_sha256": "caad9c3718b93ccbb315d0ab8afd71b89297785e0d78b884c99d6e3878a15a35",
+  "owner_approval_sha256": "1c53a3a0ea376bbd90e58f07a5d660682c077b5e97c2d758fe3a714dcc4493e1",
+  "pilot_image_forwards": 144,
+  "pilot_input_count": 24,
+  "pilot_inputs_sha256": "07f110e9a32f7b5da98334a5cba913ea2a5b16f6c4bcee24e4c3ac0dce85ac7f",
+  "pilot_outer_target": "OULU-NPU",
+  "pilot_sources": [
+    "CASIA-FASD",
+    "MSU-MFSD",
+    "SiW-Mv2"
+  ],
+  "pilot_text_forwards": 2,
+  "repeat_parity_passed": true,
+  "risk_fits": 0,
+  "saved_prompt_logit_reconstruction_passed": true,
+  "scientific_readiness": false,
+  "scientific_source_dry_run_complete": false,
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "source_use_binding": {
+    "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+    "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+    "policy_id": "siwmv2-source-use-exclusions-v1",
+    "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+  },
+  "stage_errors": {
+    "analysis-freeze": [
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record"
+    ],
+    "data-audit": [],
+    "locked-evaluation": [
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record",
+      "locked-evaluation remains blocked until typed authorization exists"
+    ],
+    "schema": [],
+    "source-dry-run": [
+      "missing source-dry-run evidence"
+    ]
+  },
+  "status": "source_integration_and_authorized_technical_pilot_complete",
+  "summary_sha256": {
+    "dataset_summary.csv": "a54a442f0f4f58bc67ebbf01804be917461205ab434ca92696118c7467a47a95",
+    "split_summary.csv": "12c2df71b3772e814df050e1e1d116a59bd8d1da91556d809ac527e2970f6345"
+  },
+  "target_evaluation": false,
+  "technical_full_source_projection": {
+    "float32_feature_payload_bytes": 98273280,
+    "image_forward_only_seconds": 307.813447075805,
+    "limitations": "24-source-sample projection excludes full input hash/PNG IO, startup, text, sharding, fold logic and retries; not wall-time guarantee",
+    "not_execution_authority": true,
+    "source_successes": 6855
+  },
+  "version": 1,
+  "wall_seconds_from_original_approval_through_closure": 397.83027625083923,
+  "worker_completion_sha256": "5a97b980ac35b4333642df793e9668fba044a2f47057060a6f52affef94f987b"
+}

@@ -1,5 +1,23 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Four-dataset source-stage handoff and authorized encoder pilot complete (2026-10-26):
+[Report295](docs/295-four-dataset-source-integration-and-frozen-encoder-pilot.md)
+implements [Review294](docs/294-review-doc293-siw-closure-and-four-dataset-handoff.md)
+without reopening accepted data/image milestones.7510 archived originals join to
+6882 source-use originals:6855 valid image inputs and27 retained source failures.
+All623 SiW null-role test originals and five adopted exclusions remain blocked
+from source consumers; archive/role/summary evidence is unchanged.
+All outer-fold/role and domain-OOF population routes pass model-free checks.
+One newly owner-approved24-image source-only pilot acquired the three registered
+checkpoints and ran frozen DINOv2-Reg/plain/OpenCLIP sequentially in FP32:
+144 image and two text forwards, exact repeated parity and saved-feature joins.
+No full extraction, classifier/calibrator/risk fitting or target evaluation ran.
+Schema/data-audit pass; scientific source-dry-run still correctly requires actual
+competence/applicability evidence. Scientific readiness remains false. See the
+[integration](results/phase1/source-integration295-v1.json),
+[technical pilot](results/phase1/source-encoder-pilot295-v1.json) and
+[final handoff](results/phase1/source-handoff295-v1.json).
+
 SiW local audit closed under explicitly adopted source-use amendment (2026-10-23):
 [Report293](docs/293-siwmv2-adopted-source-use-and-saved-evidence-closure.md)
 implements [Review292](docs/292-review-doc291-siw-images-and-exact-crossing-resolution.md).

@@ -1,0 +1,403 @@
+{
+  "accepted_input_files": 7538,
+  "checkpoint": 295,
+  "combined": {
+    "actual_score_fit": 0,
+    "archived": 7510,
+    "detector_failure": 22,
+    "model_input": 6855,
+    "null_role_test": 623,
+    "pre_detector_failure": 9,
+    "roles": {
+      "branch_calibration": {
+        "archived": 1381,
+        "class_counts": {
+          "attack": 1034,
+          "bona_fide": 347
+        },
+        "model_input": 1378,
+        "source_use": 1381
+      },
+      "g_domain": {
+        "archived": 1376,
+        "class_counts": {
+          "attack": 1028,
+          "bona_fide": 347
+        },
+        "model_input": 1372,
+        "source_use": 1375
+      },
+      "train": {
+        "archived": 4130,
+        "class_counts": {
+          "attack": 3086,
+          "bona_fide": 1040
+        },
+        "model_input": 4105,
+        "source_use": 4126
+      }
+    },
+    "source_excluded": 5,
+    "source_use": 6882,
+    "source_use_failures": 27
+  },
+  "datasets": {
+    "CASIA-FASD": {
+      "actual_score_fit": 0,
+      "archived": 600,
+      "detector_failure": 6,
+      "model_input": 594,
+      "null_role_test": 0,
+      "pre_detector_failure": 0,
+      "roles": {
+        "branch_calibration": {
+          "archived": 120,
+          "class_counts": {
+            "attack": 90,
+            "bona_fide": 30
+          },
+          "model_input": 119,
+          "source_use": 120
+        },
+        "g_domain": {
+          "archived": 120,
+          "class_counts": {
+            "attack": 90,
+            "bona_fide": 30
+          },
+          "model_input": 120,
+          "source_use": 120
+        },
+        "train": {
+          "archived": 360,
+          "class_counts": {
+            "attack": 270,
+            "bona_fide": 90
+          },
+          "model_input": 355,
+          "source_use": 360
+        }
+      },
+      "source_excluded": 0,
+      "source_use": 600,
+      "source_use_failures": 6
+    },
+    "MSU-MFSD": {
+      "actual_score_fit": 0,
+      "archived": 280,
+      "detector_failure": 0,
+      "model_input": 272,
+      "null_role_test": 0,
+      "pre_detector_failure": 8,
+      "roles": {
+        "branch_calibration": {
+          "archived": 56,
+          "class_counts": {
+            "attack": 42,
+            "bona_fide": 14
+          },
+          "model_input": 56,
+          "source_use": 56
+        },
+        "g_domain": {
+          "archived": 56,
+          "class_counts": {
+            "attack": 42,
+            "bona_fide": 14
+          },
+          "model_input": 53,
+          "source_use": 56
+        },
+        "train": {
+          "archived": 168,
+          "class_counts": {
+            "attack": 126,
+            "bona_fide": 42
+          },
+          "model_input": 163,
+          "source_use": 168
+        }
+      },
+      "source_excluded": 0,
+      "source_use": 280,
+      "source_use_failures": 8
+    },
+    "OULU-NPU": {
+      "actual_score_fit": 0,
+      "archived": 4950,
+      "detector_failure": 0,
+      "model_input": 4949,
+      "null_role_test": 0,
+      "pre_detector_failure": 1,
+      "roles": {
+        "branch_calibration": {
+          "archived": 990,
+          "class_counts": {
+            "attack": 792,
+            "bona_fide": 198
+          },
+          "model_input": 989,
+          "source_use": 990
+        },
+        "g_domain": {
+          "archived": 990,
+          "class_counts": {
+            "attack": 792,
+            "bona_fide": 198
+          },
+          "model_input": 990,
+          "source_use": 990
+        },
+        "train": {
+          "archived": 2970,
+          "class_counts": {
+            "attack": 2376,
+            "bona_fide": 594
+          },
+          "model_input": 2970,
+          "source_use": 2970
+        }
+      },
+      "source_excluded": 0,
+      "source_use": 4950,
+      "source_use_failures": 1
+    },
+    "SiW-Mv2": {
+      "actual_score_fit": 0,
+      "archived": 1680,
+      "detector_failure": 16,
+      "model_input": 1040,
+      "null_role_test": 623,
+      "pre_detector_failure": 0,
+      "roles": {
+        "branch_calibration": {
+          "archived": 215,
+          "class_counts": {
+            "attack": 110,
+            "bona_fide": 105
+          },
+          "model_input": 214,
+          "source_use": 215
+        },
+        "g_domain": {
+          "archived": 210,
+          "class_counts": {
+            "attack": 104,
+            "bona_fide": 105
+          },
+          "model_input": 209,
+          "source_use": 209
+        },
+        "train": {
+          "archived": 632,
+          "class_counts": {
+            "attack": 314,
+            "bona_fide": 314
+          },
+          "model_input": 617,
+          "source_use": 628
+        }
+      },
+      "source_excluded": 5,
+      "source_use": 1052,
+      "source_use_failures": 12
+    }
+  },
+  "detector_calls": 0,
+  "fitted_scores": 0,
+  "fold_consumers": {
+    "CASIA-FASD": {
+      "domain_oof_fit_denominators": {
+        "MSU-MFSD": 3598,
+        "OULU-NPU": 796,
+        "SiW-Mv2": 3138
+      },
+      "roles": {
+        "calibration": {
+          "denominator": 1261,
+          "domains": {
+            "MSU-MFSD": 56,
+            "OULU-NPU": 990,
+            "SiW-Mv2": 215
+          },
+          "model_inputs": 1259,
+          "rejected": 6249,
+          "retained_failures": 2
+        },
+        "domain_use": {
+          "denominator": 1255,
+          "domains": {
+            "MSU-MFSD": 56,
+            "OULU-NPU": 990,
+            "SiW-Mv2": 209
+          },
+          "model_inputs": 1252,
+          "rejected": 6255,
+          "retained_failures": 3
+        },
+        "fitting": {
+          "denominator": 3766,
+          "domains": {
+            "MSU-MFSD": 168,
+            "OULU-NPU": 2970,
+            "SiW-Mv2": 628
+          },
+          "model_inputs": 3750,
+          "rejected": 3744,
+          "retained_failures": 16
+        }
+      }
+    },
+    "MSU-MFSD": {
+      "domain_oof_fit_denominators": {
+        "CASIA-FASD": 3598,
+        "OULU-NPU": 988,
+        "SiW-Mv2": 3330
+      },
+      "roles": {
+        "calibration": {
+          "denominator": 1325,
+          "domains": {
+            "CASIA-FASD": 120,
+            "OULU-NPU": 990,
+            "SiW-Mv2": 215
+          },
+          "model_inputs": 1322,
+          "rejected": 6185,
+          "retained_failures": 3
+        },
+        "domain_use": {
+          "denominator": 1319,
+          "domains": {
+            "CASIA-FASD": 120,
+            "OULU-NPU": 990,
+            "SiW-Mv2": 209
+          },
+          "model_inputs": 1319,
+          "rejected": 6191,
+          "retained_failures": 0
+        },
+        "fitting": {
+          "denominator": 3958,
+          "domains": {
+            "CASIA-FASD": 360,
+            "OULU-NPU": 2970,
+            "SiW-Mv2": 628
+          },
+          "model_inputs": 3942,
+          "rejected": 3552,
+          "retained_failures": 16
+        }
+      }
+    },
+    "OULU-NPU": {
+      "domain_oof_fit_denominators": {
+        "CASIA-FASD": 796,
+        "MSU-MFSD": 988,
+        "SiW-Mv2": 528
+      },
+      "roles": {
+        "calibration": {
+          "denominator": 391,
+          "domains": {
+            "CASIA-FASD": 120,
+            "MSU-MFSD": 56,
+            "SiW-Mv2": 215
+          },
+          "model_inputs": 389,
+          "rejected": 7119,
+          "retained_failures": 2
+        },
+        "domain_use": {
+          "denominator": 385,
+          "domains": {
+            "CASIA-FASD": 120,
+            "MSU-MFSD": 56,
+            "SiW-Mv2": 209
+          },
+          "model_inputs": 382,
+          "rejected": 7125,
+          "retained_failures": 3
+        },
+        "fitting": {
+          "denominator": 1156,
+          "domains": {
+            "CASIA-FASD": 360,
+            "MSU-MFSD": 168,
+            "SiW-Mv2": 628
+          },
+          "model_inputs": 1135,
+          "rejected": 6354,
+          "retained_failures": 21
+        }
+      }
+    },
+    "SiW-Mv2": {
+      "domain_oof_fit_denominators": {
+        "CASIA-FASD": 3138,
+        "MSU-MFSD": 3330,
+        "OULU-NPU": 528
+      },
+      "roles": {
+        "calibration": {
+          "denominator": 1166,
+          "domains": {
+            "CASIA-FASD": 120,
+            "MSU-MFSD": 56,
+            "OULU-NPU": 990
+          },
+          "model_inputs": 1164,
+          "rejected": 6344,
+          "retained_failures": 2
+        },
+        "domain_use": {
+          "denominator": 1166,
+          "domains": {
+            "CASIA-FASD": 120,
+            "MSU-MFSD": 56,
+            "OULU-NPU": 990
+          },
+          "model_inputs": 1163,
+          "rejected": 6344,
+          "retained_failures": 3
+        },
+        "fitting": {
+          "denominator": 3498,
+          "domains": {
+            "CASIA-FASD": 360,
+            "MSU-MFSD": 168,
+            "OULU-NPU": 2970
+          },
+          "model_inputs": 3488,
+          "rejected": 4012,
+          "retained_failures": 10
+        }
+      }
+    }
+  },
+  "image_pixels_redecoded": 0,
+  "media_decode_calls": 0,
+  "model_forward_calls": 0,
+  "model_free_checks_are_not_scientific_source_dry_run": true,
+  "model_free_consumer_checks_passed": true,
+  "pilot_inputs_sha256": "07f110e9a32f7b5da98334a5cba913ea2a5b16f6c4bcee24e4c3ac0dce85ac7f",
+  "scientific_readiness": false,
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "source_use_binding": {
+    "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+    "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+    "policy_id": "siwmv2-source-use-exclusions-v1",
+    "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+  },
+  "stage_errors": {
+    "data-audit": [],
+    "schema": [],
+    "source-dry-run": [
+      "missing source-dry-run evidence"
+    ]
+  },
+  "status": "model_free_source_integration_complete",
+  "target_evaluation": false,
+  "version": 1,
+  "wall_seconds": 422.3092638690141
+}
