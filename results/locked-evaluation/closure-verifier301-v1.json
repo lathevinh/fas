@@ -1,0 +1,10 @@
+{
+  "additive_verifier_sha256": "9c9c70520de67f9835dbc6bdfe58f1d65c5d9052b6f650e8e9aeda176e03e2e1",
+  "all_twelve_saved_point_tables_exact_after_json_roundtrip": true,
+  "frozen_worker_or_evaluation_code_changed": false,
+  "new_encoder_or_optimization_calls": 0,
+  "normalization": "JSON object keys serialize integer class keys 0/1 as strings; JSON roundtrip only",
+  "numeric_values_or_decision_predicates_changed": false,
+  "scientific_worker_sha256": "09a090e8bae36da0618e61009dcc9ed7d49aa609a6f550fd53e038a0aaf729b0",
+  "version": 1
+}

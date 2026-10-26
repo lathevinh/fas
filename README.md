@@ -1,17 +1,28 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Locked-target evaluator prepared (2026-10-26):
+Locked-target evaluation complete (2026-10-26):
 [Report301](docs/301-locked-target-package-and-fixed-evaluation.md)
 implements [Review300](docs/300-review-doc299-complete-source-evidence-and-analysis-freeze.md).
 The tested [revision3 execution manifest](results/locked-evaluation/execution-manifest301-v3.json)
 binds all selected models, caches, configs, target populations/masks and48
 [source-only K=1 policies](results/locked-evaluation/source-policies301-v3.json).
-Official tests comprise2943 originals,2929 successes and14 retained failures;
-2310 success features are reusable and only619 SiW test images need extraction.
+Official tests comprise2943 originals,2929 successes and14 retained failures.
+All12 target/seed combinations completed under one explicit owner authority;
+2310 success features were reused and619 SiW images required1857 new forwards.
+RQ1 is **inconclusive**: macro AP difference -.019232,
+95% CI[-.039570,.009115]. RQ2 is **evidence_against**: class-balanced raw-AURC
+improvement -.032897,95% CI[-.055779,-.012521], with target guardrail breaches.
+Neither negative result triggered fitting, policy reselection or another run.
+The [execution](results/locked-evaluation/run301-v1.json) and
+[saved-only closure](results/locked-evaluation/closure301-v1.json) bind8787
+context prediction rows and421776 risk values. Native closure's integer/string
+JSON object-key mismatch required a disclosed
+[additive readback normalization](results/locked-evaluation/closure-verifier301-v1.json);
+the frozen scientific code and numeric outputs were not changed.
 482 local tests pass, including negative/underpowered outcomes and a corrected
 live-only operational coverage rule. Source results/models are not rerun.
-Preparation and a successor freeze do not grant target execution authority;
-actual target status is recorded separately in the report.
+The [explicit execution authority](results/locked-evaluation/authority301-v1.json)
+was granted only after the manifest and successor freeze were sealed.
 The [versioned successor freeze](results/analysis-freeze/freeze_record301-v3.json)
 pins156 paths from clean evaluator commitc41c3bd; the original source freeze
 is retained unchanged.
@@ -33,7 +44,8 @@ and standalone OpenCLIP fails competence everywhere. No result triggered tuning.
 The immutable [analysis freeze](results/analysis-freeze/freeze_record.json)
 was created separately from clean source-evidence commit14b29a4 through the
 normal gate, without rewriting creation-time execution receipts.
-No target predictions/tuning, gate selection or locked-evaluation authorization.
+At source299 closure there were no target predictions/tuning, gate selection
+or locked-evaluation authorization;301 above records the later authorized run.
 See the [actual execution](results/phase1/source-run299-v1.json),
 [closure](results/phase1/source-closure299-v1.json) and
 [source evidence](results/source-dry-run/evidence.json).
