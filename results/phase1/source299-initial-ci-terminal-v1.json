@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "checkpoint": 299,
+  "head_sha": "987bca51100adead8aad5f4840ddc6b718f56a73",
+  "run_id": 40301585373,
+  "job_id": 121500516252,
+  "run_url": "https://github.com/lathevinh/fas/actions/runs/40301585373",
+  "status": "completed",
+  "conclusion": "failure",
+  "completed_at": "2026-10-26T09:43:25Z",
+  "failed_step": "Run synthetic regression suite",
+  "test_count": 471,
+  "skipped_tests": 9,
+  "errors": 1,
+  "failure": "test_freeze copied the newly published immutable freeze into its temporary Git fixture and attempted to create another record at the same fixture path",
+  "resolution": "Remove only the copied fixture record before its synthetic initial commit; independently assert rejection of invalid ancestry and artifact drift",
+  "actual_source_execution_repeated": false,
+  "actual_freeze_record_rewritten": false,
+  "replacement_head_ci_status": "requires_separate_exact_head_verification"
+}

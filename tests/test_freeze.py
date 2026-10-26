@@ -84,6 +84,8 @@ class AnalysisFreezeContractTest(unittest.TestCase):
             self.assertFalse((root / "oulu-npu").exists())
             self.assertFalse((root / "casia-fasd").exists())
             self.assertFalse((root / "SiW").exists())
+            record_path = root / "results" / "analysis-freeze" / "freeze_record.json"
+            record_path.unlink(missing_ok=True)
             evidence_path = root / "results" / "source-dry-run" / "evidence.json"
             evidence_path.parent.mkdir(parents=True, exist_ok=True)
             evidence = {
@@ -110,7 +112,6 @@ class AnalysisFreezeContractTest(unittest.TestCase):
                 seeds=seeds,
                 no_target_selection_input=True,
             )
-            record_path = root / "results" / "analysis-freeze" / "freeze_record.json"
             write_immutable_record(record_path, record)
             errors: list[str] = []
             _validate_analysis_freeze(root, errors)
@@ -127,6 +128,13 @@ class AnalysisFreezeContractTest(unittest.TestCase):
             record_path.unlink()
             record["created_from_commit"] = "f" * 40
             record["artifact_sha256"]["unknown"] = "a" * 64
+            write_immutable_record(record_path, record)
+            errors = []
+            _validate_analysis_freeze(root, errors)
+            self.assertTrue(any("invalid analysis-freeze record" in error for error in errors))
+
+            record_path.unlink()
+            record["created_from_commit"] = commit
             write_immutable_record(record_path, record)
             errors = []
             _validate_analysis_freeze(root, errors)

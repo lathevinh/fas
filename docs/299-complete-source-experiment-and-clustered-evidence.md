@@ -368,8 +368,25 @@ tests are distinct from the actual source execution evidence. Changed Python
 files compile. Pylance MCP was unavailable earlier; no editor type-check
 success is claimed.
 
+After the actual freeze existed, the full configured regression suite was
+also run: **471 tests pass** locally, with SciPy available. This includes the
+64 focused cases above. No real source fitting or encoder campaign is rerun.
+
 The final combined64-test run also exposed a test-fixture assumption:
 the external-root negative test inherited newly real source evidence from
 the workspace. It now explicitly removes named source/freeze evidence only
 inside its isolated temporary fixture, preserving its intended missing-
 evidence assertions without deleting real outputs or weakening validation.
+
+The [initial published-head CI terminal](../results/phase1/source299-initial-ci-terminal-v1.json)
+truthfully records failure on987bca5:471 discovered tests, nine expected
+optional-numerics skips and one error. The legacy freeze test copied the
+newly real immutable record into its temporary repository, then attempted
+to create its synthetic record at the same path. Only that copied fixture
+record is now removed before the synthetic initial commit. The test also
+checks invalid ancestry and changed artifact identity separately, because
+invalid ancestry correctly fails before artifact comparison. Five focused
+freeze tests and the full471-test suite pass after those fixture corrections.
+The real freeze, pinned implementation/configuration, model states and
+source evidence are untouched. Replacement-head CI must be checked against
+the new exact SHA rather than treating the earlier failed run as success.
