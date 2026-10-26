@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "checkpoint": 297,
+  "state": "executable_package_requires_fresh_combined_owner_authority",
+  "outer_target": "OULU-NPU",
+  "source_domains": ["CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "seed": 20260917,
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "pilot_config_sha256": "e5793219cd5e41bd9122ab6faf3ec26d1c034959fa5c0ce5e84f19fdd9899e9b",
+  "source_use_policy_id": "siwmv2-source-use-exclusions-v1",
+  "successful_inputs": 1906,
+  "source_use_denominator": 1932,
+  "source_failures": 26,
+  "batch_size": 1,
+  "shard_size": 32,
+  "precision": "float32",
+  "tf32": false,
+  "mixed_precision": false,
+  "sequential_backbones": true,
+  "resume": "immutable_verified_shards_only_within_original_authority_deadline",
+  "reuse295": "exact_pinned_worker_and_sample_crop_checkpoint_recipe_runtime_compatibility",
+  "head": {
+    "epochs": 200,
+    "learning_rate": 0.001,
+    "weight_decay": 0.05,
+    "optimizer": "full_batch_adamw_float64_bias_not_decayed",
+    "inner_validation": "one_of_five_sha256_group_folds_per_source_and_class_signature",
+    "selection": "lowest_equal_domain_class_balanced_validation_BCE_then_earlier_epoch",
+    "refit_after_selection": false
+  },
+  "calibration": "single_monotone_affine_softplus_theta_plus_1e-6_balanced_domain_class_BCE",
+  "oof": {
+    "domain_oof": "three_complete_source_domain_exclusions",
+    "matched_sample_oof": "three_subject_or_video_group_folds_stratified_within_each_source_and_class_signature",
+    "candidate_universe": "all_successful_train_and_branch_calibration_no_g_domain",
+    "exact_frame_duplicates": "union_with_group_components_before_any_inner_or_sample_split",
+    "fit_size_matching": "report_sizes_not_budget_matched_no_causal_domain_holdout_claim",
+    "quality_statistics": "final_head_fitting_pool_only_same_frozen_stats_for_both_strategies"
+  },
+  "reference_policy": {
+    "score_polarity": "attack_high_tie_is_attack",
+    "alpha": 0.05,
+    "selection": "largest_threshold_satisfying_each_source_domain_empirical_APCER",
+    "selection_role": "branch_calibration",
+    "denominator": "successful_calibration_images_only_conservative_failures_retained_separately",
+    "certified_security_claim": false
+  },
+  "quality": {
+    "pixels": "hash_verified_existing_native224_RGB_crop",
+    "blur": "variance_OpenCV_Laplacian_ksize1_of_RGB2GRAY_float64_div255",
+    "mean_luminance": "mean_same_gray",
+    "contrast": "population_std_same_gray",
+    "face_area_ratio": "saved_detector_bbox_area_over_selected_frame_width_height",
+    "detector_confidence": "hash_bound_saved_detector_transaction",
+    "zero_std": "scale_one_with_explicit_constant_feature_indices"
+  },
+  "risk": {
+    "family": "logistic_regression",
+    "C": 1.0,
+    "optimizer": "float64_LBFGSB_maxiter1000_ftol1e-12_gtol1e-7",
+    "objective": "natural_prevalence_equal_domain_BCE_sum_weights_N_plus_half_L2",
+    "variants": ["R_q", "R_D", "R_V", "R_DV", "R_DVd", "R_DVdm"],
+    "systems": ["heterogeneous", "same_family"],
+    "minimum_errors": 20,
+    "minimum_correct": 20,
+    "shortfall": "explicit_not_applicable_no_placeholder_or_degenerate_fit",
+    "held_out_scoring": "g_domain_no_gate_selection"
+  },
+  "limits": {
+    "wall_seconds": 7200,
+    "work_seconds": 6600,
+    "rss_bytes": 8589934592,
+    "cuda_bytes": 12884901888,
+    "output_bytes": 2147483648
+  },
+  "planning_seconds": {
+    "forward_only_from295_before_reuse": 86,
+    "io_allowance": 1800,
+    "fitting_and_readback_allowance": 1800,
+    "guaranteed_wall": false
+  },
+  "stop_conditions": [
+    "missing_fresh_approval_or_changed_exact_code_config_input_runtime",
+    "any_crop_checkpoint_sample_key_role_group_or_shard_hash_mismatch",
+    "any_nonfinite_shape_coverage_optimizer_or_resource_failure",
+    "deadline_or_GPU_unavailable_no_CPU_encoder_fallback",
+    "no_automatic_retry_new_download_installation_substitution_or_budget_extension"
+  ],
+  "target_image_access": false,
+  "target_predictions": false,
+  "target_tuning": false,
+  "locked_evaluation": false,
+  "full_four_fold_three_seed_scientific_completion": false
+}

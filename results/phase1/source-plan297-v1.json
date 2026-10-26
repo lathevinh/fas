@@ -1,0 +1,126 @@
+{
+  "accepted_summary_sha256": {
+    "manifests/dataset_summary.csv": "a54a442f0f4f58bc67ebbf01804be917461205ab434ca92696118c7467a47a95",
+    "manifests/split_summary.csv": "12c2df71b3772e814df050e1e1d116a59bd8d1da91556d809ac527e2970f6345"
+  },
+  "calibrator_fits": 21,
+  "checkpoint": 297,
+  "checkpoint_reuse_bytes": 1291302227,
+  "config_sha256": "af5b168d522cbfb24714dcc0984ac0df9edffef957ac836f04bb9293e313e36e",
+  "counts": {
+    "actual_score_fit": 0,
+    "archived": 1932,
+    "detector_failure": 18,
+    "model_input": 1906,
+    "null_role_test": 0,
+    "pre_detector_failure": 8,
+    "roles": {
+      "branch_calibration": {
+        "archived": 391,
+        "class_counts": {
+          "attack": 242,
+          "bona_fide": 149
+        },
+        "model_input": 389,
+        "source_use": 391
+      },
+      "g_domain": {
+        "archived": 385,
+        "class_counts": {
+          "attack": 236,
+          "bona_fide": 149
+        },
+        "model_input": 382,
+        "source_use": 385
+      },
+      "train": {
+        "archived": 1156,
+        "class_counts": {
+          "attack": 710,
+          "bona_fide": 446
+        },
+        "model_input": 1135,
+        "source_use": 1156
+      }
+    },
+    "source_excluded": 0,
+    "source_use": 1932,
+    "source_use_failures": 26
+  },
+  "execution_plan_sha256": "4ff5f72ff4b0f440ae47ea3510cddd1912a980087430afde9d82e328b1443500",
+  "failure_denominator": 26,
+  "feature_payload_bytes": 27324416,
+  "folds": 7,
+  "gate_successes": 382,
+  "head_fits": 14,
+  "implementation_sha256": {
+    "configs/claims_v1.yaml": "2f3169a2cc9c6d6bc591bcdca0f5f0a8f58be96901088249f82d5963d3968793",
+    "configs/experiment_core_v1.yaml": "ef1d3a0b2de9ff73db3642c25cec38518f44b63b1b926320ab2645bfe48077b0",
+    "configs/preprocessing_v3.yaml": "a4f1a27ffc6418c548702e38f3454d67a17ec834fda351ed46d6accaba738c71",
+    "configs/prompts_core_v1.yaml": "2a08c666659fb1f6ad7f0572e39773d9a49148e47abdb6f9ad9059d785c0596c",
+    "configs/seeds_v1.yaml": "38c544a689488ff7de3a4a306a9c2dd742082948cb9aa024b4c432f1c5aefab2",
+    "configs/siwmv2_source_use_v1.yaml": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f",
+    "configs/source_pilot295_v1.yaml": "e5793219cd5e41bd9122ab6faf3ec26d1c034959fa5c0ce5e84f19fdd9899e9b",
+    "configs/source_recipe_v2.yaml": "db39bbc961c19a5aa4f8fe9c87baa7b5ced678d9e8fda47fd016866819b52f09",
+    "scripts/pilot_source295.py": "939b108606b850c4e2240f84ccd3568e95aca0da46c8fc1d823545f833a0a6fe",
+    "scripts/run_source297.py": "8312cae5b584562acf3d6fa8429173360d24d2e950f53840d8b062f3d6e42986",
+    "src/fas/feature_cache.py": "49685a57b0c800fbabeadfae8c2019fb780a72265e2bdac1e0c8fa4fb30d48df",
+    "src/fas/frozen_features.py": "0c6ffb420830a7a6675ac84ee7c017bea47ef00182414785127f1c51b6f01b3b",
+    "src/fas/source_fitting.py": "69636c30e001ea49dac5d4f90f2ecd1484ec5990225f8b2b2fa04d212ddb5864",
+    "src/fas/source_stage.py": "36ab26532c051c96f93752bd395f9aef7ec8b77f79ada8f0bb8c32cf6b7c3528"
+  },
+  "inputs_sha256": "35969a893bb64d8f4015c580e742778d05eaad58408f1d45f7c659f1dda05a5c",
+  "io_sample": {
+    "bytes": 8658378,
+    "count": 24,
+    "crop_reads": 48,
+    "linear_three_encoder_plus_quality_read_projection_seconds": 217.99620802750968,
+    "no_pixel_decode_or_model_forward": true,
+    "projection_is_wall_guarantee": false,
+    "sample_method": "24_evenly_spaced_identity_sorted_source_rows",
+    "wall_seconds": 1.3724839959759265
+  },
+  "limits": {
+    "cuda_bytes": 12884901888,
+    "output_bytes": 2147483648,
+    "rss_bytes": 8589934592,
+    "wall_seconds": 7200,
+    "work_seconds": 6600
+  },
+  "max_new_image_forwards": 5646,
+  "maximum_risk_fits": 24,
+  "new_checkpoint_downloads": 0,
+  "new_text_forwards": 0,
+  "oof_candidate_successes": 1524,
+  "outer_target": "OULU-NPU",
+  "private_inputs_published": false,
+  "runtime": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "batch_size": 1,
+    "deterministic_algorithms": true,
+    "device": "NVIDIA GeForce RTX 4080 SUPER",
+    "precision": "float32",
+    "python": "3.12.14 (main, Sep  2 2026, 23:27:36) [GCC 15.3.0]",
+    "tf32": false,
+    "torch_cuda": "12.6",
+    "versions": {
+      "Pillow": "12.3.0",
+      "numpy": "1.26.4",
+      "open_clip_torch": "3.0.0",
+      "opencv-python-headless": "4.11.0.86",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.15.3",
+      "torch": "2.7.1"
+    }
+  },
+  "scientific_readiness": false,
+  "seed": 20260917,
+  "source_domains": [
+    "CASIA-FASD",
+    "MSU-MFSD",
+    "SiW-Mv2"
+  ],
+  "source_use_denominator": 1932,
+  "successful_inputs": 1906,
+  "version": 1
+}

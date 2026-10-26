@@ -1,5 +1,26 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+First source-fold full features and genuine OOF fitting complete (2026-10-26):
+[Report297](docs/297-first-source-fold-features-and-genuine-oof-fitting.md)
+implements [Review296](docs/296-review-doc295-source-integration-and-encoder-pilot.md).
+Under one fresh combined owner authority, OULU remains completely excluded:
+1932 source-use originals yield1906 valid feature inputs and26 retained failures.
+All three frozen encoders have complete1906-row caches, reusing24 pilot rows each
+and performing5646 new image forwards without new downloads/text forwards.
+Actual source fitting produced14 DINO heads,21 monotone calibrators and24 risk
+models; both OOF strategies cover the same1524 non-gate originals, with382
+permanent G_domain images held out of every fit. Saved artifacts and genuine
+error labels reconstruct without new inference/optimization.
+The source G_domain diagnostic favors matched sample-OOF rather than domain-OOF;
+OpenCLIP standalone balanced accuracy is below0.55. No result triggered tuning.
+Only one outer fold/seed ran: bootstrap competence, remaining rotations/seeds
+and the complete source evidence/gate bundle remain missing. Normal schema/data
+validation passes, scientific source-dry-run remains blocked, readiness is false.
+No target images/predictions, target tuning, gate selection or locked evaluation.
+See the [execution](results/phase1/source-run297-v1.json) and
+[saved-output closure](results/phase1/source-closure297-v1.json). Earlier entries
+below preserve their historical execution scope.
+
 Four-dataset source-stage handoff and authorized encoder pilot complete (2026-10-26):
 [Report295](docs/295-four-dataset-source-integration-and-frozen-encoder-pilot.md)
 implements [Review294](docs/294-review-doc293-siw-closure-and-four-dataset-handoff.md)

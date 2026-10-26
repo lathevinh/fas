@@ -1,0 +1,46 @@
+{
+  "calibrators_and_threshold_policies_verified": 21,
+  "checkpoint": 297,
+  "closure_script_sha256": "843679cb0ed90b7d5fcc8b844ebef2abf83e81776b58850656023e5e0d39a6f3",
+  "feature_rows_per_model": 1906,
+  "g_domain_predictions": 382,
+  "head_checkpoints_verified": 14,
+  "new_encoder_calls": 0,
+  "new_image_forwards": 5646,
+  "new_optimization_calls": 0,
+  "oof_rows_per_strategy": 1524,
+  "reconstructed_source_prediction_rows": 3430,
+  "remaining_components": [
+    "three_outer_rotations_and_remaining_seeds",
+    "cluster_bootstrap_competence_and_claim_specific_applicability",
+    "budget_matched_branch_fit_size_sensitivity_for_material_size_differences",
+    "registered_no_q_attribution_and_domain_identifiability_drift_diagnostics",
+    "gate_policy_and_complete_normal_validator_evidence_bundle"
+  ],
+  "reused295_feature_rows": 72,
+  "risk_models_and_saved_predictions_verified": 24,
+  "scientific_readiness": false,
+  "scientific_source_dry_run_complete": false,
+  "stage_errors": {
+    "analysis-freeze": [
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record"
+    ],
+    "data-audit": [],
+    "locked-evaluation": [
+      "missing source-dry-run evidence",
+      "missing immutable analysis-freeze record",
+      "locked-evaluation remains blocked until typed authorization exists"
+    ],
+    "schema": [],
+    "source-dry-run": [
+      "missing source-dry-run evidence"
+    ]
+  },
+  "status": "saved_source_feature_model_oof_and_risk_readback_verified",
+  "target_image_access": false,
+  "terminal_sha256": "4005c43c1c596221370aafc875131c21b9fa093ff407784a49437fc7aafab56b",
+  "version": 1,
+  "wall_seconds_from_original_approval": 442.0421533584595,
+  "worker_sha256": "30cbf4c24b4f556ad6530867905e1d8540dc31d6fd598adedf87affe67efab7a"
+}
