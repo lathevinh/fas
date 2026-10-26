@@ -12,6 +12,9 @@ Official tests comprise2943 originals,2929 successes and14 retained failures;
 live-only operational coverage rule. Source results/models are not rerun.
 Preparation and a successor freeze do not grant target execution authority;
 actual target status is recorded separately in the report.
+The [versioned successor freeze](results/analysis-freeze/freeze_record301-v3.json)
+pins156 paths from clean evaluator commitc41c3bd; the original source freeze
+is retained unchanged.
 
 Complete fixed source experiment (2026-10-26):
 [Report299](docs/299-complete-source-experiment-and-clustered-evidence.md)

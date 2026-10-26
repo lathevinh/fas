@@ -164,6 +164,16 @@ artifacts, so actual selected policies/configs/code cannot drift independently
 of the successor record. Final target outputs are not selection inputs and
 are not added to the frozen input map.
 
+The [actual successor record](../results/analysis-freeze/freeze_record301-v3.json)
+was created normally from clean commit
+`c41c3bd4684800a8e464e852a360d4ac92d0aafa`, pinning156 paths. Its SHA-256 is
+`a79323e3cfbf88094ad71d1a9c69e84b737795d2acea019f991f35778d9b8404`.
+The original source record remains at SHA-256
+`004b0fb546bde3fd2c56977be07a028c63ec63b40134d95605c5462a017d8d91`.
+The normal explicitly selected analysis-freeze gate passes; committed
+persistence and the complete private execution bindings are checked again
+before requesting human authority.
+
 ## Tests and bounded execution requirements
 
 All482 configured local tests pass, including hand-computed/tied raw AURC,
