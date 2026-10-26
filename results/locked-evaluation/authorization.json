@@ -1,0 +1,19 @@
+{
+  "analysis_freeze_sha256": "a79323e3cfbf88094ad71d1a9c69e84b737795d2acea019f991f35778d9b8404",
+  "claim_spec_sha256": "2f3169a2cc9c6d6bc591bcdca0f5f0a8f58be96901088249f82d5963d3968793",
+  "created_from_commit": "c41c3bd4684800a8e464e852a360d4ac92d0aafa",
+  "experiment_config_sha256": "ef1d3a0b2de9ff73db3642c25cec38518f44b63b1b926320ab2645bfe48077b0",
+  "outer_targets": [
+    "CASIA-FASD",
+    "MSU-MFSD",
+    "OULU-NPU",
+    "SiW-Mv2"
+  ],
+  "seeds": [
+    20260917,
+    20260923,
+    20261001
+  ],
+  "state": "authorized",
+  "version": 1
+}

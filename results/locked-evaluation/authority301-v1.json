@@ -1,0 +1,55 @@
+{
+  "automatic_retry": false,
+  "config_sha256": "fc37ba4d14e0a6a4d1ba40f249751dbfe147b4158af2ee70e3f2821d8ab2cbab",
+  "explicit_owner_approval": true,
+  "limits": {
+    "cuda_bytes": 12884901888,
+    "output_bytes": 4294967296,
+    "rss_bytes": 12884901888,
+    "wall_seconds": 14400,
+    "work_seconds": 12600
+  },
+  "manifest_sha256": "e5a6ae6d706597c974089083fcf909514f3410d0bec4368a205a57a94330b41f",
+  "outer_targets": [
+    "OULU-NPU",
+    "CASIA-FASD",
+    "MSU-MFSD",
+    "SiW-Mv2"
+  ],
+  "private_approval_sha256": "5276b950c6acd6d5cf03c587f05e8fab3cc68d88aa5d2e18d50ad657235ce849",
+  "seeds": [
+    20260917,
+    20260923,
+    20261001
+  ],
+  "selected_answer": "approve_locked301_fixed_target_evaluation",
+  "started_unix_seconds": 1793012596.898226,
+  "successor_freeze_sha256": "a79323e3cfbf88094ad71d1a9c69e84b737795d2acea019f991f35778d9b8404",
+  "target_scope": {
+    "CASIA-FASD": {
+      "failures": 6,
+      "originals": 360,
+      "population_and_mask_sha256": "352c8ce7cd277307fe17d376b3973fd527fef4525918bd6f4a731e8f5e11e65b",
+      "successes": 354
+    },
+    "MSU-MFSD": {
+      "failures": 4,
+      "originals": 160,
+      "population_and_mask_sha256": "ddaf31b186349e8efc5fe5c570d195b147a99e8a1a9f2270db7d0305d34c9a3c",
+      "successes": 156
+    },
+    "OULU-NPU": {
+      "failures": 0,
+      "originals": 1800,
+      "population_and_mask_sha256": "88307b26db3d86e01532b7592cd329746142e91dde592c7f8a9a54e88981a696",
+      "successes": 1800
+    },
+    "SiW-Mv2": {
+      "failures": 4,
+      "originals": 623,
+      "population_and_mask_sha256": "71ea43c9148ac43773876271f86bb580d50bbb91e0cadda2f135edd36e4e5fd1",
+      "successes": 619
+    }
+  },
+  "tuning_or_training_authorized": false
+}
