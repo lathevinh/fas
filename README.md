@@ -1,5 +1,26 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Complete fixed source experiment (2026-10-26):
+[Report299](docs/299-complete-source-experiment-and-clustered-evidence.md)
+implements [Review298](docs/298-review-doc297-first-source-fitting-and-oof-results.md).
+All12 outer-target/seed combinations and the registered fit-size, no-quality,
+domain-identifiability, drift and clustered-uncertainty controls completed.
+Only4949 uncached OULU images were extracted as authorized sources for other
+rotations:14847 new image forwards;297's features and fitted states are preserved.
+Actual new fitting produced274 heads,411 calibrators,456 risk models and48
+domain audits. Saved-only closure verifies288 heads,480 risk models and171612
+context prediction rows without further inference/optimization.
+Normal schema/data-audit/source-dry-run gates pass; both source claims are
+eligible in all12 combinations. This is not a positive target RQ verdict:
+all12 primary heterogeneous domain-minus-sample AP intervals are negative,
+and standalone OpenCLIP fails competence everywhere. No result triggered tuning.
+Analysis freeze follows separately through the normal clean-commit gate.
+No target predictions/tuning, gate selection or locked-evaluation authorization.
+See the [actual execution](results/phase1/source-run299-v1.json),
+[closure](results/phase1/source-closure299-v1.json) and
+[source evidence](results/source-dry-run/evidence.json).
+Earlier entries below preserve their creation-time scope and blocked statuses.
+
 First source-fold full features and genuine OOF fitting complete (2026-10-26):
 [Report297](docs/297-first-source-fold-features-and-genuine-oof-fitting.md)
 implements [Review296](docs/296-review-doc295-source-integration-and-encoder-pilot.md).

@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "checkpoint": 297,
+  "collection_package": 299,
+  "published_commit": "70e7bed5a62211ddc1796a15dedd7ab62d5b7e5b",
+  "workflow_run_id": 40290548935,
+  "workflow_job_id": 121464322107,
+  "workflow_run_url": "https://github.com/lathevinh/fas/actions/runs/40290548935",
+  "workflow_job_url": "https://github.com/lathevinh/fas/actions/runs/40290548935/job/121464322107",
+  "status": "completed",
+  "conclusion": "success",
+  "completed_at_utc": "2026-10-26T08:39:08Z",
+  "all_12_listed_steps_succeeded": true,
+  "complete_job_step_succeeded": true,
+  "ffmpeg_install_started_at_utc": "2026-10-26T08:11:36Z",
+  "ffmpeg_install_completed_at_utc": "2026-10-26T08:38:23Z",
+  "historical_receipts_rewritten": false,
+  "private_model_campaign_repeated": false
+}

@@ -71,9 +71,13 @@ class PreregistrationTest(unittest.TestCase):
             self.assertTrue(any("must not name" in error for error in errors))
 
     def test_later_stages_remain_explicitly_blocked(self) -> None:
-        source_errors = validate_stage(ROOT, "source-dry-run")
-        freeze_errors = validate_stage(ROOT, "analysis-freeze")
-        locked_errors = validate_stage(ROOT, "locked-evaluation")
+        with self._copy() as copy:
+            for name in ("evidence.json", "competence.json", "applicability.json"):
+                (copy / "results/source-dry-run" / name).unlink(missing_ok=True)
+            (copy / "results/analysis-freeze/freeze_record.json").unlink(missing_ok=True)
+            source_errors = validate_stage(copy, "source-dry-run")
+            freeze_errors = validate_stage(copy, "analysis-freeze")
+            locked_errors = validate_stage(copy, "locked-evaluation")
         self.assertTrue(any("source-dry-run evidence" in error for error in source_errors))
         self.assertTrue(any("missing immutable analysis-freeze record" in error for error in freeze_errors))
         self.assertTrue(any("locked-evaluation remains blocked" in error for error in locked_errors))
@@ -132,6 +136,9 @@ class PreregistrationTest(unittest.TestCase):
 
     def test_external_frozen_root_defaults_and_nonready_statuses(self) -> None:
         with self._copy() as copy, self._external_fixture(copy) as external:
+            for name in ("evidence.json", "competence.json", "applicability.json"):
+                (copy / "results/source-dry-run" / name).unlink(missing_ok=True)
+            (copy / "results/analysis-freeze/freeze_record.json").unlink(missing_ok=True)
             self.assertEqual(validate_stage(copy, "data-audit"), [])
             self.assertEqual(validate_stage(copy, "data-audit", frozen_root=external), [])
             shutil.rmtree(copy / "manifests/private")

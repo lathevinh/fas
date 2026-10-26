@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import argparse
 import subprocess
 import sys
 from datetime import datetime, timezone
@@ -13,11 +14,17 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from fas.freeze import build_analysis_freeze_record, write_immutable_record
-from fas.preregistration import MICO_DOMAINS, artifact_hashes, load_config, validate_stage
+from fas.contracts import CORE_DOMAINS
+from fas.preregistration import artifact_hashes, load_config, validate_stage
 
 
 def main() -> int:
-    errors = validate_stage(ROOT, "source-dry-run")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--frozen-root", type=Path)
+    parser.add_argument("--source-use-root", type=Path)
+    args = parser.parse_args()
+    errors = validate_stage(ROOT, "source-dry-run", frozen_root=args.frozen_root,
+                            source_use_root=args.source_use_root)
     if errors:
         print("SOURCE DRY RUN NOT READY; freeze record not written:", file=sys.stderr)
         for error in errors:
@@ -39,7 +46,7 @@ def main() -> int:
         artifact_sha256=artifact_hashes(ROOT),
         source_evidence_sha256=hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
         source_policy_sha256=evidence["source_policy_sha256"],
-        outer_targets=sorted(MICO_DOMAINS),
+        outer_targets=sorted(CORE_DOMAINS),
         seeds=seeds,
         no_target_selection_input=evidence["no_target_selection_input"],
     )

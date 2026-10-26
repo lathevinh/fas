@@ -1,0 +1,906 @@
+{
+  "no_target_selection_input": true,
+  "records": [
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 1181,
+        "error_count": 343,
+        "pass": true
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.925128676468718,
+          "macro_auroc_lcb": 0.909392511553343,
+          "macro_balanced_accuracy": 0.7405630780684889,
+          "pass": true,
+          "score_range": 0.9999999577262808,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8911554103425129,
+          "macro_auroc_lcb": 0.865328564289195,
+          "macro_balanced_accuracy": 0.7595747406406973,
+          "pass": true,
+          "score_range": 0.7565780035187204,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5787599357153781,
+          "macro_auroc_lcb": 0.5512620188903536,
+          "macro_balanced_accuracy": 0.5061450371499702,
+          "pass": false,
+          "score_range": 0.5883453190326691,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9452916164332742,
+          "macro_auroc_lcb": 0.9293817515127063,
+          "macro_balanced_accuracy": 0.8068262076930529,
+          "pass": true,
+          "score_range": 0.9999959175353423,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 1237,
+        "error_count": 287,
+        "pass": true
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.93591381354484,
+          "macro_auroc_lcb": 0.9194011667064937,
+          "macro_balanced_accuracy": 0.7722213782304573,
+          "pass": true,
+          "score_range": 0.9999986148995665,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9159205996646061,
+          "macro_auroc_lcb": 0.8945981020233342,
+          "macro_balanced_accuracy": 0.791174270496044,
+          "pass": true,
+          "score_range": 0.7373946757030853,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5787599357153781,
+          "macro_auroc_lcb": 0.5512620188903536,
+          "macro_balanced_accuracy": 0.5061450371499702,
+          "pass": false,
+          "score_range": 0.588345468044281,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.952060158759501,
+          "macro_auroc_lcb": 0.9369909792130984,
+          "macro_balanced_accuracy": 0.7688399792033763,
+          "pass": true,
+          "score_range": 0.9999972756854194,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 1174,
+        "error_count": 350,
+        "pass": true
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9183787973556852,
+          "macro_auroc_lcb": 0.9015272001978626,
+          "macro_balanced_accuracy": 0.7498665410164683,
+          "pass": true,
+          "score_range": 0.9999980218537843,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8983099838245573,
+          "macro_auroc_lcb": 0.8760934443176254,
+          "macro_balanced_accuracy": 0.7484560330510931,
+          "pass": true,
+          "score_range": 0.7561703197687253,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5787599357153781,
+          "macro_auroc_lcb": 0.5512620188903536,
+          "macro_balanced_accuracy": 0.5061450371499702,
+          "pass": false,
+          "score_range": 0.588345468044281,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9335713755422438,
+          "macro_auroc_lcb": 0.9174565419297033,
+          "macro_balanced_accuracy": 0.7632564203730081,
+          "pass": true,
+          "score_range": 0.9999875361187293,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 3437,
+        "error_count": 1572,
+        "pass": true
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20260917,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8124580670987888,
+          "macro_auroc_lcb": 0.7870524144113344,
+          "macro_balanced_accuracy": 0.7355342645749042,
+          "pass": true,
+          "score_range": 0.9999919181959197,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8020919706933191,
+          "macro_auroc_lcb": 0.7747340474376901,
+          "macro_balanced_accuracy": 0.7357110139426991,
+          "pass": true,
+          "score_range": 0.6457067564260905,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.544497093522096,
+          "macro_auroc_lcb": 0.519544051185519,
+          "macro_balanced_accuracy": 0.49682409405359845,
+          "pass": false,
+          "score_range": 0.3308594524860382,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.817501741958234,
+          "macro_auroc_lcb": 0.7969861224872307,
+          "macro_balanced_accuracy": 0.7418350158087854,
+          "pass": true,
+          "score_range": 0.9999946577258626,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 3484,
+        "error_count": 1525,
+        "pass": true
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20260923,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.828489148198616,
+          "macro_auroc_lcb": 0.8026633262344772,
+          "macro_balanced_accuracy": 0.7419261173643396,
+          "pass": true,
+          "score_range": 0.9999624717573065,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8201029853354268,
+          "macro_auroc_lcb": 0.7941783967167454,
+          "macro_balanced_accuracy": 0.7472343377251786,
+          "pass": true,
+          "score_range": 0.6448580920731868,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.544497093522096,
+          "macro_auroc_lcb": 0.519544051185519,
+          "macro_balanced_accuracy": 0.49682409405359845,
+          "pass": false,
+          "score_range": 0.3308594524860382,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8419713749885905,
+          "macro_auroc_lcb": 0.8216255288302051,
+          "macro_balanced_accuracy": 0.7686871600276103,
+          "pass": true,
+          "score_range": 0.9999732746886493,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 3494,
+        "error_count": 1515,
+        "pass": true
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20261001,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8407045971530746,
+          "macro_auroc_lcb": 0.8165802362384308,
+          "macro_balanced_accuracy": 0.7500810152617419,
+          "pass": true,
+          "score_range": 0.9999885322016864,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8286697611208097,
+          "macro_auroc_lcb": 0.8034729588440113,
+          "macro_balanced_accuracy": 0.7490694727283996,
+          "pass": true,
+          "score_range": 0.638667629099605,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.544497093522096,
+          "macro_auroc_lcb": 0.519544051185519,
+          "macro_balanced_accuracy": 0.49682409405359845,
+          "pass": false,
+          "score_range": 0.3308594524860382,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8549723698807205,
+          "macro_auroc_lcb": 0.8347968563985247,
+          "macro_balanced_accuracy": 0.7819383246567968,
+          "pass": true,
+          "score_range": 0.9999892478278829,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2469,
+        "error_count": 2795,
+        "pass": true
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8960246922827867,
+          "macro_auroc_lcb": 0.8820778102163506,
+          "macro_balanced_accuracy": 0.7077923801457495,
+          "pass": true,
+          "score_range": 0.9999999999999999,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8387793513818852,
+          "macro_auroc_lcb": 0.8230600228190478,
+          "macro_balanced_accuracy": 0.7080942169413125,
+          "pass": true,
+          "score_range": 0.6433167961283146,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5602138710306455,
+          "macro_auroc_lcb": 0.5404651431466678,
+          "macro_balanced_accuracy": 0.5010304429591295,
+          "pass": false,
+          "score_range": 0.3047198951244354,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8632829167291961,
+          "macro_auroc_lcb": 0.8464795734007791,
+          "macro_balanced_accuracy": 0.6844629449272892,
+          "pass": true,
+          "score_range": 0.9999999999994007,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2549,
+        "error_count": 2715,
+        "pass": true
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8905692320340584,
+          "macro_auroc_lcb": 0.8740171086631418,
+          "macro_balanced_accuracy": 0.6883970312834761,
+          "pass": true,
+          "score_range": 0.9999999999999991,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.840992300394463,
+          "macro_auroc_lcb": 0.8251960053657689,
+          "macro_balanced_accuracy": 0.6928353095995368,
+          "pass": true,
+          "score_range": 0.6453050557600517,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5602138710306455,
+          "macro_auroc_lcb": 0.5404651431466678,
+          "macro_balanced_accuracy": 0.5010304429591295,
+          "pass": false,
+          "score_range": 0.3047198951244354,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8704486759031077,
+          "macro_auroc_lcb": 0.8522650008095594,
+          "macro_balanced_accuracy": 0.6760705402116486,
+          "pass": true,
+          "score_range": 0.9999999999956931,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2500,
+        "error_count": 2764,
+        "pass": true
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9026135934061044,
+          "macro_auroc_lcb": 0.8869920612564438,
+          "macro_balanced_accuracy": 0.6879755550519214,
+          "pass": true,
+          "score_range": 0.9999999999959011,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8517243674477579,
+          "macro_auroc_lcb": 0.8359134149844013,
+          "macro_balanced_accuracy": 0.6874787898647968,
+          "pass": true,
+          "score_range": 0.6429277544541471,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5602138710306455,
+          "macro_auroc_lcb": 0.5404651431466678,
+          "macro_balanced_accuracy": 0.5010304429591295,
+          "pass": false,
+          "score_range": 0.3047198951244354,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8894210676440476,
+          "macro_auroc_lcb": 0.8715648609226795,
+          "macro_balanced_accuracy": 0.6721000992481564,
+          "pass": true,
+          "score_range": 0.9999999943902971,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2931,
+        "error_count": 1721,
+        "pass": true
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8885205306013167,
+          "macro_auroc_lcb": 0.8700168139532901,
+          "macro_balanced_accuracy": 0.6790466934191935,
+          "pass": true,
+          "score_range": 0.9999999999835216,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.845625573814197,
+          "macro_auroc_lcb": 0.8184461441724389,
+          "macro_balanced_accuracy": 0.6734857317725343,
+          "pass": true,
+          "score_range": 0.7273874204074038,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5332136576090929,
+          "macro_auroc_lcb": 0.5079834586501648,
+          "macro_balanced_accuracy": 0.5011780443585839,
+          "pass": false,
+          "score_range": 0.49412620067596436,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8972570506858862,
+          "macro_auroc_lcb": 0.8757937918177641,
+          "macro_balanced_accuracy": 0.6785176144248429,
+          "pass": true,
+          "score_range": 0.9999995010077608,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2722,
+        "error_count": 1930,
+        "pass": true
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8910073971489418,
+          "macro_auroc_lcb": 0.872738909273888,
+          "macro_balanced_accuracy": 0.6686099316510891,
+          "pass": true,
+          "score_range": 0.9999999998308283,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8513942667978576,
+          "macro_auroc_lcb": 0.8239604359371456,
+          "macro_balanced_accuracy": 0.6730613909178752,
+          "pass": true,
+          "score_range": 0.7174064454086481,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5332136576090929,
+          "macro_auroc_lcb": 0.5079834586501648,
+          "macro_balanced_accuracy": 0.5011780443585839,
+          "pass": false,
+          "score_range": 0.49412620067596436,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.907328667614704,
+          "macro_auroc_lcb": 0.8879655180932263,
+          "macro_balanced_accuracy": 0.6733755075779916,
+          "pass": true,
+          "score_range": 0.9999996003499682,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    },
+    {
+      "dino_anchor_pass": true,
+      "heterogeneous_risk_fit": {
+        "correct_count": 2676,
+        "error_count": 1976,
+        "pass": true
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      },
+      "systems": {
+        "dino_reg": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8953810391662986,
+          "macro_auroc_lcb": 0.8773842814464351,
+          "macro_balanced_accuracy": 0.6567595000135388,
+          "pass": true,
+          "score_range": 0.9999999239844362,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "heterogeneous": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.8501818238153867,
+          "macro_auroc_lcb": 0.82208737559415,
+          "macro_balanced_accuracy": 0.6577086930318229,
+          "pass": true,
+          "score_range": 0.7356106381426253,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "openclip": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.5332136576090929,
+          "macro_auroc_lcb": 0.5079834586501648,
+          "macro_balanced_accuracy": 0.5011780443585839,
+          "pass": false,
+          "score_range": 0.49412620067596436,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        },
+        "same_family": {
+          "bootstrap_requested": 2000,
+          "bootstrap_valid_repetitions": 2000,
+          "both_classes": true,
+          "finite_calibration": true,
+          "finite_scores": true,
+          "macro_auroc": 0.9022018054360039,
+          "macro_auroc_lcb": 0.8814027989302741,
+          "macro_balanced_accuracy": 0.6639822122622113,
+          "pass": true,
+          "score_range": 0.9999952871384841,
+          "uncertainty_scope": "conditional_saved_predictors_group_bootstrap_within_source_domain"
+        }
+      }
+    }
+  ],
+  "version": 1
+}

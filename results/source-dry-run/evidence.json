@@ -1,0 +1,16 @@
+{
+  "artifact_sha256": {
+    "results/source-dry-run/applicability.json": "592ddf6e8e7f2ad2ee07937347b69692e5b4543acbe4d8965130940c32011fa7",
+    "results/source-dry-run/competence.json": "5189573e63ad1b44c27c4d5ac93cf5b289bc6260f66687058c82b6fbaea6c8ff"
+  },
+  "no_target_selection_input": true,
+  "source_policy_path": "configs/source_recipe_v2.yaml",
+  "source_policy_sha256": "db39bbc961c19a5aa4f8fe9c87baa7b5ced678d9e8fda47fd016866819b52f09",
+  "source_use_binding": {
+    "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+    "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+    "policy_id": "siwmv2-source-use-exclusions-v1",
+    "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+  },
+  "version": 1
+}

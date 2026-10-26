@@ -363,13 +363,23 @@ def _validate_analysis_freeze(root: Path, errors: list[str]) -> None:
             return
         expected = build_analysis_freeze_record(
             created_at_utc=record.get("created_at_utc", ""),
-            created_from_commit=commit,
+            created_from_commit=record.get("created_from_commit", ""),
             artifact_sha256=artifact_hashes(root),
             source_evidence_sha256=hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
             source_policy_sha256=evidence.get("source_policy_sha256", ""),
             outer_targets=experiment.get("outer_domains", []),
             seeds=seed_config.get("seeds", []),
             no_target_selection_input=evidence.get("no_target_selection_input", False),
+        )
+        subprocess.check_call(
+            ["git", "merge-base", "--is-ancestor", expected["created_from_commit"], commit],
+            cwd=root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        frozen_paths = sorted(expected["artifact_sha256"]) + sorted(SOURCE_DRY_RUN_ARTIFACTS) + [
+            "results/source-dry-run/evidence.json"]
+        subprocess.check_call(
+            ["git", "diff", "--quiet", expected["created_from_commit"], commit, "--", *frozen_paths],
+            cwd=root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
         )
     except (ValueError, json.JSONDecodeError, subprocess.CalledProcessError) as exc:
         errors.append(f"invalid analysis-freeze record: {exc}")

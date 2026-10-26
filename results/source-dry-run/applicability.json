@@ -1,0 +1,476 @@
+{
+  "n_error_min": 20,
+  "no_target_selection_input": true,
+  "records": [
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 442,
+          "error_count": 32,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 109,
+          "error_count": 110,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 630,
+          "error_count": 201,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 432,
+          "error_count": 42,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 138,
+          "error_count": 81,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 667,
+          "error_count": 164,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "OULU-NPU",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 427,
+          "error_count": 47,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 121,
+          "error_count": 98,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 626,
+          "error_count": 205,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20260917,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 179,
+          "error_count": 40,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2755,
+          "error_count": 1204,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 503,
+          "error_count": 328,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20260923,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 192,
+          "error_count": 27,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2759,
+          "error_count": 1200,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 533,
+          "error_count": 298,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "CASIA-FASD",
+      "seed": 20261001,
+      "source_domains": [
+        "MSU-MFSD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 194,
+          "error_count": 25,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2771,
+          "error_count": 1188,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 529,
+          "error_count": 302,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 426,
+          "error_count": 48,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 1438,
+          "error_count": 2521,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 605,
+          "error_count": 226,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 412,
+          "error_count": 62,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 1526,
+          "error_count": 2433,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 611,
+          "error_count": 220,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "MSU-MFSD",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "OULU-NPU",
+        "SiW-Mv2"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 403,
+          "error_count": 71,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 1464,
+          "error_count": 2495,
+          "meets_n_error_min": true
+        },
+        "SiW-Mv2": {
+          "ap_estimable": true,
+          "correct_count": 633,
+          "error_count": 198,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20260917,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 386,
+          "error_count": 88,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 109,
+          "error_count": 110,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2436,
+          "error_count": 1523,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20260923,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 380,
+          "error_count": 94,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 124,
+          "error_count": 95,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2218,
+          "error_count": 1741,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    },
+    {
+      "claims": {
+        "rq1_oof_transfer": "eligible",
+        "rq2_complete_system": "eligible"
+      },
+      "outer_target": "SiW-Mv2",
+      "seed": 20261001,
+      "source_domains": [
+        "CASIA-FASD",
+        "MSU-MFSD",
+        "OULU-NPU"
+      ],
+      "source_events": {
+        "CASIA-FASD": {
+          "ap_estimable": true,
+          "correct_count": 376,
+          "error_count": 98,
+          "meets_n_error_min": true
+        },
+        "MSU-MFSD": {
+          "ap_estimable": true,
+          "correct_count": 118,
+          "error_count": 101,
+          "meets_n_error_min": true
+        },
+        "OULU-NPU": {
+          "ap_estimable": true,
+          "correct_count": 2182,
+          "error_count": 1777,
+          "meets_n_error_min": true
+        }
+      },
+      "source_use_binding": {
+        "effective_manifest_sha256": "0fd8aeffc230d521ab2f82648812aaec54bc91dcb0c4f08682569a89094a7754",
+        "overlay_sha256": "a66de1a67d0f84a60d88e9b515201b94e1bc798d8838c95fea8f4f974b6537a1",
+        "policy_id": "siwmv2-source-use-exclusions-v1",
+        "policy_sha256": "1fc6e58f12733880071834eee6781472409d2fe0f9ebdaeb6e04b10fc810ed8f"
+      }
+    }
+  ],
+  "target_event_support": "not_inspected",
+  "version": 1
+}

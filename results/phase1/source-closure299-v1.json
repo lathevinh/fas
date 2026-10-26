@@ -1,0 +1,26 @@
+{
+  "checkpoint": 299,
+  "closure_script_sha256": "ccfca5e2a00773390ac0ce0cb36ac92e093a4f1b6a9e12f5fae027dea6920b1d",
+  "combination_count": 12,
+  "feature_rows_per_backbone": 6855,
+  "head_models_verified": 288,
+  "locked_evaluation_authorized": false,
+  "new_encoder_calls": 0,
+  "new_image_forwards_verified": 14847,
+  "new_optimization_calls": 0,
+  "reused297_contexts_verified": 7,
+  "risk_models_verified": 480,
+  "source_dry_run_validator_passed": true,
+  "source_prediction_rows_reconstructed": 171612,
+  "stage_errors": {
+    "data-audit": [],
+    "schema": [],
+    "source-dry-run": []
+  },
+  "status": "saved_complete_source_experiment_verified",
+  "target_predictions": false,
+  "terminal_sha256": "f7f3bd592ce68894211cb76ef534786e94b17c65a3805eb2409fa58f2719f67f",
+  "version": 1,
+  "wall_seconds_from_original_approval": 1298.0739915370941,
+  "worker_sha256": "85d6d4db23ba1a43d4141c373e6654fdc0a7c91d7f64426567267466cc82257b"
+}
