@@ -1,15 +1,21 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Bounded nested-fusion package (2026-10-27):
-[Package313](docs/313-bounded-nested-fusion-utility-execution-package.md)
-implements [Review312](docs/312-review-plan311-bounded-nested-fusion-utility.md)
-and the owner's feasibility-first comparison decision. DINO-CLIP and
-two-DINO receive identical six-weight nested selectors; D-only is another
-required comparator. The sealed workload will contain36 new heads and36
-calibrators, exact old-state reuse, original-denominator utility, explicit
-infeasible/transfer-failure outcomes and independent saved reconstruction.
-This preparation is not approval to run private fits; the bounded execution
-requires one explicit decision on the completed sealed package.
+Bounded nested-fusion utility study complete (2026-10-27):
+[Report314](docs/314-nested-fusion-utility-results.md) records the owner's
+later explicit approval and successful single execution of
+[Package313](docs/313-bounded-nested-fusion-utility-execution-package.md),
+following [Review312](docs/312-review-plan311-bounded-nested-fusion-utility.md).
+The matched six-weight DINO-CLIP and two-DINO selectors both find no
+inner-feasible policy: every one of360 selector/weight candidates violates
+5% attack FA in at least one inner source. Both have36/36 missing primary
+selected policies; the declared gain endpoint is unestimable, not zero.
+The36 new heads/36 calibrators and separate no-fit reconstruction complete
+within36.054 seconds,430.11MiB combined sampled RSS and34.19MiB owned outputs,
+with0 encoder forwards or new target evaluations.
+The [aggregate closure](results/phase1/source-fusion313-closure-v1.json)
+also verifies246780 saved reference score/threshold/decision comparisons
+against309 without an acceptance change. Neither selector is promoted;
+no constraint relaxation, automatic S1 run or target access follows.
 
 Next-stage plan for critique (2026-10-27):
 [Proposal311](docs/311-next-stage-cached-pad-research-plan-for-review.md)

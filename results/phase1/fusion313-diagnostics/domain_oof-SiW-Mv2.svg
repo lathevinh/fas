@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="460" viewBox="0 0 600 460">
+<rect width="600" height="460" fill="white"/>
+<text x="50" y="25">SiW-Mv2 / domain_oof: descriptive held-out operating points</text>
+<path d="M50 50 V390 H550" fill="none" stroke="black"/>
+<text x="180" y="440">Original attack FA (0 to 100%)</text>
+<text x="55" y="45">Original bona-fide acceptance (0 to 100%)</text>
+<path d="M75.000000 50 V390" stroke="#888888" stroke-dasharray="4 4"/>
+<path d="M50 220.000000 H550" stroke="#888888" stroke-dasharray="4 4"/>
+<text x="320" y="70" fill="#c43c39">dino_clip: 9 missing policies</text>
+<text x="320" y="90" fill="#2463a5">two_dino: 9 missing policies</text>
+<circle cx="111.320755" cy="168.472554" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="120.754717" cy="133.579952" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="139.622642" cy="160.357995" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="163.207547" cy="243.937947" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="117.216981" cy="247.995227" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="113.679245" cy="252.052506" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="277.594340" cy="87.326969" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="272.877358" cy="84.081146" r="4" fill="#555555" fill-opacity="0.6"/>
+<circle cx="254.009434" cy="80.023866" r="4" fill="#555555" fill-opacity="0.6"/>
+<text x="320" y="110" fill="#555555">dino_only: 0 missing policies</text>
+</svg>
