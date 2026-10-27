@@ -1,5 +1,21 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Saved-score oracle diagnostic complete (2026-10-27):
+[Report316](docs/316-saved-score-oracle-threshold-diagnosis.md), following
+[Review315](docs/315-review-report314-nested-fusion-infeasibility.md) and a
+new explicit owner request, separates threshold placement from low-FA score
+limitations without fitting or new model predictions. All612 cases are
+reconstructed using a second grouped-curve algorithm.
+In primary two-source-held-out results,0/54 fixed-reference OULU cases reach
+50% bona-fide acceptance at attack FA<=5%, even with oracle thresholds;
+CASIA54/54 do. DINO-Reg mean oracle BFA is39.59% on OULU versus90.00% on CASIA.
+These are evaluation-label-selected diagnostic ceilings, not deployable
+policies or new target results. The
+[aggregate result](results/phase1/source-oracle316-v1.json) and
+[source/seed CSV](results/phase1/source-oracle316-cases-v1.csv)
+retain all cases.313's sealed code and314's missing-policy conclusion remain
+unchanged; no calibration-only rescue or training campaign is authorized.
+
 Bounded nested-fusion utility study complete (2026-10-27):
 [Report314](docs/314-nested-fusion-utility-results.md) records the owner's
 later explicit approval and successful single execution of
