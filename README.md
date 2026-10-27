@@ -1,5 +1,12 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Proposed next study (2026-10-27):
+[Proposal303](docs/303-proposal-improving-dino-openclip-pad.md) is a
+non-authorizing research plan motivated by the accepted [Review302](docs/302-review-doc301-locked-target-results-and-final-claims.md).
+It prioritizes geometry-preserving crops, DINO-first/source-only fusion
+selection, and a genuinely unseen locked target. No images, models, roles,
+results or existing freezes are changed, and no new experiment is authorized.
+
 Locked-target evaluation complete (2026-10-26):
 [Report301](docs/301-locked-target-package-and-fixed-evaluation.md)
 implements [Review300](docs/300-review-doc299-complete-source-evidence-and-analysis-freeze.md).
