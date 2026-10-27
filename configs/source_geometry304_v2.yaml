@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "checkpoint": 304,
+  "state": "source_only_exploratory_uniform_risk_optimizer_amendment",
+  "candidate": "G2",
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "geometry_config_sha256": "1943be65c9b1281269b06df1c9ffa87275e7d76d3a7ad455e772e169ee5ad315",
+  "geometry_generation_receipt_sha256": "d196129e2f53713b85f5d97f8bc320fe071b22faf0e6e997fe4b1907c2895a91",
+  "inherited_source_config": "configs/source_run299_v1.yaml",
+  "inherited_source_config_sha256": "8e1feed43b371f4b07333d8a407f76f22e7ccf366fe93999de5bad42ccfab0b3",
+  "verified_candidate_feature_cache": {
+    "extraction_sha256": "84cb771f0750719161925f5f43a0082f8be3ce5b1b486782e6be7821df4ed0db",
+    "dino_reg_sha256": "2653cb3e5e683a98e1337bc87cdfa85a4f8ea19c8bb269a4b76be6d5e0151d58",
+    "dino_plain_sha256": "e24c23385f9f85b13943f68657bc43b1c91803a6ee268bf6616f9b386387ed4e",
+    "openclip_sha256": "871120b596797946696e1bc43f650cc00fe3ecdaff8f0202dc52130d15acd973",
+    "quality_sha256": "cd0f8e925597dd6b58614b8d9023bbc736670b256fbd8bd552f3a68f632b2bfa",
+    "reuse_only_feature_extraction_not_fits_or_results": true
+  },
+  "outer_source_exclusions": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "seeds": [20260917, 20260923, 20261001],
+  "protocol": "accepted299 group-safe source fitting, calibration, OOF and diagnostics; all 12 contexts rerun uniformly",
+  "fit_and_risk_objective": "unchanged configs/source_run297_v1.yaml",
+  "risk_optimizer": {
+    "method": "L-BFGS-B",
+    "maxiter": 1000,
+    "ftol": 1e-12,
+    "gtol": 1e-7,
+    "maxls": 50,
+    "amendment_reason": "the default line-search cap stopped one source-only risk fit as ABNORMAL; same objective, coefficients and stopping tolerances, higher line-search evaluation cap applied uniformly to every risk fit"
+  },
+  "source_scope": {
+    "roles": ["train", "branch_calibration", "g_domain"],
+    "target_only_or_null_role_rows": false,
+    "outer_excluded_domain_enters_each_fit": false,
+    "independent_target_claim": false,
+    "target_predictions": false,
+    "target_tuning": false,
+    "locked_evaluation": false
+  },
+  "resources": {
+    "wall_seconds": 21600,
+    "rss_bytes": 12884901888,
+    "cuda_bytes": 12884901888,
+    "new_output_bytes": 8589934592,
+    "feature_batch_size": 1,
+    "new_encoder_forwards": 0,
+    "checkpoint_downloads": 0,
+    "automatic_retry": false
+  }
+}

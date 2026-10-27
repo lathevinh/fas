@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "checkpoint": 304,
+  "state": "source_only_exploratory_execution",
+  "candidate": "G2",
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "geometry_config": "configs/geometry_candidate304_v1.yaml",
+  "preprocessing_checkpoint": 299,
+  "inherited_source_config": "configs/source_run299_v1.yaml",
+  "inherited_source_config_sha256": "8e1feed43b371f4b07333d8a407f76f22e7ccf366fe93999de5bad42ccfab0b3",
+  "outer_source_exclusions": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "seeds": [20260917, 20260923, 20261001],
+  "protocol": "reuse accepted299 group-safe source fitting, calibration, OOF, source-gate diagnostics and bootstrap without target predictions",
+  "fit_and_risk_settings": "unchanged configs/source_run297_v1.yaml",
+  "source_scope": {
+    "roles": ["train", "branch_calibration", "g_domain"],
+    "target_only_or_null_role_rows": false,
+    "outer_excluded_domain_enters_each_fit": false,
+    "independent_target_claim": false,
+    "target_predictions": false,
+    "target_tuning": false,
+    "locked_evaluation": false
+  },
+  "resources": {
+    "wall_seconds": 21600,
+    "rss_bytes": 12884901888,
+    "cuda_bytes": 12884901888,
+    "new_output_bytes": 8589934592,
+    "feature_batch_size": 1,
+    "new_encoder_forwards": 20565,
+    "checkpoint_downloads": 0,
+    "automatic_retry": false
+  }
+}

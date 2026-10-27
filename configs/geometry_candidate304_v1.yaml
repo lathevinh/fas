@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "checkpoint": 304,
+  "state": "source_only_exploratory_geometry_candidate",
+  "candidate": "G2",
+  "input": "hash_verified_accepted_shared_context_RGB_crop",
+  "padding": {
+    "mode": "centered_constant_zero",
+    "odd_pixel_remainder": "bottom_or_right",
+    "value_rgb": [0, 0, 0]
+  },
+  "resize": {
+    "resolutions": [224, 518],
+    "interpolation": "opencv_inter_cubic",
+    "aspect_ratio": "preserved"
+  },
+  "scope": {
+    "source_use_eligible_only": true,
+    "preserve_all_source_failures_in_original_denominator": true,
+    "target_predictions": false,
+    "target_tuning": false,
+    "training_or_model_scores": false,
+    "existing_preprocessing_or_freezes_modified": false
+  },
+  "limits": {
+    "wall_seconds": 7200,
+    "process_rss_bytes": 8589934592,
+    "new_output_bytes": 17179869184
+  }
+}

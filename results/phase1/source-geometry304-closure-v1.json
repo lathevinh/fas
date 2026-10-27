@@ -1,0 +1,727 @@
+{
+  "baseline_worker_sha256": "85d6d4db23ba1a43d4141c373e6654fdc0a7c91d7f64426567267466cc82257b",
+  "candidate_feature_rows_per_encoder": 6855,
+  "candidate_generation_wall_seconds": 847.082676696009,
+  "checkpoint": 304,
+  "closure_script_sha256": "6fde02db86d7d116fb724e036ae4f99c826eb2d6020560332db18f074c9868d1",
+  "closure_wall_seconds": 202.76336530805565,
+  "combination_count": 12,
+  "comparison": {
+    "context_comparisons": [
+      {
+        "context": "CASIA-FASD-20260917",
+        "outer_source_exclusion": "CASIA-FASD",
+        "seed": 20260917,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8124580670987888,
+            "candidate_minus_baseline": -0.011100455408200482,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8013576116905883
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8020919706933191,
+            "candidate_minus_baseline": -0.01833448280274086,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.7837574878905782
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.544497093522096,
+            "candidate_minus_baseline": -0.01306230207409076,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5314347914480052
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.817501741958234,
+            "candidate_minus_baseline": -0.007732676700107688,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8097690652581263
+          }
+        }
+      },
+      {
+        "context": "CASIA-FASD-20260923",
+        "outer_source_exclusion": "CASIA-FASD",
+        "seed": 20260923,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.828489148198616,
+            "candidate_minus_baseline": 0.0001360724224575005,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8286252206210735
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8201029853354268,
+            "candidate_minus_baseline": -0.0015355559762941784,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8185674293591326
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.544497093522096,
+            "candidate_minus_baseline": -0.01306230207409076,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5314347914480052
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8419713749885905,
+            "candidate_minus_baseline": -0.0020848183216339855,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8398865566669566
+          }
+        }
+      },
+      {
+        "context": "CASIA-FASD-20261001",
+        "outer_source_exclusion": "CASIA-FASD",
+        "seed": 20261001,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8407045971530746,
+            "candidate_minus_baseline": -0.010134599371068531,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.830569997782006
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8286697611208097,
+            "candidate_minus_baseline": -0.014782526533780205,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8138872345870295
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.544497093522096,
+            "candidate_minus_baseline": -0.01306230207409076,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5314347914480052
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8549723698807205,
+            "candidate_minus_baseline": -0.008689179662561664,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8462831902181588
+          }
+        }
+      },
+      {
+        "context": "MSU-MFSD-20260917",
+        "outer_source_exclusion": "MSU-MFSD",
+        "seed": 20260917,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8960246922827867,
+            "candidate_minus_baseline": 0.0029012390839211477,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8989259313667078
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8387793513818852,
+            "candidate_minus_baseline": -0.014438030728867401,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8243413206530178
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5602138710306455,
+            "candidate_minus_baseline": -0.06880279842309545,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141107260755
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8632829167291961,
+            "candidate_minus_baseline": -0.007880693754077073,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.855402222975119
+          }
+        }
+      },
+      {
+        "context": "MSU-MFSD-20260923",
+        "outer_source_exclusion": "MSU-MFSD",
+        "seed": 20260923,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8905692320340584,
+            "candidate_minus_baseline": 0.0009480448222762838,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8915172768563346
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.840992300394463,
+            "candidate_minus_baseline": -0.009843614688809232,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8311486857056538
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5602138710306455,
+            "candidate_minus_baseline": -0.06880279842309545,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141107260755
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8704486759031077,
+            "candidate_minus_baseline": -0.002288678860091209,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8681599970430165
+          }
+        }
+      },
+      {
+        "context": "MSU-MFSD-20261001",
+        "outer_source_exclusion": "MSU-MFSD",
+        "seed": 20261001,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.9026135934061044,
+            "candidate_minus_baseline": 0.004814190897343806,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9074277843034482
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8517243674477579,
+            "candidate_minus_baseline": -0.0015305863931253105,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8501937810546326
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5602138710306455,
+            "candidate_minus_baseline": -0.06880279842309545,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141107260755
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8894210676440476,
+            "candidate_minus_baseline": -0.004377816299888648,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.885043251344159
+          }
+        }
+      },
+      {
+        "context": "OULU-NPU-20260917",
+        "outer_source_exclusion": "OULU-NPU",
+        "seed": 20260917,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.925128676468718,
+            "candidate_minus_baseline": -0.0003852224164619944,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.924743454052256
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8911554103425129,
+            "candidate_minus_baseline": -0.0019997659174061377,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8891556444251068
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5787599357153781,
+            "candidate_minus_baseline": -0.02023290793662369,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5585270277787544
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.9452916164332742,
+            "candidate_minus_baseline": -0.0006919977330837046,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9445996187001905
+          }
+        }
+      },
+      {
+        "context": "OULU-NPU-20260923",
+        "outer_source_exclusion": "OULU-NPU",
+        "seed": 20260923,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.93591381354484,
+            "candidate_minus_baseline": -0.001938764314052377,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9339750492307877
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.9159205996646061,
+            "candidate_minus_baseline": -0.0017734096351800233,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9141471900294261
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5787599357153781,
+            "candidate_minus_baseline": -0.02023290793662369,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5585270277787544
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.952060158759501,
+            "candidate_minus_baseline": -0.006873932398986482,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9451862263605145
+          }
+        }
+      },
+      {
+        "context": "OULU-NPU-20261001",
+        "outer_source_exclusion": "OULU-NPU",
+        "seed": 20261001,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.9183787973556852,
+            "candidate_minus_baseline": 0.00010973005269965252,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9184885274083848
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8983099838245573,
+            "candidate_minus_baseline": 0.005552085071087953,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9038620688956452
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5787599357153781,
+            "candidate_minus_baseline": -0.02023290793662369,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.5585270277787544
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.9335713755422438,
+            "candidate_minus_baseline": 0.00794135295163323,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.941512728493877
+          }
+        }
+      },
+      {
+        "context": "SiW-Mv2-20260917",
+        "outer_source_exclusion": "SiW-Mv2",
+        "seed": 20260917,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8885205306013167,
+            "candidate_minus_baseline": 0.011817228877324837,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9003377594786416
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.845625573814197,
+            "candidate_minus_baseline": 0.0143199612094429,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8599455350236399
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5332136576090929,
+            "candidate_minus_baseline": -0.04180271802158736,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141093958750554
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.8972570506858862,
+            "candidate_minus_baseline": -0.004545748483100631,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8927113022027856
+          }
+        }
+      },
+      {
+        "context": "SiW-Mv2-20260923",
+        "outer_source_exclusion": "SiW-Mv2",
+        "seed": 20260923,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8910073971489418,
+            "candidate_minus_baseline": 0.016255388780506475,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9072627859294483
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8513942667978576,
+            "candidate_minus_baseline": 0.02614151054179048,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.877535777339648
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5332136576090929,
+            "candidate_minus_baseline": -0.04180271802158736,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141093958750554
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.907328667614704,
+            "candidate_minus_baseline": -0.00833388264544932,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8989947849692547
+          }
+        }
+      },
+      {
+        "context": "SiW-Mv2-20261001",
+        "outer_source_exclusion": "SiW-Mv2",
+        "seed": 20261001,
+        "systems": {
+          "dino_reg": {
+            "baseline_source_macro_auroc": 0.8953810391662986,
+            "candidate_minus_baseline": 0.012669328634456911,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.9080503678007555
+          },
+          "heterogeneous": {
+            "baseline_source_macro_auroc": 0.8501818238153867,
+            "candidate_minus_baseline": 0.012577249237456734,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8627590730528434
+          },
+          "openclip": {
+            "baseline_source_macro_auroc": 0.5332136576090929,
+            "candidate_minus_baseline": -0.04180271802158736,
+            "candidate_source_competence_pass": false,
+            "candidate_source_macro_auroc": 0.49141093958750554
+          },
+          "same_family": {
+            "baseline_source_macro_auroc": 0.9022018054360039,
+            "candidate_minus_baseline": -0.0023867332550393527,
+            "candidate_source_competence_pass": true,
+            "candidate_source_macro_auroc": 0.8998150721809646
+          }
+        }
+      }
+    ],
+    "descriptive_mean_over_overlapping_contexts": {
+      "dino_reg": {
+        "baseline_mean": 0.8854324653716024,
+        "candidate_competence_pass_contexts": 12,
+        "candidate_mean": 0.8876068138767028,
+        "mean_delta": 0.002174348505100269,
+        "positive_contexts": 8
+      },
+      "heterogeneous": {
+        "baseline_mean": 0.8529123662193983,
+        "candidate_competence_pass_contexts": 12,
+        "candidate_mean": 0.8524417690013628,
+        "mean_delta": -0.0004705972180354401,
+        "positive_contexts": 4
+      },
+      "openclip": {
+        "baseline_mean": 0.5541711394693031,
+        "candidate_competence_pass_contexts": 0,
+        "candidate_mean": 0.5181959578554539,
+        "mean_delta": -0.035975181613849314,
+        "positive_contexts": 0
+      },
+      "same_family": {
+        "baseline_mean": 0.889609068464626,
+        "candidate_competence_pass_contexts": 12,
+        "candidate_mean": 0.8856136680344268,
+        "mean_delta": -0.003995400430198877,
+        "positive_contexts": 1
+      }
+    },
+    "geometry_effect_confidence_interval": null,
+    "independent_replicates": false
+  },
+  "config_sha256": "8ee5891c750cf095349a0fab6c34d23910bd610c1dba294b07c5b22b0486b8b1",
+  "final_source_fit_peak_rss_bytes": 1151021056,
+  "final_source_fit_wall_seconds": 968.9066592910094,
+  "geometry_generation_sha256": "d196129e2f53713b85f5d97f8bc320fe071b22faf0e6e997fe4b1907c2895a91",
+  "heterogeneous_domain_minus_sample_AP": {
+    "per_context": [
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.4248726025852689,
+          -0.05014670214678787
+        ],
+        "context": "OULU-NPU-20260917",
+        "correct": 353,
+        "count": 382,
+        "delta": -0.2673601622291932,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 29,
+        "estimable": true,
+        "first_ap": 0.37093366724164084,
+        "minimum20_error_support": true,
+        "second_ap": 0.638293829470834,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.4360632701343613,
+          -0.07547310761958638
+        ],
+        "context": "OULU-NPU-20260923",
+        "correct": 355,
+        "count": 382,
+        "delta": -0.26741699139210684,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 27,
+        "estimable": true,
+        "first_ap": 0.19649833961365307,
+        "minimum20_error_support": true,
+        "second_ap": 0.46391533100575993,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.5340657243265885,
+          -0.1779109944665193
+        ],
+        "context": "OULU-NPU-20261001",
+        "correct": 360,
+        "count": 382,
+        "delta": -0.38699796054334873,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 22,
+        "estimable": true,
+        "first_ap": 0.3067942362865865,
+        "minimum20_error_support": true,
+        "second_ap": 0.6937921968299352,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.24492968458765746,
+          -0.08551869474990255
+        ],
+        "context": "CASIA-FASD-20260917",
+        "correct": 1126,
+        "count": 1252,
+        "delta": -0.15311034425808873,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 126,
+        "estimable": true,
+        "first_ap": 0.24566501896158688,
+        "minimum20_error_support": true,
+        "second_ap": 0.3987753632196756,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.14165930369469196,
+          -0.009214198142995754
+        ],
+        "context": "CASIA-FASD-20260923",
+        "correct": 1097,
+        "count": 1252,
+        "delta": -0.07027721915811136,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 155,
+        "estimable": true,
+        "first_ap": 0.34606497086851834,
+        "minimum20_error_support": true,
+        "second_ap": 0.4163421900266297,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.15522372174807125,
+          -0.010027595876911535
+        ],
+        "context": "CASIA-FASD-20261001",
+        "correct": 1110,
+        "count": 1252,
+        "delta": -0.07655628261989977,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 142,
+        "estimable": true,
+        "first_ap": 0.31887779132782335,
+        "minimum20_error_support": true,
+        "second_ap": 0.3954340739477231,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.21307198837030075,
+          0.07117142256483747
+        ],
+        "context": "MSU-MFSD-20260917",
+        "correct": 1282,
+        "count": 1319,
+        "delta": -0.054856670482110736,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 37,
+        "estimable": true,
+        "first_ap": 0.2927500050136181,
+        "minimum20_error_support": true,
+        "second_ap": 0.3476066754957288,
+        "status": "inconclusive",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.3876497876889773,
+          -0.04030796507566502
+        ],
+        "context": "MSU-MFSD-20260923",
+        "correct": 1285,
+        "count": 1319,
+        "delta": -0.21798239860836877,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 34,
+        "estimable": true,
+        "first_ap": 0.16945339591721886,
+        "minimum20_error_support": true,
+        "second_ap": 0.38743579452558763,
+        "status": "negative",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.24015063783620058,
+          0.010588021905319931
+        ],
+        "context": "MSU-MFSD-20261001",
+        "correct": 1286,
+        "count": 1319,
+        "delta": -0.07466439379417814,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 33,
+        "estimable": true,
+        "first_ap": 0.22094815998114228,
+        "minimum20_error_support": true,
+        "second_ap": 0.2956125537753204,
+        "status": "inconclusive",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.3821054519487367,
+          0.0205068328329298
+        ],
+        "context": "SiW-Mv2-20260917",
+        "correct": 1120,
+        "count": 1163,
+        "delta": -0.11297932087113555,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 43,
+        "estimable": true,
+        "first_ap": 0.2119562734176098,
+        "minimum20_error_support": true,
+        "second_ap": 0.32493559428874536,
+        "status": "inconclusive",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          0.0037478523858982707,
+          0.2215557125495255
+        ],
+        "context": "SiW-Mv2-20260923",
+        "correct": 1079,
+        "count": 1163,
+        "delta": 0.09812413904935685,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 84,
+        "estimable": true,
+        "first_ap": 0.3739077211756594,
+        "minimum20_error_support": true,
+        "second_ap": 0.27578358212630255,
+        "status": "positive",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      },
+      {
+        "bootstrap_requested": 2000,
+        "bootstrap_valid": 2000,
+        "budget_matched": false,
+        "ci95": [
+          -0.26166584446627894,
+          0.07218545140535894
+        ],
+        "context": "SiW-Mv2-20261001",
+        "correct": 1121,
+        "count": 1163,
+        "delta": -0.007947338160879003,
+        "diagnostic_not_target_rq_verdict": true,
+        "errors": 42,
+        "estimable": true,
+        "first_ap": 0.25107676639655074,
+        "minimum20_error_support": true,
+        "second_ap": 0.25902410455742975,
+        "status": "inconclusive",
+        "system": "heterogeneous",
+        "variant": "R_DVd"
+      }
+    ],
+    "positive_point_contexts": 1,
+    "saved_interval_status_counts": {
+      "inconclusive": 4,
+      "negative": 7,
+      "positive": 1
+    }
+  },
+  "risk_optimizer": {
+    "amendment_reason": "the default line-search cap stopped one source-only risk fit as ABNORMAL; same objective, coefficients and stopping tolerances, higher line-search evaluation cap applied uniformly to every risk fit",
+    "ftol": 1e-12,
+    "gtol": 1e-07,
+    "maxiter": 1000,
+    "maxls": 50,
+    "method": "L-BFGS-B"
+  },
+  "scope": {
+    "bootstrap_resampling_in_closure": false,
+    "crop_pixel_reconstruction_in_closure": true,
+    "independent_target_evidence": false,
+    "nested_fusion_selection_completed": false,
+    "new_encoder_calls_in_closure": 0,
+    "new_optimization_calls_in_closure": 0,
+    "source_only_exploratory": true,
+    "target_predictions": false
+  },
+  "source_originals": 6882,
+  "source_successes": 6855,
+  "status": "saved_source_only_geometry_verified",
+  "verification": {
+    "calibrators": 432,
+    "heads": 288,
+    "image_bytes": 2443394727,
+    "images_pixel_verified": 13710,
+    "prediction_rows": 171612,
+    "retained_source_failures": 27,
+    "risks": 480
+  },
+  "version": 1,
+  "worker_sha256": "84b24c37f890fdd8a17680033904da51bf3dc4ae0a68830a45970ecf8467e243"
+}

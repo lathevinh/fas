@@ -1,11 +1,27 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Source-only geometry ablation complete (2026-10-27):
+[Report304](docs/304-source-only-geometry-preserving-pad-experiment.md) tests G2
+centered black padding plus isotropic resize on the existing source-use rows,
+under the owner's subsequent source-only exploratory choice. All12 contexts
+completed; saved-output closure verifies13710 candidate PNGs,288 heads,
+432 calibrators and480 risk models without new encoder/optimization calls.
+The descriptive mean source-AUROC change is+0.002174 for DINO-Reg,
+-.035975 for OpenCLIP and-.000471 for equal heterogeneous fusion.
+These overlapping source contexts are not independent target confirmation;
+G2 is not promoted as a supported improvement. The
+[aggregate receipt](results/phase1/source-geometry304-closure-v1.json)
+and report disclose failed attempts and the uniformly amended risk line search.
+No target predictions, canonical source-evidence replacement or freeze updates
+occurred. Nested fusion selection and unseen-target validation remain pending.
+
 Proposed next study (2026-10-27):
 [Proposal303](docs/303-proposal-improving-dino-openclip-pad.md) is a
 non-authorizing research plan motivated by the accepted [Review302](docs/302-review-doc301-locked-target-results-and-final-claims.md).
 It prioritizes geometry-preserving crops, DINO-first/source-only fusion
 selection, and a genuinely unseen locked target. No images, models, roles,
-results or existing freezes are changed, and no new experiment is authorized.
+results or existing freezes were changed by Proposal303 itself, and it did not
+authorize execution;304 above records the owner's later exploratory choice.
 
 Locked-target evaluation complete (2026-10-26):
 [Report301](docs/301-locked-target-package-and-fixed-evaluation.md)
