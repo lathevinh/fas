@@ -1,10 +1,20 @@
-# 304 - Source-only geometry-preserving PAD experiment
+# 305 - Source-only geometry-preserving PAD experiment
 
 Date: 2026-10-27.
 Motivation: [Proposal303](303-proposal-improving-dino-openclip-pad.md).
 Prior fixed evidence: [299](299-complete-source-experiment-and-clustered-evidence.md),
 [301](301-locked-target-package-and-fixed-evaluation.md) and
 [Review302](302-review-doc301-locked-target-results-and-final-claims.md).
+
+Publication note: [Review304](304-review-proposal303-geometry-and-source-selected-fusion.md)
+arrived on the remote branch while Git authentication was being restored, after
+the exploratory execution and local report commit. The report is numbered 305
+to preserve that review's number. Execution configs, private paths and receipts
+retain their original checkpoint 304 identifiers; none were rewritten.
+This execution is not a prospective response satisfying Review304's required
+concrete protocol and bounded source-pilot prerequisites. Its nested-selection,
+estimand and preregistration requirements remain open. No further execution is
+authorized by publishing this report.
 
 ## Result and scope
 

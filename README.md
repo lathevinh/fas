@@ -1,7 +1,7 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
 Source-only geometry ablation complete (2026-10-27):
-[Report304](docs/304-source-only-geometry-preserving-pad-experiment.md) tests G2
+[Report305](docs/305-source-only-geometry-preserving-pad-experiment.md) tests G2
 centered black padding plus isotropic resize on the existing source-use rows,
 under the owner's subsequent source-only exploratory choice. All12 contexts
 completed; saved-output closure verifies13710 candidate PNGs,288 heads,
@@ -14,6 +14,9 @@ G2 is not promoted as a supported improvement. The
 and report disclose failed attempts and the uniformly amended risk line search.
 No target predictions, canonical source-evidence replacement or freeze updates
 occurred. Nested fusion selection and unseen-target validation remain pending.
+[Review304](docs/304-review-proposal303-geometry-and-source-selected-fusion.md)
+arrived before publication but after this execution; its concrete-protocol
+requirements are not retroactively satisfied by305.
 
 Proposed next study (2026-10-27):
 [Proposal303](docs/303-proposal-improving-dino-openclip-pad.md) is a
@@ -21,7 +24,7 @@ non-authorizing research plan motivated by the accepted [Review302](docs/302-rev
 It prioritizes geometry-preserving crops, DINO-first/source-only fusion
 selection, and a genuinely unseen locked target. No images, models, roles,
 results or existing freezes were changed by Proposal303 itself, and it did not
-authorize execution;304 above records the owner's later exploratory choice.
+authorize execution;305 above records the owner's later exploratory choice.
 
 Locked-target evaluation complete (2026-10-26):
 [Report301](docs/301-locked-target-package-and-fixed-evaluation.md)
