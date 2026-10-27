@@ -1,17 +1,22 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Cache-only supervised readout package prepared (2026-10-27):
-[Package308](docs/308-cache-only-supervised-readout-execution-package.md)
-implements [recommendations307](docs/307-recommendations-improving-pad-classification-from-cached-features.md):
-four equal-budget readout candidates for each frozen DINO/OpenCLIP branch,
-exact old DINO/two-DINO/zero-shot anchors, group-safe nested source selection,
-original failure denominators and separate ranking/operational metrics.
-The [sealed plan](results/phase1/readout308-plan-v1.json) verifies the original299
-cache and48 fitted contexts without new scientific fitting or encoder calls.
-The bounded480-head/144-calibrator execution requires one explicit owner
-approval of the complete package. Geometry, fusion weights, risk models and
-target evaluation are not expanded. The numerical CI dependency correction
-is software work, not a rerun or revision of the accepted scientific results.
+Source-only cached readout comparison complete (2026-10-27):
+[Report309](docs/309-source-only-cached-readout-results.md) records the owner's
+later explicit approval and successful execution of
+[Package308](docs/308-cache-only-supervised-readout-execution-package.md).
+Using only original299 caches,480 new heads and144 calibrators completed once;
+independent saved closure reconstructs576 candidate heads and61695 repeated
+source prediction rows, with0 new encoder forwards or target evaluations.
+Mean domain-OOF OpenCLIP AUROC improves from.554171 zero-shot to.844040
+supervised, but selected equal two-DINO remains stronger at.889780.
+Operating transfer remains poor: supervised CLIP mean original-denominator
+attack FA9.974% and bona-fide non-acceptance53.942%.
+The [sealed pre-run plan](results/phase1/readout308-plan-v1.json) is preserved;
+the [aggregate closure](results/phase1/source-readout308-closure-v1.json) binds
+the later authority, single253.645-second execution, conditional uncertainty
+and no-fit readback. The12 overlapping contexts are not independent target
+confirmation. No new fusion, risk fitting or target access follows
+automatically, and301's accepted conclusions remain unchanged.
 
 Source-only geometry ablation complete (2026-10-27):
 [Report305](docs/305-source-only-geometry-preserving-pad-experiment.md) tests G2
