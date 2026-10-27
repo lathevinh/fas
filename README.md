@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Next-stage plan for critique (2026-10-27):
+[Proposal311](docs/311-next-stage-cached-pad-research-plan-for-review.md)
+incorporates [Review310](docs/310-review-doc309-supervised-cached-readout-results.md)
+and the subsequent discussion. It separates saved-output diagnostics, an
+optional convergence-controlled linear comparator and nested source-only
+fusion under an explicit security/usability utility. The readout-versus-fusion
+fork, numerical utility targets and nested execution budget remain review
+decisions. This is not new fitting or target-evaluation authority.
+
 Source-only cached readout comparison complete (2026-10-27):
 [Report309](docs/309-source-only-cached-readout-results.md) records the owner's
 later explicit approval and successful execution of
