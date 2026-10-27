@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "study": "source_cache_only_readout308_v1",
+  "private_root": "/mnt/e/FAS-private/artifacts/phase1",
+  "output_name": "source_readout308_v1",
+  "baseline": "source_run299_v1",
+  "prior": "source_run297_v1",
+  "pinned_inputs": {
+    "source_integration295_v1/source_manifest.json": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+    "source_run297_v1/inputs.json": "35969a893bb64d8f4015c580e742778d05eaad58408f1d45f7c659f1dda05a5c",
+    "source_run297_v1/extraction.json": "37229d3d99da38a5ab6fd20e17bcfd508321e65b3356627aab7bb6580084d841",
+    "source_run299_v1/inputs.json": "4a72170eaa064e7f240063561bb00479fd9c94984666218d2ce2b854a846f8cb",
+    "source_run299_v1/extraction.json": "43a30681311357b166b28e8f75e1d969da805f816398542b79ce363e68098c88",
+    "source_run299_v1/worker_completion.json": "85d6d4db23ba1a43d4141c373e6654fdc0a7c91d7f64426567267466cc82257b"
+  },
+  "expected_originals": 6882,
+  "expected_successes": 6855,
+  "seeds": [20260917, 20260923, 20261001],
+  "outer_exclusions": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "head": {
+    "epochs": 200,
+    "learning_rate": 0.001,
+    "weight_decay": 0.05,
+    "optimizer": "full_batch_adamw_float64_bias_not_decayed",
+    "inner_validation": "one_of_five_sha256_group_folds_per_source_and_class_signature",
+    "selection": "lowest_equal_domain_class_balanced_validation_BCE_then_earlier_epoch",
+    "refit_after_selection": false
+  },
+  "candidates": [
+    {"name": "old_recipe", "transform": "raw", "settings": {}},
+    {"name": "unit_l2", "transform": "unit_l2", "settings": {}},
+    {"name": "higher_lr", "transform": "raw", "settings": {"learning_rate": 0.01}},
+    {"name": "lower_decay", "transform": "raw", "settings": {"weight_decay": 0.005}}
+  ],
+  "selection": "minimum_inner_equal_domain_class_balanced_validation_BCE_then_candidate_order",
+  "reference_alpha": 0.05,
+  "bootstrap_repetitions": 2000,
+  "runtime": {"python": "3.12.14", "numpy": "1.26.4", "scipy": "1.15.3", "threadpoolctl": "3.7.0"},
+  "limits": {
+    "wall_seconds": 21600,
+    "combined_sampled_rss_bytes": 4294967296,
+    "owned_output_bytes": 1073741824,
+    "terminal_reserve_bytes": 65536,
+    "blas_threads": 2,
+    "sample_interval_seconds": 0.5,
+    "new_head_fits": 480,
+    "new_calibrator_fits": 144,
+    "encoder_forwards": 0,
+    "excluded_outer_predictions": 0
+  },
+  "automatic_retry": false,
+  "new_fusion_or_risk_models": false
+}

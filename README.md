@@ -1,5 +1,18 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Cache-only supervised readout package prepared (2026-10-27):
+[Package308](docs/308-cache-only-supervised-readout-execution-package.md)
+implements [recommendations307](docs/307-recommendations-improving-pad-classification-from-cached-features.md):
+four equal-budget readout candidates for each frozen DINO/OpenCLIP branch,
+exact old DINO/two-DINO/zero-shot anchors, group-safe nested source selection,
+original failure denominators and separate ranking/operational metrics.
+The [sealed plan](results/phase1/readout308-plan-v1.json) verifies the original299
+cache and48 fitted contexts without new scientific fitting or encoder calls.
+The bounded480-head/144-calibrator execution requires one explicit owner
+approval of the complete package. Geometry, fusion weights, risk models and
+target evaluation are not expanded. The numerical CI dependency correction
+is software work, not a rerun or revision of the accepted scientific results.
+
 Source-only geometry ablation complete (2026-10-27):
 [Report305](docs/305-source-only-geometry-preserving-pad-experiment.md) tests G2
 centered black padding plus isotropic resize on the existing source-use rows,

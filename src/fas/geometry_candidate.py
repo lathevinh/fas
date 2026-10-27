@@ -37,14 +37,14 @@ def pad_shared_crop(rgb: np.ndarray, resolution: int) -> tuple[np.ndarray, dict[
 def fit_source_risk_candidate(
     features: np.ndarray, errors: np.ndarray, domains: list[str], guard
 ) -> dict:
-    from scipy.optimize import minimize
-
-    from .source_fitting import objective_weights, sigmoid
-
     if (features.ndim != 2 or errors.ndim != 1 or not np.isfinite(features).all()
             or len(errors) != len(features) or len(domains) != len(errors)
             or set(errors.tolist()) != {0, 1}):
         raise ValueError("finite risk features and both error/correct classes required")
+    from scipy.optimize import minimize
+
+    from .source_fitting import objective_weights, sigmoid
+
     weights = objective_weights(errors, domains, balanced=False) * len(errors)
 
     def loss(parameters: np.ndarray) -> tuple[float, np.ndarray]:

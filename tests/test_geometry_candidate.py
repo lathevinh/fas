@@ -2,6 +2,7 @@
 
 import sys
 import unittest
+import builtins
 from pathlib import Path
 from unittest.mock import patch
 
@@ -95,6 +96,19 @@ class PadSharedCropTest(unittest.TestCase):
         for errors in (np.array([0, 0]), np.array([0]), np.array([[0], [1]])):
             with self.assertRaises(ValueError):
                 fit_source_risk_candidate(np.array([[0.1], [0.9]]), errors, ["a", "a"], lambda: None)
+
+    def test_invalid_risk_inputs_do_not_require_scipy(self):
+        original_import = builtins.__import__
+
+        def without_scipy(name, *args, **kwargs):
+            if name.startswith("scipy"):
+                raise ModuleNotFoundError("scipy is not installed")
+            return original_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=without_scipy):
+            with self.assertRaisesRegex(ValueError, "finite risk features"):
+                fit_source_risk_candidate(np.array([[0.1], [0.9]]), np.array([0, 0]),
+                                          ["a", "a"], lambda: None)
 
 
 if __name__ == "__main__":

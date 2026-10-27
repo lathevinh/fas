@@ -104,6 +104,12 @@ the same amended risk optimizer, reusing only hash-verified candidate features,
 not the seven earlier completed contexts. All 480 final risk models record
 `line_search_maximum=50`.
 
+Clarification following [Review306](306-review-doc305-source-geometry-ablation-and-ci-failure.md):
+the amended config's phrase "same ... coefficients" refers to unchanged
+parameterization/objective/initialization, not guaranteed identical fitted
+coefficients. The larger line-search cap can change the fitted solution.
+The bound historical config and results are retained unchanged.
+
 The [original execution config](../configs/source_geometry304_v1.yaml) and
 [amended config](../configs/source_geometry304_v2.yaml) preserve that distinction.
 The [extraction/initial runner](../scripts/run_geometry_candidate304.py) and
