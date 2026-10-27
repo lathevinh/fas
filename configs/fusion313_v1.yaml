@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "study": "source_nested_fusion313_v1",
+  "private_root": "/mnt/e/FAS-private/artifacts/phase1",
+  "output_name": "source_fusion313_v1",
+  "readout_config_sha256": "6b771986d2dea73f581055650d1be37aac6786708eefe181d5f5170af40b7015",
+  "readout_completion_sha256": "58067b3af7a43995cf22141f6ebaac14f29e5f00b5ee10ad0499ff066334c089",
+  "readout_plan_sha256": "2192a5007432f4ea201d8745187cd216ab83490fcade536effb54a818c72c89d",
+  "seeds": [20260917, 20260923, 20261001],
+  "domains": ["OULU-NPU", "CASIA-FASD", "MSU-MFSD", "SiW-Mv2"],
+  "weights": [0, 0.1, 0.25, 0.5, 0.75, 1],
+  "alpha": 0.05,
+  "minimum_bona_fide_acceptance": 0.5,
+  "practical_gain": 0.02,
+  "support": {
+    "fitting": {"usable_per_class": 2, "components_per_class": 2},
+    "validation": {"usable_per_class": 2, "components_per_class": 2},
+    "calibration": {"usable_per_class": 10, "components_per_class": 5},
+    "evaluation": {"usable_per_class": 10, "components_per_class": 5}
+  },
+  "bootstrap_repetitions": 2000,
+  "bootstrap_seed": 20261027,
+  "minimum_valid_bootstrap_fraction": 0.95,
+  "limits": {
+    "wall_seconds": 21600,
+    "combined_sampled_rss_bytes": 4294967296,
+    "owned_output_bytes": 1073741824,
+    "terminal_reserve_bytes": 65536,
+    "blas_threads": 2,
+    "sample_interval_seconds": 0.5
+  },
+  "automatic_retry": false,
+  "encoder_forwards": 0,
+  "new_target_evaluations": 0
+}

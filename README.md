@@ -1,5 +1,16 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Bounded nested-fusion package (2026-10-27):
+[Package313](docs/313-bounded-nested-fusion-utility-execution-package.md)
+implements [Review312](docs/312-review-plan311-bounded-nested-fusion-utility.md)
+and the owner's feasibility-first comparison decision. DINO-CLIP and
+two-DINO receive identical six-weight nested selectors; D-only is another
+required comparator. The sealed workload will contain36 new heads and36
+calibrators, exact old-state reuse, original-denominator utility, explicit
+infeasible/transfer-failure outcomes and independent saved reconstruction.
+This preparation is not approval to run private fits; the bounded execution
+requires one explicit decision on the completed sealed package.
+
 Next-stage plan for critique (2026-10-27):
 [Proposal311](docs/311-next-stage-cached-pad-research-plan-for-review.md)
 incorporates [Review310](docs/310-review-doc309-supervised-cached-readout-results.md)
