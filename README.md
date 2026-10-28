@@ -5,9 +5,11 @@ Initialization stop and bounded amendment:
 records the approved321 attempt stopping before any scientific fit:
 the official ImageNet artifact uses legacy DenseNet state-key names.
 The compatibility repair preserves pretrained tensors and all scientific
-recipes. A separately sealed retry needs explicit owner approval, reuses
-the acquired artifact and preserves the original deadline and resource caps.
-Nothing is currently training.
+recipes. The owner subsequently approved the separately sealed322 amendment,
+which reuses the acquired artifact and preserves the original deadline and
+resource caps. Supervised execution is now in progress: actual specialist
+epoch progress was verified in the first held-out-OULU context. This is
+startup/training evidence, not a completed comparison or new accuracy result.
 
 Executable paper comparison, awaiting one integrated owner decision:
 [Package321](docs/321-executable-comparison-and-review320-response.md)
