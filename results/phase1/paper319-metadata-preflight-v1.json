@@ -1,0 +1,358 @@
+{
+  "active_originals": 7505,
+  "archived_originals": 7510,
+  "cache_inventory": {
+    "extraction_receipt_sha256": {
+      "locked_run301_v3": "375c1777b148a616d1b5327aad864a87de98bbd8250300b25733771b627b1d2b",
+      "source_run297_v1": "37229d3d99da38a5ab6fd20e17bcfd508321e65b3356627aab7bb6580084d841",
+      "source_run299_v1": "43a30681311357b166b28e8f75e1d969da805f816398542b79ce363e68098c88"
+    },
+    "missing_per_branch": {
+      "dino_plain": 0,
+      "dino_reg": 0,
+      "openclip": 0
+    },
+    "new_encoder_forwards_planned_if_full_revalidation_passes": 0,
+    "receipt_coverage_per_branch": {
+      "dino_plain": 7474,
+      "dino_reg": 7474,
+      "openclip": 7474
+    },
+    "required_unique_usable_originals": 7474,
+    "scope": "receipt_ID_coverage_and_shard_bytes_only_not_array_key_or_runtime_revalidation",
+    "verified_shard_bytes": 113246846,
+    "verified_shard_files": 705
+  },
+  "context_count": 12,
+  "execution_blockers": [
+    "SiW_subject_identity_unavailable_video_grouping_requires_explicit_scope_acceptance",
+    "specialist_training_controller_and_synthetic_resource_checks_not_yet_implemented",
+    "fresh_owner_approval_of_final_code_input_runtime_and_budget_required"
+  ],
+  "feature_array_loads": 0,
+  "group_and_saved_exact_frame_isolation_passed": true,
+  "image_decodes": 0,
+  "implementation_sha256": {
+    "scripts/diagnostics/prepare_paper319.py": "3de74c7bc6c5d8084d96338f6f97a18818d14c6a77d95fb920c34b4d275a38bb",
+    "src/fas/fusion_study.py": "371e4ef16d134a41b7aa9cbd1e8f4e745a17261700249a69a1932edd99c4304d",
+    "src/fas/source_fitting.py": "69636c30e001ea49dac5d4f90f2ecd1484ec5990225f8b2b2fa04d212ddb5864",
+    "tests/test_paper319.py": "f418e9a846158cd0cc10bdfd218b2b759b8fd6069715e1d2f1f6fab23ae9a981"
+  },
+  "inherited_source_exclusions": 5,
+  "model_predictions": 0,
+  "new_fits": 0,
+  "populations": {
+    "CASIA-FASD": {
+      "calibration": {
+        "attack": {
+          "components": 4,
+          "originals": 36,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 36,
+          "usable_components": 4
+        },
+        "bona_fide": {
+          "components": 4,
+          "originals": 12,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 12,
+          "usable_components": 4
+        }
+      },
+      "evaluation": {
+        "attack": {
+          "components": 30,
+          "originals": 270,
+          "technical_failures": 5,
+          "unknown_subject_originals": 0,
+          "usable": 265,
+          "usable_components": 30
+        },
+        "bona_fide": {
+          "components": 30,
+          "originals": 90,
+          "technical_failures": 1,
+          "unknown_subject_originals": 0,
+          "usable": 89,
+          "usable_components": 30
+        }
+      },
+      "fitting": {
+        "attack": {
+          "components": 12,
+          "originals": 108,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 108,
+          "usable_components": 12
+        },
+        "bona_fide": {
+          "components": 12,
+          "originals": 36,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 36,
+          "usable_components": 12
+        }
+      },
+      "validation": {
+        "attack": {
+          "components": 4,
+          "originals": 36,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 36,
+          "usable_components": 4
+        },
+        "bona_fide": {
+          "components": 4,
+          "originals": 12,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 12,
+          "usable_components": 4
+        }
+      }
+    },
+    "MSU-MFSD": {
+      "calibration": {
+        "attack": {
+          "components": 3,
+          "originals": 18,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 18,
+          "usable_components": 3
+        },
+        "bona_fide": {
+          "components": 3,
+          "originals": 6,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 6,
+          "usable_components": 3
+        }
+      },
+      "evaluation": {
+        "attack": {
+          "components": 20,
+          "originals": 120,
+          "technical_failures": 4,
+          "unknown_subject_originals": 0,
+          "usable": 116,
+          "usable_components": 20
+        },
+        "bona_fide": {
+          "components": 20,
+          "originals": 40,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 40,
+          "usable_components": 20
+        }
+      },
+      "fitting": {
+        "attack": {
+          "components": 9,
+          "originals": 54,
+          "technical_failures": 3,
+          "unknown_subject_originals": 0,
+          "usable": 51,
+          "usable_components": 9
+        },
+        "bona_fide": {
+          "components": 9,
+          "originals": 18,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 18,
+          "usable_components": 9
+        }
+      },
+      "validation": {
+        "attack": {
+          "components": 3,
+          "originals": 18,
+          "technical_failures": 1,
+          "unknown_subject_originals": 0,
+          "usable": 17,
+          "usable_components": 3
+        },
+        "bona_fide": {
+          "components": 3,
+          "originals": 6,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 6,
+          "usable_components": 3
+        }
+      }
+    },
+    "OULU-NPU": {
+      "calibration": {
+        "attack": {
+          "components": 7,
+          "originals": 504,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 504,
+          "usable_components": 7
+        },
+        "bona_fide": {
+          "components": 7,
+          "originals": 126,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 126,
+          "usable_components": 7
+        }
+      },
+      "evaluation": {
+        "attack": {
+          "components": 20,
+          "originals": 1440,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 1440,
+          "usable_components": 20
+        },
+        "bona_fide": {
+          "components": 20,
+          "originals": 360,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 360,
+          "usable_components": 20
+        }
+      },
+      "fitting": {
+        "attack": {
+          "components": 20,
+          "originals": 1440,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 1440,
+          "usable_components": 20
+        },
+        "bona_fide": {
+          "components": 20,
+          "originals": 360,
+          "technical_failures": 1,
+          "unknown_subject_originals": 0,
+          "usable": 359,
+          "usable_components": 20
+        }
+      },
+      "validation": {
+        "attack": {
+          "components": 8,
+          "originals": 576,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 576,
+          "usable_components": 8
+        },
+        "bona_fide": {
+          "components": 8,
+          "originals": 144,
+          "technical_failures": 0,
+          "unknown_subject_originals": 0,
+          "usable": 144,
+          "usable_components": 8
+        }
+      }
+    },
+    "SiW-Mv2": {
+      "calibration": {
+        "attack": {
+          "components": 106,
+          "originals": 106,
+          "technical_failures": 0,
+          "unknown_subject_originals": 106,
+          "usable": 106,
+          "usable_components": 106
+        },
+        "bona_fide": {
+          "components": 105,
+          "originals": 105,
+          "technical_failures": 1,
+          "unknown_subject_originals": 105,
+          "usable": 104,
+          "usable_components": 104
+        }
+      },
+      "evaluation": {
+        "attack": {
+          "components": 362,
+          "originals": 362,
+          "technical_failures": 3,
+          "unknown_subject_originals": 362,
+          "usable": 359,
+          "usable_components": 359
+        },
+        "bona_fide": {
+          "components": 261,
+          "originals": 261,
+          "technical_failures": 1,
+          "unknown_subject_originals": 261,
+          "usable": 260,
+          "usable_components": 260
+        }
+      },
+      "fitting": {
+        "attack": {
+          "components": 315,
+          "originals": 316,
+          "technical_failures": 4,
+          "unknown_subject_originals": 316,
+          "usable": 312,
+          "usable_components": 311
+        },
+        "bona_fide": {
+          "components": 314,
+          "originals": 314,
+          "technical_failures": 2,
+          "unknown_subject_originals": 314,
+          "usable": 312,
+          "usable_components": 312
+        }
+      },
+      "validation": {
+        "attack": {
+          "components": 106,
+          "originals": 106,
+          "technical_failures": 1,
+          "unknown_subject_originals": 106,
+          "usable": 105,
+          "usable_components": 105
+        },
+        "bona_fide": {
+          "components": 105,
+          "originals": 105,
+          "technical_failures": 4,
+          "unknown_subject_originals": 105,
+          "usable": 101,
+          "usable_components": 101
+        }
+      }
+    }
+  },
+  "private_partitions_sha256": "2700baf9d757cc8c773247f104cd2a85c4ee9c288e461bb929cdbff9333c2996",
+  "scientific_execution_authorized": false,
+  "source_manifest_sha256": "7f9f54e6b097d7da0618cf8b3784e9eb3726b6aba8a3957455e26dda20da4580",
+  "split_seed": 20261028,
+  "status": "metadata_preparation_complete_not_execution_ready",
+  "subject_disjointness_verified_for_all_datasets": false,
+  "target_evaluations": 0,
+  "training_seeds": [
+    20260917,
+    20260923,
+    20261001
+  ],
+  "unknown_subject_originals": {
+    "SiW-Mv2": 1675
+  },
+  "version": 1
+}

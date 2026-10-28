@@ -1,5 +1,20 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Integrated paper-completion preparation (2026-10-28):
+[Package319](docs/319-integrated-paper-completion-package.md) follows
+[Review318](docs/318-review-proposal317-bounded-empirical-paper-route.md)
+with a [working manuscript](docs/paper319/manuscript.md), focused
+[related-work/venue brief](docs/paper319/related-work-and-venues.md) and
+[fixed supplementary specification](docs/paper319/supplementary-protocol.json).
+Actual metadata-only preparation commits12 official-partition contexts and
+verifies receipt coverage for7474 usable originals via705 existing feature
+shards, without fitting, image decoding or new predictions.
+SiW is the adopted Protocol-I local intersection and lacks subject identities:
+its proposed video-group limitation is explicit, not participant-disjointness.
+Specialist training/controller compatibility is not yet demonstrated.
+The package is for integrated review, not scientific execution approval;
+new-comparison results remain clearly pending in the draft.
+
 Paper-direction proposal for critique (2026-10-28):
 [Proposal317](docs/317-q3-oriented-empirical-pad-paper-proposal.md) recommends
 a focused empirical paper on operating-point transfer, rather than another
