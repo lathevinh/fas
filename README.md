@@ -1,5 +1,15 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Paper-direction proposal for critique (2026-10-28):
+[Proposal317](docs/317-q3-oriented-empirical-pad-paper-proposal.md) recommends
+a focused empirical paper on operating-point transfer, rather than another
+fusion search. It prioritizes verified novelty and venue fit, then a separately
+specified package with one specialist PAD comparator, one recognized protocol
+and focused operating/uncertainty analysis. Q3 is a submission objective, not
+an acceptance guarantee. Existing development data cannot become untouched
+confirmation by changing splits. This proposal authorizes no new experiments,
+dataset access or target evaluation.
+
 Saved-score oracle diagnostic complete (2026-10-27):
 [Report316](docs/316-saved-score-oracle-threshold-diagnosis.md), following
 [Review315](docs/315-review-report314-nested-fusion-infeasibility.md) and a
