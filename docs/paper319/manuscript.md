@@ -77,7 +77,14 @@ shift or population-security guarantee.
 
 Costa-Pazo et al. [2] investigate the face PAD generalization problem under
 realistic evaluation conditions. Our study treats cross-dataset failure as
-an established concern. Comparisons across papers require matching datasets,
+an established concern. Their constrained operating analyses include APCER
+at BPCER10% and working-point curves, as verified in the full-text review
+accompanying this revision. Looking beyond aggregate metrics or inspecting
+constrained ROC points is therefore not a new contribution. Our narrower
+question pairs a source-available policy with a retrospective fixed-score
+oracle at the same declared attack-FA constraint. This distinction does not
+establish that their exact threshold pipeline is identical or wholly
+different. Comparisons across papers require matching datasets,
 partitions, frame sampling, preprocessing, training exposure and threshold
 selection; an official train/test restriction alone does not ensure this.
 
@@ -91,8 +98,8 @@ smaller fixed set, multi-source training and low-FA operating diagnostics;
 neither the smaller encoder set nor this dataset substitution is itself
 claimed as novelty.
 
-George and Marcel [11] also examine foundation-model limits under zero-shot
-and LoRA adaptation in a single-source MCIO setting. Gallin-Martel et al. [12]
+Lorenz, George and Marcel [11] also examine foundation-model limits under zero-shot
+and LoRA adaptation in a single-source MCIO setting. Feng et al. [12]
 already study register-DINO and multi-source MICO/LSD evaluation with
 augmentation/loss interventions. Thus multi-source leave-one-out structure
 and register-DINO are not novel contributions here either. The candidate
@@ -162,6 +169,79 @@ applies to the proposed model selection and threshold estimates as well as
 the analysis. No filename-derived identities are fabricated.
 
 ## 4. Methods
+
+### 4.0 Completed developmental experiments
+
+The completed analyses use6882 source-eligible originals: CASIA600/594
+usable, MSU280/272, OULU4950/4949 and SiW1052/1040, totaling6855 usable
+observations and27 technical failures. OULU/CASIA/MSU official-test members
+assigned historical source roles remain included. SiW's623 null-role test
+originals and five adopted exclusions do not enter these source analyses.
+These are not the7505-active-original official-partition populations below.
+
+Preassigned, group-separated roles are training, branch calibration and
+represented-source diagnostic evaluation (`g_domain`). Only the training
+role supplies head fitting and checkpoint validation. Within each allowed
+source set and seed, training components are stratified by dataset and
+class signature, ranked by SHA256 of seed and smallest component identity,
+then assigned round-robin to five folds; fold0 is validation and folds1-4
+are fitting. Calibration uses the separate branch-calibration role.
+Registered groups and exact selected-frame components are checked against
+cross-role leakage; immutable manifests bind actual memberships.
+
+There are four named outer exclusions and seeds20260917,20260923,20261001.
+The named outer dataset is absent from both fitting and evaluation. In each
+context, each of the other three datasets becomes a pseudo-target and is
+excluded from head fitting, validation, calibration, threshold choice and
+model/mixture selection. The resulting primary head is trained on the other
+two sources. Each evaluated source occurs under three other outer exclusions
+and three seeds: nine overlapping cases, not nine independent populations.
+Represented-source `g_domain` predictions instead use three-source models
+on their separate diagnostic role and are not domain-OOF transfer.
+
+Study309 compares four readout candidates for each branch: raw vectors with
+lr.001/wd.05; unit-L2 vectors with lr.001/wd.05; raw vectors with
+lr.01/wd.05; and raw vectors with lr.001/wd.005. Each uses200-epoch FP64
+full-batch AdamW, equal-source/class BCE, earliest minimum-validation-BCE
+checkpoint and no refit. Candidate selection minimizes validation BCE,
+with candidate-order ties. Separate positive-affine sigmoid calibration
+and the minimum per-source safe attack order statistic use only allowed
+calibration rows. Thus the reported309 CLIP mean is **source-domain-OOF**,
+not the pending final train-three/official-target result.
+
+The matched fusion experiment fixes original DINO-Reg/plain readouts at
+lr.001/wd.05 and supervised CLIP at lr.01/wd.05. It compares
+`(1-lambda)*DINO-Reg + lambda*CLIP` with
+`(1-lambda)*DINO-Reg + lambda*plain-DINO` over the identical
+`[0,.1,.25,.5,.75,1]` calibrated-probability weights.
+For each two-source primary parent, one-source inner models train on one
+allowed source and evaluate on the other, then reverse. A weight is eligible
+only if every inner held-out source has FA<=5% and BFA>=50%. Maximize minimum
+source BFA, then minimize worst-source FA, then added-branch weight.
+The parent gets its own permitted-source calibration and threshold; inner
+thresholds are not transferred. Three-source diagnostic parents analogously
+use two-source inner holdouts. If no weight is eligible, no selected policy
+or selected-policy gain is reported; there is no fallback.
+
+Six fixed references remain evaluable independently of those selectors:
+DINO-Reg, plain DINO, supervised CLIP, original equal two-DINO, inherited
+selected equal two-DINO from309, and fixed equal DINO-CLIP. The inherited
+selected reference is not another matched selector and is absent for new
+one-source models. Study316 uses only saved predictions and policies:
+one-source inner holdouts yield180 cases (36 tasks x5 references);
+two-source primary domain-OOF yields216 (36x6); three-source `g_domain`
+yields216 (36x6). Its612 cases are retrospective fixed-score diagnostics;
+no head, calibrator or absent selected policy is fitted or fabricated.
+
+| Study | Population and training exposure | Selection / evaluation endpoint |
+|---|---|---|
+|309 readouts | Historical6882 originals; primary heads on two allowed sources | Validation-BCE recipe/epoch selection; source-domain-OOF AUROC and source-policy errors |
+|313/314 fusion | Same historical roles; two-source primary parents, one-source inner models | Matched six-weight feasibility-first selection;36 primary folds, including missing policies |
+|316 oracle | Saved scores from the same historical experiment; three distinct stages |612 fixed-reference cases; retrospective BFA at original-denominator FA<=5%, no deployable selection |
+| Pending319/321 comparison |7505 active originals; official source train/development only | Three-source heads/specialist, fixed recipes; fourth dataset's declared official test,48 primary system/seed/target rows |
+
+Sections4.1-4.6 specify this last, still-pending study. They do not
+retroactively describe the populations or candidate selection of309/314/316.
 
 ### 4.1 Fixed representations and readouts
 
@@ -324,6 +404,33 @@ source-development study. These are evaluation-label-selected diagnostics.**
 | Inherited selected two-DINO | 9/9 | 6/9 | 0/9 | 1/9 |
 | Fixed equal DINO-CLIP | 9/9 | 9/9 | 0/9 | 1/9 |
 
+**Table3. Paired source-policy and oracle operating results for three fixed
+representative systems. Rates are percentages, equally averaged over nine
+applicable primary contexts per source. FA-safe and utility counts refer to
+individual source-policy cases, not the mean.**
+
+| System | Source | Policy FA | Policy BFA | Oracle BFA at5% FA | FA-safe /9 | FA<=5%, BFA>=50% /9 |
+|---|---|---:|---:|---:|---:|---:|
+| DINO-Reg | CASIA |0.216|41.389|90.000|9|4|
+| DINO-Reg | MSU |42.526|92.460|53.968|0|0|
+| DINO-Reg | OULU |50.537|89.184|39.590|0|0|
+| DINO-Reg | SiW |24.895|67.064|31.185|0|0|
+| Supervised CLIP | CASIA |0.278|33.611|79.444|9|0|
+| Supervised CLIP | MSU |10.185|64.881|59.524|4|1|
+| Supervised CLIP | OULU |13.289|38.033|19.416|3|0|
+| Supervised CLIP | SiW |16.143|47.706|23.628|0|0|
+| Original equal two-DINO | CASIA |0.031|51.389|95.648|9|6|
+| Original equal two-DINO | MSU |39.484|94.048|67.063|0|0|
+| Original equal two-DINO | OULU |65.811|93.603|38.356|0|0|
+| Original equal two-DINO | SiW |30.005|74.702|34.818|0|0|
+
+An average is not an all-case safety claim; the FA-safe counts expose fold
+variation. Where the source policy violates FA<=5%, its BFA and the oracle's
+BFA have different security operating conditions. Their difference is
+**not a same-security calibration loss or recoverable gain**. Even where
+both satisfy the bound, oracle headroom does not establish a target-label-
+free procedure that recovers it.
+
 CASIA has54/54 attainable cases, MSU41/54, OULU0/54 and SiW4/54.
 The best OULU case reaches43.5606% BFA. For CASIA, DINO-Reg's mean original
 source-threshold BFA is41.39%, versus90.00% oracle BFA. The CASIA contrast
@@ -344,7 +451,7 @@ not a causal account of why a particular source is difficult.
 **No results exist for this section.** The metadata preflight verifies
 populations and cache receipt coverage, not classifier performance.
 
-**Table3. Planned primary reporting layout, repeated for each of three seeds.**
+**Table4. Planned primary reporting layout, repeated for each of three seeds.**
 
 | Target | System | AUROC, usable | Source-policy FA/BFA, all originals | Oracle BFA at5% FA | Support / conditional intervals |
 |---|---|---|---|---|---|
@@ -463,12 +570,12 @@ https://doi.org/10.1109/TIFS.2015.2400395
 Zero-Shot Face Anti-Spoofing.* CVPR,2019.
 https://doi.org/10.1109/CVPR.2019.00481
 
-[11] A. George and S. Marcel. *LoRA-based Adaptation Alone Is Not Enough:
+[11] P. Lorenz, A. George and S. Marcel. *LoRA-based Adaptation Alone Is Not Enough:
 Understanding the Limits of Foundation Models for Face PAD.*
 arXiv:2608.09633,2026.
 https://arxiv.org/abs/2608.09633
 
-[12] Gallin-Martel, Feng, Ito, and Aoki. *Benchmarking Vision Foundation
+[12] M. Feng, P. Gallin-Martel, K. Ito, and T. Aoki. *Benchmarking Vision Foundation
 Models for Domain-Generalizable Face Anti-Spoofing.* CVPRW,2026;
 arXiv:2604.19196.
 https://arxiv.org/abs/2604.19196

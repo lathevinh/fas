@@ -1,0 +1,17 @@
+DeepPixBiS architecture reference:
+Anjith George and Sebastien Marcel, "Deep Pixel-wise Binary Supervision for
+Face Presentation Attack Detection," ICB 2019.
+
+The Specialist architecture follows the publicly described architecture and
+the feature slice/pixel/global computation in Idiap's bob.pad.face:
+https://github.com/bioidiap/bob.pad.face/blob/555f181a76fa39d20f0c61ef1dc616bd85b817c1/src/bob/pad/face/deep_pix_bis.py
+
+The new specialist implementation is distributed under GPL-3.0-only; the
+accompanying COPYING contains the license. The surrounding experimental
+controller uses this module. No upstream PAD checkpoint or Bob training
+pipeline is bundled. This is a fixed matched-input retraining recipe,
+not reproduction of the original paper's training results.
+
+Torchvision and PyTorch retain their respective licenses. ImageNet DenseNet
+initialization is a separately acquired torchvision artifact after explicit
+owner approval; it is not redistributed in this repository.

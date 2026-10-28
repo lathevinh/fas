@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Executable paper comparison, awaiting one integrated owner decision:
+[Package321](docs/321-executable-comparison-and-review320-response.md)
+implements [review320](docs/320-review-doc319-and-paper319-preparation-and-manuscript.md),
+including synthetic specialist/controller checks, numerical cache revalidation,
+direct known-subject isolation and independent resource supervision.
+The [revised manuscript](docs/paper319/manuscript.md) now separates historical
+methods and pairs policy FA/BFA with oracle BFA. Scientific fitting, new
+specialist predictions and initialization download remain unauthorized.
+
 Integrated paper-completion preparation (2026-10-28):
 [Package319](docs/319-integrated-paper-completion-package.md) follows
 [Review318](docs/318-review-proposal317-bounded-empirical-paper-route.md)
@@ -11,7 +20,8 @@ verifies receipt coverage for7474 usable originals via705 existing feature
 shards, without fitting, image decoding or new predictions.
 SiW is the adopted Protocol-I local intersection and lacks subject identities:
 its proposed video-group limitation is explicit, not participant-disjointness.
-Specialist training/controller compatibility is not yet demonstrated.
+Package321 supplies subsequent synthetic specialist/controller checks;
+actual training feasibility remains unmeasured.
 The package is for integrated review, not scientific execution approval;
 new-comparison results remain clearly pending in the draft.
 

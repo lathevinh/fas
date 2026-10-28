@@ -9,14 +9,24 @@ It does not establish a first-of-its-kind claim or guarantee publication.
 | Study and primary source | Established overlap | Remaining candidate question / boundary |
 |---|---|---|
 | Lorenz, George and Marcel, *Foundation Models for Face Presentation Attack Detection: A Unified Linear-Probing Benchmark*, accepted IJCB2026; [arXiv2607.26993](https://arxiv.org/abs/2607.26993), [full text](https://arxiv.org/html/2607.26993v2) |24 frozen encoders; within/cross-dataset PAD; MCIO; DeepPixBiS and FSFM-FAS specialist references. Explicitly single-source, with development-EER thresholds and ACER reporting. | Our proposed multi-source operating analysis is not the same experiment. The examined text does not provide our side-by-side source-policy versus low-FA oracle diagnostic. Frozen probing, specialist inclusion and transfer failure are already covered. |
-| George and Marcel, *LoRA-based Adaptation Alone Is Not Enough: Understanding the Limits of Foundation Models for Face PAD*; [arXiv2608.09633](https://arxiv.org/abs/2608.09633), [full text](https://arxiv.org/html/2608.09633v2) |32 foundation models, zero-shot/LoRA evaluation, MCIO, single-source transfer and development-EER-based ACER. Explicitly excludes multi-source LOO/LSD protocols. | Further weakens any generic novelty claim that foundation-model adaptation/transfer can fail. The examined text does not establish the proposed available-policy/oracle low-FA comparison. |
-| Gallin-Martel, Feng, Ito and Aoki, *Benchmarking Vision Foundation Models for Domain-Generalizable Face Anti-Spoofing*, CVPRW2026; [arXiv2604.19196](https://arxiv.org/abs/2604.19196), [full text](https://arxiv.org/html/2604.19196v2) |15 pretrained models, DINOv2 registers, MICO train-three/test-one and limited-source settings, augmentation/loss interventions, HTER/AUC. | **Train-three/test-one and register-DINO are not new.** Its examined reporting does not supply the proposed source-derived-policy versus fixed-low-FA oracle comparison. Changing Replay to SiW is not itself novelty. |
-| Costa-Pazo et al., *Face presentation attack detection. A comprehensive evaluation of the generalisation problem*, IET Biometrics10(4),408-429,2021; [DOI](https://doi.org/10.1049/bme2.12049) | Verified abstract/metadata describe GRAD-GPAD v2, realistic generalization protocols, attack categorization and demographic analysis. Generalization failure is an established problem. | **Full text could not be retrieved** from the publisher/repository in this preparation. Its exact threshold and low-FA analysis remain unresolved; no absence-of-oracle claim is made for this paper. |
+| Lorenz, George and Marcel, *LoRA-based Adaptation Alone Is Not Enough: Understanding the Limits of Foundation Models for Face PAD*; [arXiv2608.09633](https://arxiv.org/abs/2608.09633), [full text](https://arxiv.org/html/2608.09633v2) |32 foundation models, zero-shot/LoRA evaluation, MCIO, single-source transfer and development-EER-based ACER. Explicitly excludes multi-source LOO/LSD protocols. | Further weakens any generic novelty claim that foundation-model adaptation/transfer can fail. The examined text does not establish the proposed available-policy/oracle low-FA comparison. |
+| Feng, Gallin-Martel, Ito and Aoki, *Benchmarking Vision Foundation Models for Domain-Generalizable Face Anti-Spoofing*, CVPRW2026; [arXiv2604.19196](https://arxiv.org/abs/2604.19196), [full text](https://arxiv.org/html/2604.19196v2) |15 pretrained models, DINOv2 registers, MICO train-three/test-one and limited-source settings, augmentation/loss interventions, HTER/AUC. | **Train-three/test-one and register-DINO are not new.** Its examined reporting does not supply the proposed source-derived-policy versus fixed-low-FA oracle comparison. Changing Replay to SiW is not itself novelty. |
+| Costa-Pazo et al., *Face presentation attack detection. A comprehensive evaluation of the generalisation problem*, IET Biometrics10(4),408-429,2021; [DOI](https://doi.org/10.1049/bme2.12049), [full text](https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/bme2.12049) | GRAD-GPAD v2, realistic generalization protocols, attack categorization and demographic analysis. Review320 retrieved the full text and verifies constrained operating analysis including APCER at BPCER10% and working-point curves. | Constrained ROC analysis and moving beyond aggregate metrics are already covered. The narrower proposed question pairs the available source-derived threshold with an evaluation-label oracle under the same attack-FA constraint. Exact equivalence or absence of that pipeline has not been established; no absence-of-oracle claim is made. |
 
 The three recent full texts were examined in the bounded research pass.
 Statements about what those texts report are not proofs that no other paper
 has studied the same question. Numerical results from them are not imported
 as directly matched baselines.
+
+The Costa-Pazo status above incorporates the explicit full-text evidence in
+[review320](../320-review-doc319-and-paper319-preparation-and-manuscript.md).
+The implementation host still received publisher403/repository retrieval
+failures during its follow-up; this is not represented as an independent
+full-text reread or evidence that the paper lacks constrained analysis.
+The [authors' framework repository](https://github.com/acostapazo/gradgpad)
+independently confirms its bibliographic record and generalization scope.
+No unverified quotation or table number from search summaries is adopted.
+Primary arXiv citation-author metadata confirms both corrected author orders.
 
 ## 2. Narrow contribution and claim-to-evidence map
 
@@ -42,7 +52,7 @@ without a useful, defensible empirical answer.
 | Threshold movement has different empirical headroom across sources |316: CASIA54/54 oracle-attainable, OULU0/54 for the fixed primary references | Repeat diagnosis on scores from the proposed narrower-source models; do not transfer the old oracle to a new fitted model |
 | Adding another representation need not produce a feasible selected policy |314: matched nested families return no policies under the declared constraints | Keep as bounded supporting evidence, not proof that all fusion fails |
 | The pattern is relevant beyond these frozen readouts | No completed matched specialist result exists | DeepPixBiS architecture retraining under the exact proposed population |
-| A specific journal-level empirical gap remains | Examined closest studies differ in their reported operating analysis | Resolve Costa-Pazo full-text overlap and assess whether the combined evidence is substantial enough; no first-ever claim |
+| A specific journal-level empirical gap remains | Examined closest studies differ in their reported operating analysis; Costa-Pazo already includes constrained points/curves | Keep the narrower paired policy/oracle positioning and assess empirical substance; exact pipeline overlap remains unresolved, with no first-ever claim |
 
 **Positioning decision:** proceed with the bounded paper-completion direction,
 not with a claim of established novelty. If the remaining comparison adds
@@ -85,7 +95,8 @@ No payment or submission is authorized by this package.
 
 ## 4. Explicit unresolved facts
 
-1. Full-text threshold methodology of Costa-Pazo et al.2021.
+1. Exact pipeline equivalence with Costa-Pazo et al.2021, not whether that
+   work already contains constrained operating analysis (review320 confirms it).
 2. Category/year-specific primary ranking evidence for the two candidates.
 3. World Scientific's directly verified current scope/charges.
 4. Whether the completed matched comparison will provide enough empirical
