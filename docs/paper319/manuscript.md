@@ -2,6 +2,8 @@
 
 **Working manuscript,2026-10-28. Not submission-ready.**
 The official-partition supplementary study is specified but has not run.
+Its first approved executable attempt stopped during ImageNet state loading,
+before any scientific fit; no supplementary comparison accuracy exists.
 Sections labeled pending contain no measured supplementary results.
 Development results below retain their original populations and limitations.
 Author names, affiliations and submission metadata remain to be supplied.

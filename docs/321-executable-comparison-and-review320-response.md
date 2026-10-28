@@ -1,6 +1,13 @@
 # 321 - Executable bounded comparison and response to review320
 
 Date:2026-10-28.
+Historical update: this package was published at`e3ec81a` and then explicitly
+approved. Its single attempt stopped before any scientific fit on legacy
+ImageNet DenseNet state keys. [Report322](322-initialization-stop-and-compatibility-amendment.md)
+records the stop and a separately gated compatibility amendment. The original
+321 seal and attempt are retained, not rewritten; the current controller is
+the322 amendment and is not authorized by the old approval.
+
 Status: implementation and read-only sealing, **not scientific execution
 approval or a new scientific result**.
 

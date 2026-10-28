@@ -1,5 +1,14 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
+Initialization stop and bounded amendment:
+[Report322](docs/322-initialization-stop-and-compatibility-amendment.md)
+records the approved321 attempt stopping before any scientific fit:
+the official ImageNet artifact uses legacy DenseNet state-key names.
+The compatibility repair preserves pretrained tensors and all scientific
+recipes. A separately sealed retry needs explicit owner approval, reuses
+the acquired artifact and preserves the original deadline and resource caps.
+Nothing is currently training.
+
 Executable paper comparison, awaiting one integrated owner decision:
 [Package321](docs/321-executable-comparison-and-review320-response.md)
 implements [review320](docs/320-review-doc319-and-paper319-preparation-and-manuscript.md),
@@ -7,7 +16,9 @@ including synthetic specialist/controller checks, numerical cache revalidation,
 direct known-subject isolation and independent resource supervision.
 The [revised manuscript](docs/paper319/manuscript.md) now separates historical
 methods and pairs policy FA/BFA with oracle BFA. Scientific fitting, new
-specialist predictions and initialization download remain unauthorized.
+specialist predictions were absent at sealing. The subsequently approved
+initialization download succeeded, but strict legacy-key loading stopped
+that attempt before fitting; see322 rather than inferring a completed run.
 
 Integrated paper-completion preparation (2026-10-28):
 [Package319](docs/319-integrated-paper-completion-package.md) follows

@@ -12,6 +12,11 @@ controller uses this module. No upstream PAD checkpoint or Bob training
 pipeline is bundled. This is a fixed matched-input retraining recipe,
 not reproduction of the original paper's training results.
 
+The ImageNet artifact uses historical DenseNet names such as norm.1.weight.
+Initialization modernizes only these DenseLayer key names before strict
+loading, matching torchvision's documented DenseNet compatibility behavior.
+No pretrained tensor value is replaced, approximated or silently omitted.
+
 Torchvision and PyTorch retain their respective licenses. ImageNet DenseNet
 initialization is a separately acquired torchvision artifact after explicit
 owner approval; it is not redistributed in this repository.

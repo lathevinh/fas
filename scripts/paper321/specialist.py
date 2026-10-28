@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import random
+import re
 
 import numpy as np
 import torch
@@ -16,7 +17,13 @@ class Specialist(nn.Module):
         super().__init__()
         backbone = densenet161(weights=None)
         if initial_state is not None:
-            backbone.load_state_dict(initial_state, strict=True)
+            compatible = {}
+            for key, value in initial_state.items():
+                modern = re.sub(r"(\.denselayer[0-9]+\.(?:norm|relu|conv))\.([12])\.", r"\1\2.", key)
+                if modern in compatible:
+                    raise ValueError("colliding legacy and modern DenseNet initialization keys")
+                compatible[modern] = value
+            backbone.load_state_dict(compatible, strict=True)
         self.encoder = nn.Sequential(*list(backbone.features.children())[:8])
         self.pixel = nn.Conv2d(384, 1, kernel_size=1)
         self.global_head = nn.Linear(196, 1)

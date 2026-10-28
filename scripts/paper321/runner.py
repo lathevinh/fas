@@ -30,10 +30,12 @@ import run_fusion313 as frozen
 import study
 
 SPEC = ROOT / "docs/paper319/supplementary-protocol.json"
-OUTPUT = preparation.PRIVATE / "paper_comparison321_v1"
-PUBLIC = ROOT / "results/phase1/paper321-execution-plan-v1.json"
-ANSWER = "approve_paper321_bounded_comparison_with_SiW_video_groups"
+PREVIOUS = preparation.PRIVATE / "paper_comparison321_v1"
+OUTPUT = preparation.PRIVATE / "paper_comparison322_v1"
+PUBLIC = ROOT / "results/phase1/paper322-execution-plan-v1.json"
+ANSWER = "approve_paper322_initialization_fix_same_original_deadline"
 BRANCHES = ("dino_reg", "dino_plain", "openclip", "matched_deeppixbis")
+INITIALIZATION_SHA = "8d451a50bad6b9a83f477126c443716882a17af26e94d338154b058fb2dfd359"
 
 
 def read(path: Path) -> dict:
@@ -52,6 +54,7 @@ def runtime() -> dict:
 def code_pins() -> dict:
     paths = [*Path(__file__).parent.glob("*"), ROOT / "tests/test_paper321.py", SPEC,
              ROOT / "docs/321-executable-comparison-and-review320-response.md",
+             ROOT / "docs/322-initialization-stop-and-compatibility-amendment.md",
              ROOT / "scripts/diagnostics/prepare_paper319.py", ROOT / "tests/test_paper319.py"]
     return {**frozen.code_pins(), **{str(p.relative_to(ROOT)): digest(p) for p in paths if p.is_file()}}
 
@@ -137,6 +140,28 @@ def prepare() -> None:
         if time.monotonic() - started > 1800:
             raise TimeoutError("30-minute read-only preparation ceiling")
     files = {}
+    prior_terminal = PREVIOUS / "terminal.json"
+    prior_approval = PREVIOUS / "owner_approval.json"
+    initialization = PREVIOUS / "initialization.pth"
+    for path in (prior_terminal, prior_approval, initialization, PREVIOUS / "initialization.json"):
+        bind(files, path)
+    if files[str(initialization)] != INITIALIZATION_SHA:
+        raise ValueError("exact originally acquired ImageNet bytes required")
+    if (read(prior_terminal)["status"] != "stopped_no_retry"
+            or list((PREVIOUS / "starts").glob("*.json"))):
+        raise ValueError("amendment requires stopped original attempt with zero scientific fit starts")
+    acquired = read(PREVIOUS / "initialization.json")
+    if digest(initialization) != acquired["sha256"]:
+        raise ValueError("originally acquired initialization changed")
+    import torch
+    import specialist
+    initial_state = torch.load(initialization, map_location="cpu", weights_only=True)
+    if any(not isinstance(value, torch.Tensor) or not torch.isfinite(value).all()
+           for value in initial_state.values()):
+        raise ValueError("finite acquired initialization required")
+    probe = specialist.Specialist(initial_state)
+    del probe, initial_state
+    gc.collect()
     bind(files, preparation.MANIFEST, preparation.MANIFEST_SHA)
     manifest = read(preparation.MANIFEST)
     rows = preparation.active_rows(manifest["rows"])
@@ -171,7 +196,7 @@ def prepare() -> None:
     if optimizer_steps != 74400 or len(partitions["contexts"]) != 12:
         raise ValueError("fixed12-context/74400-step scientific inventory required")
     plan = {
-        "version": 1, "study": "paper_comparison321_v1", "spec_sha256": digest(SPEC),
+        "version": 1, "study": "paper_comparison322_v1", "spec_sha256": digest(SPEC),
         "files": files, "implementation_sha256": code_pins(), "runtime": runtime(),
         "limits": config["proposed_limits"], "counts": config["inventory"],
         "actual_source_population_checked": True, "known_subject_isolation_checked": True,
@@ -186,13 +211,20 @@ def prepare() -> None:
         "specialist_randomness": "model_seed_before_construction_sampler_seed_plus1_flip_seed_plus2",
         "initialization_acquisition": {"url": config["specialist"]["initialization_url"],
                                       "sha256_prefix": "8d451a50", "max_bytes": 268435456},
+        "initialization_reuse": {"path": str(initialization), "sha256": acquired["sha256"],
+                                "new_download_bytes": 0, "strict_architecture_load_verified": True,
+                                "legacy_key_conversion": "torchvision_DenseNet_compatibility"},
+        "prior_attempt": {"scientific_fit_starts": 0, "terminal_sha256": digest(prior_terminal),
+                          "approval_sha256": digest(prior_approval),
+                          "original_clock_preserved": True},
     }
     write_immutable_record(OUTPUT / "execution_plan.json", plan)
     write_immutable_record(PUBLIC, {
         key: value for key, value in {**plan, "execution_plan_sha256": digest(OUTPUT / "execution_plan.json"),
                                      "bound_file_count": len(files), "preparation_wall_seconds": time.monotonic()-started}.items()
-        if key != "files"})
-    print("PAPER321_SEALED", digest(OUTPUT / "execution_plan.json"), flush=True)
+        if key != "files" and key != "initialization_reuse"} | {
+            "initialization_reuse": {key: value for key, value in plan["initialization_reuse"].items() if key != "path"}})
+    print("PAPER322_SEALED", digest(OUTPUT / "execution_plan.json"), flush=True)
 
 
 def check_plan(guard=lambda: None) -> dict:
@@ -213,11 +245,15 @@ def approve(answer: str | None) -> None:
     if answer != ANSWER:
         raise ValueError("one explicit integrated owner decision including SiW limitation required")
     plan = check_plan()
-    now = time.time()
+    original = read(PREVIOUS / "owner_approval.json")
+    if original["limits"] != plan["limits"]:
+        raise ValueError("original resource envelope must remain unchanged")
+    clock(original)
     write_immutable_record(OUTPUT / "owner_approval.json", {
         "explicit_owner_approval": True, "selected_answer": answer,
-        "plan_sha256": digest(OUTPUT / "execution_plan.json"), "started_unix": now,
-        "started_monotonic": time.monotonic(), "boot_id": Path("/proc/sys/kernel/random/boot_id").read_text().strip(),
+        "plan_sha256": digest(OUTPUT / "execution_plan.json"),
+        **{key: original[key] for key in ("started_unix", "started_monotonic", "boot_id")},
+        "amendment_approved_unix": time.time(),
         "limits": plan["limits"], "automatic_retry": False})
 
 
@@ -226,7 +262,7 @@ def clock(approval: dict, *, final: bool = False, context_started: float | None 
     if (approval["boot_id"] != Path("/proc/sys/kernel/random/boot_id").read_text().strip()
             or time.monotonic() - approval["started_monotonic"] >= limits[
                 "wall_seconds_total" if final else "work_cutoff_seconds"]):
-        raise TimeoutError("original nonresettable paper321 deadline")
+        raise TimeoutError("original nonresettable paper321/322 deadline")
     if context_started is not None and time.monotonic() - context_started >= limits["specialist_seconds_per_context"]:
         raise TimeoutError("fixed40-minute context ceiling; no shortened successful recipe")
 
@@ -238,13 +274,13 @@ def authority() -> tuple[dict, dict]:
     if (approval["explicit_owner_approval"] is not True or approval["selected_answer"] != ANSWER
             or approval["plan_sha256"] != digest(OUTPUT / "execution_plan.json")
             or approval["limits"] != plan["limits"] or approval["automatic_retry"] is not False):
-        raise ValueError("exact fresh paper321 authority required")
+        raise ValueError("exact fresh paper322 authority required")
     clock(approval, final=True)
     return plan, approval
 
 
 def owned_size() -> int:
-    return sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
+    return sum(path.stat().st_size for root in (OUTPUT, PREVIOUS) for path in root.rglob("*") if path.is_file())
 
 
 def resources(approval: dict, *, final: bool = False, context_started=None, cuda: bool = False) -> None:
@@ -347,9 +383,14 @@ def execute_phase(*, replay: bool) -> None:
     torch.cuda.set_per_process_memory_fraction(
         plan["limits"]["CUDA_allocated_and_reserved_each_bytes"] / torch.cuda.get_device_properties(0).total_memory)
     guard = lambda: resources(approval, final=replay, cuda=True)
-    initialization = OUTPUT / "initialization.pth" if replay else acquire(plan, guard)
-    if replay and digest(initialization) != read(OUTPUT / "initialization.json")["sha256"]:
-        raise ValueError("acquired initialization changed")
+    if "initialization_reuse" in plan:
+        initialization = Path(plan["initialization_reuse"]["path"])
+        if digest(initialization) != plan["initialization_reuse"]["sha256"]:
+            raise ValueError("bound initialization reuse changed")
+    else:
+        initialization = OUTPUT / "initialization.pth" if replay else acquire(plan, guard)
+        if replay and digest(initialization) != read(OUTPUT / "initialization.json")["sha256"]:
+            raise ValueError("acquired initialization changed")
     initial_state = torch.load(initialization, map_location="cpu", weights_only=True)
     if not isinstance(initial_state, dict) or any(
         not isinstance(value, torch.Tensor) or not torch.isfinite(value).all() for value in initial_state.values()):
@@ -456,7 +497,7 @@ def execute_phase(*, replay: bool) -> None:
             write_immutable_record(folder / "models.json", artifact)
             write_immutable_record(folder / "prediction_analysis.json", result)
         all_results.append(result)
-        print("PAPER321_CONTEXT_VERIFIED" if replay else "PAPER321_CONTEXT_COMPLETE", key, flush=True)
+        print("PAPER322_CONTEXT_VERIFIED" if replay else "PAPER322_CONTEXT_COMPLETE", key, flush=True)
     guard = lambda: resources(approval, final=True, cuda=True)
     guard()
     actual = {kind: len(list((OUTPUT / "starts").glob(f"{kind}-*.json")))
@@ -521,7 +562,7 @@ def supervise() -> int:
             raise RuntimeError("no independent checkpoint reconstruction receipt")
     except (OSError, ValueError, RuntimeError, TimeoutError, MemoryError) as exc:
         failure = f"{type(exc).__name__}: {exc}"
-        print("PAPER321_STOP", failure, file=sys.stderr, flush=True)
+        print("PAPER322_STOP", failure, file=sys.stderr, flush=True)
     finally:
         if child is not None and child.poll() is None:
             os.killpg(child.pid, signal.SIGTERM)

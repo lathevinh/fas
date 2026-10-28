@@ -5,6 +5,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -122,6 +123,17 @@ class AuthorityAndBudgetTests(unittest.TestCase):
         with patch.object(runner, "check_plan", side_effect=AssertionError("not reached")):
             with self.assertRaisesRegex(ValueError, "explicit"):
                 runner.approve("review_accepted")
+        original = {**self.approval(), "started_unix": time.time()-120}
+        with tempfile.TemporaryDirectory() as directory:
+            previous, amended = Path(directory)/"old", Path(directory)/"new"
+            runner.write_immutable_record(previous/"owner_approval.json", original)
+            runner.write_immutable_record(amended/"execution_plan.json", {})
+            with patch.object(runner, "PREVIOUS", previous), patch.object(runner, "OUTPUT", amended), \
+                 patch.object(runner, "check_plan", return_value={"limits": original["limits"]}):
+                runner.approve(runner.ANSWER)
+            receipt = runner.read(amended/"owner_approval.json")
+            for key in ("started_monotonic", "started_unix", "boot_id", "limits"):
+                self.assertEqual(receipt[key], original[key])
 
     def test_original_work_final_and_context_deadlines(self):
         a = self.approval()
@@ -246,6 +258,18 @@ class SpecialistTests(unittest.TestCase):
         from torchvision.models import densenet161
         initial = densenet161(weights=None).state_dict()
         model = specialist.Specialist(initial)
+        legacy = {
+            re.sub(r"(\.denselayer[0-9]+\.(?:norm|relu|conv))([12])\.", r"\1.\2.", key): value
+            for key, value in initial.items() if not key.endswith("num_batches_tracked")}
+        converted = specialist.Specialist(legacy)
+        for key, value in model.encoder.state_dict().items():
+            torch.testing.assert_close(converted.encoder.state_dict()[key], value, rtol=0, atol=0)
+        bad = dict(legacy)
+        bad["features.denseblock1.denselayer1.norm1.weight"] = initial[
+            "features.denseblock1.denselayer1.norm1.weight"]
+        with self.assertRaisesRegex(ValueError, "colliding"):
+            specialist.Specialist(bad)
+        del converted
         self.assertTrue(torch.equal(model.encoder[0].weight, initial["features.conv0.weight"]))
         images = torch.randn(2, 3, 224, 224)
         model.train()
