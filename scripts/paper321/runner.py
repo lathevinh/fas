@@ -36,6 +36,8 @@ PUBLIC = ROOT / "results/phase1/paper322-execution-plan-v1.json"
 ANSWER = "approve_paper322_initialization_fix_same_original_deadline"
 BRANCHES = ("dino_reg", "dino_plain", "openclip", "matched_deeppixbis")
 INITIALIZATION_SHA = "8d451a50bad6b9a83f477126c443716882a17af26e94d338154b058fb2dfd359"
+ENTRYPOINT = Path(__file__)
+RETAINED_OUTPUTS: tuple[Path, ...] = ()
 
 
 def read(path: Path) -> dict:
@@ -55,6 +57,8 @@ def code_pins() -> dict:
     paths = [*Path(__file__).parent.glob("*"), ROOT / "tests/test_paper321.py", SPEC,
              ROOT / "docs/321-executable-comparison-and-review320-response.md",
              ROOT / "docs/322-initialization-stop-and-compatibility-amendment.md",
+             ROOT / "docs/323-completing-comparison-after-analysis-timeout.md",
+             ROOT / "tests/test_paper323.py",
              ROOT / "scripts/diagnostics/prepare_paper319.py", ROOT / "tests/test_paper319.py"]
     return {**frozen.code_pins(), **{str(p.relative_to(ROOT)): digest(p) for p in paths if p.is_file()}}
 
@@ -257,14 +261,22 @@ def approve(answer: str | None) -> None:
         "limits": plan["limits"], "automatic_retry": False})
 
 
-def clock(approval: dict, *, final: bool = False, context_started: float | None = None) -> None:
+def clock(approval: dict, *, final: bool = False, context_started: float | None = None,
+          phase: str | None = None) -> None:
     limits = approval["limits"]
     if (approval["boot_id"] != Path("/proc/sys/kernel/random/boot_id").read_text().strip()
             or time.monotonic() - approval["started_monotonic"] >= limits[
                 "wall_seconds_total" if final else "work_cutoff_seconds"]):
         raise TimeoutError("original nonresettable paper321/322 deadline")
-    if context_started is not None and time.monotonic() - context_started >= limits["specialist_seconds_per_context"]:
-        raise TimeoutError("fixed40-minute context ceiling; no shortened successful recipe")
+    if context_started is not None:
+        if "phase_seconds" in limits:
+            if phase not in limits["phase_seconds"]:
+                raise ValueError("declared execution phase required")
+            ceiling = limits["phase_seconds"][phase]
+        else:
+            ceiling = limits["specialist_seconds_per_context"]
+        if time.monotonic() - context_started >= ceiling:
+            raise TimeoutError(f"{phase or 'fixed40-minute'} context ceiling; no shortened successful recipe")
 
 
 def authority() -> tuple[dict, dict]:
@@ -280,11 +292,13 @@ def authority() -> tuple[dict, dict]:
 
 
 def owned_size() -> int:
-    return sum(path.stat().st_size for root in (OUTPUT, PREVIOUS) for path in root.rglob("*") if path.is_file())
+    return sum(path.stat().st_size for root in (OUTPUT, PREVIOUS, *RETAINED_OUTPUTS)
+               for path in root.rglob("*") if path.is_file())
 
 
-def resources(approval: dict, *, final: bool = False, context_started=None, cuda: bool = False) -> None:
-    clock(approval, final=final, context_started=context_started)
+def resources(approval: dict, *, final: bool = False, context_started=None, cuda: bool = False,
+              phase: str | None = None) -> None:
+    clock(approval, final=final, context_started=context_started, phase=phase)
     if owned_size() + 268435456 > approval["limits"]["owned_new_and_temporary_output_bytes"]:
         raise MemoryError("owned artifacts cap, including256MiB operational/terminal reserve")
     if cuda:
@@ -405,14 +419,29 @@ def execute_phase(*, replay: bool) -> None:
     ids, features = load_features(rows, {}, guard)
     positions = {key: i for i, key in enumerate(ids)}
     all_results = []
+    continuation = plan.get("continuation", {})
     for context in partitions["contexts"]:
         begun = time.monotonic()
         guard = lambda: resources(approval, final=replay, context_started=begun, cuda=True)
-        guard()
         key = f"{context['target']}-{context['seed']}"
-        active_context(key, "verify" if replay else "worker", begun)
-        folder = OUTPUT / "contexts" / key
+        retained = continuation.get("complete_contexts", {}).get(key)
+        if retained and not replay:
+            all_results.append(read(Path(retained) / "prediction_analysis.json"))
+            print("PAPER323_CONTEXT_REUSED", key, flush=True)
+            continue
+        folder = Path(retained) if retained else OUTPUT / "contexts" / key
         folder.mkdir(parents=True, exist_ok=True)
+
+        def phase_guard(name):
+            if "phase_seconds" not in approval["limits"]:
+                active_context(key, "verify" if replay else "worker", begun)
+                return lambda: resources(approval, final=replay, context_started=begun, cuda=True)
+            started = time.monotonic()
+            active_context(key, name, started)
+            return lambda: resources(approval, final=replay, context_started=started, cuda=True, phase=name)
+
+        guard = phase_guard("heads")
+        guard()
         pools = {role: [indexed[value] for value in context[role] if value in positions]
                  for role in ("fitting", "validation", "calibration", "evaluation")}
         originals = [indexed[value] for value in context["evaluation"]]
@@ -437,8 +466,10 @@ def execute_phase(*, replay: bool) -> None:
             evaluation_logits[name] = head_logits(model, x("evaluation"))
         specialist.configure(context["seed"])
         model = specialist.Specialist(initial_state).cuda()
-        checkpoint = folder / "specialist.pth"
-        if replay:
+        checkpoint = Path(continuation.get("checkpoint_contexts", {}).get(key, folder / "specialist.pth"))
+        guard = phase_guard("prediction" if replay or key in continuation.get("checkpoint_contexts", {})
+                            else "specialist")
+        if replay or key in continuation.get("checkpoint_contexts", {}):
             state = torch.load(checkpoint, map_location="cpu", weights_only=True)
             model.load_state_dict(state["state_dict"], strict=True)
         else:
@@ -455,6 +486,14 @@ def execute_phase(*, replay: bool) -> None:
             restored.load_state_dict(torch.load(checkpoint, map_location="cpu", weights_only=True)["state_dict"], strict=True)
             del model
             model = restored
+        if (len(state["history"]) != config["specialist"]["epochs"]
+                or not np.isfinite(state["history"]).all()
+                or state["seed"] != context["seed"]
+                or state["optimizer_steps"] != ((len(pools["fitting"])+15)//16)*config["specialist"]["epochs"]
+                or state["selected_epoch"] != int(np.argmin(state["history"]))+1
+                or state["validation_loss"] != min(state["history"])):
+            raise ValueError("complete fixed checkpoint history, seed, selection and optimizer steps required")
+        guard = phase_guard("prediction")
         for role, destination in (("calibration", calibration_logits), ("evaluation", evaluation_logits)):
             raw = specialist.predict(model, pools[role], image_batch, "cuda", guard)
             clipped = np.clip(raw, 1e-6, 1-1e-6)
@@ -487,6 +526,7 @@ def execute_phase(*, replay: bool) -> None:
             "heads": frozen_models, "calibrators": calibrators, "policies": policies,
             "specialist_sha256": digest(checkpoint), "specialist_selected_epoch": state["selected_epoch"],
             "specialist_optimizer_steps": state["optimizer_steps"]}
+        guard = phase_guard("analysis")
         result = {"target": context["target"], "seed": context["seed"],
                   "usable_ids": [identity(row) for row in pools["evaluation"]], "prediction": prediction,
                   "analysis": study.summarize_context(prediction, originals, policies, oracle316.oracle, guard)}
@@ -497,12 +537,13 @@ def execute_phase(*, replay: bool) -> None:
             write_immutable_record(folder / "models.json", artifact)
             write_immutable_record(folder / "prediction_analysis.json", result)
         all_results.append(result)
-        print("PAPER322_CONTEXT_VERIFIED" if replay else "PAPER322_CONTEXT_COMPLETE", key, flush=True)
+        prefix = "PAPER323" if continuation else "PAPER322"
+        print(f"{prefix}_CONTEXT_VERIFIED" if replay else f"{prefix}_CONTEXT_COMPLETE", key, flush=True)
     guard = lambda: resources(approval, final=True, cuda=True)
     guard()
     actual = {kind: len(list((OUTPUT / "starts").glob(f"{kind}-*.json")))
               for kind in ("frozen", "specialist", "calibrator")}
-    if actual != {"frozen": 36, "specialist": 12, "calibrator": 48}:
+    if actual != continuation.get("new_fit_starts", {"frozen": 36, "specialist": 12, "calibrator": 48}):
         raise ValueError("all and only declared fit starts required")
     if sum(len(context["analysis"]["cases"]) for context in all_results) != 144:
         raise ValueError("all144 source-policy/oracle cases required")
@@ -522,6 +563,8 @@ def execute_phase(*, replay: bool) -> None:
             stream.write(figure)
         write_immutable_record(OUTPUT / "worker_completion.json", {
             "plan_sha256": digest(OUTPUT / "execution_plan.json"), "fit_starts": actual,
+            "retained_complete_contexts": len(continuation.get("complete_contexts", {})),
+            "cumulative_fit_starts": continuation.get("cumulative_fit_starts", actual),
             "contexts": [{"target": result["target"], "seed": result["seed"],
                           "analysis": result["analysis"]} for result in all_results],
             "aggregate": aggregate,
@@ -542,14 +585,14 @@ def supervise() -> int:
             resources(approval, final=phase == "verify")
             (OUTPUT / "active_context.json").unlink(missing_ok=True)
             with (OUTPUT / f"{phase}.log").open("x") as log:
-                child = subprocess.Popen([sys.executable, str(Path(__file__)), f"--{phase}"],
+                child = subprocess.Popen([sys.executable, str(ENTRYPOINT), f"--{phase}"],
                                          env=env, start_new_session=True, stdout=log, stderr=subprocess.STDOUT)
                 while child.poll() is None:
                     resources(approval, final=phase == "verify")
                     active = OUTPUT / "active_context.json"
                     if active.exists():
                         clock(approval, final=phase == "verify",
-                              context_started=read(active)["started_monotonic"])
+                              context_started=read(active)["started_monotonic"], phase=read(active)["phase"])
                     own = next(int(line.split()[1])*1024 for line in Path("/proc/self/status").read_text().splitlines()
                                if line.startswith("VmRSS:"))
                     peak_rss = max(peak_rss, own + legacy.pilot.group_rss(child.pid))
@@ -562,7 +605,7 @@ def supervise() -> int:
             raise RuntimeError("no independent checkpoint reconstruction receipt")
     except (OSError, ValueError, RuntimeError, TimeoutError, MemoryError) as exc:
         failure = f"{type(exc).__name__}: {exc}"
-        print("PAPER322_STOP", failure, file=sys.stderr, flush=True)
+        print("PAPER323_STOP" if "continuation" in plan else "PAPER322_STOP", failure, file=sys.stderr, flush=True)
     finally:
         if child is not None and child.poll() is None:
             os.killpg(child.pid, signal.SIGTERM)

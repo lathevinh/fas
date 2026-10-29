@@ -112,6 +112,53 @@ class AnalysisTests(unittest.TestCase):
         self.assertIn("<svg", svg)
         self.assertIn("clipPath", svg)
 
+    def test_optimized_bootstrap_matches_reference_with_ties_failures_and_one_class_draws(self):
+        for domain in ("MSU-MFSD", "SiW-Mv2"):
+            rows = [row(domain, str(i//3), "attack" if i < 6 else "bona_fide",
+                        success=i not in (1, 8)) for i in range(12)]
+            for i, record in enumerate(rows):
+                record["video_id"] = f"video-{i}"
+                record["selected_frame"]["rgb_sha256"] = f"frame-{i}"
+            rng = np.random.default_rng(42)
+            prediction = {system: rng.choice([.1, .3, .5, .9], 10).tolist() for system in study.SYSTEMS}
+            policies = {system: {str(alpha): {"threshold": .3 if alpha == study.ALPHAS[0] else .5,
+                                             "limiting_sources": [], "sources": {}}
+                                 for alpha in study.ALPHAS} for system in study.SYSTEMS}
+            result = study.summarize_context(prediction, rows, policies, runner.oracle316.oracle,
+                                            lambda: None, repetitions=200)
+            mapping = study.components([{**r, "group_id": r["subject_id"] or r["group_id"]} for r in rows])
+            groups = sorted(set(mapping.values()))
+            indexes = np.array([groups.index(mapping[runner.identity(r)]) for r in rows])
+            rng = np.random.default_rng(20261028)
+            samples = {}
+            paired = {}
+            for _ in range(200):
+                weights = rng.multinomial(len(groups), np.full(len(groups), 1/len(groups)))[indexes]
+                current = {}
+                for system in study.SYSTEMS:
+                    for alpha in study.ALPHAS:
+                        point = study.metrics(np.array(prediction[system]), rows,
+                                              policies[system][str(alpha)]["threshold"], weights)
+                        for metric in ("FA", "BFA", "AUROC_usable"):
+                            key = (system, str(alpha), metric)
+                            current[key] = point[metric]
+                            samples.setdefault(key, [])
+                            if point[metric] is not None:
+                                samples[key].append(point[metric])
+                for key, value in current.items():
+                    if key[0] == "dino_reg":
+                        continue
+                    anchor = current[("dino_reg", key[1], key[2])]
+                    paired.setdefault(key, [])
+                    if value is not None and anchor is not None:
+                        paired[key].append(value-anchor)
+            for field, expected in (("conditional_intervals", samples), ("paired_minus_dino_reg", paired)):
+                for item in result[field]:
+                    values = expected[(item["system"], item["alpha"], item["metric"])]
+                    self.assertEqual(item["valid_repetitions"], len(values))
+                    interval = np.quantile(values, [.025, .975]).tolist() if len(values) >= 190 else None
+                    self.assertEqual(item["percentile95"], interval)
+
 
 class AuthorityAndBudgetTests(unittest.TestCase):
     def approval(self):
@@ -346,7 +393,8 @@ class SpecialistTests(unittest.TestCase):
         def fake_train(model, *args):
             epochs = args[4]["epochs"]
             return {"state_dict": model.state_dict(), "selected_epoch": 1,
-                    "history": [.5]*epochs, "optimizer_steps": ((len(args[0])+15)//16)*epochs}
+                    "history": [.5]*epochs, "optimizer_steps": ((len(args[0])+15)//16)*epochs,
+                    "validation_loss": .5, "seed": args[3]}
         def fake_predict(model, rows, *args):
             return np.asarray([.1 if r["binary_label"] == "bona_fide" else .9 for r in rows])
         rows, contexts = [], []
@@ -389,7 +437,7 @@ class SpecialistTests(unittest.TestCase):
             stack.enter_context(patch.object(runner.preparation, "MANIFEST", source))
             stack.enter_context(patch.object(runner.preparation, "OUTPUT", Path(directory)))
             stack.enter_context(patch.object(runner, "authority", return_value=(
-                {"limits": config["proposed_limits"]}, {})))
+                {"limits": config["proposed_limits"]}, {"limits": config["proposed_limits"]})))
             stack.enter_context(patch.object(runner, "resources"))
             stack.enter_context(patch.object(runner, "acquire", return_value=root/"initialization.pth"))
             stack.enter_context(patch.object(runner, "load_features", return_value=(ids, features)))
@@ -418,6 +466,39 @@ class SpecialistTests(unittest.TestCase):
                                 and item["equal_target_macro"]["BFA"] == 1
                                 for item in completion["aggregate"]))
             self.assertNotIn("usable_ids", json.dumps(completion))
+            retained = root
+            resumed = Path(directory)/"continued"
+            resumed.mkdir()
+            keys = [f"{c['target']}-{c['seed']}" for c in contexts]
+            plan = {
+                "limits": {**config["proposed_limits"],
+                           "phase_seconds": {"heads": 600, "specialist": 5400,
+                                             "prediction": 1800, "analysis": 600}},
+                "initialization_reuse": {"path": str(retained/"initialization.pth"),
+                                         "sha256": runner.digest(retained/"initialization.pth")},
+                "continuation": {
+                    "complete_contexts": {key: str(retained/"contexts"/key) for key in keys[:4]},
+                    "checkpoint_contexts": {keys[4]: str(retained/"contexts"/keys[4]/"specialist.pth")},
+                    "new_fit_starts": {"frozen": 24, "specialist": 7, "calibrator": 32}}}
+            runner.write_immutable_record(resumed/"execution_plan.json", plan)
+            runner.write_immutable_record(resumed/"attempt.json", {
+                "supervisor_pid": os.getppid(), "plan_sha256": runner.digest(resumed/"execution_plan.json")})
+            for mock in (head, train, calibration):
+                mock.reset_mock()
+                mock.side_effect = None
+            train.side_effect = fake_train
+            with patch.object(runner, "OUTPUT", resumed), \
+                 patch.object(runner, "authority", return_value=(plan, {"limits": plan["limits"]})), \
+                 contextlib.redirect_stdout(io.StringIO()):
+                runner.execute_phase(replay=False)
+                self.assertEqual((head.call_count, train.call_count, calibration.call_count), (24, 7, 32))
+                for mock in (head, train, calibration):
+                    mock.side_effect = AssertionError("continuation reconstruction must not fit")
+                runner.execute_phase(replay=True)
+            self.assertTrue(runner.read(resumed/"verification.json")["all12_contexts_reconstructed"])
+            runner.frozen.check_reconstruction(
+                runner.read(retained/"worker_completion.json")["aggregate"],
+                runner.read(resumed/"worker_completion.json")["aggregate"])
 
 
 if __name__ == "__main__":

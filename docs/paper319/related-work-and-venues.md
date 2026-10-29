@@ -1,6 +1,9 @@
 # Paper319 - Closest work, contribution boundaries and provisional venues
 
-Date checked:2026-10-28. Bounded positioning review, not a systematic survey.
+Literature/venue sources last checked:2026-10-28.
+Empirical claim map updated:2026-10-29 after the completed323 comparison.
+Bounded positioning review, not a systematic survey; this update does not
+claim a new retrieval or ranking-provider verification.
 This brief distinguishes verified paper content from inaccessible evidence.
 It does not establish a first-of-its-kind claim or guarantee publication.
 
@@ -30,7 +33,7 @@ Primary arXiv citation-author metadata confirms both corrected author orders.
 
 ## 2. Narrow contribution and claim-to-evidence map
 
-Proposed contribution paragraph:
+Evidence-backed contribution candidate:
 
 > We characterize low-false-acceptance operating transfer for a small fixed
 > frozen-feature PAD system set under an explicitly defined multi-source
@@ -48,16 +51,23 @@ without a useful, defensible empirical answer.
 
 | Intended statement | Current evidence | What remains |
 |---|---|---|
-| Full-range ranking and available operating transfer answer different questions |309 reports stronger supervised CLIP ranking but poor operating transfer | Complete side-by-side matched four-system evaluation; do not imply an AUROC theorem or new phenomenon |
-| Threshold movement has different empirical headroom across sources |316: CASIA54/54 oracle-attainable, OULU0/54 for the fixed primary references | Repeat diagnosis on scores from the proposed narrower-source models; do not transfer the old oracle to a new fitted model |
+| Full-range ranking and available operating transfer answer different questions | Completed323:0/48 primary source-policy joint-utility cases, despite usable AUROC up to99.94% in the descriptive seed means | Do not imply an AUROC theorem or a newly discovered general phenomenon |
+| Threshold movement has different empirical headroom across sources and systems | Completed323:21/48 primary cases are oracle-attainable;27/48 are not. CASIA11/12, MSU7/12, OULU3/12, SiW0/12. The OULU specialist supplies all three attainable OULU cases | Same stored-score diagnostic, not target-label-free recoverable gain or a universal dataset impossibility |
 | Adding another representation need not produce a feasible selected policy |314: matched nested families return no policies under the declared constraints | Keep as bounded supporting evidence, not proof that all fusion fails |
-| The pattern is relevant beyond these frozen readouts | No completed matched specialist result exists | DeepPixBiS architecture retraining under the exact proposed population |
+| The available-threshold problem is not confined to frozen readouts | Completed matched specialist:0/12 primary source-policy joint-utility cases; oracle attainment varies by dataset and seed, including3/3 on OULU | One researcher-fixed architecture recipe, not causal architecture isolation, exact original-paper reproduction or universality |
 | A specific journal-level empirical gap remains | Examined closest studies differ in their reported operating analysis; Costa-Pazo already includes constrained points/curves | Keep the narrower paired policy/oracle positioning and assess empirical substance; exact pipeline overlap remains unresolved, with no first-ever claim |
 
-**Positioning decision:** proceed with the bounded paper-completion direction,
-not with a claim of established novelty. If the remaining comparison adds
-little beyond existing work, make a scope/venue decision instead of adding
-another model campaign.
+**Positioning decision:** the completed comparison now supplies the missing
+specialist context and differentiates operating-threshold failure from
+fixed-score low-FA limitations. The stronger defensible narrative is that
+the diagnosis changes with representation and target: OULU is not inherently
+oracle-infeasible, and neither CLIP nor the specialist is universally best.
+This is empirical substance for a manuscript, not established novelty.
+Keep CLIP as an informative comparator; there is no new official-partition
+DINO-CLIP fusion result or evidence to promote it as a fusion remedy.
+Proceed to critique and a scope/venue decision, not another model campaign.
+See [report324](../324-completed-comparison-results-and-paper-update.md) and
+the [full seed-level tables](../../results/phase1/paper324-primary-tables-v1.md).
 
 ## 3. At most two provisional venue candidates
 
@@ -99,8 +109,11 @@ No payment or submission is authorized by this package.
    work already contains constrained operating analysis (review320 confirms it).
 2. Category/year-specific primary ranking evidence for the two candidates.
 3. World Scientific's directly verified current scope/charges.
-4. Whether the completed matched comparison will provide enough empirical
-   insight for the eventual venue; this cannot be known from artifact count.
+4. Whether the now-completed paired-policy/oracle evidence provides enough
+   incremental insight for the eventual venue. Positive specialist OULU
+   oracle headroom and universal primary available-policy failure sharpen
+   the empirical account, but neither completed computation nor artifact
+   count establishes sufficient novelty.
 
 These gaps are visible in the [integrated package](../319-integrated-paper-completion-package.md)
 and [working manuscript](manuscript.md). They are not reasons to fabricate a

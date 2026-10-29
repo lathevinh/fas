@@ -145,14 +145,38 @@ def summarize_context(prediction: dict, originals: list[dict], policies: dict, o
                for metric in ("FA", "BFA", "AUROC_usable")}
     paired = {(system, str(alpha), metric): [] for system in SYSTEMS[1:] for alpha in ALPHAS
               for metric in ("FA", "BFA", "AUROC_usable")}
+    prepared = {}
+    for system in SYSTEMS:
+        scores = np.asarray(prediction[system], dtype=np.float64)
+        order = np.argsort(-scores, kind="stable")
+        ranked = scores[order]
+        ends = np.r_[np.flatnonzero(ranked[1:] != ranked[:-1]), len(ranked) - 1]
+        prepared[system] = (order, ends, {
+            str(alpha): scores < policies[system][str(alpha)]["threshold"] for alpha in ALPHAS})
+    successful_y = labels[positions]
     for _ in range(repetitions):
         guard()
         weights = rng.multinomial(len(groups), np.full(len(groups), 1 / len(groups)))[indexes]
+        attack, real = float(weights @ labels), float(weights @ (1-labels))
+        successful_w = weights[positions]
+        positive = np.sum(successful_w * successful_y)
+        negative = np.sum(successful_w * (1-successful_y))
         current = {}
         for system in SYSTEMS:
+            order, ends, accepted = prepared[system]
+            auc = None
+            if positive > 0 and negative > 0:
+                y, w = successful_y[order], successful_w[order]
+                tp, fp = np.cumsum(w*y)[ends], np.cumsum(w*(1-y))[ends]
+                auc = float(np.sum(np.diff(np.r_[0.0, fp]) / negative
+                                   * (tp + np.r_[0.0, tp[:-1]]) / (2*positive)))
             for alpha in ALPHAS:
-                point = metrics(np.asarray(prediction[system]), originals,
-                                policies[system][str(alpha)]["threshold"], weights)
+                mask = accepted[str(alpha)]
+                point = {
+                    "FA": float(successful_w @ (mask & (successful_y == 1))) / attack if attack else None,
+                    "BFA": float(successful_w @ (mask & (successful_y == 0))) / real if real else None,
+                    "AUROC_usable": auc,
+                }
                 for metric in ("FA", "BFA", "AUROC_usable"):
                     value = point[metric]
                     current[(system, str(alpha), metric)] = value

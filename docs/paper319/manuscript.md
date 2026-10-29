@@ -1,11 +1,13 @@
 # Beyond AUROC: Operating-Point Transfer of Frozen Foundation Models for Face Presentation Attack Detection
 
-**Working manuscript,2026-10-28. Not submission-ready.**
-The official-partition supplementary study is specified but has not run.
-Its first approved executable attempt stopped during ImageNet state loading,
-before any scientific fit; no supplementary comparison accuracy exists.
-Sections labeled pending contain no measured supplementary results.
-Development results below retain their original populations and limitations.
+**Results-complete working manuscript,2026-10-29. Not submission-ready.**
+The official-partition matched comparison completed all12 contexts and
+independent saved-checkpoint reconstruction. Its initial initialization stop
+and later context timeout were resolved through explicitly approved amendments;
+neither stopped attempt is interpreted as PAD performance evidence.
+Development results retain their original populations and limitations.
+All primary seed-level tables and conditional intervals are supplied in the
+[completed result package](../../results/phase1/paper324-primary-tables-v1.md).
 Author names, affiliations and submission metadata remain to be supplied.
 
 ## Abstract
@@ -13,22 +15,26 @@ Author names, affiliations and submission metadata remain to be supplied.
 Face presentation attack detection (PAD) under dataset shift requires more
 than favorable aggregate ranking: a decision threshold derived from available
 source data must retain both attack rejection and bona-fide usability.
-This study examines a small fixed set of frozen-feature PAD systems using
-DINOv2 and OpenCLIP representations. We distinguish performance at
-source-derived thresholds from evaluation-label oracle operating points,
-the latter serving only as empirical diagnostics of fixed scalar scores.
-In completed source-development analyses, none of54 held-out OULU
-fixed-reference cases attains50% bona-fide acceptance at attack false
-acceptance at most5%, even with oracle thresholds; all54 CASIA cases admit
-such a threshold. A separate matched nested comparison of DINO-CLIP and
-two-DINO mixtures yields no feasible selected policy under the declared
-operating constraints. These observations distinguish threshold headroom
-from insufficient low-FA score separation and do not constitute a deployable
-adaptation method. A specified train-three/test-one comparison against a
-matched specialist PAD model will evaluate this diagnosis under official
-source-partition restrictions. **Those results and the final abstract
-conclusion are pending.** The current evidence is developmental, not
-confirmation on previously unseen datasets.
+We compare DINO-Reg, supervised OpenCLIP, a fixed two-DINO average and
+matched-input DeepPixBiS architecture retraining under train-three/test-one
+source-only fitting, model selection, calibration and threshold rules.
+Three training seeds across four declared target-test populations produce
+48 primary system/target/seed cases. None meets both empirical attack false
+acceptance (FA)<=5% and bona-fide acceptance (BFA)>=50% at its source-derived
+threshold, although15 meet the FA constraint alone. Evaluation-label oracle
+thresholds on the same saved scores admit the joint utility in21 cases;
+the remaining27 lack sufficient empirical low-FA score separation.
+On OULU, oracle BFA averaged over seeds is58.70% for the specialist,
+46.67% for DINO-Reg and23.43% for CLIP, whereas CLIP exceeds DINO-Reg's
+oracle BFA on MSU. These are descriptive oracle diagnostics, not deployable
+thresholds or a universal system ranking. Conditional paired cluster
+bootstrap intervals accompany all source-policy results and differences.
+A separate developmental nested fusion study finds no feasible selected
+policy under its matched screen. The evidence distinguishes operating
+threshold headroom from score-specific limitations without supplying a
+target-label-free remedy. All datasets previously informed development;
+SiW evaluation is a video-grouped local intersection with unknown subject
+identities, not untouched participant-independent confirmation.
 
 Keywords: face presentation attack detection; frozen representations;
 cross-dataset evaluation; operating-point transfer; threshold diagnostics.
@@ -57,8 +63,9 @@ Conflating them risks recommending calibration-only remedies where the
 stored scores do not separate the classes sufficiently at the required
 operating point.
 
-This paper develops the following empirical contributions, subject to the
-pending matched comparison and closest-work assessment:
+This paper reports the following bounded empirical contributions. Their
+positioning remains subject to closest-work assessment; none is a claim
+that constrained ROC analysis itself is novel:
 
 1. A controlled multi-source comparison of a small fixed frozen-feature PAD
    system set and one specialist architecture under explicit source-only
@@ -110,7 +117,7 @@ diagnosis, not those components in isolation.
 
 ### 2.3 Specialist PAD and operating diagnostics
 
-DeepPixBiS [3] uses pixel-wise and global supervision for PAD. We propose
+DeepPixBiS [3] uses pixel-wise and global supervision for PAD. We use
 matched-input architecture retraining as a specialist comparator, rather
 than loading an OULU-trained PAD checkpoint and calling it source-exclusive.
 Its inclusion is contextual evidence, not a novel comparison by itself.
@@ -133,7 +140,7 @@ aggregation or a claim to reproduce published video-level protocols.
 
 The local archive contains7510 originals from OULU-NPU, CASIA-FASD, MSU-MFSD
 and SiW-Mv2. Five adopted SiW source exclusions resolve documented exact-
-content crossings without altering the archival population. The proposed
+content crossings without altering the archival population. The completed
 comparison contains7505 active originals,7474 usable images and31 failures.
 The data-preparation and evaluation specifications bind exact private
 manifests; aggregate counts and hashes are public.
@@ -152,7 +159,7 @@ We separate:
 - **Completed development studies:** historical source-use roles, including
   official-test observations for some source datasets, supporting the
   readout, fusion and oracle analyses.
-- **Pending matched supplementary comparison:** official source train/
+- **Completed matched supplementary comparison:** official source train/
   development populations only, with the held-out dataset's official test
   population for evaluation.
 
@@ -167,7 +174,7 @@ OULU/CASIA/MSU metadata identify subjects. Local SiW-Mv2 metadata do not
 identify participants; SiW units are videos joined by exact-frame components
 where applicable. Accordingly, participant-disjoint source validation and
 participant-level uncertainty cannot be certified for SiW. This limitation
-applies to the proposed model selection and threshold estimates as well as
+applies to the matched model selection and threshold estimates as well as
 the analysis. No filename-derived identities are fabricated.
 
 ## 4. Methods
@@ -209,7 +216,7 @@ checkpoint and no refit. Candidate selection minimizes validation BCE,
 with candidate-order ties. Separate positive-affine sigmoid calibration
 and the minimum per-source safe attack order statistic use only allowed
 calibration rows. Thus the reported309 CLIP mean is **source-domain-OOF**,
-not the pending final train-three/official-target result.
+not the separate completed train-three/official-target result.
 
 The matched fusion experiment fixes original DINO-Reg/plain readouts at
 lr.001/wd.05 and supervised CLIP at lr.01/wd.05. It compares
@@ -240,9 +247,9 @@ no head, calibrator or absent selected policy is fitted or fabricated.
 |309 readouts | Historical6882 originals; primary heads on two allowed sources | Validation-BCE recipe/epoch selection; source-domain-OOF AUROC and source-policy errors |
 |313/314 fusion | Same historical roles; two-source primary parents, one-source inner models | Matched six-weight feasibility-first selection;36 primary folds, including missing policies |
 |316 oracle | Saved scores from the same historical experiment; three distinct stages |612 fixed-reference cases; retrospective BFA at original-denominator FA<=5%, no deployable selection |
-| Pending319/321 comparison |7505 active originals; official source train/development only | Three-source heads/specialist, fixed recipes; fourth dataset's declared official test,48 primary system/seed/target rows |
+| Completed319/321-323 comparison |7505 active originals; official source train/development only | Three-source heads/specialist, fixed recipes; fourth dataset's declared official test,48 primary system/seed/target rows |
 
-Sections4.1-4.6 specify this last, still-pending study. They do not
+Sections4.1-4.6 describe this last, completed study. They do not
 retroactively describe the populations or candidate selection of309/314/316.
 
 ### 4.1 Fixed representations and readouts
@@ -253,7 +260,7 @@ laion2b_s34b_b88k initialization supplies normalized512-dimensional image
 embeddings [6]. Encoders remain fixed. DINO and CLIP use their existing native
 crop/normalization contracts; these are not identical resolutions.
 
-Proposed frozen heads use200 epochs of FP64 full-batch AdamW with equal-source,
+Frozen heads use200 epochs of FP64 full-batch AdamW with equal-source,
 equal-class BCE. DINO learning rate is.001 and CLIP learning rate.01; weight
 decay is.05, excluding bias. The minimum validation-BCE checkpoint is selected,
 with earliest-epoch ties and no refit. These recipes were chosen during
@@ -262,10 +269,10 @@ earlier development, not independently preregistered before all data exposure.
 The two-DINO reference is the fixed mean of separately calibrated register
 and plain DINO probabilities. It has no new mixture-weight selection.
 
-### 4.2 Proposed specialist comparator
+### 4.2 Matched specialist comparator
 
 The matched DeepPixBiS architecture uses a DenseNet161-derived representation,
-a pixel map and a global binary output. Proposed initialization is ImageNet
+a pixel map and a global binary output. Initialization is ImageNet
 DenseNet161 rather than pretrained PAD weights. Training uses the fixed
 researcher-specified50-epoch recipe in the accompanying protocol, with
 source-only checkpoint selection.
@@ -276,7 +283,7 @@ extractor, whereas the foundation branches do not; compute, augmentation and
 pretraining differences are disclosed. The comparison is not a causal
 isolation of one architectural factor.
 
-### 4.3 Proposed source-only protocol
+### 4.3 Source-only protocol
 
 Train on three datasets and evaluate on the fourth, with three fixed training
 seeds and one fixed model-free source partition per dataset. OULU official
@@ -334,7 +341,7 @@ attainable, a practical target-label-free threshold has not thereby been found.
 
 ### 4.6 Uncertainty
 
-The proposed supplementary analysis uses2000 paired cluster-bootstrap
+The supplementary analysis uses2000 paired cluster-bootstrap
 replicates per target and training seed, with source policies fixed.
 Subjects are the units where known; SiW uses video/exact-frame components.
 Report conditional percentile95% intervals and invalid one-class replicate
@@ -355,7 +362,7 @@ increasing from.554171 for the tested zero-shot score to.844040 for supervised
 readout. Selected equal two-DINO reaches.889780 under that study's selection.
 The supervised CLIP mean original-denominator attack FA is9.974%, with
 bona-fide non-acceptance53.942%. These are study309's descriptive source
-results, not the pending official-partition comparison or a direct published
+results, not the separate official-partition comparison or a direct published
 leaderboard match.
 
 ### 5.2 Matched nested fusion can return no policy
@@ -448,23 +455,129 @@ Within represented-source g_domain evaluation, every fixed system is
 oracle-attainable in36/36 cases. This contrast supports a transfer concern,
 not a causal account of why a particular source is difficult.
 
-## 6. Pending matched comparison
+## 6. Completed matched comparison
 
-**No results exist for this section.** The metadata preflight verifies
-populations and cache receipt coverage, not classifier performance.
+### 6.1 Evaluation support and complete reporting
 
-**Table4. Planned primary reporting layout, repeated for each of three seeds.**
+All12 target/seed contexts and144 policy/oracle operating cases completed
+and were independently reconstructed from saved checkpoints without new
+fitting. Target tests contain2943 originals and2929 usable images; the
+7505/7474 totals in Section3 include all active official partitions, not
+just target tests. The same target observations recur across seeds and
+systems and must not be counted as independent replications.
 
-| Target | System | AUROC, usable | Source-policy FA/BFA, all originals | Oracle BFA at5% FA | Support / conditional intervals |
-|---|---|---|---|---|---|
-| Each of four targets | DINO-Reg | Pending | Pending | Pending | Pending |
-| Each of four targets | Supervised CLIP | Pending | Pending | Pending | Pending |
-| Each of four targets | Fixed equal two-DINO | Pending | Pending | Pending | Pending |
-| Each of four targets | Matched DeepPixBiS | Pending | Pending | Pending | Pending |
+| Target | Original attacks / bona fide | Usable attacks / bona fide | Technical failures |
+|---|---:|---:|---:|
+| OULU-NPU |1440 /360|1440 /360|0|
+| CASIA-FASD |270 /90|265 /89|6|
+| MSU-MFSD |120 /40|116 /40|4|
+| SiW-Mv2 local test intersection |362 /261|359 /260|4|
 
-All48 target/system/seed rows must be retained, with no best-seed-only table.
-The1%/10% sensitivity, low-FA ROC view, timing and memory will be reported
-after the single approved computation. No expected winner is asserted.
+**Table4. Primary source-policy and oracle results (%), equally averaged
+over the three training seeds. AUROC uses usable observations; FA/BFA use
+all originals. FA-safe and oracle utility counts are individual seed cases.
+Every source-policy utility count is0/3. Seed means have no pooled CI.**
+
+| Target | System | AUROC | Policy FA | Policy BFA | Oracle BFA at5% FA | Policy FA-safe /3 | Oracle utility /3 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| OULU | DINO-Reg |87.77|36.13|91.94|46.67|0|0|
+| OULU | Supervised CLIP |79.20|16.62|53.70|23.43|0|0|
+| OULU | Fixed two-DINO |86.60|58.87|97.13|41.11|0|0|
+| OULU | Matched DeepPixBiS |91.98|15.12|81.11|58.70|0|3|
+| CASIA | DINO-Reg |99.94|0.00|39.26|98.89|3|3|
+| CASIA | Supervised CLIP |98.20|0.00|46.67|85.56|3|3|
+| CASIA | Fixed two-DINO |99.94|0.00|40.37|98.89|3|3|
+| CASIA | Matched DeepPixBiS |86.61|1.48|42.59|54.81|3|2|
+| MSU | DINO-Reg |87.56|41.67|90.00|42.50|0|0|
+| MSU | Supervised CLIP |89.22|9.17|65.00|57.50|0|3|
+| MSU | Fixed two-DINO |92.67|22.78|92.50|68.33|0|3|
+| MSU | Matched DeepPixBiS |92.98|8.89|79.17|52.50|0|1|
+| SiW | DINO-Reg |88.01|9.67|58.24|34.87|0|0|
+| SiW | Supervised CLIP |85.02|3.59|31.42|38.19|3|0|
+| SiW | Fixed two-DINO |87.38|16.02|74.33|45.72|0|0|
+| SiW | Matched DeepPixBiS |76.00|49.82|87.36|23.75|0|0|
+
+All48 seed-level primary rows, their integer support/acceptance counts,
+conditional policy intervals and108 primary paired metric differences
+are in the [complete tables](../../results/phase1/paper324-primary-tables-v1.md).
+The [case CSV](../../results/phase1/paper324-cases-v1.csv) retains all144
+operating cases, including usable-only errors, source limiting datasets
+and integer attack budgets. No best seed is selected.
+
+### 6.2 Available policies and empirical oracle headroom
+
+At5% attack FA,15/48 source policies are empirically FA-safe but0/48 also
+reach50% BFA. Oracle thresholds admit the joint utility in21/48 cases:
+11/12 CASIA,7/12 MSU,3/12 OULU and0/12 SiW. All27 remaining failures are
+classified as insufficient low-FA separation of the stored scalar scores;
+none is caused solely by a technical-failure BFA ceiling below50%.
+
+The CASIA policies demonstrate threshold-placement headroom particularly
+clearly: all are FA-safe, yet accept too few bona-fide observations.
+For DINO-Reg, mean policy BFA39.26% contrasts with oracle BFA98.89%.
+This is hindsight headroom, not evidence that a target-label-free threshold
+can recover the difference. On targets where the policy violates5% FA,
+subtracting its BFA from the constrained oracle's BFA is not a same-security
+gain or calibration loss.
+
+The specialist changes the narrower OULU diagnosis: it attains the oracle
+utility in3/3 seeds, whereas the three frozen systems attain0/3 each.
+Its oracle BFA ranges56.39--61.94%, while its actual source policies all
+violate5% FA. Conversely, specialist oracle attainment is seed-dependent
+on CASIA (2/3) and MSU (1/3), and fails on SiW (0/3).
+The completed specialist comparison therefore rejects a universal
+``OULU is impossible'' interpretation of the developmental frozen-score
+results, while not supplying a deployable OULU policy.
+
+### 6.3 Conditional paired uncertainty and seed variability
+
+All756 conditional/paired interval records retain2000/2000 valid draws.
+The [interval CSV](../../results/phase1/paper324-intervals-v1.csv) supplies
+FA, BFA and AUROC intervals and corresponding paired differences from
+DINO-Reg at all three alpha values, with explicit resampling units.
+These condition on saved models and fixed source policies, are not
+multiple-testing-adjusted and do not establish population security.
+In particular, a zero empirical FA and degenerate bootstrap interval
+cannot exclude attack events absent from the sample.
+
+For illustration, specialist-minus-DINO-Reg usable AUROC on OULU is
++4.49,+4.23,+3.90 percentage points across the three seeds, with conditional
+95% intervals[1.06,7.68],[1.03,6.96],[0.69,6.80].
+On CASIA those differences are-15.82,-13.47,-10.70 points, with all three
+intervals below zero. This is a dataset-dependent comparison, not a pooled
+superiority test. CLIP-minus-DINO-Reg AUROC differences on MSU are positive
+(+1.55 to+1.79 points), but all three paired intervals include zero.
+Its higher MSU oracle BFA must not be promoted to a confidence-backed
+general superiority claim.
+
+### 6.4 Sensitivity and computation
+
+**Table5. Individual-case utility counts at predeclared attack-FA bounds;
+the50% BFA floor is unchanged. The5% endpoint remains primary.**
+
+| Attack-FA bound | Cases | Source-policy FA-safe | Source-policy joint utility | Oracle joint utility |
+|---|---:|---:|---:|---:|
+|1%|48|22|0|12|
+|5%|48|15|0|21|
+|10%|48|15|10|42|
+
+Changing alpha also changes each source-derived threshold, so the count
+of transferred FA-safe policies need not be monotone. The10% sensitivity
+does not rescue or replace the failed primary5% source-policy endpoint.
+The [low-FA curves](../../results/phase1/paper324-low-fa-v1.svg) retain each
+seed; equal-target macro and worst-target results for every seed/alpha are
+in the [aggregate closure](../../results/phase1/paper324-comparison-v1.json).
+They report FA alongside BFA and do not rank unsafe policies on BFA alone.
+
+The explicitly approved323 continuation and reconstruction took32643.85
+seconds (9.07 hours), with sampled combined peak RSS2.20GiB and275.56MiB
+owned outputs across attempts before terminal closure. Earlier stopped
+attempts are separate sunk execution costs, not included in that wall time.
+Across322/323 there were39 frozen-head,12 specialist and52 calibrator fit
+starts; three heads and four calibrators were deterministic recovery refits.
+There were600 specialist epochs,74400 specialist optimizer steps and no new
+foundation-encoder forwards. Execution changes concerned compatibility and
+phase budgets, not the scientific recipe or target-label model selection.
 
 ## 7. Discussion
 
@@ -478,13 +591,17 @@ same empirical utility is to be reached.
 Neither diagnosis identifies a successful remedy. Positive monotone
 calibration does not generally repair ranking, and hindsight thresholds
 must not be used to claim a source-only improvement. The matched specialist
-comparison is needed to contextualize whether the observed limitations are
-specific to these frozen readouts or also affect the selected PAD baseline.
-Even that comparison cannot establish universality.
+comparison shows that the OULU score limitation is not shared by every
+tested representation: the specialist retains empirical oracle headroom.
+Yet its source policies still fail the declared utility, and it performs
+worse on other targets. This comparison cannot establish universality.
 
 CLIP remains a comparator rather than a promised source of incremental
-utility. A supervised readout improvement and absent feasible fusion policies
-are compatible findings; neither should be hidden to sustain an improvement
+utility. Its MSU oracle performance prevents an unqualified claim that CLIP
+is useless, while its poor OULU operating results and the separate absent
+feasible fusion policies do not justify retaining it as a fusion component.
+There is no new matched DINO-CLIP fusion result in the official-partition
+comparison. These distinctions must not be hidden to sustain an improvement
 narrative.
 
 ## 8. Limitations, reproducibility and responsible interpretation
@@ -515,19 +632,29 @@ narrative.
 Existing results and implementation are available in the
 [project repository](https://github.com/lathevinh/fas).
 The [integrated package](../319-integrated-paper-completion-package.md)
-links exact source reports and the pending specification. Dataset access
+links exact source reports and the original specification. The
+[completed comparison report](../324-completed-comparison-results-and-paper-update.md)
+binds all measured supplementary exports. Dataset access
 remains subject to original licenses; no new dataset acquisition is part
 of this package.
 
-## 9. Provisional conclusion
+## 9. Conclusion
 
-Completed developmental evidence distinguishes substantial threshold
-headroom on CASIA from insufficient empirical low-FA separation on OULU
-for the tested fixed scalar scores. Matched nested fusion does not yield
-an available feasible selected policy. These findings motivate operating-
-point reporting beyond AUROC but do not establish a deployable remedy.
-**The final comparative conclusion awaits the specified specialist and
-official-partition evaluation and must be revised to match those results.**
+The completed official-partition comparison distinguishes failed available
+operating policies from score-specific low-FA limitations: no primary
+source-derived policy meets the joint utility, while21/48 saved scores
+admit it under evaluation-label oracle thresholds. The specialist supplies
+OULU oracle headroom absent from the tested frozen systems but not a usable
+source-only policy or universal improvement. CLIP remains an informative
+comparator, not a demonstrated fusion remedy. Historical nested fusion
+infeasibility is supporting evidence from a distinct population.
+
+The contribution is a bounded empirical characterization, not a new
+thresholding algorithm, a target-label-free adaptation method or proof that
+all PAD methods fail. Whether its exact paired-policy/oracle evidence adds
+sufficient insight beyond closest work remains a venue and peer-review
+question; completed computation alone does not establish novelty or
+publication readiness.
 
 ## References
 

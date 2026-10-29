@@ -1,15 +1,43 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Initialization stop and bounded amendment:
+Completed comparison and manuscript results (2026-10-29):
+[Report324](docs/324-completed-comparison-results-and-paper-update.md)
+publishes all12 completed and independently reconstructed target/seed contexts.
+At primary FA<=5% and BFA>=50%, available source policies succeed in0/48
+cases versus21/48 evaluation-label oracle diagnostics. The specialist
+supplies OULU oracle headroom absent from the tested frozen systems but not
+a deployable source-only policy or a universal improvement.
+The [full seed-level tables](results/phase1/paper324-primary-tables-v1.md),
+[144-case CSV](results/phase1/paper324-cases-v1.csv),
+[756 conditional/paired intervals](results/phase1/paper324-intervals-v1.csv),
+[low-FA figure](results/phase1/paper324-low-fa-v1.svg) and
+[aggregate closure](results/phase1/paper324-comparison-v1.json)
+retain every case. The [manuscript](docs/paper319/manuscript.md) now contains
+measured results; novelty, venue ranking and submission readiness are not
+implied by successful computation. No further training is running.
+
+Comparison continuation after context timeout (2026-10-29):
+[Report323](docs/323-completing-comparison-after-analysis-timeout.md)
+records four completed contexts and a fifth fully trained specialist
+checkpoint from322. The attempt stopped during analysis at its combined
+40-minute context ceiling, not because of a measured PAD performance failure.
+The continuation preserves the scientific recipe, verifies retained artifacts,
+optimizes equivalent paired-bootstrap arithmetic and declares the lost
+three-head/four-calibrator refits. The owner explicitly approved the separate
+phase budgets and recovery refits. The323 supervisor and worker subsequently
+completed, including independent reconstruction in the existing `fas` conda
+environment. See324 for measured results; the stopped322 attempt itself
+does not establish any PAD performance conclusion.
+
+Initialization stop and bounded amendment (historical):
 [Report322](docs/322-initialization-stop-and-compatibility-amendment.md)
 records the approved321 attempt stopping before any scientific fit:
 the official ImageNet artifact uses legacy DenseNet state-key names.
 The compatibility repair preserves pretrained tensors and all scientific
 recipes. The owner subsequently approved the separately sealed322 amendment,
 which reuses the acquired artifact and preserves the original deadline and
-resource caps. Supervised execution is now in progress: actual specialist
-epoch progress was verified in the first held-out-OULU context. This is
-startup/training evidence, not a completed comparison or new accuracy result.
+resource caps. That attempt later stopped at its context ceiling; see323.
+Its training progress is not a completed comparison or new accuracy result.
 
 Executable paper comparison, awaiting one integrated owner decision:
 [Package321](docs/321-executable-comparison-and-review320-response.md)
@@ -34,7 +62,8 @@ shards, without fitting, image decoding or new predictions.
 SiW is the adopted Protocol-I local intersection and lacks subject identities:
 its proposed video-group limitation is explicit, not participant-disjointness.
 Package321 supplies subsequent synthetic specialist/controller checks;
-actual training feasibility remains unmeasured.
+actual training feasibility was unmeasured at that preparation stage;
+the later completed323 comparison is reported in324.
 The package is for integrated review, not scientific execution approval;
 new-comparison results remain clearly pending in the draft.
 
