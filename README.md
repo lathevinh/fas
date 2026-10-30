@@ -6,8 +6,10 @@ implements [review328](docs/328-review-doc327-controlled-adaptation-and-expansio
 the corrected operating-aware gate, independently reconstructed eight-family
 FAS-Aug/PDA/APL pipeline, paired-batch tests, bounded controller and integrated
 synthetic GPU/checkpoint-replay evidence. Reconstruction choices and departures
-from author assets are explicit. The exact eight-run plan awaits one owner
-execution decision; no new scientific training is authorized or running.
+from author assets are explicit. The owner subsequently approved the exact eight-run v2 plan and the persistent
+supervisor has started real training; the first OULU-held-out reference epoch
+was verified. See the [start receipt](results/phase1/paper329-start-v2.json).
+This is ongoing execution, not a completed comparison or a PAD result.
 
 Completed comparison and manuscript results (2026-10-29):
 [Report324](docs/324-completed-comparison-results-and-paper-update.md)

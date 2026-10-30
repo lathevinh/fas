@@ -1,0 +1,26 @@
+{
+  "additional_seed_execution_authorized": false,
+  "approved_calibrator_fits": 8,
+  "approved_training_starts": 8,
+  "attempt_receipt_sha256": "9f503d768c20f8d5f023994482733786b98de2ab88b808a3ffbe7a8f3dd70a0c",
+  "automatic_retry": false,
+  "completion_or_target_performance_claimed": false,
+  "exact_plan_sha256": "87786e1c0a2fd0f3d5ae022414d5fae6da1bb4efc1746db61c42c55413e0c691",
+  "first_context": "OULU-NPU-reference",
+  "first_real_completed_epoch_verified": 1,
+  "limits": {
+    "GPU_bytes": 12884901888,
+    "RSS_bytes": 6442450944,
+    "analysis_seconds": 21600,
+    "context_seconds": 21600,
+    "output_bytes": 34359738368,
+    "verify_seconds": 43200,
+    "wall_seconds": 259200,
+    "worker_seconds": 194400
+  },
+  "observed_at_UTC": "2026-10-30T03:44:33.261690+00:00",
+  "observed_training_start_records": 1,
+  "owner_approval_receipt_sha256": "60df2be69abf4cacf8563097f7db4bd2cf2697a8f5168309b8d5568f2d20f33c",
+  "scientific_execution_authorized": true,
+  "study": "paper_adaptation329_v2"
+}

@@ -1,8 +1,11 @@
 # 329 - Implemented controlled DINO adaptation package
 
 Date: 2026-10-30.
-Status: **implemented, synthetic-tested, inputs sealed; awaiting one exact-plan
-owner execution decision. No new scientific training has started.**
+Status: **owner approved exact plan v2 and scientific execution started.**
+The first real OULU-held-out reference epoch completed under the persistent
+supervisor. See [start receipt](../results/phase1/paper329-start-v2.json).
+The preparation and zero-start statements below describe sealing/publication
+of the package before the subsequent explicit owner decision, not live status.
 Implements [review328](328-review-doc327-controlled-adaptation-and-expansion-gate.md)
 without another research-direction selection.
 
@@ -300,3 +303,18 @@ The commands above are documentation, not evidence that they ran.
 At publication: **zero scientific starts, zero new target predictions,
 no execution authority granted**. Next action is the single exact-plan
 decision, not another implementation-direction proposal.
+
+## 8. Subsequent owner approval and verified start
+
+After publishing package commit `58d92228de25eff4ec87c2636f7c56344d2410ab`,
+the owner explicitly selected the exact-plan execution answer documented
+above. The approval receipt binds the final v2 SHA256 and starts the
+nonresettable clock; no sealed code, specification or input was changed.
+
+The supervisor was launched persistently, independent of this chat turn.
+Readiness verification observed its live process, the first declared training
+start and a completed real OULU-held-out reference epoch. This is training
+progress, **not** a completed comparison or target-performance result.
+Only the approved eight runs may execute; no additional seeds or automatic
+retry. Subsequent live progress is in the private worker log/active marker,
+not the static preparation snapshots.
