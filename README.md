@@ -1,12 +1,13 @@
 # Source-Domain Cross-Fitted Failure-Risk Estimation for Selective Face Presentation Attack Detection
 
-Controlled DINO adaptation preparation:
-[Report327](docs/327-controlled-dino-adaptation-preparation.md) records the
-owner-selected independent paper-based reconstruction route, a tested
-tail-ranking candidate, synthetic full-backbone capacity measurements and
-a proposed operating-policy expansion gate. The full FAS-Aug/PDA/APL
-reference still requires integration and verification. This is not an
-executable training package; no new scientific training is authorized.
+Controlled DINO adaptation execution package:
+[Report329](docs/329-implemented-controlled-dino-adaptation-package.md)
+implements [review328](docs/328-review-doc327-controlled-adaptation-and-expansion-gate.md):
+the corrected operating-aware gate, independently reconstructed eight-family
+FAS-Aug/PDA/APL pipeline, paired-batch tests, bounded controller and integrated
+synthetic GPU/checkpoint-replay evidence. Reconstruction choices and departures
+from author assets are explicit. The exact eight-run plan awaits one owner
+execution decision; no new scientific training is authorized or running.
 
 Completed comparison and manuscript results (2026-10-29):
 [Report324](docs/324-completed-comparison-results-and-paper-update.md)

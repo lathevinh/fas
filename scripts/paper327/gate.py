@@ -65,7 +65,7 @@ def assess_expansion(
     if missing:
         return {"decision": "stop", "reasons": missing,
                 "scientific_execution_authorized": False}
-    gains, new_unsafe, regressions = [], [], []
+    gains, improved, new_unsafe, regressions = [], [], [], []
     reference_joint = candidate_joint = 0
     for target in TARGETS:
         reference, candidate = results[target]
@@ -74,15 +74,18 @@ def assess_expansion(
         delta = candidate.bfa-reference.bfa
         if reference.safe and candidate.safe and delta >= PRACTICAL_GAIN:
             gains.append(target)
+        if (candidate.joint and not reference.joint
+                or reference.safe and candidate.safe and delta >= PRACTICAL_GAIN):
+            improved.append(target)
         if reference.safe and not candidate.safe:
             new_unsafe.append(target)
-        if delta < -MAXIMUM_REGRESSION:
+        if reference.safe and candidate.safe and delta < -MAXIMUM_REGRESSION:
             regressions.append(target)
         reference_joint += int(reference.joint)
         candidate_joint += int(candidate.joint)
     reasons = []
-    if len(gains) < 2:
-        reasons.append("fewer_than_two_FA_safe_paired_BFA_gains_of_5pp")
+    if len(improved) < 2:
+        reasons.append("fewer_than_two_operationally_improved_targets")
     if candidate_joint-reference_joint < 1:
         reasons.append("joint_utility_target_count_gain_below_one")
     if new_unsafe:
@@ -91,7 +94,7 @@ def assess_expansion(
         reasons.append("BFA_regression_exceeds_5pp")
     return {
         "decision": "stop" if reasons else "eligible_for_owner_review",
-        "reasons": reasons, "safe_gain_targets": gains,
+        "reasons": reasons, "safe_gain_targets": gains, "improved_targets": improved,
         "new_unsafe_targets": new_unsafe, "regression_targets": regressions,
         "reference_joint_targets": reference_joint,
         "candidate_joint_targets": candidate_joint,

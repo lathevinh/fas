@@ -1,7 +1,7 @@
 {
   "version": 1,
   "study": "controlled_dino_adaptation327",
-  "status": "preparation_for_review_not_an_executable_training_package",
+  "status": "executable329_awaiting_exact_plan_owner_execution_approval",
   "scientific_execution_authorized": false,
   "owner_decision": "independent_paper_based_reimplementation_not_author_code_reproduction",
   "reference": {
@@ -52,7 +52,7 @@
     "frozen_DINO518_CLS_plus_mean_patch": "historical_only_not_a_matched224_class_token_control"
   },
   "researcher_fixed_reconstruction_choices": {
-    "status": "proposed_for_review_before_integration_not_claimed_author_settings",
+    "status": "implemented_independent_reconstruction_choices_not_claimed_author_settings",
     "global_head": "linear768_to2_cross_entropy_attack_label1",
     "attack_score": "global_logit_attack_minus_global_logit_bona_fide",
     "patch_head": "separate_linear768_to2_after_feature_L2_normalization_times16",
@@ -75,6 +75,7 @@
     "target_selection": "forbidden"
   },
   "tail_objective": {
+    "method_name": "source_balanced_hardest_attack_ranking_with_cross_source_bona_fide_comparison",
     "implementation": "../../scripts/paper327/objective.py",
     "score_orientation": "attack_high",
     "pair_hardness": "softplus_1_plus_bona_fide_logit_minus_attack_logit",
@@ -104,14 +105,16 @@
     "interpretation": "exploratory_previously_observed_targets_not_independent_confirmation"
   },
   "expansion_gate": {
-    "status": "proposed_numeric_rule_not_owner_execution_approval",
+    "status": "amended_per_review328_before_any_scientific_outcomes_not_execution_approval",
     "implementation": "../../scripts/paper327/gate.py",
     "requires_all_eight_complete_and_reconstructed": true,
     "requires_all_primary_policies": true,
-    "minimum_targets_with_both_arms_FA_safe_and_BFA_gain_at_least5pp": 2,
+    "improved_target": "candidate_joint_and_reference_not_joint_OR_both_FA_safe_and_BFA_gain_ge5pp_count_once",
+    "minimum_operationally_improved_targets": 2,
     "minimum_increase_in_joint_utility_target_count": 1,
     "maximum_new_FA_unsafe_targets_where_reference_safe": 0,
-    "maximum_BFA_regression_any_target_pp": 5,
+    "maximum_BFA_regression_both_FA_safe_pp": 5,
+    "BFA_regression_veto_scope": "both_arms_FA_safe_only",
     "boundaries": "exact_original_integer_counts_FA_le5percent_BFA_ge50percent_gain_ge5pp_regression_le5pp",
     "AUROC_or_oracle_only_improvement": "stop",
     "pass": "eligible_for_owner_review_only",
@@ -119,10 +122,10 @@
   },
   "resources": {
     "environment": "existing_conda_fas_only",
-    "probe": "../../results/phase1/dino327-synthetic-probe-v1.json",
-    "probe_scope": "synthetic_backbone_BCE_proxy_not_FAS_Aug_PDA_APL_or_end_to_end_PAD",
+    "probe": "../../results/phase1/dino329-integrated-probe-v2.json",
+    "probe_scope": "integrated_reconstructed_augmentation_PDA_APL_and_checkpoint_replay_on_random_images_not_PAD_accuracy",
     "measured_full_pipeline_runtime": null,
-    "proposed_not_yet_sealed_scientific_caps": {
+    "scientific_caps_bound_by329_execution_plan": {
       "total_wall_hours": 72,
       "each_training_validation_calibration_prediction_context_hours": 6,
       "independent_reconstruction_total_hours": 12,
@@ -132,14 +135,26 @@
       "owned_outputs_GiB": 32
     },
     "caps_are": "stop_ceiling_proposals_not_measured_completion_estimates",
-    "required_before_execution": "integrated_actual_recipe_synthetic_probe_plus_bound_private_input_preflight_and_separate_owner_approved_hashed_execution_plan",
+    "required_before_execution": "successful_integrated_probe_bound_private_inputs_and_single_exact_plan_owner_approval",
     "on_timeout_OOM_nonfinite_or_missing_support": "stop_explicitly_preserve_artifacts_no_shortened_success_recipe"
   },
   "remaining_execution_blockers": [
-    "Audit_primary_FAS_Aug_reference_for_all_eight_transforms_exact_parameters_label_rules_and_any_code_license_before_implementation",
-    "Implement_and_test_full_augmentation_APL_attention_path_and_matching_evaluation_not_just_backbone_proxy",
-    "Verify_pairwise_identical_data_initialization_selection_contract_and_empty_stratum_failure_behavior",
-    "Measure_integrated_synthetic_recipe_with_all_costs_and_validate_private_input_bindings_without_target_selection",
-    "Seal_recipe_code_hashes_run_inventory_phase_budgets_and_independent_replay_then_obtain_execution_approval"
-  ]
+    "single_explicit_owner_approval_of_exact_execution_plan"
+  ],
+  "implementation329": {
+    "entrypoint": "../../scripts/paper329/runner.py",
+    "augmentation_primary": "https://arxiv.org/html/2409.03501v1",
+    "generic_capture_keep_label": ["motion", "resolution", "camera_ICC"],
+    "recapture_set_attack": ["reflection", "moire", "clustered_halftone", "printer_ICC", "blue_halftone"],
+    "ICC_assets": "saucecontrol_Compact_ICC_Profiles_CC0_revision_bdd84663061bc4ae95ca70decff54f581e27f702",
+    "ICC_pool_departure": "eleven_CC0_RGB_profiles_one_CC0_CMYK_profile_not_original_eleven_RGB_seven_CMYK_pool",
+    "background_departure": "ninety_procedural_colored_rectangle_scenes_no_unlicensed_internet_photographs",
+    "moire_departure": "nineteen_algorithmically_generated_subpixel_layouts_ten_seeded_projective_instances_not_author_assets",
+    "halftone_departure": "explicit3x3_rank_matrix_and_spectral_highpass_rank_blue_noise_not_author_dot_assets_or_void_and_cluster_implementation",
+    "asset_generation": "scripts_paper329_augmentation_py_addressed_constants_cache_only_no_target_inputs",
+    "precision": "FP32_no_AMP_no_TF32_seeded_not_bitwise_deterministic_due_to_antialiased_bicubic_CUDA_backward",
+    "scope": "all_eight_families_independently_reconstructed_not_exact_Feng_or_FAS_Aug_implementation_reproduction",
+    "paired_initialization_and_data": "exactly_verified_common_initial_weights_and_accepted_source_batches_not_claimed_bitwise_identical_training",
+    "attention_backend": "unchanged_DINO_SDPA_final_qkv_readback_hook_identical_both_arms"
+  }
 }

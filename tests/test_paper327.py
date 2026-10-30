@@ -54,11 +54,22 @@ class ExpansionGateTests(unittest.TestCase):
         cases = self.cases()
         for target in self.gate.TARGETS[1:]:
             cases[target] = (count(100, 100, 5, 45), count(100, 100, 5, 49))
-        self.assertIn("fewer_than_two_FA_safe_paired_BFA_gains_of_5pp",
+        self.assertIn("fewer_than_two_operationally_improved_targets",
                       self.gate.assess_expansion(cases)["reasons"])
         cases = self.cases()
         cases["OULU-NPU"] = (count(100, 100, 5, 80), count(100, 100, 5, 75))
         self.assertEqual(self.gate.assess_expansion(cases)["decision"], "eligible_for_owner_review")
+
+    def test_review328_unsafe_acceptances_are_not_a_usability_baseline(self):
+        count = self.gate.OperatingCounts
+        rows = [(40, 90, 5, 60), (0, 40, 0, 60), (20, 90, 5, 65), (10, 80, 5, 60)]
+        cases = {target: (count(100, 100, a, b), count(100, 100, c, d))
+                 for target, (a, b, c, d) in zip(self.gate.TARGETS, rows)}
+        result = self.gate.assess_expansion(cases)
+        self.assertEqual(result["decision"], "eligible_for_owner_review")
+        self.assertEqual(result["candidate_joint_targets"], 4)
+        self.assertEqual(len(result["improved_targets"]), 4)
+        self.assertEqual(result["regression_targets"], [])
 
     def test_missing_policy_is_not_zero_or_a_success(self):
         cases = self.cases()
@@ -93,7 +104,7 @@ class ExpansionGateTests(unittest.TestCase):
         self.assertEqual(spec["inventory"]["additional_training_starts"], 16)
         self.assertEqual(Fraction(spec["evaluation"]["primary_FA"]), self.gate.ALPHA)
         self.assertEqual(Fraction(spec["evaluation"]["primary_BFA"]), self.gate.MINIMUM_BFA)
-        self.assertEqual(spec["expansion_gate"]["maximum_BFA_regression_any_target_pp"]/100,
+        self.assertEqual(spec["expansion_gate"]["maximum_BFA_regression_both_FA_safe_pp"]/100,
                          float(self.gate.MAXIMUM_REGRESSION))
         self.assertEqual(self.gate.PRACTICAL_GAIN, Fraction(1, 20))
         self.assertFalse(spec["reference"]["BCE_only_substitution_allowed"])
@@ -104,7 +115,7 @@ class ExpansionGateTests(unittest.TestCase):
         receipt = json.loads((ROOT/"results/phase1/dino327-synthetic-probe-v1.json").read_text())
         for name, digest in receipt["code_sha256"].items():
             path = ROOT/"scripts/paper327"/name
-            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), digest)
+            self.assertEqual(hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest(), digest)
         for key in ("scientific_training_starts", "dataset_image_reads", "target_evaluations",
                     "saved_trained_checkpoints"):
             self.assertEqual(receipt[key], 0)

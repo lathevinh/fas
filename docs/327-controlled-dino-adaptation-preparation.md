@@ -1,6 +1,11 @@
 # 327 - Controlled DINO adaptation: independent reconstruction preparation
 
 Status: **preparation, not an executable or authorized scientific run.**
+The subsequent [implementation329](329-implemented-controlled-dino-adaptation-package.md)
+addresses this preparation's integration blockers. The gate below has been
+amended per328 before any new scientific outcomes; the original327 rule is
+not retained as an alternative. Other preparation-stage readiness statements
+and the601-test evidence below describe the original327 checkpoint.
 Follows [recommendation326](326-recommendation-dino-adaptation-and-low-fa-controlled-study.md).
 The owner selected **independent paper-based reimplementation**, rather than
 waiting for author training code. This decision removes the requirement to
@@ -137,11 +142,14 @@ At primary FA<=5% and BFA>=50%, all of the following proposed gates must hold:
 
 * All eight runs complete and independently reconstruct; no missing primary
   policies or target rows.
-* At least **two targets** have both policies FA-safe and candidate BFA gain
-  **at least5 percentage points**.
+* At least **two distinct targets** improve operationally: candidate meets
+  joint utility and reference does not, or both are FA-safe and candidate
+  BFA gain is **at least5 percentage points**. Count each target once.
 * Candidate joint-utility target count exceeds reference by **at least one**.
 * **Zero** newly FA-unsafe targets where the reference is FA-safe.
-* No target BFA regression **greater than5 percentage points**.
+* No BFA regression **greater than5 percentage points where both policies
+  are FA-safe**. Unsafe-reference acceptances are not a same-security
+  usability baseline.
 
 The [gate](../scripts/paper327/gate.py) evaluates exact integer counts on
 identical original supports; tests include equality boundaries and missing
