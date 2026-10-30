@@ -1,0 +1,80 @@
+{
+  "caps": {
+    "batch_size": 32,
+    "measured_steps_per_arm": 3,
+    "own_cuda_bytes": 12884901888,
+    "process_rss_bytes": 6442450944,
+    "wall_seconds": 300,
+    "warmup_steps_per_arm": 2
+  },
+  "checkpoint_sha256": "73182a088cf94833c94b1666d1c99e02fe87e2007bff57b564fb6206e25dba71",
+  "code_sha256": {
+    "objective.py": "e812330a4255d7746483b5858433d273988d377b51027b2a2ff9674fc3966443",
+    "probe.py": "70b6b67903075a5dcf56ac8ee12bd9ad48d71c89e3a8f12c541f12df92af1d21"
+  },
+  "dataset_image_reads": 0,
+  "excluded_costs": [
+    "FAS-Aug",
+    "PDA",
+    "APL_attention_weights",
+    "real_image_IO",
+    "validation",
+    "calibration",
+    "checkpoint_replay",
+    "bootstrap"
+  ],
+  "gpu": "NVIDIA GeForce RTX 4080 SUPER",
+  "interpreter": "/home/lathevinh/miniforge3/envs/fas/bin/python",
+  "peak_process_rss_bytes": 1837658112,
+  "precision": "FP32_no_AMP_no_TF32_seeded_not_bitwise_deterministic",
+  "results": [
+    {
+      "arm": "global_BCE_proxy",
+      "cuda_peak_allocated": 6879478784,
+      "cuda_peak_reserved": 7245660160,
+      "finite_full_backbone_gradient_observed": true,
+      "mean_step_seconds": 0.1894616266945377,
+      "measured_losses": [
+        0.6425980925559998,
+        0.6328162550926208,
+        0.5692847371101379
+      ],
+      "step_seconds": [
+        0.18941164202988148,
+        0.1895711530232802,
+        0.18940208503045142
+      ],
+      "trainable_backbone_parameters": 86583552,
+      "trainable_head_parameters": 769
+    },
+    {
+      "arm": "global_BCE_plus_tail_proxy",
+      "cuda_peak_allocated": 6879230976,
+      "cuda_peak_reserved": 7228882944,
+      "finite_full_backbone_gradient_observed": true,
+      "mean_step_seconds": 0.19303748465608805,
+      "measured_losses": [
+        0.766131579875946,
+        0.7353770136833191,
+        0.6500008702278137
+      ],
+      "step_seconds": [
+        0.19235022796783596,
+        0.19330204103607684,
+        0.19346018496435136
+      ],
+      "trainable_backbone_parameters": 86583552,
+      "trainable_head_parameters": 769
+    }
+  ],
+  "saved_trained_checkpoints": 0,
+  "scientific_execution_authorized": false,
+  "scientific_training_starts": 0,
+  "scope": "synthetic_backbone_capacity_not_published_PAD_baseline",
+  "synthetic_optimizer_steps": 10,
+  "target_evaluations": 0,
+  "torch": "2.7.1+cu126",
+  "upstream_commit": "7764ea0f912e53c92e82eb78a2a1631e92725fc8",
+  "version": 1,
+  "wall_seconds": 5.361742377048358
+}
